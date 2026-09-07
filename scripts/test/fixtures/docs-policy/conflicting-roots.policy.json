@@ -1,0 +1,117 @@
+{
+  "docs_policy/v1": {
+    "in_scope_paths": [
+      "AGENT-LEARNINGS.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "CODEX.md",
+      "README.md",
+      "docs/**"
+    ],
+    "migration_debt": {
+      "allow_unowned_in_scope_paths": true,
+      "allow_missing_required_doc_types": false,
+      "legacy_in_scope_allowlist": [
+        "docs/intent-digest.md"
+      ],
+      "max_legacy_in_scope_allowlist_entries": 25
+    },
+    "ownership": {
+      "owners": [
+        {
+          "id": "docs-stewards",
+          "display_name": "Docs Stewards"
+        },
+        {
+          "id": "mothership-factory",
+          "display_name": "Intents Factory"
+        },
+        {
+          "id": "replay-factory",
+          "display_name": "Replay Factory"
+        },
+        {
+          "id": "taxi-runtime",
+          "display_name": "Taxi Runtime"
+        }
+      ],
+      "canonical_roots": [
+        {
+          "path": "apps/hatch/",
+          "owner_id": "taxi-runtime"
+        },
+        {
+          "path": "docs/",
+          "owner_id": "docs-stewards"
+        },
+        {
+          "path": "docs/state/",
+          "owner_id": "docs-stewards"
+        },
+        {
+          "path": "factories/mothership/",
+          "owner_id": "mothership-factory"
+        }
+      ],
+      "root_doc_owner_id": "docs-stewards"
+    },
+    "required_doc_types": [
+      {
+        "doc_type": "architecture",
+        "path": "docs/architecture/factory-internals.md"
+      },
+      {
+        "doc_type": "roadmap",
+        "path": "docs/roadmap.md"
+      },
+      {
+        "doc_type": "state_machines",
+        "path": "docs/state-machines.md"
+      },
+      {
+        "doc_type": "vision",
+        "path": "docs/vision.md"
+      }
+    ],
+    "root_docs_allowlist": [
+      "AGENT-LEARNINGS.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "CODEX.md",
+      "README.md"
+    ],
+    "root_level_exceptions": [
+      "AGENT-LEARNINGS.md",
+      "CLAUDE.md",
+      "CODEX.md"
+    ],
+    "freshness": {
+      "default_review_policy": "periodic-7",
+      "review_policies": [
+        {
+          "id": "codebound",
+          "mode": "codebound"
+        },
+        {
+          "id": "generated",
+          "mode": "generated"
+        },
+        {
+          "id": "historical",
+          "mode": "historical"
+        },
+        {
+          "id": "periodic-7",
+          "mode": "periodic",
+          "max_age_days": 7
+        }
+      ],
+      "path_defaults": [
+        {
+          "path": "docs/**",
+          "review_policy": "periodic-7"
+        }
+      ]
+    }
+  }
+}

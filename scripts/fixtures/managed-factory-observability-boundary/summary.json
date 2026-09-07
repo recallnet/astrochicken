@@ -1,0 +1,76 @@
+{
+  "schema_version": "managed_supervisor_run_summary/v1",
+  "factory_id": "brainstorm",
+  "instance_id": "fac_brainstorm_01",
+  "kind_id": "brainstorm",
+  "context": {
+    "target_repo": "example-org/brainstorm-lab",
+    "control_plane_repo": "recallnet/astrochicken",
+    "trust_domain": "brainstorm.local",
+    "trust_role": "brainstorm.local"
+  },
+  "lifecycle": {
+    "state": "blocked_local",
+    "health_state": "degraded",
+    "control_gate": "run",
+    "control_state_action": "none",
+    "control_state_reason": ""
+  },
+  "blockers": {
+    "upstream": {
+      "has_open_upstream_bugs": false,
+      "open_upstream_bug_count": 0,
+      "open_upstream_bug_numbers": []
+    },
+    "action_items": {
+      "has_action_items": true,
+      "action_item_count": 2
+    }
+  },
+  "intake": {
+    "has_issue": true,
+    "selected_issue_number": 1201
+  },
+  "manifest": {
+    "ok": true,
+    "error": ""
+  },
+  "failure": {
+    "classification": "local",
+    "reason": "action_item_count=2",
+    "parse_error": ""
+  },
+  "managed_snapshot": {
+    "schema_version": "managed-factory-snapshot/v1",
+    "lifecycle_state": "blocked_local",
+    "lifecycle_reason": "action_item_count=2",
+    "lifecycle_failure_classification": "local",
+    "lifecycle_failure_reason": "action_item_count=2",
+    "lifecycle_updated_at": "2026-03-16T20:00:00.000Z",
+    "lifecycle_updated_by": "managed_supervisor",
+    "blockers": {
+      "upstream": {
+        "has_open_upstream_bugs": false,
+        "open_upstream_bug_count": 0,
+        "open_upstream_bug_numbers": []
+      },
+      "action_items": {
+        "has_action_items": true,
+        "action_item_count": 2
+      }
+    },
+    "unresolved_actions": 2,
+    "queue_depth": 3,
+    "oldest_work_age_seconds": 600,
+    "latest_incidents": [
+      {
+        "incident_fingerprint": "sha256:example-boundary-incident",
+        "severity": "warn"
+      }
+    ]
+  },
+  "telemetry": {
+    "lifecycle_state": "blocked_local",
+    "failure_classification": "local"
+  }
+}

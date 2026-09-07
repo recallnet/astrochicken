@@ -1,0 +1,92 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "example-trading",
+  "factory_root": "factories/example-trading",
+  "kind_id": "example-trading",
+  "instance_id": "example-trading",
+  "target_repo": "example-org/example-trading",
+  "control_plane_repo": "recallnet/astrochicken",
+  "workspace_mode": "checkout",
+  "service_registry_path": "factory-registry.json",
+  "installation_manifest_path": ".hatch/hosts/example-trading/installation.json",
+  "destinations": {
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": ["managed-factory-bug", "factory:example-trading"]
+    }
+  },
+  "tracking_issue": 407,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md"
+  },
+  "scenarios": {
+    "root": "packages/factory-runtime/scenarios/managed_software_delivery"
+  },
+  "pipeline": {
+    "supervisor_tick": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  },
+  "runs_dir": ".hatch/example-trading/runs",
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "work_dir": "/path/to/example-trading",
+  "managed": true,
+  "upstream_repo": "recallnet/astrochicken",
+  "upstream_bug_labels": [
+    "managed-factory-bug",
+    "factory:example-trading"
+  ],
+  "slack_webhook_url": "${EXAMPLE_TRADING_SLACK_WEBHOOK_URL}",
+  "capabilities": {
+    "goal_decomposition": {
+      "timeouts": {
+        "issue_draft": "30m",
+        "issue_repair": "30m",
+        "issue_judge": "30m",
+        "issue_revise": "30m"
+      }
+    }
+  },
+  "trust": {
+    "domain": "example-trading.local",
+    "roles": [
+      "example-trading.local.codergen",
+      "example-trading.local.tool",
+      "example-trading.local.agent.worktree",
+      "example-trading.local.stack.manager_loop",
+      "example-trading.local.pipeline",
+      "example-trading.local.fan_out.dynamic",
+      "example-trading.local.fan_in.dynamic"
+    ]
+  },
+  "trust_domain": "example-trading.local",
+  "trust_roles": [
+    "example-trading.local.codergen",
+    "example-trading.local.tool",
+    "example-trading.local.agent.worktree",
+    "example-trading.local.stack.manager_loop",
+    "example-trading.local.pipeline",
+    "example-trading.local.fan_out.dynamic",
+    "example-trading.local.fan_in.dynamic"
+  ],
+  "schedules": {
+    "jobs": [
+      {
+        "id": "daily-release-report",
+        "type": "graph",
+        "graph": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+        "cron": "30 14 * * *",
+        "time_zone": "America/Denver",
+        "catch_up": false,
+        "repo": "example-org/example-trading",
+        "notify_slack": true,
+        "issue_labels": ["daily-release-report"]
+      }
+    ]
+  },
+  "max_concurrent_waves": 4,
+  "max_goal_runs_per_tick": 4
+}

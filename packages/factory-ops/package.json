@@ -1,0 +1,48 @@
+{
+  "name": "@hatch/factory-ops",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "src/**/*.mjs",
+    "src/**/*.ts",
+    "!src/**/*.test.mjs",
+    "!src/**/*.test.ts",
+    "!test/**"
+  ],
+  "type": "module",
+  "bin": {
+    "hatch-ops": "src/cli.ts",
+    "hatch-host": "src/host-runtime.ts"
+  },
+  "exports": {
+    ".": "./src/cli.ts",
+    "./*": "./*"
+  },
+  "scripts": {
+    "pretest": "pnpm --filter @recallnet/factory-telemetry build",
+    "prepublishOnly": "echo source-as-published",
+    "test": "node ../../scripts/run-package-test-manifest.mjs --repo-root ../.. --manifest config/testing/package-test-manifests/packages-factory-ops.json --suite default",
+    "test:postgres-canonical-replay": "pnpm --filter hatch build && node --test --test-reporter=dot test/supervisor/postgres-canonical-replay.integration.test.mjs",
+    "test:wave-claim-gates": "node ../../scripts/run-package-test-manifest.mjs --repo-root ../.. --manifest config/testing/package-test-manifests/packages-factory-ops.json --suite wave-claim-gates",
+    "typecheck": "cd ../.. && find packages/factory-ops/src packages/factory-ops/test \\( -name '*.mjs' -o -name '*.ts' \\) -print0 | sort -z | xargs -0 node --check"
+  },
+  "devDependencies": {
+    "@hatch/factory-core": "workspace:*",
+    "c8": "^11.0.0",
+    "ink-testing-library": "^4.0.0"
+  },
+  "dependencies": {
+    "@mariozechner/pi-coding-agent": "^0.56.2",
+    "@hatch/github-adapter": "workspace:*",
+    "@recallnet/factory-telemetry": "workspace:*",
+    "camelcase-keys": "^10.0.2",
+    "clipanion": "^4.0.0-rc.4",
+    "hatch": "workspace:*",
+    "ink": "^5.2.1",
+    "ink-text-input": "^6.0.0",
+    "pg": "^8.16.3",
+    "react": "^18.3.1",
+    "semver": "^7.7.2",
+    "zod-to-json-schema": "^3.25.1"
+  }
+}

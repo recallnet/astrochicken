@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+cmd="$1"
+sub="$2"
+shift 2
+if [ "$cmd" = "label" ] && [ "$sub" = "create" ]; then
+  exit 0
+fi
+if [ "$cmd" = "issue" ] && [ "$sub" = "list" ]; then
+  printf '[]'
+  exit 0
+fi
+if [ "$cmd" = "issue" ] && [ "$sub" = "create" ]; then
+  printf 'https://github.com/recallnet/astrochicken/issues/9999\n'
+  exit 0
+fi
+if [ "$cmd" = "issue" ] && [ "$sub" = "edit" ]; then
+  printf 'https://github.com/recallnet/astrochicken/issues/9999\n'
+  exit 0
+fi
+echo "unexpected gh call: $cmd $sub $*" >&2
+exit 1

@@ -1,0 +1,6 @@
+digraph benchmark_missing_attrs {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  build [class="coder" label="Build" prompt_version="2026-03-09.r1" role_version="1.0.0" skill_id="wave.execute.issue"]
+  start -> build -> done
+}

@@ -1,0 +1,214 @@
+{
+  "$id": "https://recallnet.dev/contracts/release-resume-policy.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Versioned release resume policy contract for hatch-ops release control-plane workflows.",
+  "properties": {
+    "control_plane_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "controlPlaneRepo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "factory_releases": {
+      "additionalProperties": false,
+      "properties": {
+        "by_factory": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "default_release": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "milestones": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repo_milestones": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repos": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "local_factory_release_command": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "localReleaseCmdByFactory": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "manifest_fetch_command": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "manifest_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "manifest_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "pins": {
+      "additionalProperties": false,
+      "properties": {
+        "by_factory": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "milestones": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repo_milestones": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repos": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "policy_validation_errors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "rollout": {
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "manifest_fetch_command": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "manifest_path": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "manifest_ref": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "default_channel": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "milestone_channels": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repo_channels": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "repo_milestone_channels": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "self_update_command": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "title": "Release Resume Policy",
+  "type": "object"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "acme-support-factory",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "description": "Acme support external factory fixture. For in-repo testing, hatch and @hatch/factory-ops are resolved from workspace. External consumers pin released versions.",
+  "dependencies": {
+    "hatch": "*",
+    "@hatch/factory-ops": "*"
+  }
+}

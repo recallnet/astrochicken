@@ -1,0 +1,23 @@
+{
+  "schema_version": "reviewer_context/v1",
+  "packet_type": "reviewer_context_packet",
+  "packet_id": "reviewer_context_packet_fixture_missing_required",
+  "created_at": "2026-03-10T00:00:00.000Z",
+  "packet_state": "open",
+  "issue_number": "461",
+  "branch": "wave/461",
+  "snapshot_sha": "",
+  "issue_commit_subjects": [],
+  "diff_summary": {
+    "scope_mode": "branch_scoped",
+    "commits_ahead": "0",
+    "issue_commits": "0",
+    "changed_files_count": "0",
+    "issue_changed_files_count": "0",
+    "summary": ""
+  },
+  "changed_files": [],
+  "evidence_artifact_path": "/tmp/wave-461/.hatch/review/461.json",
+  "evidence_artifact_sha256": "abcd",
+  "policy_refs": []
+}

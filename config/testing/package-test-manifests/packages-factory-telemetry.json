@@ -1,0 +1,17 @@
+{
+  "schema": "hatch.package-test-manifest.v1",
+  "package_name": "@recallnet/factory-telemetry",
+  "package_path": "packages/factory-telemetry",
+  "default_suite": "default",
+  "suites": [
+    {
+      "name": "default",
+      "runner": "vitest",
+      "working_directory": "packages/factory-telemetry",
+      "entrypoints": [
+        "src/**/*.test.ts"
+      ],
+      "command": "vitest --run --passWithNoTests --reporter=dot"
+    }
+  ]
+}

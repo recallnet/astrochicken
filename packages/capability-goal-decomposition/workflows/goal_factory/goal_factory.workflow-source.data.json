@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_factory",
+  "familyId": "goal_decomposition",
+  "title": "Goal Factory",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_factory.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_factory"
+  },
+  "sourceMap": {
+    "graphName": "goal_factory",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "close_goal",
+        "runtimeNodeId": "close_goal"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "intake_decompose",
+        "runtimeNodeId": "intake_decompose"
+      },
+      {
+        "sourceNodeId": "issues",
+        "runtimeNodeId": "issues"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "close_goal",
+      "kind": "llm_prompt",
+      "title": "Close goal issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "label": "Close goal issue",
+        "output_key": "__close_goal_result",
+        "prompt": "gh issue close ${issue_number} --repo ${gh_repo} --reason completed",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "intake_decompose",
+      "kind": "pipeline",
+      "title": "Intake and decompose goal",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Intake and decompose goal",
+        "export_keys": "goal_context,approved_features,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "issues",
+      "kind": "pipeline",
+      "title": "Write issues",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Write issues",
+        "export_keys": "issue_urls",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "intake_decompose"
+    },
+    {
+      "from": "intake_decompose",
+      "to": "issues"
+    },
+    {
+      "from": "issues",
+      "to": "close_goal"
+    },
+    {
+      "from": "close_goal",
+      "to": "done"
+    }
+  ]
+}

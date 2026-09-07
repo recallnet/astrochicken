@@ -1,0 +1,11 @@
+digraph child_terminal_case_failed {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	boom [type="tool" label="Always Fail Child" output_key="child_signal" governance="reversible" tool_id="shell" action_id="file.write" prompt="false"]
+	done [shape=Msquare]
+	done_alt [shape=Msquare]
+
+	start -> boom
+	boom -> done [condition="outcome=success"]
+	boom -> done_alt [condition="outcome=success && route=alternate"]
+}

@@ -1,0 +1,7 @@
+digraph lint_dot_warning {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  step [type="tool" label="Step" output_key="step_out" governance="reversible" prompt="echo ${missing_key}"]
+  start -> step
+  step -> done [condition="step_out=ok"]
+}

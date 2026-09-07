@@ -1,0 +1,19 @@
+{
+  "issue_number": "1031",
+  "run_id": "0932c093",
+  "milestone_title": "goal-324-wave-3",
+  "branch": "wave/goal-324-wave-3",
+  "merge_commit_sha": "cce4a06d61f1b02be60d99229e3099ad93f5c5b3",
+  "commits_ahead": "1",
+  "issue_commits": "1",
+  "issue_changed_files": [
+    "apps/taxi/src/help-attributes-docs.test.ts",
+    "apps/taxi/src/help.ts",
+    "docs/reference/validation.md"
+  ],
+  "qa": {
+    "status": "pass",
+    "command": "npm run test:guard-gates && npm run docs:check"
+  },
+  "judge_notes": "JUDGE_CONTEXT_INVALID: judge_context_scope_identity_missing | signature=wave-judge-failure run=0932c093"
+}

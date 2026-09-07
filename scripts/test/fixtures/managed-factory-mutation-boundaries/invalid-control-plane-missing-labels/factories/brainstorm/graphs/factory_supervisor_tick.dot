@@ -1,0 +1,14 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond];
+  done [shape=Msquare];
+
+  mutate_control_plane_missing_labels [
+    type="tool"
+    governance="reversible"
+    label="Mutate control plane without destination labels"
+    output_key="mutation_attempt"
+    prompt="hatch-ops supervisor emit-bug --repo '${control_plane_repo}' --bug-type 'factory_design_defect' --summary 'Managed mutation leak'"
+  ];
+
+  start -> mutate_control_plane_missing_labels -> done;
+}

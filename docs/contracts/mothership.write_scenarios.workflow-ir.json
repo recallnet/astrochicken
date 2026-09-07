@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "write_scenarios",
+  "familyId": "scenario_writing",
+  "sourcePath": "factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs",
+  "runtimeGraphPath": "factories/mothership/graphs/write_scenarios.dot",
+  "outputPath": "docs/contracts/mothership.write_scenarios.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios",
+  "generatedFiles": [
+    "factories/mothership/graphs/write_scenarios.dot",
+    "factories/mothership/graphs/write_scenarios.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "scenario_writing",
+      "correlation_id": "workflow-ir-contract:write_scenarios",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "write_scenarios",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "write_scenarios"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "scenario_writing",
+        "correlation_id": "workflow-ir-contract:write_scenarios",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "write_scenarios",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "write_scenarios"
+    },
+    "files": [
+      {
+        "path": "factories/mothership/graphs/write_scenarios.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "factories/mothership/graphs/write_scenarios.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "factories/mothership/graphs/write_scenarios.dot",
+      "factories/mothership/graphs/write_scenarios.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLXdyaXRlX3NjZW5hcmlvcyIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJ3cml0ZV9zY2VuYXJpb3MiCiAgICAgIH0sCiAgICAgICJyZXNvbHZlZF9kZXBlbmRlbmNpZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImRpZ2VzdCI6IHsKICAgICAgICAgICAgInNoYTI1NiI6ICJ0eXBlZC1zb3VyY2UtZ2VuZXJhdGVkIgogICAgICAgICAgfSwKICAgICAgICAgICJ1cmkiOiAiZmFjdG9yaWVzL21vdGhlcnNoaXAvd29ya2Zsb3dzL3NjZW5hcmlvLXdyaXRpbmcvd3JpdGVfc2NlbmFyaW9zLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAid3JpdGVfc2NlbmFyaW9zIiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "write_scenarios"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "write_scenarios",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:93c5e4aa2bad1e86d40fbe4b8b1c7b7751a86b51e153d2fcb8fea0f6f4f8de81",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs. Do not edit by hand.\n@import \"../roles.stylesheet\"\n\ndigraph write_scenarios {\n    label = \"write_scenarios\"\n    workflow_source = \"factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs\"\n    count_recommended [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"common.count_json_items\" label=\"Count scenarios\" output_key=\"recommended_count\" action_raw=\"${recommended}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    done [shape=\"Msquare\" label=\"Done\" recovery_sink_type=\"terminal\"]\n    fan_in [type=\"fan_in.dynamic\" label=\"Collect scenario paths\" output_key=\"scenario_paths\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.fan_in.dynamic\"]\n    fan_out [type=\"fan_out.dynamic\" label=\"Scenario fan-out\" source_key=\"recommended\" item_key=\"scenario_brief\" template=\"factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs\" max_concurrency=\"2\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.fan_out.dynamic\"]\n    gate [shape=\"diamond\" label=\"New scenarios?\"]\n    repair_scope [class=\"scenario_author\" benchmark_job_id=\"goal.write_scenario.scope_repair\" llm_path_id=\"mothership.write_scenarios.repair_scope\" prompt_version=\"2026-03-12.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_scenario\" label=\"Repair scenario scope\" output_key=\"scoping_result\" output_format=\"json\" reasoning_effort=\"low\" timeout=\"2m\" prompt=\"Your previous scenario scoping JSON failed deterministic validation.\\n\\nOriginal scoping JSON:\\n${scoping_result}\\n\\nRepair instructions:\\n${retry_prompt}\\n\\nReturn JSON only with recommended, declined, and coverage_notes.\" recovery_owner=\"supervisor\"]\n    repaired_scope_gate [shape=\"diamond\" label=\"Repaired scope valid?\"]\n    scan_registry [type=\"tool\" governance=\"reversible\" label=\"Scan scenario registry\" output_key=\"registry_snapshot\" prompt=\"# hatch:no-inline-script-ok\\nroot='${scenarios_root}'\\nfind \\\"$root\\\" -type f -name SCENARIO.md -maxdepth 4 2>/dev/null | sed \\\"s#^$root/##\\\" | sort | head -200\" tool_id=\"shell\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    scope [class=\"scenario_author\" benchmark_job_id=\"goal.write_scenario.scope\" llm_path_id=\"mothership.write_scenarios.scope\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_scenario\" label=\"Scope scenarios\" output_key=\"scoping_result\" output_format=\"json\" outputs=\"recommended,declined,coverage_notes\" reasoning_effort=\"low\" timeout=\"2m\" prompt=\"Use the attached goal.write_scenario skill contract to scope scenarios. If the scenario-format reference is unavailable, proceed anyway.\\n\\nAutonomy policy:\\n- Do not create or request human review issues.\\n- If information is incomplete, continue with best-effort deterministic scenario drafts and record assumptions in coverage_notes.\\n- Only recommend concrete, known, high-leverage scenarios that materially improve future judgment quality.\\n- Do not generate minutia, tiny edge-case scenarios, or exhaustive coverage catalogs.\\n- Prefer 0 or 1 scenario. Return 2 only when both are clearly high value and non-overlapping.\\n\\nApproved feature list JSON:\\n${approved_features}\\n\\nExisting scenario registry snapshot (relative paths):\\n${registry_snapshot}\\n\\nReturn JSON array of 0-2 recommended scenario objects and supporting notes:\\n{\\n  \\\"recommended\\\": [\\n    {\\n      \\\"title\\\": \\\"Scenario title\\\",\\n      \\\"priority\\\": \\\"critical|high|medium|low\\\",\\n      \\\"story\\\": \\\"1-2 sentence story\\\",\\n      \\\"what_makes_this_hard\\\": \\\"Why an agent would get this wrong\\\",\\n      \\\"key_assertions\\\": [\\\"...\\\"],\\n      \\\"edge_cases\\\": [\\\"...\\\"],\\n      \\\"registry_path\\\": \\\"registry/astrochicken/<domain>/<slug>/SCENARIO.md\\\"\\n    }\\n  ],\\n  \\\"declined\\\": [\\n    {\\n      \\\"name\\\": \\\"Candidate name\\\",\\n      \\\"reason\\\": \\\"Why declined or merged\\\"\\n    }\\n  ],\\n  \\\"coverage_notes\\\": \\\"Gaps, assumptions, or dependencies\\\"\\n}\\n\\nIf no new scenarios are needed, return an empty recommended array. Return JSON only.\"]\n    scope_gate [shape=\"diamond\" label=\"Scope valid?\"]\n    start [shape=\"Mdiamond\" label=\"Start\"]\n    validate_repaired_scope [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.validate_scope\" label=\"Validate repaired scope\" output_format=\"json\" outputs=\"ok,error,retry_prompt,recommended,declined,coverage_notes\" action_payload=\"${scoping_result}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    validate_scope [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.validate_scope\" label=\"Validate scenario scope\" output_format=\"json\" outputs=\"ok,error,retry_prompt,recommended,declined,coverage_notes\" action_payload=\"${scoping_result}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    count_recommended -> gate\n    start -> scan_registry -> scope -> validate_scope -> scope_gate\n    fan_in -> done\n    fan_out -> fan_in\n    gate -> done [condition=\"recommended_count=0\" label=\"none\"]\n    gate -> fan_out [condition=\"recommended_count>0\" label=\"write\"]\n    repair_scope -> validate_repaired_scope\n    repaired_scope_gate -> count_recommended [condition=\"ok=true\" label=\"valid\"]\n    repaired_scope_gate -> done [condition=\"ok!=true\" label=\"fail_closed\"]\n    scope_gate -> count_recommended [condition=\"ok=true\" label=\"valid\"]\n    scope_gate -> repair_scope [condition=\"ok!=true\" label=\"repair\"]\n    validate_repaired_scope -> repaired_scope_gate\n}"
+}

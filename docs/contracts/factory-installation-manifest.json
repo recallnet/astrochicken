@@ -1,0 +1,51 @@
+{
+  "$id": "https://recallnet.dev/contracts/factory-installation-manifest.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Versioned managed factory installation manifest document.",
+  "properties": {
+    "host_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "installation_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "instance_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "log_dir": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "work_dir": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "workspace_mode": {
+      "enum": [
+        "api_only",
+        "checkout",
+        "worktree"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "installation_id",
+    "instance_id",
+    "host_id",
+    "workspace_mode"
+  ],
+  "title": "Factory Installation Manifest",
+  "type": "object"
+}

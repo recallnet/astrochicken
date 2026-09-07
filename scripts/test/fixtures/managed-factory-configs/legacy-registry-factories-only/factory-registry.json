@@ -1,0 +1,10 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "factories": [
+    {
+      "id": "mothership",
+      "repo": "recallnet/astrochicken",
+      "graphs": []
+    }
+  ]
+}

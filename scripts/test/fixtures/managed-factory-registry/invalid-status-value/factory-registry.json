@@ -1,0 +1,12 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "instances": [
+    {
+      "instance_id": "fac_registry_01",
+      "kind_id": "brainstorm",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/brainstorm-lab",
+      "status": "sleeping"
+    }
+  ]
+}

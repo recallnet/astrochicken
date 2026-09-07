@@ -1,0 +1,324 @@
+{
+  "schema_version": "workflow_source_registry/v1",
+  "summary": {
+    "registered_workflow_sources": 39,
+    "explicit_governed_dot_exemptions": 0,
+    "diagnostics": 0
+  },
+  "workflow_sources": [
+    {
+      "workflow_id": "domain_brainstorm",
+      "family_id": "dispatch_control",
+      "source_path": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+      "node_count": 16,
+      "edge_count": 17
+    },
+    {
+      "workflow_id": "factory_supervisor_tick",
+      "family_id": "dispatch_control",
+      "source_path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot",
+      "node_count": 16,
+      "edge_count": 14
+    },
+    {
+      "workflow_id": "daily_lens_publish",
+      "family_id": "daily_reporting",
+      "source_path": "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/daily_lens_publish.dot",
+      "node_count": 17,
+      "edge_count": 16
+    },
+    {
+      "workflow_id": "daily_release_report",
+      "family_id": "daily_reporting",
+      "source_path": "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/daily_release_report.dot",
+      "node_count": 9,
+      "edge_count": 8
+    },
+    {
+      "workflow_id": "factory_dispatch_reactor",
+      "family_id": "dispatch_control",
+      "source_path": "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "node_count": 14,
+      "edge_count": 14
+    },
+    {
+      "workflow_id": "factory_supervisor_tick",
+      "family_id": "dispatch_control",
+      "source_path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+      "node_count": 53,
+      "edge_count": 59
+    },
+    {
+      "workflow_id": "goal_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+      "node_count": 106,
+      "edge_count": 128
+    },
+    {
+      "workflow_id": "goal_issue_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/goal_issue_execute.dot",
+      "node_count": 54,
+      "edge_count": 66
+    },
+    {
+      "workflow_id": "milestone_execute_parallel_item",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+      "node_count": 5,
+      "edge_count": 4
+    },
+    {
+      "workflow_id": "milestone_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+      "node_count": 20,
+      "edge_count": 23
+    },
+    {
+      "workflow_id": "write_scenario_item",
+      "family_id": "scenario_writing",
+      "source_path": "factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/write_scenario_item.dot",
+      "node_count": 11,
+      "edge_count": 12
+    },
+    {
+      "workflow_id": "write_scenarios",
+      "family_id": "scenario_writing",
+      "source_path": "factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/write_scenarios.dot",
+      "node_count": 13,
+      "edge_count": 15
+    },
+    {
+      "workflow_id": "wave_demo_generate",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+      "node_count": 19,
+      "edge_count": 21
+    },
+    {
+      "workflow_id": "wave_dispatch",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_dispatch.dot",
+      "node_count": 18,
+      "edge_count": 19
+    },
+    {
+      "workflow_id": "wave_execute",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+      "node_count": 110,
+      "edge_count": 129
+    },
+    {
+      "workflow_id": "wave_issue_execute",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_issue_execute.dot",
+      "node_count": 51,
+      "edge_count": 61
+    },
+    {
+      "workflow_id": "artifact_ingest",
+      "family_id": "artifact_ingestion",
+      "source_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+      "node_count": 8,
+      "edge_count": 7
+    },
+    {
+      "workflow_id": "brainstorm",
+      "family_id": "brainstorming",
+      "source_path": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+      "node_count": 25,
+      "edge_count": 30
+    },
+    {
+      "workflow_id": "issue_execute_item",
+      "family_id": "coding",
+      "source_path": "packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-coding/issue_execute_item.dot",
+      "node_count": 28,
+      "edge_count": 30
+    },
+    {
+      "workflow_id": "goal_batch",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.dot",
+      "node_count": 20,
+      "edge_count": 23
+    },
+    {
+      "workflow_id": "goal_factory",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+      "node_count": 5,
+      "edge_count": 4
+    },
+    {
+      "workflow_id": "goal_hard_plan",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+      "node_count": 11,
+      "edge_count": 10
+    },
+    {
+      "workflow_id": "goal_intake_decompose",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot",
+      "node_count": 34,
+      "edge_count": 37
+    },
+    {
+      "workflow_id": "goal_queue",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+      "node_count": 15,
+      "edge_count": 16
+    },
+    {
+      "workflow_id": "goal_run",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+      "node_count": 47,
+      "edge_count": 56
+    },
+    {
+      "workflow_id": "write_issue_item",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+      "node_count": 21,
+      "edge_count": 25
+    },
+    {
+      "workflow_id": "write_issues",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.dot",
+      "node_count": 5,
+      "edge_count": 4
+    },
+    {
+      "workflow_id": "merge_item",
+      "family_id": "merge",
+      "source_path": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+      "node_count": 31,
+      "edge_count": 36
+    },
+    {
+      "workflow_id": "product_judge",
+      "family_id": "product_judge",
+      "source_path": "packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+      "node_count": 14,
+      "edge_count": 17
+    },
+    {
+      "workflow_id": "release_report_flow",
+      "family_id": "release_reporting",
+      "source_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+      "node_count": 15,
+      "edge_count": 16
+    },
+    {
+      "workflow_id": "goal_execute",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_execute.dot",
+      "node_count": 102,
+      "edge_count": 124
+    },
+    {
+      "workflow_id": "goal_execution_handoff",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot",
+      "node_count": 14,
+      "edge_count": 13
+    },
+    {
+      "workflow_id": "goal_intake_to_execution_handoff",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+      "node_count": 14,
+      "edge_count": 13
+    },
+    {
+      "workflow_id": "goal_issue_execute",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot",
+      "node_count": 54,
+      "edge_count": 65
+    },
+    {
+      "workflow_id": "wave_dispatch",
+      "family_id": "wave_dispatch",
+      "source_path": "packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+      "node_count": 18,
+      "edge_count": 19
+    },
+    {
+      "workflow_id": "echo",
+      "family_id": "patterns",
+      "source_path": "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+      "node_count": 3,
+      "edge_count": 2
+    },
+    {
+      "workflow_id": "managed_software_delivery_domain",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
+      "node_count": 52,
+      "edge_count": 57
+    },
+    {
+      "workflow_id": "managed_supervisor",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+      "node_count": 34,
+      "edge_count": 41
+    },
+    {
+      "workflow_id": "managed-supervisor-shell",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+      "node_count": 32,
+      "edge_count": 39
+    }
+  ],
+  "governed_dot_exemptions": [],
+  "diagnostics": []
+}

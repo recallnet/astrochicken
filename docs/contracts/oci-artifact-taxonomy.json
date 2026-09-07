@@ -1,0 +1,219 @@
+{
+  "classes": [
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.contract-spec.bundle.v1",
+      "description": "Generated contract and spec bundle packaged for durable OCI publication.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "contract_spec_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Contract spec bundles remain durable references but still inherit one shared lifecycle enforcement model.",
+        "retention_days": 365,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/contract-spec-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/contract-spec-artifact-metadata.v1.schema.json",
+      "name_template": "contract-spec/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Contract Spec Bundle",
+      "trust_policy": {
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "rationale": "Generated contract bundles are governed outputs that require canonical provenance and attestations.",
+        "required": true,
+        "schema_version": "artifact_trust_policy/v1",
+        "signing_stack": "cosign",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ]
+      },
+      "version": "contract_spec_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.judge-evidence.bundle.v1",
+      "description": "Judge evidence bundle packaged for durable OCI publication.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "judge_evidence_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Judge evidence stays available long enough for operator review and release audits before shared-policy expiry.",
+        "retention_days": 180,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/judge-evidence-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/judge-evidence-artifact-metadata.v1.schema.json",
+      "name_template": "judge-evidence/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Judge Evidence Bundle",
+      "trust_policy": {
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "rationale": "Judge evidence bundles require canonical signing, attestations, and provenance for release auditability.",
+        "required": true,
+        "schema_version": "artifact_trust_policy/v1",
+        "signing_stack": "cosign",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ]
+      },
+      "version": "judge_evidence_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.release.bundle.v1",
+      "description": "Durable release bundle and manifest publication metadata.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "release_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Release bundles remain durable release artifacts but still use a canonical one-year lifecycle policy.",
+        "retention_days": 365,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/release-bundle-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/release-bundle-artifact-metadata.v1.schema.json",
+      "name_template": "release-bundle/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Release Bundle",
+      "trust_policy": {
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "rationale": "Release bundles are promotion-critical artifacts and must be signed, attestable, and verifiable.",
+        "required": true,
+        "schema_version": "artifact_trust_policy/v1",
+        "signing_stack": "cosign",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ]
+      },
+      "version": "release_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.release-report.bundle.v1",
+      "description": "Release narrative report bundle packaged for durable OCI publication.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [
+        "packages/factory-ops/src/commands/release-emit-narrative-document.ts"
+      ],
+      "key": "release_report_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Release reports remain operator-facing evidence and retain a one-year lifecycle under the shared policy engine.",
+        "retention_days": 365,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/release-report-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/release-report-artifact-metadata.v1.schema.json",
+      "name_template": "release-report/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Release Report Bundle",
+      "trust_policy": {
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "rationale": "Release report bundles are first-class release artifacts and must use the canonical signing and provenance stack.",
+        "required": true,
+        "schema_version": "artifact_trust_policy/v1",
+        "signing_stack": "cosign",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ]
+      },
+      "version": "release_report_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.run-snapshot.bundle.v1",
+      "description": "Durable run snapshot bundle for replay, inspection, and later provenance.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "run_snapshot_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Run snapshots support short-horizon replay and inspection and should rotate under the shared lifecycle engine.",
+        "retention_days": 30,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/run-snapshot-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/run-snapshot-artifact-metadata.v1.schema.json",
+      "name_template": "run-snapshot/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Run Snapshot Bundle",
+      "trust_policy": null,
+      "version": "run_snapshot_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.telemetry-summary.bundle.v1",
+      "description": "Durable telemetry-derived summary bundle packaged for OCI publication.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "telemetry_summary_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Telemetry summaries are durable but high-volume operator artifacts and should rotate under shared lifecycle enforcement.",
+        "retention_days": 90,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/telemetry-summary-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/telemetry-summary-artifact-metadata.v1.schema.json",
+      "name_template": "telemetry-summary/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Telemetry Summary Bundle",
+      "trust_policy": null,
+      "version": "telemetry_summary_bundle/v1"
+    },
+    {
+      "canonical_media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "description": "Compiled workflow IR and companion publication-intent metadata for a later governed OCI publish path.",
+      "filename_template": "{artifact_id}.bundle",
+      "governed_publisher_paths": [],
+      "key": "workflow_ir_bundle",
+      "lifecycle_policy": {
+        "enforcement_mode": "shared_policy_engine",
+        "expiry_action": "review_delete",
+        "preserve_subject_referrers": true,
+        "rationale": "Workflow IR bundles are rebuildable intermediates and should age out quickly under the shared lifecycle engine.",
+        "retention_days": 30,
+        "schema_version": "oci_artifact_lifecycle_policy/v1"
+      },
+      "metadata_output_path": "docs/contracts/workflow-ir-artifact-metadata.v1.schema.json",
+      "metadata_schema_id": "https://recallnet.dev/contracts/workflow-ir-artifact-metadata.v1.schema.json",
+      "name_template": "workflow-ir/{factory_id}/{run_id}/{workflow_source_revision}",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "title": "Workflow IR Bundle",
+      "trust_policy": {
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+        "required": true,
+        "schema_version": "artifact_trust_policy/v1",
+        "signing_stack": "cosign",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ]
+      },
+      "version": "workflow_ir_bundle/v1"
+    }
+  ],
+  "schema_version": "oci_artifact_taxonomy/v1",
+  "summary": {
+    "registered_classes": 7
+  }
+}

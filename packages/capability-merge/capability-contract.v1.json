@@ -1,0 +1,109 @@
+{
+  "capabilityId": "merge",
+  "description": "Rebase, deterministic merge, and conflict-resolution graph plus skill bundle.",
+  "entrypoints": [
+    {
+      "description": "Resolves merge items through deterministic merge and conflict handling.",
+      "id": "merge_item",
+      "kind": "graph",
+      "path": "workflows/merge_item/merge_item.workflow-source.mjs",
+      "title": "Merge item graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-merge/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Builds the canonical merge conflict packet for deterministic resolver handoff.",
+        "id": "merge_conflict_packet",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/merge_item/merge_item.workflow-source.mjs"
+        ],
+        "ref": "merge_conflict_packet/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Merge conflict packet artifact"
+      },
+      {
+        "description": "Builds the canonical merge report artifact after deterministic merge processing.",
+        "id": "merge_report",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/merge_item/merge_item.workflow-source.mjs"
+        ],
+        "ref": "merge_report/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Merge report artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Merge runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/merge_item/merge_item.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      },
+      {
+        "description": "Emits the canonical merge failure telemetry signal when deterministic resolution fails.",
+        "id": "merge_resolution_failure",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/merge_item/merge_item.workflow-source.mjs"
+        ],
+        "ref": "hatch.merge_resolution_failure",
+        "standard": "otel_event",
+        "title": "Merge resolution failure telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-merge",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "branch",
+    "capability_merge_skills",
+    "control_plane_repo",
+    "factory_id",
+    "gh_repo",
+    "integration_command",
+    "issue_number",
+    "merge_item",
+    "repo",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "agent.worktree",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".merge_resolver"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [
+    "skills/merge_conflict_resolver/SKILL.md"
+  ],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "hatch.merge_resolution_failure",
+        "merge_conflict_packet/v1",
+        "merge_report/v1"
+      ]
+    }
+  ],
+  "sourcePath": "packages/capability-merge/capability-contract.mjs",
+  "title": "Merge Capability",
+  "version": "0.1.0"
+}

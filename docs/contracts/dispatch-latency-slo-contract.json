@@ -1,0 +1,9 @@
+{
+  "schema_version": "dispatch_latency_slo_contract/v1",
+  "generated_at": "2026-03-21T17:51:14.725Z",
+  "ok": true,
+  "governed_factory": "mothership",
+  "dispatch_latency_slo_seconds": 15,
+  "maintenance_interval_seconds": 300,
+  "diagnostics": []
+}

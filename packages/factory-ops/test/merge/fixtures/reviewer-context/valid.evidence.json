@@ -1,0 +1,19 @@
+{
+  "issue_number": "461",
+  "issue_title": "Define reviewer context contract",
+  "issue_body_excerpt": "Implement a stable reviewer context contract package for deterministic review behavior.",
+  "branch": "wave/461",
+  "worktree_dir": "/tmp/wave-461",
+  "commits_ahead": "2",
+  "issue_commits": "2",
+  "changed_files": [
+    "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs"
+  ],
+  "issue_changed_files": [
+    "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs"
+  ],
+  "snapshot_sha": "d64bf24dae67469f29ef92dfd169e687d43d9d61",
+  "summary": "Contract schema + graph wiring updates"
+}

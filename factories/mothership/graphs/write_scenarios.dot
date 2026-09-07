@@ -1,0 +1,32 @@
+// Generated from factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs. Do not edit by hand.
+@import "../roles.stylesheet"
+
+digraph write_scenarios {
+    label = "write_scenarios"
+    workflow_source = "factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs"
+    count_recommended [type="tool" governance="irreversible" action_runtime="in_process" action_id="common.count_json_items" label="Count scenarios" output_key="recommended_count" action_raw="${recommended}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    done [shape="Msquare" label="Done" recovery_sink_type="terminal"]
+    fan_in [type="fan_in.dynamic" label="Collect scenario paths" output_key="scenario_paths" trust_domain="mothership.local" trust_role="mothership.local.fan_in.dynamic"]
+    fan_out [type="fan_out.dynamic" label="Scenario fan-out" source_key="recommended" item_key="scenario_brief" template="factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs" max_concurrency="2" trust_domain="mothership.local" trust_role="mothership.local.fan_out.dynamic"]
+    gate [shape="diamond" label="New scenarios?"]
+    repair_scope [class="scenario_author" benchmark_job_id="goal.write_scenario.scope_repair" llm_path_id="mothership.write_scenarios.repair_scope" prompt_version="2026-03-12.r1" role_version="1.0.0" skill_id="goal.write_scenario" label="Repair scenario scope" output_key="scoping_result" output_format="json" reasoning_effort="low" timeout="2m" prompt="Your previous scenario scoping JSON failed deterministic validation.\n\nOriginal scoping JSON:\n${scoping_result}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with recommended, declined, and coverage_notes." recovery_owner="supervisor"]
+    repaired_scope_gate [shape="diamond" label="Repaired scope valid?"]
+    scan_registry [type="tool" governance="reversible" label="Scan scenario registry" output_key="registry_snapshot" prompt="# hatch:no-inline-script-ok\nroot='${scenarios_root}'\nfind \"$root\" -type f -name SCENARIO.md -maxdepth 4 2>/dev/null | sed \"s#^$root/##\" | sort | head -200" tool_id="shell" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    scope [class="scenario_author" benchmark_job_id="goal.write_scenario.scope" llm_path_id="mothership.write_scenarios.scope" prompt_version="2026-03-09.r1" role_version="1.0.0" skill_id="goal.write_scenario" label="Scope scenarios" output_key="scoping_result" output_format="json" outputs="recommended,declined,coverage_notes" reasoning_effort="low" timeout="2m" prompt="Use the attached goal.write_scenario skill contract to scope scenarios. If the scenario-format reference is unavailable, proceed anyway.\n\nAutonomy policy:\n- Do not create or request human review issues.\n- If information is incomplete, continue with best-effort deterministic scenario drafts and record assumptions in coverage_notes.\n- Only recommend concrete, known, high-leverage scenarios that materially improve future judgment quality.\n- Do not generate minutia, tiny edge-case scenarios, or exhaustive coverage catalogs.\n- Prefer 0 or 1 scenario. Return 2 only when both are clearly high value and non-overlapping.\n\nApproved feature list JSON:\n${approved_features}\n\nExisting scenario registry snapshot (relative paths):\n${registry_snapshot}\n\nReturn JSON array of 0-2 recommended scenario objects and supporting notes:\n{\n  \"recommended\": [\n    {\n      \"title\": \"Scenario title\",\n      \"priority\": \"critical|high|medium|low\",\n      \"story\": \"1-2 sentence story\",\n      \"what_makes_this_hard\": \"Why an agent would get this wrong\",\n      \"key_assertions\": [\"...\"],\n      \"edge_cases\": [\"...\"],\n      \"registry_path\": \"registry/astrochicken/<domain>/<slug>/SCENARIO.md\"\n    }\n  ],\n  \"declined\": [\n    {\n      \"name\": \"Candidate name\",\n      \"reason\": \"Why declined or merged\"\n    }\n  ],\n  \"coverage_notes\": \"Gaps, assumptions, or dependencies\"\n}\n\nIf no new scenarios are needed, return an empty recommended array. Return JSON only."]
+    scope_gate [shape="diamond" label="Scope valid?"]
+    start [shape="Mdiamond" label="Start"]
+    validate_repaired_scope [type="tool" governance="reversible" action_runtime="in_process" action_id="scenario.validate_scope" label="Validate repaired scope" output_format="json" outputs="ok,error,retry_prompt,recommended,declined,coverage_notes" action_payload="${scoping_result}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    validate_scope [type="tool" governance="reversible" action_runtime="in_process" action_id="scenario.validate_scope" label="Validate scenario scope" output_format="json" outputs="ok,error,retry_prompt,recommended,declined,coverage_notes" action_payload="${scoping_result}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    count_recommended -> gate
+    start -> scan_registry -> scope -> validate_scope -> scope_gate
+    fan_in -> done
+    fan_out -> fan_in
+    gate -> done [condition="recommended_count=0" label="none"]
+    gate -> fan_out [condition="recommended_count>0" label="write"]
+    repair_scope -> validate_repaired_scope
+    repaired_scope_gate -> count_recommended [condition="ok=true" label="valid"]
+    repaired_scope_gate -> done [condition="ok!=true" label="fail_closed"]
+    scope_gate -> count_recommended [condition="ok=true" label="valid"]
+    scope_gate -> repair_scope [condition="ok!=true" label="repair"]
+    validate_repaired_scope -> repaired_scope_gate
+}

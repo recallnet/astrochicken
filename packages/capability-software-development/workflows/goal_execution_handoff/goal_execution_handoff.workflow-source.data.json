@@ -1,0 +1,375 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_execution_handoff",
+  "familyId": "software_development",
+  "title": "Goal Execution Handoff",
+  "description": "Typed workflow source owner for packages/capability-software-development/graphs/goal_execution_handoff.dot.",
+  "sourcePath": "packages/capability-software-development/workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_execution_handoff",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "goal_execution_handoff",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "assert_goal_issue_number_present",
+        "runtimeNodeId": "assert_goal_issue_number_present"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "resolve_execution_config",
+        "runtimeNodeId": "resolve_execution_config"
+      },
+      {
+        "sourceNodeId": "resolve_goal_issue_number",
+        "runtimeNodeId": "resolve_goal_issue_number"
+      },
+      {
+        "sourceNodeId": "set_capability_coding_skills",
+        "runtimeNodeId": "set_capability_coding_skills"
+      },
+      {
+        "sourceNodeId": "set_capability_merge_skills",
+        "runtimeNodeId": "set_capability_merge_skills"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_factory_id",
+        "runtimeNodeId": "set_factory_id"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_release_reporting_factory_id",
+        "runtimeNodeId": "set_release_reporting_factory_id"
+      },
+      {
+        "sourceNodeId": "set_release_reporting_repo",
+        "runtimeNodeId": "set_release_reporting_repo"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_target_repo",
+        "runtimeNodeId": "set_target_repo"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "assert_goal_issue_number_present",
+      "kind": "tool_action",
+      "title": "Assert goal issue number present",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.fetch_goal_issue",
+        "label": "Assert goal issue number present",
+        "output_key": "__assert_goal_issue_number_present_result",
+        "action_repo": "${gh_repo}",
+        "action_goal_number": "${goal_issue_number}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "resolve_execution_config",
+      "kind": "tool_action",
+      "title": "Resolve execution config",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "software.resolve_execution_config",
+        "label": "Resolve execution config",
+        "output_format": "json",
+        "outputs": "integration_command,review_qa_command,stale_run_minutes",
+        "action_integration_command": "${integration_command}",
+        "action_review_qa_command": "${review_qa_command}",
+        "action_stale_run_minutes": "${stale_run_minutes}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_goal_issue_number",
+      "kind": "tool_action",
+      "title": "Resolve goal issue number",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve goal issue number",
+        "output_key": "goal_issue_number",
+        "action_fallback": "${issue_number}",
+        "action_value": "${goal_issue_number}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_capability_coding_skills",
+      "kind": "tool_action",
+      "title": "Resolve coding skills path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_capability_coding_skills_path",
+        "label": "Resolve coding skills path",
+        "output_key": "capability_coding_skills",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_capability_merge_skills",
+      "kind": "tool_action",
+      "title": "Resolve merge skills path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_capability_merge_skills_path",
+        "label": "Resolve merge skills path",
+        "output_key": "capability_merge_skills",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve control-plane repo",
+        "output_key": "control_plane_repo",
+        "action_fallback": "${target_repo}",
+        "action_value": "${control_plane_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_factory_id",
+      "kind": "tool_action",
+      "title": "Resolve factory id",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve factory id",
+        "output_key": "factory_id",
+        "action_fallback": "software-development",
+        "action_value": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Resolve GitHub repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_gh_repo",
+        "label": "Resolve GitHub repo",
+        "output_key": "gh_repo",
+        "action_gh_repo": "${gh_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_release_reporting_factory_id",
+      "kind": "tool_action",
+      "title": "Set release-reporting factory id",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Set release-reporting factory id",
+        "output_key": "release_reporting_factory_id",
+        "action_fallback": "software-development",
+        "action_value": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_release_reporting_repo",
+      "kind": "tool_action",
+      "title": "Set release-reporting repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Set release-reporting repo",
+        "output_key": "release_reporting_repo",
+        "action_fallback": "${gh_repo}",
+        "action_value": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Resolve repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve repo",
+        "output_key": "repo",
+        "action_fallback": ".",
+        "action_value": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_target_repo",
+      "kind": "tool_action",
+      "title": "Resolve target repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve target repo",
+        "output_key": "target_repo",
+        "action_fallback": "${gh_repo}",
+        "action_value": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "set_repo"
+    },
+    {
+      "from": "set_repo",
+      "to": "set_gh_repo"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "set_target_repo"
+    },
+    {
+      "from": "set_target_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_factory_id"
+    },
+    {
+      "from": "set_factory_id",
+      "to": "resolve_goal_issue_number"
+    },
+    {
+      "from": "resolve_goal_issue_number",
+      "to": "assert_goal_issue_number_present"
+    },
+    {
+      "from": "assert_goal_issue_number_present",
+      "to": "resolve_execution_config"
+    },
+    {
+      "from": "resolve_execution_config",
+      "to": "set_capability_coding_skills"
+    },
+    {
+      "from": "set_capability_coding_skills",
+      "to": "set_capability_merge_skills"
+    },
+    {
+      "from": "set_capability_merge_skills",
+      "to": "set_release_reporting_repo"
+    },
+    {
+      "from": "set_release_reporting_repo",
+      "to": "set_release_reporting_factory_id"
+    },
+    {
+      "from": "set_release_reporting_factory_id",
+      "to": "done"
+    }
+  ]
+}

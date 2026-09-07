@@ -1,0 +1,7 @@
+digraph lint_dot_valid {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  step [type="tool" label="Step" output_key="step_out" governance="reversible" prompt="printf 'ok'"]
+  start -> step
+  step -> done [condition="step_out=ok"]
+}

@@ -1,0 +1,612 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "write_issue_item",
+  "familyId": "goal_decomposition",
+  "title": "Write Issue Item",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/write_issue_item.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "write_issue_item",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "write_issue_item",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "create_issue",
+        "runtimeNodeId": "create_issue"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "draft_issue_spec",
+        "runtimeNodeId": "draft_issue_spec"
+      },
+      {
+        "sourceNodeId": "fallback_issue_spec",
+        "runtimeNodeId": "fallback_issue_spec"
+      },
+      {
+        "sourceNodeId": "fallback_revised_issue_spec",
+        "runtimeNodeId": "fallback_revised_issue_spec"
+      },
+      {
+        "sourceNodeId": "issue_spec_gate",
+        "runtimeNodeId": "issue_spec_gate"
+      },
+      {
+        "sourceNodeId": "judge_issue",
+        "runtimeNodeId": "judge_issue"
+      },
+      {
+        "sourceNodeId": "link_sub_issue",
+        "runtimeNodeId": "link_sub_issue"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "normalize_decision",
+        "runtimeNodeId": "normalize_decision"
+      },
+      {
+        "sourceNodeId": "normalize_feature_issue_spec",
+        "runtimeNodeId": "normalize_feature_issue_spec"
+      },
+      {
+        "sourceNodeId": "normalize_revised_feature_issue_spec",
+        "runtimeNodeId": "normalize_revised_feature_issue_spec"
+      },
+      {
+        "sourceNodeId": "repair_issue_spec",
+        "runtimeNodeId": "repair_issue_spec"
+      },
+      {
+        "sourceNodeId": "repaired_issue_spec_gate",
+        "runtimeNodeId": "repaired_issue_spec_gate"
+      },
+      {
+        "sourceNodeId": "revise_issue_spec",
+        "runtimeNodeId": "revise_issue_spec"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "update_issue",
+        "runtimeNodeId": "update_issue"
+      },
+      {
+        "sourceNodeId": "validate_issue_spec",
+        "runtimeNodeId": "validate_issue_spec"
+      },
+      {
+        "sourceNodeId": "validate_repaired_issue_spec",
+        "runtimeNodeId": "validate_repaired_issue_spec"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "create_issue",
+      "kind": "tool_action",
+      "title": "Create issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.create_issue",
+        "label": "Create issue",
+        "outputs": "ok,issue_url,created_issue_number,status,stderr",
+        "action_repo": "${gh_repo}",
+        "action_issue_spec_b64": "${issue_spec_b64}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "decide",
+      "kind": "decision",
+      "title": "Decision?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Decision?"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "draft_issue_spec",
+      "kind": "llm_prompt",
+      "title": "Draft issue spec",
+      "dotAttributes": {
+        "class": "issue_writer",
+        "benchmark_job_id": "goal.write_issue.write",
+        "llm_path_id": "capability.write_issue_item.draft_issue_spec",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue",
+        "llm_model": "openai/gpt-5.3-codex",
+        "label": "Draft issue spec",
+        "output_key": "issue_spec_raw",
+        "output_format": "json",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_draft}",
+        "prompt": "Use read to load ${capability_goal_decomposition_skills}/issue_writer/current.md and follow its guidance on issue structure.\n\nYou are drafting a single implementation issue spec for GitHub.\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nReviewer notes (if any):\n${review_notes}\n\nDownstream execution constraints:\n- This issue will be executed by one coding agent and reviewed by one semantic reviewer on a shared wave branch.\n- The issue must be implementable as a single implementation issue, not a coordination umbrella or a meta-task.\n- The reviewer will judge whether the implementation satisfies the issue and remains aligned to the parent goal.\n- The issue body must give the builder enough context to start immediately without first rediscovering the codebase.\n- Include specific file paths, functions, tests, and boundaries whenever goal_context supports them.\n- Acceptance criteria must be concrete, observable, and scoped to what this one issue can complete.\n\nBefore drafting, sanity-check the feature itself:\n- If the feature mainly describes scaffolding, fallback continuity, decomposition support, or meta-work instead of a real shipped increment, do not simply polish it into a nicer issue.\n- Rewrite the issue so it directly ships one meaningful slice of the parent goal's promised product surface.\n- If the feature is too broad or mixes multiple deliverables, pick one strong slice that can stand alone while remaining materially aligned to the goal.\n- Use the platform and factory intent to prefer real shipped value over factory ceremony or preparatory work.\n- The finished issue should still make sense if someone later asks: 'If this issue ships cleanly, what real part of the goal is now done?'\n\nReturn JSON only with issue_title, issue_body, and issue_labels.\nDo not call gh directly.",
+        "session_id": "goal-decomposer-${issue_number}"
+      }
+    },
+    {
+      "id": "fallback_issue_spec",
+      "kind": "tool_action",
+      "title": "Fallback issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.fallback_issue_spec_bundle",
+        "label": "Fallback issue spec",
+        "outputs": "issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec": "${issue_spec_raw}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fallback_revised_issue_spec",
+      "kind": "tool_action",
+      "title": "Fallback revised issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.fallback_issue_spec_bundle",
+        "label": "Fallback revised issue spec",
+        "outputs": "issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec": "${revised_issue_spec_raw}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "issue_spec_gate",
+      "kind": "decision",
+      "title": "Issue spec valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Issue spec valid?"
+      }
+    },
+    {
+      "id": "judge_issue",
+      "kind": "llm_prompt",
+      "title": "Judge issue quality",
+      "dotAttributes": {
+        "class": "issue_quality_judge",
+        "benchmark_job_id": "goal.write_issue.judge",
+        "llm_path_id": "capability.write_issue_item.judge_issue",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue.judge",
+        "llm_model": "openai/gpt-5.3-codex",
+        "label": "Judge issue quality",
+        "output_format": "json",
+        "outputs": "pass,decision,review_notes",
+        "reasoning_effort": "low",
+        "timeout": "${goal_decomposition_timeouts.issue_judge}",
+        "prompt": "You are the issue quality judge for ${gh_repo}.\n\nJudge whether the created issue is aligned to the parent goal, grounded in current code reality, and executable as a single implementation issue on a shared wave branch.\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nCreated issue spec JSON:\n${issue_spec}\n\nCreated issue URL:\n${issue_url}\n\nUse read to load the issue content if needed. Evaluate:\n- Is the issue small enough for one builder-reviewer loop, but substantial enough to ship a real increment?\n- Does it depend on unstated exploration to discover basic files, boundaries, or intended behavior?\n- Do acceptance criteria describe what done looks like for this issue alone?\n- Does it stay aligned to the parent goal and avoid creating hidden follow-up work?\n\nReturn JSON with:\n{\n  \"pass\": true,\n  \"decision\": \"approved|revise\",\n  \"review_notes\": \"Actionable feedback. Empty when approved.\"\n}\n\nRules:\n- If pass=true, decision must be 'approved' and review_notes should be empty or a short confirmation.\n- If pass=false, decision must be 'revise' and review_notes must explain exactly what to change.\n- Keep review_notes concrete: cite missing files, boundaries, acceptance criteria, or scope problems.\n\nReturn JSON only."
+      }
+    },
+    {
+      "id": "link_sub_issue",
+      "kind": "tool_action",
+      "title": "Link sub-issue to goal",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.add_sub_issue",
+        "label": "Link sub-issue to goal",
+        "output_key": "__sub_issue_link_result",
+        "action_repo": "${gh_repo}",
+        "action_child": "${created_issue_number}",
+        "action_parent": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "sub_issue_link_gate",
+      "kind": "decision",
+      "title": "Sub-issue linked?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Sub-issue linked?"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_intent_stack",
+        "label": "Load intent stack",
+        "output_key": "intent_stack",
+        "action_factory_root": "${factory_root}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_decision",
+      "kind": "tool_action",
+      "title": "Normalize decision",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.normalize_decision",
+        "label": "Normalize decision",
+        "output_key": "decision",
+        "action_value": "${decision}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_feature_issue_spec",
+      "kind": "tool_action",
+      "title": "Normalize feature issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.normalize_feature_issue_spec_bundle",
+        "label": "Normalize feature issue spec",
+        "outputs": "issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec_b64": "${issue_spec_b64}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_revised_feature_issue_spec",
+      "kind": "tool_action",
+      "title": "Normalize revised issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.normalize_feature_issue_spec_bundle",
+        "label": "Normalize revised issue spec",
+        "outputs": "issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec_b64": "${issue_spec_b64}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "repair_issue_spec",
+      "kind": "llm_prompt",
+      "title": "Repair issue spec",
+      "dotAttributes": {
+        "class": "issue_writer",
+        "benchmark_job_id": "goal.write_issue.repair",
+        "llm_path_id": "capability.write_issue_item.repair_issue_spec",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue",
+        "llm_model": "openai/gpt-5.3-codex",
+        "label": "Repair issue spec",
+        "output_key": "issue_spec_raw",
+        "output_format": "json",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_repair}",
+        "prompt": "Your previous issue spec failed deterministic validation.\n\nOriginal issue spec JSON:\n${issue_spec_raw}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with issue_title, issue_body, and issue_labels.",
+        "recovery_owner": "supervisor",
+        "session_id": "goal-decomposer-${issue_number}"
+      }
+    },
+    {
+      "id": "repaired_issue_spec_gate",
+      "kind": "decision",
+      "title": "Repaired issue spec valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Repaired issue spec valid?"
+      }
+    },
+    {
+      "id": "revise_issue_spec",
+      "kind": "llm_prompt",
+      "title": "Revise issue spec",
+      "dotAttributes": {
+        "class": "issue_writer",
+        "benchmark_job_id": "goal.write_issue.revise",
+        "llm_path_id": "capability.write_issue_item.revise_issue_spec",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue",
+        "llm_model": "openai/gpt-5.3-codex",
+        "label": "Revise issue spec",
+        "output_key": "revised_issue_spec_raw",
+        "output_format": "json",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_revise}",
+        "prompt": "Use read to load ${capability_goal_decomposition_skills}/issue_writer/current.md and follow its guidance on issue structure.\n\nYou are revising an existing GitHub issue spec based on judge feedback.\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nCurrent issue URL:\n${issue_url}\n\nReview notes to address:\n${review_notes}\n\nRead the current issue content, then revise the issue spec to address the review notes.\nKeep the revised issue executable on a shared wave branch by one builder-reviewer loop.\nPreserve alignment to the parent goal, include specific file paths, functions, tests, and boundaries when supported by goal_context, and tighten any vague or over-broad acceptance criteria.\n\nDo not preserve weak framing just because it came from the input feature. If the current issue still reads like scaffolding, continuity work, or meta-work instead of a real shipped increment, rewrite it toward one meaningful slice of the parent goal while staying faithful to platform and factory intent.\n\nReturn JSON only with issue_title, issue_body, and issue_labels.\nDo not call gh directly.",
+        "session_id": "goal-decomposer-${issue_number}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "update_issue",
+      "kind": "tool_action",
+      "title": "Update issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.update_issue",
+        "label": "Update issue",
+        "outputs": "ok,issue_url,status,stderr",
+        "action_repo": "${gh_repo}",
+        "action_issue_spec_b64": "${issue_spec_b64}",
+        "action_issue_url": "${issue_url}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "validate_issue_spec",
+      "kind": "tool_action",
+      "title": "Validate issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.validate_issue_spec_draft",
+        "label": "Validate issue spec",
+        "output_format": "json",
+        "outputs": "ok,error,retry_prompt,issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec": "${issue_spec}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "validate_repaired_issue_spec",
+      "kind": "tool_action",
+      "title": "Validate repaired issue spec",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.validate_issue_spec_draft",
+        "label": "Validate repaired issue spec",
+        "output_format": "json",
+        "outputs": "ok,error,retry_prompt,issue_spec,issue_spec_b64",
+        "action_feature": "${feature}",
+        "action_issue_spec": "${issue_spec}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "create_issue",
+      "to": "link_sub_issue"
+    },
+    {
+      "from": "link_sub_issue",
+      "to": "sub_issue_link_gate"
+    },
+    {
+      "from": "sub_issue_link_gate",
+      "to": "judge_issue",
+      "condition": "ok=true",
+      "dotAttributes": {
+        "condition": "ok=true"
+      }
+    },
+    {
+      "from": "sub_issue_link_gate",
+      "to": "done",
+      "condition": "ok!=true",
+      "label": "fail_closed",
+      "dotAttributes": {
+        "condition": "ok!=true",
+        "label": "fail_closed"
+      }
+    },
+    {
+      "from": "judge_issue",
+      "to": "normalize_decision"
+    },
+    {
+      "from": "normalize_decision",
+      "to": "decide"
+    },
+    {
+      "from": "revise_issue_spec",
+      "to": "fallback_revised_issue_spec"
+    },
+    {
+      "from": "fallback_revised_issue_spec",
+      "to": "normalize_revised_feature_issue_spec"
+    },
+    {
+      "from": "normalize_revised_feature_issue_spec",
+      "to": "update_issue"
+    },
+    {
+      "from": "update_issue",
+      "to": "done"
+    },
+    {
+      "from": "start",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "draft_issue_spec"
+    },
+    {
+      "from": "draft_issue_spec",
+      "to": "fallback_issue_spec"
+    },
+    {
+      "from": "fallback_issue_spec",
+      "to": "normalize_feature_issue_spec"
+    },
+    {
+      "from": "normalize_feature_issue_spec",
+      "to": "validate_issue_spec"
+    },
+    {
+      "from": "validate_issue_spec",
+      "to": "issue_spec_gate"
+    },
+    {
+      "from": "decide",
+      "to": "done",
+      "condition": "decision=approved",
+      "dotAttributes": {
+        "condition": "decision=approved"
+      }
+    },
+    {
+      "from": "decide",
+      "to": "revise_issue_spec",
+      "condition": "decision!=approved && decision!=revise",
+      "label": "fallback",
+      "dotAttributes": {
+        "condition": "decision!=approved && decision!=revise",
+        "label": "fallback"
+      }
+    },
+    {
+      "from": "decide",
+      "to": "revise_issue_spec",
+      "condition": "decision=revise",
+      "label": "revise",
+      "dotAttributes": {
+        "condition": "decision=revise",
+        "label": "revise"
+      }
+    },
+    {
+      "from": "issue_spec_gate",
+      "to": "create_issue",
+      "condition": "ok=true",
+      "label": "valid",
+      "dotAttributes": {
+        "condition": "ok=true",
+        "label": "valid"
+      }
+    },
+    {
+      "from": "issue_spec_gate",
+      "to": "repair_issue_spec",
+      "condition": "ok!=true",
+      "label": "repair",
+      "dotAttributes": {
+        "condition": "ok!=true",
+        "label": "repair"
+      }
+    },
+    {
+      "from": "repair_issue_spec",
+      "to": "validate_repaired_issue_spec"
+    },
+    {
+      "from": "repaired_issue_spec_gate",
+      "to": "create_issue",
+      "condition": "ok=true",
+      "label": "valid",
+      "dotAttributes": {
+        "condition": "ok=true",
+        "label": "valid"
+      }
+    },
+    {
+      "from": "repaired_issue_spec_gate",
+      "to": "done",
+      "condition": "ok!=true",
+      "label": "fail_closed",
+      "dotAttributes": {
+        "condition": "ok!=true",
+        "label": "fail_closed"
+      }
+    },
+    {
+      "from": "validate_repaired_issue_spec",
+      "to": "repaired_issue_spec_gate"
+    }
+  ]
+}

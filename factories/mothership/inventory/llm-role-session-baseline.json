@@ -1,0 +1,1127 @@
+{
+  "schema_version": "llm_role_session_inventory/v1",
+  "factory_root": "factories/mothership",
+  "active_graph_roots": [
+    "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+    "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+    "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+    "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+  ],
+  "discovered_graphs": [
+    "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+    "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+    "factories/mothership/graphs/write_scenario_item.dot",
+    "factories/mothership/graphs/write_scenarios.dot",
+    "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+    "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+    "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs"
+  ],
+  "nodes": [
+    {
+      "graph_path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "node_id": "supervisor_review",
+      "llm_path_id": "mothership.supervisor.review",
+      "class": "supervisor",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "supervisor-${factory_id}",
+      "payload_contract_id": "supervisor.tick.review",
+      "payload_fingerprint": "sha256:271ec3def07f5a894b7c2ce7f3eb7fefcfa40cda3243307a090b9739c40dcc34",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:5ab45ef6f07376ecff6e1d056be32c638fe8326517b6a4e88d8c7cda0049423f",
+        "prompt_dependencies": [
+          {
+            "output_key": "supervisor_system_prompt",
+            "loader_node_id": "load_supervisor_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/supervisor/system.md",
+            "source_path": "packages/factory-prompts/prompts/supervisor/system.md",
+            "source_hash": "sha256:f64afed2837e79da89e012e1ccd1d3ed905ec485897ae1603fddd9dfdf5281c6"
+          },
+          {
+            "output_key": "target_repo",
+            "loader_node_id": "set_target_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "date",
+            "loader_node_id": "set_date",
+            "loader_prompt": "date -u '+%Y-%m-%dT%H:%M:%SZ'"
+          },
+          {
+            "output_key": "factory_id",
+            "loader_node_id": "set_supervisor_factory_identity",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "control_plane_repo",
+            "loader_node_id": "set_control_plane_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "gh_repo",
+            "loader_node_id": "set_gh_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "supervisor_skill_content",
+            "loader_node_id": "load_supervisor_skill",
+            "loader_prompt": "cat packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+            "source_path": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+            "source_hash": "sha256:32be09de0d2b6de312d12a1d4ac2976c5353e23904521605362a7e486d9e5ca7"
+          },
+          {
+            "output_key": "supervisor_rules_content",
+            "loader_node_id": "load_supervisor_rules",
+            "loader_prompt": "cat factories/mothership/skills/supervisor_rules.md",
+            "source_path": "factories/mothership/skills/supervisor_rules.md",
+            "source_hash": "sha256:9bf9d430705d3eae500558bb15c1ccc190b6c83e3cbd0efa6ecccfe5f4e8a70c"
+          },
+          {
+            "output_key": "state_snapshot",
+            "loader_node_id": "snapshot_state",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "supervisor_review_task_prompt",
+            "loader_node_id": "load_supervisor_review_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/supervisor/review.md",
+            "source_path": "packages/factory-prompts/prompts/supervisor/review.md",
+            "source_hash": "sha256:4c2da5b3cb45c1d9aac0edb0d5a4cc9caad650e8617d5b392d590425a150fd33"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "supervisor.tick.review",
+        "prompt_source": "supervisor_review_task_prompt",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_review_task_prompt",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,supervisor_skill_content,supervisor_rules_content,state_snapshot",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "supervisor.review"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "node_id": "supervisor_review_bug_fast",
+      "llm_path_id": "mothership.supervisor.review_bug_fast",
+      "class": "supervisor",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "supervisor-${factory_id}",
+      "payload_contract_id": "supervisor.tick.bug_review_fast",
+      "payload_fingerprint": "sha256:23c02f5d0a5656ad8ed77de88723af284e964465acb7c76488a7de5772539ffa",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:411d02dcc5fd42f4cb75924b8279287f2fb4ac6dd6458178da065e04b1f7c15c",
+        "prompt_dependencies": [
+          {
+            "output_key": "supervisor_system_prompt",
+            "loader_node_id": "load_supervisor_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/supervisor/system.md",
+            "source_path": "packages/factory-prompts/prompts/supervisor/system.md",
+            "source_hash": "sha256:f64afed2837e79da89e012e1ccd1d3ed905ec485897ae1603fddd9dfdf5281c6"
+          },
+          {
+            "output_key": "target_repo",
+            "loader_node_id": "set_target_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "date",
+            "loader_node_id": "set_date",
+            "loader_prompt": "date -u '+%Y-%m-%dT%H:%M:%SZ'"
+          },
+          {
+            "output_key": "factory_id",
+            "loader_node_id": "set_supervisor_factory_identity",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "control_plane_repo",
+            "loader_node_id": "set_control_plane_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "gh_repo",
+            "loader_node_id": "set_gh_repo",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "supervisor_skill_content",
+            "loader_node_id": "load_supervisor_skill",
+            "loader_prompt": "cat packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+            "source_path": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+            "source_hash": "sha256:32be09de0d2b6de312d12a1d4ac2976c5353e23904521605362a7e486d9e5ca7"
+          },
+          {
+            "output_key": "supervisor_rules_content",
+            "loader_node_id": "load_supervisor_rules",
+            "loader_prompt": "cat factories/mothership/skills/supervisor_rules.md",
+            "source_path": "factories/mothership/skills/supervisor_rules.md",
+            "source_hash": "sha256:9bf9d430705d3eae500558bb15c1ccc190b6c83e3cbd0efa6ecccfe5f4e8a70c"
+          },
+          {
+            "output_key": "state_snapshot",
+            "loader_node_id": "snapshot_state",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "supervisor_bug_fast_task_prompt",
+            "loader_node_id": "load_supervisor_bug_fast_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/supervisor/bug_fast.md",
+            "source_path": "packages/factory-prompts/prompts/supervisor/bug_fast.md",
+            "source_hash": "sha256:2b09190cbc48e7504a42f19acc1fe061e264881167baa04365a972bc5de8bcd2"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "supervisor.tick.bug_review_fast",
+        "prompt_source": "supervisor_bug_fast_task_prompt",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_bug_fast_task_prompt",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,intent_stack,supervisor_skill_content,supervisor_rules_content,state_snapshot",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "supervisor.review_bug_fast"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "clean_main",
+      "llm_path_id": "mothership.goal_execute.clean_main",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "goal-${goal_issue_number}",
+      "payload_contract_id": "goal.execute.merge.clean_main",
+      "payload_fingerprint": "sha256:03a565c8665ca333c9a841e800c3d97f6558137df930824081e2b30594af570d",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:05f2f3470352cef4a87488fa069375ee090ab4237740b4aebfcdc84ed419013b",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.clean_main",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "prompt_version": "2026-03-19.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge.clean_main"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "judge",
+      "llm_path_id": "mothership.goal_execute.post_merge_judge",
+      "class": "post_merge_judge",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.judge",
+      "payload_fingerprint": "sha256:08a2178ec9bf9e1ebd199ac6687255fd39a2fe4fcbc78dc9c6cfb317a8d13ecc",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:2104b6341d951fa6152914e52be17b262c35b2ce29f2220b187fd795a96a2b4d",
+        "prompt_dependencies": [
+          {
+            "output_key": "gh_repo",
+            "loader_node_id": "set_gh_repo",
+            "loader_prompt": ""
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.judge",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.post_merge_judge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "resolve_conflict",
+      "llm_path_id": "mothership.goal_execute.resolve_conflict",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.resolve_conflict",
+      "payload_fingerprint": "sha256:9702aa7ff4885fe4888246c59b1e93e247dd59a29f7fe209e5e49012cc9a64ae",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:b8b14d529cf2da13ba570b9a93430e8803ea7b6a63efbc836eab9e13e7b43dad",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "capability_merge_skills",
+            "loader_node_id": "set_capability_merge_skills",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "merge_resolve_conflict_task_prompt",
+            "loader_node_id": "load_merge_resolve_conflict_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+            "source_hash": "sha256:a24da25b05ad4245ae95857f72f9ccb3ab9229c801a02da959be52d9387fb442"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.resolve_conflict",
+        "prompt_source": "merge_resolve_conflict_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_task_prompt",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "resolve_post_merge",
+      "llm_path_id": "mothership.goal_execute.resolve_post_merge",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.resolve_post_merge",
+      "payload_fingerprint": "sha256:0605e38cc8331f30d47d7b791dd34b4e0c284a87d18b1c765339c20a4d5917d9",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:8edd90970825e62378c8e2be70597585a90bff1f1a7cf22b0852ddb2d080a901",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "capability_merge_skills",
+            "loader_node_id": "set_capability_merge_skills",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "merge_resolve_post_merge_task_prompt",
+            "loader_node_id": "load_merge_resolve_post_merge_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_post_merge.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/resolve_post_merge.md",
+            "source_hash": "sha256:22b8920716bdad2ad62af2d01944981a83572f8d958936fe65abae4310aa715c"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.resolve_post_merge",
+        "prompt_source": "merge_resolve_post_merge_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_post_merge_task_prompt",
+        "prompt_input_keys": "capability_merge_skills,merge_stderr,conflict_packet_path",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "resolve_push_failure",
+      "llm_path_id": "mothership.goal_execute.resolve_push_failure",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.resolve_push_failure",
+      "payload_fingerprint": "sha256:724c4e9f9e1f62867e1e33b568113493eba0b04a0f8cfa32ba63b8d44beb2e76",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:46c9239b045b8724e80d81130a7d7d8ee3f5b125e74be7b30de2943c4aa04de9",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "capability_merge_skills",
+            "loader_node_id": "set_capability_merge_skills",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "merge_resolve_push_failure_task_prompt",
+            "loader_node_id": "load_merge_resolve_push_failure_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_push_failure.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/resolve_push_failure.md",
+            "source_hash": "sha256:5f9534bd5f056043af74142b90414df859068c782611ba7f1e08096e90d58d12"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.resolve_push_failure",
+        "prompt_source": "merge_resolve_push_failure_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_push_failure_task_prompt",
+        "prompt_input_keys": "capability_merge_skills,push_stderr,push_failure_packet_path",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "retry_resolve_conflict",
+      "llm_path_id": "mothership.goal_execute.retry_resolve_conflict",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.retry_resolve_conflict",
+      "payload_fingerprint": "sha256:134bb49e2c59bbef1572d69554233423c3ad47cedadc0e022f7aacad85d22f18",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:7241ba1d2f8496dbc376e3ca7437371b446ba22e82d45d46112da91931fa4b35",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "merge_finalize_retry_task_prompt",
+            "loader_node_id": "load_merge_finalize_retry_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_finalize_conflict.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/retry_finalize_conflict.md",
+            "source_hash": "sha256:031cea041f365d5a767ba1e07231f2968b34d434ea4c586d55570d4560a9bef3"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.retry_resolve_conflict",
+        "prompt_source": "merge_finalize_retry_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_finalize_retry_task_prompt",
+        "prompt_input_keys": "finalize_reason,finalize_detail,conflict_packet_path",
+        "prompt_version": "2026-03-11.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "node_id": "retry_resolve_post_merge",
+      "llm_path_id": "mothership.goal_execute.retry_resolve_post_merge",
+      "class": "merge_resolver",
+      "handler_type": "stack.manager_loop",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.stack.manager_loop",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.retry_resolve_post_merge",
+      "payload_fingerprint": "sha256:4983214aa3c28db488a10ef6707fcec06227e08666192d3cfa53ff8a8b9cb8e9",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:05c5ba9a2db314d3f7c7aec16cf63988aed32d72c9805ff0cf853f19c96b1874",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "merge_post_merge_retry_task_prompt",
+            "loader_node_id": "load_merge_post_merge_retry_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_post_merge.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/retry_post_merge.md",
+            "source_hash": "sha256:1c043688a5d14c6c92a3fb714aa520313931f3cc327ce3a5f6af7768fccd48e3"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.retry_resolve_post_merge",
+        "prompt_source": "merge_post_merge_retry_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_post_merge_retry_task_prompt",
+        "prompt_input_keys": "finalize_reason,finalize_detail",
+        "prompt_version": "2026-03-11.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+      "node_id": "build",
+      "llm_path_id": "mothership.goal_issue_execute.build",
+      "class": "coder",
+      "handler_type": "agent.worktree",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.3-codex",
+      "trust_role": "mothership.local.agent.worktree",
+      "session_id_expression": "${agent_session_id}",
+      "payload_contract_id": "goal.execute.issue.build",
+      "payload_fingerprint": "sha256:e27bb02954bba310b9388dd89318ca1eb0c260c38799b448261a45c6edd2ed4e",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:8645ff4876e5c6fea7eb09b832cad8b1d3d6f9c88004c1ebdaba97beef15c029",
+        "prompt_dependencies": [
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_issue",
+            "loader_node_id": "fetch_goal_issue",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "issue_body",
+            "loader_node_id": "fetch_issue",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "complexity_estimate",
+            "loader_node_id": "estimate_complexity",
+            "loader_prompt": ""
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.issue.build",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.issue"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+      "node_id": "review",
+      "llm_path_id": "mothership.goal_issue_execute.review",
+      "class": "reviewer",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "${reviewer_session_id}",
+      "payload_contract_id": "goal.execute.issue.review",
+      "payload_fingerprint": "sha256:9a4e990ef61a4b253067da8d2538b58326cc2918c088629b64c0c1714fae3ebb",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:074d943ec4a6e0d174bf2b34f73df92ea224cfa8e868053d91b2801ee73b97c4",
+        "prompt_dependencies": [
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_issue",
+            "loader_node_id": "fetch_goal_issue",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "issue_body",
+            "loader_node_id": "fetch_issue",
+            "loader_prompt": ""
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.issue.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.issue"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/graphs/write_scenario_item.dot",
+      "node_id": "repair_payload",
+      "llm_path_id": "mothership.write_scenario_item.repair_payload",
+      "class": "scenario_author",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.write_scenario.write_repair",
+      "payload_fingerprint": "sha256:7d5d8f507f1195e8b5681c4df69a21863f725e7fbcd486710db559c737ce9885",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:1aa04268309ad7c9033ea994a999d24aa4490356f04e30c8c691fe8e7000980b",
+        "prompt_dependencies": [
+          {
+            "output_key": "scenario_payload",
+            "loader_node_id": "repair_payload",
+            "loader_prompt": "Your previous scenario payload failed deterministic validation.\n\nOriginal scenario JSON:\n${scenario_payload}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with scenario_domain, scenario_slug, and scenario_md."
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_scenario.write_repair",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_scenario"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/graphs/write_scenario_item.dot",
+      "node_id": "write",
+      "llm_path_id": "mothership.write_scenario_item.write",
+      "class": "scenario_author",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.write_scenario.write",
+      "payload_fingerprint": "sha256:e6b3a43dcbb99be64bcb817658b1d7d1976ebb4fd48817c95d92c679ec63fef3",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:04844ddbb7f88bf3e9eefc84ec5ef265e1146c93a4f4ece9b12bb58eb795291a",
+        "prompt_dependencies": []
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_scenario.write",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_scenario"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/graphs/write_scenarios.dot",
+      "node_id": "repair_scope",
+      "llm_path_id": "mothership.write_scenarios.repair_scope",
+      "class": "scenario_author",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.write_scenario.scope_repair",
+      "payload_fingerprint": "sha256:71744c1349cee695a76fba1a9b7c18bc87b1a4378b39566e04aa2b3a7dc28d66",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:3c3916a59c66c4fed8ae7ea6ecf79e703915c1a783d9d20814b612a36ab5206c",
+        "prompt_dependencies": [
+          {
+            "output_key": "scoping_result",
+            "loader_node_id": "repair_scope",
+            "loader_prompt": "Your previous scenario scoping JSON failed deterministic validation.\n\nOriginal scoping JSON:\n${scoping_result}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with recommended, declined, and coverage_notes."
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_scenario.scope_repair",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_scenario"
+      }
+    },
+    {
+      "graph_path": "factories/mothership/graphs/write_scenarios.dot",
+      "node_id": "scope",
+      "llm_path_id": "mothership.write_scenarios.scope",
+      "class": "scenario_author",
+      "handler_type": "codergen",
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.6",
+      "trust_role": "mothership.local.codergen",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.write_scenario.scope",
+      "payload_fingerprint": "sha256:36d5de0184c5dc4e020bdf25a414d62575d39aa934d81266022eb1bd7ee27156",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:51fc8811cc1a16510c588a13efe99954664c2a9e49a5c7f76c1ab565935bec90",
+        "prompt_dependencies": [
+          {
+            "output_key": "registry_snapshot",
+            "loader_node_id": "scan_registry",
+            "loader_prompt": "# hatch:no-inline-script-ok\nroot='${scenarios_root}'\nfind \"$root\" -type f -name SCENARIO.md -maxdepth 4 2>/dev/null | sed \"s#^$root/##\" | sort | head -200"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_scenario.scope",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_scenario"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+      "node_id": "repair_decisions",
+      "llm_path_id": "capability.goal_batch.repair",
+      "class": "goal_batch_reviewer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.batch.repair",
+      "payload_fingerprint": "sha256:551c6609de173f50511c8ccaecfa33bed980387d4b3da13899b7e48034cafa6e",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:838d93592c19d67f4066560bc715986da6d524e55ebb7b1acfcbd345f445d407",
+        "prompt_dependencies": [
+          {
+            "output_key": "review_result",
+            "loader_node_id": "repair_decisions",
+            "loader_prompt": "Your previous goal review JSON failed deterministic validation.\n\nOriginal review JSON:\n${review_result}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with a top-level decisions array."
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.batch.repair",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.batch"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+      "node_id": "review_goals",
+      "llm_path_id": "capability.goal_batch.review",
+      "class": "goal_batch_reviewer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.batch.review",
+      "payload_fingerprint": "sha256:556f5bfd010e9193065e4257d3bac1f600cdacea853457854042b12735af8b31",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:8eeae400d6a0e9c207821c62114b21b3e3bbe3fd739d8e90e8e25384522d6139",
+        "prompt_dependencies": [
+          {
+            "output_key": "goal_issues",
+            "loader_node_id": "list_goals",
+            "loader_prompt": "gh issue list --repo ${gh_repo} --state open --label goal,ready --limit 50 --json number,title,body,labels"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.batch.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.batch"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "node_id": "analyze",
+      "llm_path_id": "capability.goal_intake_decompose.analyze",
+      "class": "goal_decomposer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.decompose.analyze",
+      "payload_fingerprint": "sha256:1401f4946da7a1f4ee81453fa05b8c23fddf599db91de6743e53abaa493cab60",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:60ed403e91d7dc64c80cab238a9310bfd8fa0995baa8cedc90cc652122a92f8a",
+        "prompt_dependencies": [
+          {
+            "output_key": "goal_decomposer_system_prompt",
+            "loader_node_id": "load_goal_decomposer_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_hash": "sha256:251a1822f067296558fdd479cdc46d78357604f47e4d4536a08bb6bec7d086b0"
+          },
+          {
+            "output_key": "goal_decompose_analyze_task_prompt",
+            "loader_node_id": "load_goal_decompose_analyze_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/analyze.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/analyze.md",
+            "source_hash": "sha256:fd1e0d4531e565b9c1c8e539075e2e6fca162058ddf071fc657df4274b2272d7"
+          },
+          {
+            "output_key": "goal_analyzer_skill",
+            "loader_node_id": "fetch_skill",
+            "loader_prompt": "cat ${capability_goal_decomposition_skills}/goal_analyzer/current.md",
+            "source_path": "${capability_goal_decomposition_skills}/goal_analyzer/current.md"
+          },
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_issue",
+            "loader_node_id": "fetch_issue",
+            "loader_prompt": "gh issue view ${issue_number} --repo ${gh_repo} --json number,title,body,labels,state"
+          },
+          {
+            "output_key": "existing_issues",
+            "loader_node_id": "list_issues",
+            "loader_prompt": "gh issue list --repo ${gh_repo} --state open --label goal --limit 25 --json number,title,labels"
+          },
+          {
+            "output_key": "feature_inventory",
+            "loader_node_id": "scan_inventory",
+            "loader_prompt": "# hatch:no-inline-script-ok\nfind apps/hatch/src ${factory_root} -maxdepth 4 -type f | sort | head -160"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.decompose.analyze",
+        "prompt_source": "goal_decompose_analyze_task_prompt",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_analyze_task_prompt",
+        "prompt_input_keys": "gh_repo,goal_analyzer_skill,intent_stack,goal_issue,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated,existing_issues,feature_inventory",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "node_id": "propose",
+      "llm_path_id": "capability.goal_intake_decompose.propose",
+      "class": "goal_decomposer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.decompose.propose",
+      "payload_fingerprint": "sha256:c51967e1d712ab2784a5b4d19c3324e58dc1d08800c2f161c7e9ccdf112a3cb6",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:5f5065b6cbb46837dc661c5ec7b5ae1147fe9b31c86116ee34b57d9f4363ee4b",
+        "prompt_dependencies": [
+          {
+            "output_key": "goal_decomposer_system_prompt",
+            "loader_node_id": "load_goal_decomposer_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_hash": "sha256:251a1822f067296558fdd479cdc46d78357604f47e4d4536a08bb6bec7d086b0"
+          },
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_context",
+            "loader_node_id": "analyze",
+            "loader_prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\n${goal_decompose_analyze_task_prompt}\n\n--- Skill instructions ---\n${goal_analyzer_skill}\n--- End skill instructions ---\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nExternal bug report JSON:\n${external_bug_report}\n\nExternal bug parse errors JSON:\n${external_bug_errors}\n\nExternal bug present:\n${external_bug_present}\n\nExternal bug intake activated:\n${external_bug_intake_activated}\n\nExisting issues JSON:\n${existing_issues}\n\nFeature inventory scan:\n${feature_inventory}"
+          },
+          {
+            "output_key": "review_notes",
+            "loader_node_id": "inject_retry_signal",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_decompose_propose_task_prompt",
+            "loader_node_id": "load_goal_decompose_propose_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/propose.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/propose.md",
+            "source_hash": "sha256:024f325cc8d3a16498785b69cbfdae745e4198e63b99c7ce6f7727f5025d977b"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.decompose.propose",
+        "prompt_source": "goal_decompose_propose_task_prompt",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_propose_task_prompt",
+        "prompt_input_keys": "gh_repo,intent_stack,goal_context,review_notes",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "node_id": "review",
+      "llm_path_id": "capability.goal_intake_decompose.review",
+      "class": "goal_decomposer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.decompose.review",
+      "payload_fingerprint": "sha256:8f1474d396549f5234fbbf05202e89225fa4ba07580d664bcc912f23cfdaac1b",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:cb739ef1a087623d33145b550a0d795ae55da08da383c7106f53fda11de62d69",
+        "prompt_dependencies": [
+          {
+            "output_key": "goal_decomposer_system_prompt",
+            "loader_node_id": "load_goal_decomposer_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/system.md",
+            "source_hash": "sha256:251a1822f067296558fdd479cdc46d78357604f47e4d4536a08bb6bec7d086b0"
+          },
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          },
+          {
+            "output_key": "goal_context",
+            "loader_node_id": "analyze",
+            "loader_prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\n${goal_decompose_analyze_task_prompt}\n\n--- Skill instructions ---\n${goal_analyzer_skill}\n--- End skill instructions ---\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nExternal bug report JSON:\n${external_bug_report}\n\nExternal bug parse errors JSON:\n${external_bug_errors}\n\nExternal bug present:\n${external_bug_present}\n\nExternal bug intake activated:\n${external_bug_intake_activated}\n\nExisting issues JSON:\n${existing_issues}\n\nFeature inventory scan:\n${feature_inventory}"
+          },
+          {
+            "output_key": "proposed_features",
+            "loader_node_id": "propose",
+            "loader_prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\nIntent stack JSON:\n${intent_stack}\n\nGoal context JSON:\n${goal_context}\n\nReviewer notes (if any):\n${review_notes}\n\n${goal_decompose_propose_task_prompt}"
+          },
+          {
+            "output_key": "goal_decompose_review_task_prompt",
+            "loader_node_id": "load_goal_decompose_review_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/goal_decomposer/review.md",
+            "source_path": "packages/factory-prompts/prompts/goal_decomposer/review.md",
+            "source_hash": "sha256:cab7061306f76ed56d0f3f97168efb0aed628880f30fa5a0cc08abcedfdda687"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.decompose.review",
+        "prompt_source": "goal_decompose_review_task_prompt",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_review_task_prompt",
+        "prompt_input_keys": "gh_repo,intent_stack,goal_context,proposed_features,decompose_complexity,reason",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "draft_issue_spec",
+      "llm_path_id": "capability.write_issue_item.draft_issue_spec",
+      "class": "issue_writer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.write_issue.write",
+      "payload_fingerprint": "sha256:2ed380be7cb85913e7649f1186f43f4340d6a4f5551ae7de27a02a7d39cf4997",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:eb8465a952b0670d9a25a7470027a0d8cd04a32ff6ddf6fa6b914f05d098e4c9",
+        "prompt_dependencies": [
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_issue.write",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "judge_issue",
+      "llm_path_id": "capability.write_issue_item.judge_issue",
+      "class": "issue_quality_judge",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "unknown",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.write_issue.judge",
+      "payload_fingerprint": "sha256:2260eaf8d44627b43d0a3fc063222975f10484a87f173cefe9a3bcc30c0d4ee7",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:199b42f08ddd838b3538447b40edf98f62cd9ce38023288f1f84d71eb70d1807",
+        "prompt_dependencies": []
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_issue.judge",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue.judge"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "repair_issue_spec",
+      "llm_path_id": "capability.write_issue_item.repair_issue_spec",
+      "class": "issue_writer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.write_issue.repair",
+      "payload_fingerprint": "sha256:5c6c85384aa717c63c273c2fde237437312c9c367a45f889a689913d5aa70b8d",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:2070fc09f1a607a6349d89918d6e2d71b34d2b7a8c6ee404204eace982656e48",
+        "prompt_dependencies": [
+          {
+            "output_key": "issue_spec_raw",
+            "loader_node_id": "draft_issue_spec",
+            "loader_prompt": "Use read to load ${capability_goal_decomposition_skills}/issue_writer/current.md and follow its guidance on issue structure.\n\nYou are drafting a single implementation issue spec for GitHub.\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nReviewer notes (if any):\n${review_notes}\n\nDownstream execution constraints:\n- This issue will be executed by one coding agent and reviewed by one semantic reviewer on a shared wave branch.\n- The issue must be implementable as a single implementation issue, not a coordination umbrella or a meta-task.\n- The reviewer will judge whether the implementation satisfies the issue and remains aligned to the parent goal.\n- The issue body must give the builder enough context to start immediately without first rediscovering the codebase.\n- Include specific file paths, functions, tests, and boundaries whenever goal_context supports them.\n- Acceptance criteria must be concrete, observable, and scoped to what this one issue can complete.\n\nBefore drafting, sanity-check the feature itself:\n- If the feature mainly describes scaffolding, fallback continuity, decomposition support, or meta-work instead of a real shipped increment, do not simply polish it into a nicer issue.\n- Rewrite the issue so it directly ships one meaningful slice of the parent goal's promised product surface.\n- If the feature is too broad or mixes multiple deliverables, pick one strong slice that can stand alone while remaining materially aligned to the goal.\n- Use the platform and factory intent to prefer real shipped value over factory ceremony or preparatory work.\n- The finished issue should still make sense if someone later asks: 'If this issue ships cleanly, what real part of the goal is now done?'\n\nReturn JSON only with issue_title, issue_body, and issue_labels.\nDo not call gh directly."
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_issue.repair",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue"
+      }
+    },
+    {
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "revise_issue_spec",
+      "llm_path_id": "capability.write_issue_item.revise_issue_spec",
+      "class": "issue_writer",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "openai/gpt-5.1-codex-mini",
+      "trust_role": "unknown",
+      "session_id_expression": "goal-decomposer-${issue_number}",
+      "payload_contract_id": "goal.write_issue.revise",
+      "payload_fingerprint": "sha256:3906917af6f241cf2c3a4db6cd9be90f46ec6102df78920145e339ba17c82a21",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:de92fdf3c5312717f86808f5199b0da9e6d6ad22454d60f7990d6ad304fb5582",
+        "prompt_dependencies": [
+          {
+            "output_key": "intent_stack",
+            "loader_node_id": "load_intent_stack",
+            "loader_prompt": ""
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.write_issue.revise",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.write_issue"
+      }
+    },
+    {
+      "graph_path": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+      "node_id": "resolve_conflict",
+      "llm_path_id": "capability.merge_item.resolve_conflict",
+      "class": "merge_resolver",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.resolve_conflict",
+      "payload_fingerprint": "sha256:fe18f84af4fd94ab5766f53ef3dfc4b859ad06df5d556fda720633c7b255483f",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:b8b14d529cf2da13ba570b9a93430e8803ea7b6a63efbc836eab9e13e7b43dad",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "merge_resolve_conflict_task_prompt",
+            "loader_node_id": "load_merge_resolve_conflict_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+            "source_hash": "sha256:a24da25b05ad4245ae95857f72f9ccb3ab9229c801a02da959be52d9387fb442"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.resolve_conflict",
+        "prompt_source": "merge_resolve_conflict_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_task_prompt",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    },
+    {
+      "graph_path": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+      "node_id": "retry_resolve_conflict",
+      "llm_path_id": "capability.merge_item.retry_resolve_conflict",
+      "class": "merge_resolver",
+      "handler_type": "codergen",
+      "provider": "",
+      "model": "",
+      "trust_role": "unknown",
+      "session_id_expression": "",
+      "payload_contract_id": "goal.execute.merge.retry_resolve_conflict",
+      "payload_fingerprint": "sha256:b07a013a26d4cb6b830a2ba4dabec12985f2e2d8e10280c8452c456bbbf8f680",
+      "payload_evidence": {
+        "prompt_template_hash": "sha256:ee35356b9d4b3d8315eb03f6d85e34c6c4d627d04eea35e49a01a4e76c0dd0c7",
+        "prompt_dependencies": [
+          {
+            "output_key": "merge_resolver_system_prompt",
+            "loader_node_id": "load_merge_resolver_system_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/system.md",
+            "source_hash": "sha256:a6ccd5f5c54f9a8c4fbc426c06b5f40550ed895a6fb7e0a894db769f73038d9a"
+          },
+          {
+            "output_key": "merge_resolve_conflict_retry_task_prompt",
+            "loader_node_id": "load_merge_resolve_conflict_retry_task_prompt",
+            "loader_prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_resolve_conflict.md",
+            "source_path": "packages/factory-prompts/prompts/merge_resolver/retry_resolve_conflict.md",
+            "source_hash": "sha256:366818f85aff5186391f72d889d0ebbc2c7a33b1a3ce24846d7cac88b8dd9a56"
+          }
+        ]
+      },
+      "prompt_family_metadata": {
+        "benchmark_job_id": "goal.execute.merge.retry_resolve_conflict",
+        "prompt_source": "merge_resolve_conflict_retry_task_prompt",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_retry_task_prompt",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge"
+      }
+    }
+  ]
+}

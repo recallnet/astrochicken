@@ -1,0 +1,28 @@
+// Generated from factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs. Do not edit by hand.
+@import "../roles.stylesheet"
+
+digraph factory_dispatch_reactor {
+    label = "factory_dispatch_reactor"
+    workflow_source = "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    artifact_ingest [type="pipeline" label="Ingest artifacts" recovery_owner="dispatch_reactor" pipeline="packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs" inherit_context="true" fail_open="true" export_keys="artifact_ingest_result" trust_domain="mothership.local" trust_role="mothership.local.pipeline"]
+    auto_ready_artifact_goals [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.auto_ready_artifacts" label="Auto-ready artifact goals" output_key="__auto_ready_artifact_goals_result" action_repo="${gh_repo}" recovery_owner="dispatch_reactor" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    done [shape="Msquare" label="Done" recovery_sink_type="terminal"]
+    goal_execute_gate [shape="diamond" label="Any executable goals?" recovery_owner="dispatch_reactor"]
+    list_executable_goals [type="tool" governance="reversible" action_runtime="in_process" action_id="software.list_executable_goals" label="List dispatched goals with open sub-issues (dedup against active runs)" output_format="json" outputs="executable_goals,count,capped,execution_capacity,active_goal_count,free_slots" action_repo="${gh_repo}" action_repo_root="${repo}" action_factory_id="mothership" recovery_owner="dispatch_reactor" action_max_concurrent="${max_concurrent_waves_for_goal_execute}" action_runs_dir="${runs_dir}" action_backoff_seconds="${dispatch_retry_backoff_seconds}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    release_quarantine [type="tool" governance="irreversible" action_runtime="in_process" action_id="wave.release_quarantine" label="Release expired quarantined issues" output_key="__release_quarantine_result" action_repo="${gh_repo}" recovery_owner="dispatch_reactor" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    resolve_dispatch_retry_backoff_seconds [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve dispatch retry backoff seconds" output_key="dispatch_retry_backoff_seconds" recovery_owner="dispatch_reactor" action_value="${dispatch_retry_backoff_seconds}" action_fallback="60" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    sanitize_goal_duplicates [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.sanitize_duplicates" label="Normalize goal duplicates" output_key="__sanitize_goal_duplicates_result" action_repo="${gh_repo}" action_run_id="${__run_id}" action_pipeline="factory_dispatch_reactor" recovery_owner="dispatch_reactor" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_gh_repo [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_gh_repo" label="Resolve GitHub repo" output_key="gh_repo" recovery_owner="dispatch_reactor" action_gh_repo="${gh_repo}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_max_concurrent_waves_for_goal_execute [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_factory_config" label="Resolve max concurrent waves for goal execution" output_key="max_concurrent_waves_for_goal_execute" recovery_owner="dispatch_reactor" action_key="max_concurrent_waves" action_fallback="5" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    spawn_goal_execute [type="fan_out.detached" label="Spawn goal execution processes" output_key="spawned_goal_runs" recovery_owner="dispatch_reactor" source_key="executable_goals" item_key="goal_issue_number" template="factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs" context_keys="factory_contract_sha256" trust_domain="mothership.local" trust_role="mothership.local.fan_out.detached"]
+    stamp_factory_contract_hash [type="tool" governance="reversible" action_runtime="in_process" action_id="factory.stamp_contract_hash" label="Stamp factory contract hash for drift detection" output_key="factory_contract_sha256" recovery_owner="dispatch_reactor" action_factory_root="factories/mothership" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start [shape="Mdiamond" label="Start"]
+    sweep_completed_goals [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.sweep_completed" label="Close goals with all sub-issues done" output_key="__sweep_completed_goals_result" action_repo="${gh_repo}" recovery_owner="dispatch_reactor" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start -> set_gh_repo -> artifact_ingest -> auto_ready_artifact_goals -> sanitize_goal_duplicates -> sweep_completed_goals -> release_quarantine -> set_max_concurrent_waves_for_goal_execute -> resolve_dispatch_retry_backoff_seconds -> list_executable_goals -> goal_execute_gate
+    goal_execute_gate -> done [condition="count=0"]
+    goal_execute_gate -> stamp_factory_contract_hash [condition="count!=0"]
+    spawn_goal_execute -> done
+    stamp_factory_contract_hash -> spawn_goal_execute
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "reactor_dispatch_contract/v1",
+  "generated_at": "2026-03-22T17:00:23.179Z",
+  "ok": true,
+  "governed_factory": "mothership",
+  "config_path": "factories/mothership/factory.config.json",
+  "dispatch_graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+  "supervisor_graph": "factories/mothership/graphs/factory_supervisor_tick.dot",
+  "diagnostics": []
+}

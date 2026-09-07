@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "goal_intake_to_execution_handoff",
+  "familyId": "software_development",
+  "sourcePath": "packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+  "outputPath": "docs/contracts/capability-software-development.goal_intake_to_execution_handoff.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+    "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "software_development",
+      "correlation_id": "workflow-ir-contract:goal_intake_to_execution_handoff",
+      "factory_id": "capability-software-development",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "goal_intake_to_execution_handoff",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "goal_intake_to_execution_handoff"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "software_development",
+        "correlation_id": "workflow-ir-contract:goal_intake_to_execution_handoff",
+        "factory_id": "capability-software-development",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "goal_intake_to_execution_handoff",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "goal_intake_to_execution_handoff"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+      "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LXNvZnR3YXJlLWRldmVsb3BtZW50LWdvYWxfaW50YWtlX3RvX2V4ZWN1dGlvbl9oYW5kb2ZmIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogImdvYWxfaW50YWtlX3RvX2V4ZWN1dGlvbl9oYW5kb2ZmIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktc29mdHdhcmUtZGV2ZWxvcG1lbnQvd29ya2Zsb3dzL2dvYWxfaW50YWtlX3RvX2V4ZWN1dGlvbl9oYW5kb2ZmL2dvYWxfaW50YWtlX3RvX2V4ZWN1dGlvbl9oYW5kb2ZmLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAiZ29hbF9pbnRha2VfdG9fZXhlY3V0aW9uX2hhbmRvZmYiLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "goal_intake_to_execution_handoff"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "goal_intake_to_execution_handoff",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:7017b764511030c17c1a4f4a49872308f184f722b116b2ae34d4dd66137152e0",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs. Do not edit by hand.\ndigraph goal_intake_to_execution_handoff {\n    label = \"goal_intake_to_execution_handoff\"\n    workflow_source = \"packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    list_executable_goals [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.list_executable_goals\" label=\"List executable goals\" output_format=\"json\" outputs=\"executable_goals,count,capped,skipped_active\" action_repo=\"${gh_repo}\" action_repo_root=\"${repo}\" action_factory_id=\"${factory_id}\" action_max_concurrent=\"${max_concurrent_goals}\" action_runs_dir=\"${runs_dir}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    resolve_goal_issue_number [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve handoff goal issue number\" output_key=\"goal_issue_number\" action_fallback=\"${issue_number}\" action_value=\"${goal_issue_number}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    run_goal_decomposition [type=\"pipeline\" label=\"Run goal intake/decomposition\" export_keys=\"goal_issue,goal_context,approved_features,issue_urls,triage_results,scenario_paths\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    set_capability_goal_decomposition_skills [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_capability_goal_decomposition_skills_path\" label=\"Resolve goal-decomposition skills path\" output_key=\"capability_goal_decomposition_skills\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_control_plane_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve control-plane repo\" output_key=\"control_plane_repo\" action_fallback=\"${target_repo}\" action_value=\"${control_plane_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_executable_goal_count [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set executable goal count\" output_key=\"executable_goal_count\" action_fallback=\"0\" action_value=\"${count}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_executable_goals_capped [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set executable-goals capped flag\" output_key=\"executable_goals_capped\" action_fallback=\"false\" action_value=\"${capped}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_factory_id [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve factory id\" output_key=\"factory_id\" action_fallback=\"software-development\" action_value=\"${factory_id}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_max_concurrent_goals [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve max concurrent goals\" output_key=\"max_concurrent_goals\" action_fallback=\"3\" action_value=\"${max_concurrent_goals}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve repo\" output_key=\"repo\" action_fallback=\".\" action_value=\"${repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_runs_dir [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve runs dir\" output_key=\"runs_dir\" action_fallback=\".hatch/runs\" action_value=\"${runs_dir}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_target_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve target repo\" output_key=\"target_repo\" action_fallback=\"${gh_repo}\" action_value=\"${target_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    start [shape=\"Mdiamond\"]\n    start -> set_repo -> set_factory_id -> set_target_repo -> set_control_plane_repo -> set_capability_goal_decomposition_skills -> run_goal_decomposition -> resolve_goal_issue_number -> set_max_concurrent_goals -> set_runs_dir -> list_executable_goals -> set_executable_goal_count -> set_executable_goals_capped -> done\n}"
+}

@@ -1,0 +1,2235 @@
+{
+  "schema_version": "active_surface_inventory/v1",
+  "manifest_path": "docs/contracts/active-surface-manifest.json",
+  "live_graph_roots": [
+    {
+      "path": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
+      "source_kind": "factory_kind.domain_graph",
+      "source_id": "brainstorm::domain_graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "source_kind": "factory_config.dispatch_graph",
+      "source_id": "dispatch.graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "source_kind": "factory_config.pipeline_graph",
+      "source_id": "pipeline.supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "brainstorm::factory_supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/mothership/conformance/factory_supervisor_tick.dot",
+      "source_kind": "factory_config.conformance_smoke_graph",
+      "source_id": "conformance.smoke_graph",
+      "exists": true,
+      "classification": "historical_or_test_only",
+      "entry_id": "graph_fixtures_historical"
+    },
+    {
+      "path": "factories/mothership/graphs/daily_lens_publish.dot",
+      "source_kind": "factory_config.scheduled_graph",
+      "source_id": "daily-lens",
+      "exists": true,
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active"
+    },
+    {
+      "path": "factories/mothership/graphs/daily_release_report.dot",
+      "source_kind": "factory_config.scheduled_graph",
+      "source_id": "daily-release-report",
+      "exists": true,
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active"
+    },
+    {
+      "path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "source_kind": "factory_config.dispatch_graph",
+      "source_id": "dispatch.graph",
+      "exists": true,
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active"
+    },
+    {
+      "path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "source_kind": "factory_config.pipeline_graph",
+      "source_id": "pipeline.supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "source_kind": "factory_kind.domain_graph",
+      "source_id": "mothership::domain_graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "mothership::wave_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::goal_intake_decompose",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::goal_intake_decompose",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::goal_intake_decompose",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::goal_queue",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "mothership::goal_queue",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::goal_queue",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::goal_queue",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::goal_run",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "mothership::goal_run",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::goal_run",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::goal_run",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "source_kind": "factory_config.scheduled_graph",
+      "source_id": "daily-release-report",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::daily_release_report",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::goal_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::goal_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::goal_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::goal_issue_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::goal_issue_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::goal_issue_execute",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "source_kind": "factory_kind.domain_graph",
+      "source_id": "example-scanner::domain_graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "source_kind": "factory_kind.domain_graph",
+      "source_id": "example-web::domain_graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "source_kind": "factory_kind.domain_graph",
+      "source_id": "example-trading::domain_graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::managed_software_delivery_domain",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::managed_software_delivery_domain",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "source_kind": "factory_config.dispatch_graph",
+      "source_id": "dispatch.graph",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "source_kind": "factory_config.pipeline_graph",
+      "source_id": "pipeline.supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-scanner::factory_supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-web::factory_supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    },
+    {
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "source_kind": "factory_registry.instance_graph",
+      "source_id": "example-trading::factory_supervisor_tick",
+      "exists": true,
+      "classification": "operator_only",
+      "entry_id": "operator_runtime_packages"
+    }
+  ],
+  "active_graphs": [
+    {
+      "path": "factories/mothership/graphs/daily_lens_publish.dot",
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active",
+      "root_sources": [
+        {
+          "source_kind": "factory_config.scheduled_graph",
+          "source_id": "daily-lens",
+          "exists": true
+        }
+      ],
+      "reached_from": []
+    },
+    {
+      "path": "factories/mothership/graphs/daily_release_report.dot",
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active",
+      "root_sources": [
+        {
+          "source_kind": "factory_config.scheduled_graph",
+          "source_id": "daily-release-report",
+          "exists": true
+        }
+      ],
+      "reached_from": []
+    },
+    {
+      "path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "classification": "active_factory",
+      "entry_id": "factory_graphs_active",
+      "root_sources": [
+        {
+          "source_kind": "factory_config.dispatch_graph",
+          "source_id": "dispatch.graph",
+          "exists": true
+        }
+      ],
+      "reached_from": []
+    }
+  ],
+  "active_runtime_files": [
+    {
+      "path": "apps/hatch/src/dispatch/loop.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/dispatch/registry.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/dispatch/store.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/event-store/envelope.ts",
+      "classification": "execution_path",
+      "entry_id": "apps_hatch_canonical_event_store"
+    },
+    {
+      "path": "apps/hatch/src/event-store/lifecycle-backfill.ts",
+      "classification": "execution_path",
+      "entry_id": "apps_hatch_canonical_event_store"
+    },
+    {
+      "path": "apps/hatch/src/event-store/postgres-client-options.ts",
+      "classification": "execution_path",
+      "entry_id": "apps_hatch_canonical_event_store"
+    },
+    {
+      "path": "apps/hatch/src/event-store/postgres-store.ts",
+      "classification": "execution_path",
+      "entry_id": "apps_hatch_canonical_event_store"
+    },
+    {
+      "path": "apps/hatch/src/event-store/runtime-guard.ts",
+      "classification": "execution_path",
+      "entry_id": "apps_hatch_canonical_event_store"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-brainstorm.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-daily-lens.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-goal-execute.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-goal-issue.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-goal-run.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-merge.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-scenarios.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-supervisor.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-wave-dispatch.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry-wave-execute.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/action-registry.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/alignment-summary.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/checkpoint.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/condition.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/constraints.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/context.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/decision-artifacts.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/engine-execution.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/engine-outputs.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/engine-telemetry.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/engine.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/execution-failure.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/fast-route.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/github-mutation-context.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/goal-decomposition-timeout-inventory.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/governance.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/graph-recovery-invariants.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/graph-source.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/graph.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/guard-core.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/guard-eventbus.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/guard-recovery.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/guard.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler-registry.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/assert.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/codergen.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/composite-contract.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/conditional.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/exit.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/fan_out_detached.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/fan_out_dynamic.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/human.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/manager.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/model-routing.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/openrouter-trace.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/parallel.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/pipeline.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/register.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/session-completion.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/session-persistence.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/start.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/tool.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/worktree-fixtures.test-utils.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/handler/worktree.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/identity.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/intent.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/lifecycle-persistence.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/live.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/llm-payload-sharing-allowlist.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/llm-role-session-inventory.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/llm-routing-policy.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/lock.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/matrix-executor.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/model-matrix-loader.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/model-matrix-resolution.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/model-matrix-schema.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/model-policy-telemetry.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/node-schema.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/parse.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/recovery-contract.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/redis-test-harness.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/run-artifact-contract.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/run-lifecycle.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/run.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/scenarios.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/stylesheet-imports.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/stylesheet.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/telemetry-benchmark-identity.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/threads.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/tool-env.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/trace.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/transform.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/types.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/validate.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "apps/hatch/src/pipeline/watch.ts",
+      "classification": "hot_path",
+      "entry_id": "apps_hatch_hot_path"
+    },
+    {
+      "path": "packages/capability-release-reporting/src/build-report-context.ts",
+      "classification": "execution_path",
+      "entry_id": "capability_runtime_execution"
+    },
+    {
+      "path": "packages/capability-release-reporting/src/release-action-contracts.ts",
+      "classification": "execution_path",
+      "entry_id": "capability_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/artifact-trust-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/artifact-trust-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/asyncapi-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/asyncapi-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/capability-contract-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/capability-contract-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/cloudevents-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/cloudevents-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/daily-lens-collector.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/factory-composition-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/factory-composition-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/hatch-config-schema-boundaries.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/hatch-config-schema-boundaries.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/hatch-run-lifecycle-asyncapi.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/issue-url-normalization.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/oci-artifact-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/oci-artifact-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/openapi-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/openapi-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/openlineage-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/openlineage-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/primitives.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/schema-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/schema-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/transport.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/workflow-ir-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/workflow-ir-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/workflow-source-registry.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/workflow-source-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/workspace-package-manager.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/cli.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/host-runtime.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/active-graphs.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/active-run-git-signals.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/collect-git-history.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/collect-runs-artifacts.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/collect-supervisor-status.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/collectors.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/fleet-lens-collector.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/index.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/learning-log.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-artifacts.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-bundle-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-candidates.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-collector.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-manifest.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-prompt-builder.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/lens-slack-blocks.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/llm-call.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/renderer.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/analysis/types.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/audit-trail.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/batched-github-queries.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/batched-issue-fetch.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-checkout-doctor-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-checkout-doctor-shared.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-checkout-doctor.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-control-state.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-domain-events.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-event-append-fallback.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-event-log.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-event-store-url.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-issue-lifecycle.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-packet-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-projection-freshness.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-run-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/canonical-worktree.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/cli-helpers.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/cli-usage.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/analysis/daily-report.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/analysis/lens-followup-candidates.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/analysis/lens.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/analysis/publish-lens.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/ceremony-heuristics.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/common-resolve-default.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/factory-dashboard.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/factory-host-lifecycle.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/goal-execution-path.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/goal-hard-planning.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/host-canonical-event-store-postgres.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/host-runtime-lifecycle.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/judge-context-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/judge-evidence-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/merge-goal-message.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/merge-item-ops.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/release-manifest.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/reviewer-context-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/wave-dispatch-select.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/command-owners/wave-issue-review.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/control-plane-blocker.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/control-plane-manifest.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/control-plane-status.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-circuit-breaker.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-control-decision.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-control-state.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-install-bootstrap.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-lease-heartbeat.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-lease.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-llm-isolation.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-recovery-policy.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-runtime-startup-probe.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-scheduled-graph-runner.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-scheduled-jobs.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-schedules.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-shutdown.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon-tick-runner.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/daemon.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/dispatch-slo-policy.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/error-catalog.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/external-factory-certification-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/external-factory-control-state.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-active-summary.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-context-resolver.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-contract-drift.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-dashboard-bug-gate.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-dashboard-goal-issue-rows.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-dashboard-goal-progress.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-dashboard-handoffs.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-dashboard-recent.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-attention.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-bootstrap-snapshot.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-canonical.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-postgres-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-projection-support.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-fleet-registry-overlay.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-insight-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-label-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-label-overlay.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-label-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-mirror-reader.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-provisioning-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-provisioning-drift.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-repo-identity.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-repo-roles.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-row-collector-worker-pooled.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-row-collector-worker.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-session-log.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-state-fleet-triage.projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-state-metrics-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-state-reader.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-status-canonical.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-status-collector.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-status-postgres-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-status-presenter.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-status-support.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-tick-canonical.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-tick-postgres-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-tick-run-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/factory-worker-pool.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/fallback-defect-snapshot.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/fetch-goal-titles-graphql-only.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/file-ops.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/fleet-rollout-action-items.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/fleet-triage-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/git-diff-stats.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/git-mutation-guard.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/github-projection-target.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/global-cli-link.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-close-projection-repair.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-decomposition-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-execution-path-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-execution-path-visibility.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-final-state-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-hard-plan-materialization-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-hard-plan-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/goal-rationale-doc.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-factory-intent.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-instance-lease.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-lease-store.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-executor.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-release-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-release-schema.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-repair.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-scheduler-state.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-runtime-scheduler.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-scheduler-policy.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/host-wakeup.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/incident-fingerprint.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/incident-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/inline-projection-runner.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/insight-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/insight-projection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/io.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/judge-scenario-selection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/label-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/lease-safety.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/managed-factory-lifecycle-telemetry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/managed-observability-boundary.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/merge-capability.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/merge-conflict-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/mirror-managed-snapshot.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/mothership-label-overlay.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/mutation-policy-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/emit-lens-document.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/emit.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/index.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/markdown-shape.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/narrative-document/taxonomy.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/offthread-dispatcher-worker.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/offthread-dispatcher.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/packet-core.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/persisted-packet-created-at.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/postgres-pool-options.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/prerequisite-blockers.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/projection-context-portability.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/release-rollout-gate.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/remediation-packet.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/resume-policy-schema.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/run-inspection.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/run-metadata-reader.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/runs-dir-resolver.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/runtime-compatibility.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/runtime-signature.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/scenario-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/session-resume.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/session-transport.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/supervisor-state-snapshot-gh.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/supervisor-state-snapshot-packet-first.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/trust-agent-identity-v1.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/trust-participants.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/verdict-envelope.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-claim-lifecycle.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-external-blocking.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-marker-claim.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-ready-claim-ops.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/wave-ready-lease.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-ops/src/lib/workspace-package-manager.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/canonical-worktree.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/cli-helpers.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/factory-repo-roles.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/git-mutation-guard.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/index.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/io.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-runtime-guard/src/mutation-policy-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/daily-lens-collector.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/daily-lens-langfuse-metrics.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/daily-lens-langfuse.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/events.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/guard-telemetry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/index.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/langfuse-lifecycle.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/langfuse-telemetry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/langfuse.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/otel-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/otel-stdout.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/quality.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/langfuse-generation-payload.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/langfuse.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/redis-test-harness.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/redis.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/sink.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-telemetry/src/telemetry/universal-metadata.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/backend-adapter-contract.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/backend-adapter.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/backend-selection-schema.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/create-backend.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/daily-lens-github-state.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/fs-utils.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/github-adapter.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/local-fs-adapter.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/github-adapter/src/test-adapter.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    }
+  ],
+  "active_command_references": [],
+  "active_command_reachable_files": [],
+  "graph_references": [
+    {
+      "source_graph": "factories/mothership/graphs/daily_release_report.dot",
+      "raw_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "resolved_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "dynamic": false
+    },
+    {
+      "source_graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "raw_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "resolved_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "dynamic": false
+    },
+    {
+      "source_graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "raw_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "resolved_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "dynamic": false
+    }
+  ],
+  "diagnostics": [],
+  "summary": {
+    "live_graph_roots": 40,
+    "active_graphs": 3,
+    "active_runtime_files": 367,
+    "active_command_references": 0,
+    "active_command_reachable_files": 0,
+    "diagnostics": 0
+  }
+}

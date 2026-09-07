@@ -1,0 +1,28 @@
+{
+  "schema_version": "sync_openapi_registry/v1",
+  "summary": {
+    "registered_surfaces": 1,
+    "discovered_sources": 1,
+    "diagnostics": 0
+  },
+  "registered_output_paths": [
+    "docs/contracts/hatch-server-openapi.v1.json"
+  ],
+  "discovered_source_paths": [
+    "apps/hatch/src/server/openapi-contract.ts"
+  ],
+  "surfaces": [
+    {
+      "id": "https://recallnet.dev/contracts/hatch-server-openapi.v1.json",
+      "version": "hatch_server_openapi/v1",
+      "title": "Hatch Server API",
+      "source_path": "apps/hatch/src/server/openapi-contract.ts",
+      "output_path": "docs/contracts/hatch-server-openapi.v1.json",
+      "consumer_paths": [
+        "apps/hatch/src/server/server.ts"
+      ],
+      "operations": 3
+    }
+  ],
+  "diagnostics": []
+}

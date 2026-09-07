@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "domain_brainstorm",
+  "familyId": "dispatch_control",
+  "sourcePath": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+  "outputPath": "docs/contracts/brainstorm.domain_brainstorm.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+    "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "dispatch_control",
+      "correlation_id": "workflow-ir-contract:domain_brainstorm",
+      "factory_id": "brainstorm",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "domain_brainstorm",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "domain_brainstorm"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "dispatch_control",
+        "correlation_id": "workflow-ir-contract:domain_brainstorm",
+        "factory_id": "brainstorm",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "domain_brainstorm",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "domain_brainstorm"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+      "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpicmFpbnN0b3JtLWRvbWFpbl9icmFpbnN0b3JtIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogImRvbWFpbl9icmFpbnN0b3JtIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogImZhY3Rvcmllcy9icmFpbnN0b3JtL3dvcmtmbG93cy9kaXNwYXRjaC1jb250cm9sL2RvbWFpbl9icmFpbnN0b3JtLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAiZG9tYWluX2JyYWluc3Rvcm0iLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "domain_brainstorm"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "domain_brainstorm",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:41f5571df80e3d5aa56a5a88bd1d925bc0e38d65b2039f81215ff054dfc3f46f",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs. Do not edit by hand.\ndigraph domain_brainstorm {\n    label = \"domain_brainstorm\"\n    workflow_source = \"factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs\"\n    build_intake_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.build_intake_context\" label=\"Build brainstorm intake context from shell intake_json\" output_format=\"json\" outputs=\"has_issue,brainstorm_issue_number,brainstorm_issue_body,shipped_goals_since_last,open_backlog_summary,scenario_holdouts,parse_error\" action_repo=\"${target_repo}\" action_factory_id=\"${factory_id}\" recovery_owner=\"supervisor\" action_intake_json=\"${intake_json}\" action_root_dir=\"${repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    context_contract_preflight [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Preflight required brainstorm context keys\" output_key=\"context_contract_preflight_status\" recovery_owner=\"supervisor\" action_fallback=\"context_contract_preflight_ok\" action_value=\"${factory_root}${gh_repo}${repo}${intent_stack}${capability_brainstorming_skills}${trust_domain}${trust_role}${brainstorm_issue_number}${brainstorm_issue_body}${shipped_goals_since_last}${open_backlog_summary}${scenario_holdouts}${has_issue}${parse_error}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    intake_gate [shape=\"diamond\" label=\"Shell provided intake issue?\" recovery_owner=\"supervisor\"]\n    load_intent_stack [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_intent_stack\" label=\"Load intent stack\" output_key=\"intent_stack\" recovery_owner=\"supervisor\" action_config_path=\"${factory_root}/factory.config.json\" action_factory_root=\"${factory_root}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    preflight_gate [shape=\"diamond\" label=\"Context preflight passed?\" recovery_owner=\"supervisor\"]\n    set_capability_brainstorming_skills [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_capability_brainstorming_skills_path\" label=\"Resolve capability skills path\" output_key=\"capability_brainstorming_skills\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_control_plane_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve control-plane repo\" output_key=\"control_plane_repo\" recovery_owner=\"supervisor\" action_factory_root=\"${factory_root}\" action_fallback=\"${control_plane_repo}\" action_key=\"control_plane_repo\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_domain_result [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Build domain_result payload\" output_key=\"domain_result\" recovery_owner=\"supervisor\" action_fallback=\"{}\" action_value=\"{\\\"has_issue\\\":\\\"${has_issue}\\\",\\\"parse_error\\\":\\\"${parse_error}\\\",\\\"brainstorm_issue_number\\\":\\\"${brainstorm_issue_number}\\\"}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_factory_root [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve factory root\" output_key=\"factory_root\" recovery_owner=\"supervisor\" action_factory_root=\"${factory_root}\" action_fallback=\"factories/brainstorm\" action_key=\"factory_root\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_gh_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set capability gh_repo context\" output_key=\"gh_repo\" recovery_owner=\"supervisor\" action_fallback=\"${target_repo}\" action_value=\"${target_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve repository root\" output_key=\"repo\" recovery_owner=\"supervisor\" action_factory_root=\"${factory_root}\" action_fallback=\".\" action_key=\"work_dir\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_trust_domain [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve trust domain\" output_key=\"trust_domain\" recovery_owner=\"supervisor\" action_factory_root=\"${factory_root}\" action_fallback=\"${trust_domain}\" action_key=\"trust_domain\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_trust_role [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve trust role\" output_key=\"trust_role\" recovery_owner=\"supervisor\" action_factory_root=\"${factory_root}\" action_fallback=\"${trust_role}\" action_key=\"trust_role\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    spawn_brainstorm [type=\"pipeline\" label=\"Spawn brainstorm capability\" recovery_owner=\"supervisor\" pipeline=\"packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs\" template=\"packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs\" export_keys=\"brainstorm_close_result\" inherit_context=\"true\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\"]\n    set_domain_result -> done\n    start -> set_factory_root -> set_gh_repo -> set_repo -> set_control_plane_repo -> set_trust_domain -> set_trust_role -> load_intent_stack -> set_capability_brainstorming_skills -> build_intake_context -> context_contract_preflight -> preflight_gate\n    intake_gate -> set_domain_result [condition=\"has_issue!=true\"]\n    intake_gate -> spawn_brainstorm [condition=\"has_issue=true\"]\n    preflight_gate -> intake_gate [condition=\"context_contract_preflight_status!=context_contract_preflight_ok\"]\n    preflight_gate -> set_domain_result [condition=\"context_contract_preflight_status=context_contract_preflight_ok\"]\n    spawn_brainstorm -> set_domain_result\n}"
+}

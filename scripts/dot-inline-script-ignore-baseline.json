@@ -1,0 +1,97 @@
+{
+  "schema": "dot_inline_script_ignore_baseline/v1",
+  "identity_format": "sha256(v1|<file>|<node_id>|<handler_type>|# hatch:no-inline-script-ok)",
+  "markers": [
+    {
+      "file": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot",
+      "node_id": "scan_inventory",
+      "node_label": "Scan code inventory",
+      "handler_type": "tool",
+      "identity": "de0b6bed9403c7b33752e8438c94cc48c4d0f4a8385dbfc30314d853344fd990"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+      "node_id": "cleanup_failed_merge",
+      "node_label": "Cleanup failed merge state",
+      "handler_type": "tool",
+      "identity": "cf9d5177601c675ff4baed380c8127f9fcc3ab2d671482b7b2f1e63e5b3331d5"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+      "node_id": "close_issue",
+      "node_label": "Close merged issue",
+      "handler_type": "tool",
+      "identity": "c5932a71d6afe09564157b21a91240e2f1d07e48bf1ce4b2c727f4f5723aa8f7"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+      "node_id": "close_milestone",
+      "node_label": "Close milestone",
+      "handler_type": "tool",
+      "identity": "160e8a1f8ad8951a15271cfd80bf4e7d962dc3e5f405f717ec81b0efc17f06eb"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+      "node_id": "build_approved_features",
+      "node_label": "Build approved features from merged results",
+      "handler_type": "tool",
+      "identity": "c04f66d3c6f05b9e01a3d89b13f9911db2d78e64b4147e323ec3836c3c3046b8"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+      "node_id": "cleanup_failed_merge",
+      "node_label": "Cleanup failed merge state",
+      "handler_type": "tool",
+      "identity": "f6a7300044cceabdc0d3a21c7ea4a87449dc50b356fb41cca87a4667ee8f13f4"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+      "node_id": "set_repo",
+      "node_label": "Set repo",
+      "handler_type": "tool",
+      "identity": "a437dcf65f29d5b25e595ae48a9d4ad4fe2c5fe5cf733a141fe56af914cfc352"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+      "node_id": "cleanup_failed_merge",
+      "node_label": "Cleanup failed merge state",
+      "handler_type": "tool",
+      "identity": "454f3e7b01fa7565f09154b07c075d728d22f3214e40dd47f65c96f2950055dc"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+      "node_id": "close_milestone",
+      "node_label": "Close milestone",
+      "handler_type": "tool",
+      "identity": "418dbe5d4181a2d8488222a0e0f4b78b52b1e9e507a8ccbb8f4484da099ba50e"
+    },
+    {
+      "file": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+      "node_id": "set_repo",
+      "node_label": "Set repo",
+      "handler_type": "tool",
+      "identity": "fe313c8cafa9fc44dfc96c9769493ff5077823186416922da13c7b59c9dc7005"
+    },
+    {
+      "file": "factories/mothership/graphs/write_scenarios.dot",
+      "node_id": "scan_registry",
+      "node_label": "Scan scenario registry",
+      "handler_type": "tool",
+      "identity": "ac643cc1843bf8ceaab604ae237c399295f942ad8212fccf09ea6e492c36a356"
+    },
+    {
+      "file": "packages/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+      "node_id": "scan_inventory",
+      "node_label": "Scan code inventory",
+      "handler_type": "tool",
+      "identity": "3d2387e7cbd57b889b7b8ba3c12d4626c0be72fedd1b1fa562f427c7db8530a9"
+    },
+    {
+      "file": "scripts/test/fixtures/dot-lint/inline-script-debt.dot",
+      "node_id": "marked",
+      "node_label": "Marked fixture node",
+      "handler_type": "tool",
+      "identity": "e45d90ad3c70f9e7a41f8bc66b4caf062020e5ccce6b0818354839dea10c175e"
+    }
+  ]
+}

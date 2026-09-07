@@ -1,0 +1,14 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond];
+  done [shape=Msquare];
+
+  mutate_control_plane [
+    type="tool"
+    governance="irreversible"
+    label="Mutate control plane"
+    output_key="mutation_attempt"
+    prompt="git push --repo '${control_plane_repo}' origin main"
+  ];
+
+  start -> mutate_control_plane -> done;
+}

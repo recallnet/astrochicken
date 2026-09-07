@@ -1,0 +1,24 @@
+{
+  "schema": "hatch.intent.v1",
+  "id": "intent.sample.onboarding",
+  "title": "Guided onboarding flow",
+  "summary": "Provide a guided onboarding flow that helps new users complete setup.",
+  "status": "draft",
+  "owners": ["product", "design"],
+  "goals": [
+    "Reduce time to first successful action",
+    "Introduce key collaboration features"
+  ],
+  "constraints": [
+    "No new backend services",
+    "Must support keyboard navigation"
+  ],
+  "acceptance_criteria": [
+    "Users can skip the flow and resume later",
+    "Progress is persisted for 7 days"
+  ],
+  "references": {
+    "issue": "https://github.com/example/repo/issues/195",
+    "doc": "https://example.com/onboarding/brief"
+  }
+}

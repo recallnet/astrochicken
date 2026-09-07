@@ -1,0 +1,4 @@
+{
+  "kind_id": "brainstorm",
+  "shared_supervisor_shell": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs"
+}

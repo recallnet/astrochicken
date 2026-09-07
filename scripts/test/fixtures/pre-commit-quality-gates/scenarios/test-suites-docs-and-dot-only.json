@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["docs/diagram.dot"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": [],
+  "expectedReason": "docs_and_dot_only"
+}

@@ -1,0 +1,150 @@
+{
+  "capabilityId": "coding",
+  "contractPath": "packages/capability-coding/capability-contract.v1.json",
+  "description": "Code implementation and review graph plus skill bundle.",
+  "discoveredSurfaces": {
+    "graphs": [
+      "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+    ],
+    "producerPaths": [
+      "src/in-process-action-owners.mjs",
+      "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+    ],
+    "prompts": [],
+    "skills": [
+      "skills/code_review/SKILL.md"
+    ],
+    "supportFiles": [
+      "src/in-process-action-owners.mjs"
+    ]
+  },
+  "entrypoints": [
+    {
+      "description": "Runs coding and review for a single issue item.",
+      "id": "issue_execute_item",
+      "kind": "graph",
+      "path": "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
+      "title": "Issue execute item graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "exports": {
+    "./capability-contract.v1.json": "./capability-contract.v1.json",
+    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
+    "./contract": "./capability-contract.v1.json",
+    "./graphs/*": "./graphs/*",
+    "./manifest": "./capability-manifest.v1.json",
+    "./skills/*": "./skills/*",
+    "./workflows/*": "./workflows/*"
+  },
+  "manifestPath": "packages/capability-coding/capability-manifest.v1.json",
+  "nonGoals": [],
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Persists the canonical issue review evidence artifact for deterministic review routing.",
+        "id": "review_evidence",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+        ],
+        "ref": "review_evidence/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Review evidence artifact"
+      },
+      {
+        "description": "Persists the canonical reviewer context contract consumed by the reviewer session.",
+        "id": "reviewer_context",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+        ],
+        "ref": "reviewer_context/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Reviewer context contract artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Issue execution runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      },
+      {
+        "description": "Emits the canonical review verdict telemetry signal from the governed reviewer path.",
+        "id": "review_verdict",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+        ],
+        "ref": "hatch.review_verdict",
+        "standard": "otel_event",
+        "title": "Review verdict telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageDescription": "Hatch coding capability: code implementation and review graph + skill bundle",
+  "packageJsonPath": "packages/capability-coding/package.json",
+  "packageName": "@hatch/capability-coding",
+  "packageRoot": "packages/capability-coding",
+  "publishedFiles": [
+    "capability-contract.v1.json",
+    "capability-manifest.v1.json",
+    "graphs",
+    "skills",
+    "workflows"
+  ],
+  "requiredContextKeys": [
+    "branch",
+    "capability_coding_skills",
+    "factory_root",
+    "gh_repo",
+    "goal_issue",
+    "goal_issue_number",
+    "integration_command",
+    "intent_stack",
+    "issue_item",
+    "issue_number",
+    "issue_title",
+    "milestone_title",
+    "repo",
+    "review_qa_command",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "agent.worktree",
+    "codergen",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".coder",
+    ".reviewer"
+  ],
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_manifest/v1",
+  "skillPaths": [
+    "skills/code_review/SKILL.md"
+  ],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "hatch.review_verdict",
+        "review_evidence/v1",
+        "reviewer_context/v1"
+      ]
+    }
+  ],
+  "sourcePath": "packages/capability-coding/capability-contract.mjs",
+  "title": "Coding Capability",
+  "version": "0.1.0"
+}

@@ -1,0 +1,26 @@
+// Scenario Writer: reads a GH issue and generates behavioral scenarios
+// Usage: hatch run examples/scenario_write.dot
+// Required context: issue_number=<n>
+// Optional context: repo=owner/repo
+digraph scenario_write {
+    label = "Scenario Writer"
+
+    start [shape=Mdiamond]
+    done  [shape=Msquare]
+
+    // Step 1: Detect repo and fetch the issue
+    fetch_issue [type="tool" governance="reversible" label="Fetch Issue" output_key="issue_json"
+        prompt="gh issue view '${issue_number}' --repo '${repo}' --json title,body,labels,comments"]
+
+    // Step 2: LLM generates structured scenarios
+    generate [label="Generate Scenarios"
+        prompt="You are a scenario writer for a software factory. You are given a GitHub issue (spec). Your job is to produce behavioral acceptance scenarios that can be used to JUDGE whether an implementation is correct.\n\nIssue JSON:\n${issue_json}\n\nRules:\n- Scenarios describe EXTERNAL behavior, not internal implementation details\n- Each scenario must be independently evaluable\n- Include concrete checkable signals: file patterns to grep for, tests to run, CLI commands to verify\n- Cover the happy path, edge cases, and explicitly stated constraints\n- Use the structured format shown below\n- Number scenarios sequentially\n- The 'Do NOT do' section in the spec means those are ANTI-scenarios: things that must NOT be present\n\nOutput format (repeat for each scenario):\n\n---\n## Scenario N: <title>\n\n**Given:**\n- <preconditions>\n\n**When:**\n- <actions or triggers>\n\n**Then:**\n- <expected outcomes>\n\n**Anti-conditions:**\n- <things that must NOT be true>\n\n**Checkable signals:**\n- grep: <pattern to search for in codebase>\n- file: <file that should exist>\n- test: <command to run>\n- cli: <command that should succeed>\n---"]
+
+    // Step 3: Write scenarios to file named by issue number
+    save [type="tool" governance="irreversible" label="Save Scenarios" output_key="save_result"
+        prompt="cp README.md scenarios/issue-595.scenarios.md"]
+    verify [type="tool" governance="reversible" label="Verify Save Result" output_key="__verify_result"
+        prompt="printf '%s\\n' '${save_result}'"]
+
+    start -> fetch_issue -> generate -> save -> verify -> done
+}

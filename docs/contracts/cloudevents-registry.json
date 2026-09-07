@@ -1,0 +1,81 @@
+{
+  "schema_version": "cloudevents_registry/v1",
+  "summary": {
+    "registered_surfaces": 3,
+    "discovered_sources": 3,
+    "diagnostics": 0
+  },
+  "registered_output_paths": [
+    "docs/contracts/hatch-run-lifecycle.asyncapi.v1.json",
+    "docs/contracts/release-rollout-events.asyncapi.v1.json",
+    "docs/contracts/wave-ready-lease.asyncapi.v1.json"
+  ],
+  "discovered_source_paths": [
+    "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
+    "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
+    "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts"
+  ],
+  "surfaces": [
+    {
+      "id": "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
+      "version": "hatch_run_lifecycle_cloudevents/v1",
+      "title": "Hatch Run Lifecycle CloudEvents",
+      "source_path": "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
+      "output_path": "docs/contracts/hatch-run-lifecycle.asyncapi.v1.json",
+      "payload_schema_version": "hatch_run_lifecycle_event/v1",
+      "payload_schema_id": "https://recallnet.dev/contracts/hatch-run-lifecycle-event.v1.schema.json",
+      "producer_paths": [
+        "apps/hatch/src/pipeline/run-lifecycle.ts"
+      ],
+      "consumer_paths": [
+        "packages/factory-ops/src/commands/factory-subscribe.ts"
+      ],
+      "governed_paths": [
+        "apps/hatch/src/pipeline/run-lifecycle.ts",
+        "packages/factory-ops/src/commands/factory-subscribe.ts"
+      ]
+    },
+    {
+      "id": "https://recallnet.dev/contracts/cloudevents/release-rollout.v1.json",
+      "version": "release_rollout_cloudevents/v1",
+      "title": "Release Rollout CloudEvents",
+      "source_path": "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
+      "output_path": "docs/contracts/release-rollout-events.asyncapi.v1.json",
+      "payload_schema_version": "release_rollout_event/v1",
+      "payload_schema_id": "https://recallnet.dev/contracts/release-rollout-event.v1.schema.json",
+      "producer_paths": [
+        "packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"
+      ],
+      "consumer_paths": [
+        "packages/factory-ops/src/commands/release-rollout-controller-state.ts"
+      ],
+      "governed_paths": [
+        "packages/factory-ops/src/commands/release-rollout-controller-state.ts",
+        "packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"
+      ]
+    },
+    {
+      "id": "https://recallnet.dev/contracts/cloudevents/wave-ready-lease.v1.json",
+      "version": "wave_ready_lease_cloudevents/v1",
+      "title": "Wave Ready Lease CloudEvents",
+      "source_path": "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts",
+      "output_path": "docs/contracts/wave-ready-lease.asyncapi.v1.json",
+      "payload_schema_version": "wave_ready_lease_event/v1",
+      "payload_schema_id": "https://recallnet.dev/contracts/wave-ready-lease-event.v1.schema.json",
+      "producer_paths": [
+        "packages/factory-ops/src/lib/wave-ready-claim-ops.ts",
+        "packages/factory-ops/src/lib/wave-ready-lease.ts"
+      ],
+      "consumer_paths": [
+        "packages/factory-ops/src/commands/wave-claim.ts",
+        "packages/factory-ops/src/lib/wave-ready-lease.ts"
+      ],
+      "governed_paths": [
+        "packages/factory-ops/src/commands/wave-claim.ts",
+        "packages/factory-ops/src/lib/wave-ready-claim-ops.ts",
+        "packages/factory-ops/src/lib/wave-ready-lease.ts"
+      ]
+    }
+  ],
+  "diagnostics": []
+}

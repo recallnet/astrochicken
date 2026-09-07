@@ -1,0 +1,30 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "external-portability",
+  "factory_root": "scripts/test/fixtures/factory-portability/external",
+  "target_repo": "example/external-factory",
+  "control_plane_repo": "recallnet/astrochicken",
+  "tracking_issue": 1,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "scripts/test/fixtures/factory-portability/external/graphs/factory_supervisor_tick.dot"
+  },
+  "skills": {
+    "supervisor": "scripts/test/fixtures/factory-portability/external/skills/supervisor/current.md"
+  },
+  "scenarios": {
+    "root": "scripts/test/fixtures/factory-portability/external/scenarios/external-factory"
+  },
+  "pipeline": {
+    "supervisor_tick": "scripts/test/fixtures/factory-portability/external/graphs/factory_supervisor_tick.dot"
+  },
+  "runs_dir": ".hatch/external-portability/runs",
+  "trust": {
+    "domain": "external-portability.local",
+    "roles": [
+      "external-portability.local.tool",
+      "external-portability.local.codergen"
+    ]
+  }
+}

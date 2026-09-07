@@ -1,0 +1,6 @@
+{
+  "maxScenarios": 30,
+  "roots": [
+    "factories/mothership/scenarios"
+  ]
+}

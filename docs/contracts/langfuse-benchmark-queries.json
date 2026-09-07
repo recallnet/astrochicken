@@ -1,0 +1,92 @@
+[
+  {
+    "query_id": "cost_per_skill",
+    "description": "Total LLM cost grouped by skill_id across a date range.",
+    "filter": {
+      "event_kinds": ["telemetry.langfuse.generation", "telemetry.langfuse.session"],
+      "metadata_key": "hatch.kpi.cost.skill"
+    },
+    "group_by": ["hatch.kpi.cost.skill"],
+    "metrics": ["total_cost", "total_tokens", "invocation_count", "avg_cost_per_invocation"]
+  },
+  {
+    "query_id": "cost_per_work_unit",
+    "description": "Total cost and tokens grouped by work-unit identity.",
+    "filter": {
+      "event_kinds": ["telemetry.langfuse.generation", "telemetry.langfuse.session"],
+      "metadata_key": "hatch.kpi.cost.work_unit"
+    },
+    "group_by": ["hatch.kpi.cost.work_unit", "hatch.work_unit.goal", "hatch.work_unit.issue"],
+    "metrics": ["total_cost", "total_tokens", "invocation_count"]
+  },
+  {
+    "query_id": "first_pass_rate",
+    "description": "First-attempt pass rate grouped by skill.",
+    "filter": {
+      "event_kinds": ["quality.signal"],
+      "metadata_key": "langfuse_skill"
+    },
+    "group_by": ["langfuse_skill"],
+    "metrics": ["first_attempt_passes", "total_attempts", "first_attempt_pass_rate"]
+  },
+  {
+    "query_id": "retry_by_failure_class",
+    "description": "Retry outcomes grouped by failure class and skill.",
+    "filter": {
+      "event_kinds": ["quality.signal"],
+      "metadata_key": "hatch.retry_class"
+    },
+    "group_by": ["langfuse_failure_class", "langfuse_skill"],
+    "metrics": ["retry_attempts", "failed_retries", "recovered_retries"]
+  },
+  {
+    "query_id": "model_utilization",
+    "description": "Model/provider utilization including tokens and cost totals.",
+    "filter": {
+      "event_kinds": ["telemetry.langfuse.generation", "quality.signal"],
+      "metadata_key": "langfuse_model"
+    },
+    "group_by": ["langfuse_provider", "langfuse_model", "skill"],
+    "metrics": ["invocation_count", "total_tokens", "total_cost"]
+  },
+  {
+    "query_id": "cross_factory_benchmark",
+    "description": "Compare the same semantic job across factories and model stacks.",
+    "filter": {
+      "event_kinds": ["stage.finish", "quality.signal"],
+      "metadata_key": "hatch.job_id"
+    },
+    "group_by": ["hatch.factory_id", "hatch.model", "hatch.provider"],
+    "metrics": ["invocation_count", "avg_quality_score", "total_cost"]
+  },
+  {
+    "query_id": "prompt_version_comparison",
+    "description": "Compare outcomes by prompt and role version for one semantic job.",
+    "filter": {
+      "event_kinds": ["quality.signal"],
+      "metadata_key": "hatch.prompt_version"
+    },
+    "group_by": ["hatch.prompt_version", "hatch.role_version"],
+    "metrics": ["invocation_count", "avg_quality_score", "gate_fail_count"]
+  },
+  {
+    "query_id": "model_comparison",
+    "description": "Compare model/provider outcomes within a fixed job and prompt contract.",
+    "filter": {
+      "event_kinds": ["stage.finish", "quality.signal"],
+      "metadata_key": "hatch.model"
+    },
+    "group_by": ["hatch.model", "hatch.provider"],
+    "metrics": ["invocation_count", "avg_quality_score", "total_tokens", "total_cost"]
+  },
+  {
+    "query_id": "latency_per_job",
+    "description": "Per-invocation latency derived from stage.finish minus stage.start timestamps grouped by semantic job.",
+    "filter": {
+      "event_kinds": ["stage.start", "stage.finish"],
+      "metadata_key": "hatch.job_id"
+    },
+    "group_by": ["hatch.job_id"],
+    "metrics": ["span_duration_ms", "median_latency_ms", "p95_latency_ms", "invocation_count"]
+  }
+]

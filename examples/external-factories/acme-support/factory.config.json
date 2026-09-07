@@ -1,0 +1,38 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "acme-support",
+  "factory_root": "examples/external-factories/acme-support",
+  "target_repo": "acme/support-factory",
+  "control_plane_repo": "recallnet/astrochicken",
+  "tracking_issue": 1515,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "graphs/factory_supervisor_tick.dot"
+  },
+  "skills": {
+    "supervisor": "skills/supervisor/current.md"
+  },
+  "scenarios": {
+    "root": "scenarios/acme-support"
+  },
+  "pipeline": {
+    "supervisor_tick": "graphs/factory_supervisor_tick.dot"
+  },
+  "runs_dir": ".hatch/acme-support/runs",
+  "policyPack": {
+    "version": "v1",
+    "overrides": {}
+  },
+  "trust": {
+    "domain": "acme-support.local",
+    "roles": [
+      "acme-support.local.codergen",
+      "acme-support.local.tool",
+      "acme-support.local.agent.worktree",
+      "acme-support.local.pipeline",
+      "acme-support.local.fan_out.dynamic",
+      "acme-support.local.fan_in.dynamic"
+    ]
+  }
+}

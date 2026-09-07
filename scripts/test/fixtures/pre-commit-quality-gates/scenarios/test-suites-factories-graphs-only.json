@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["factories/mothership/graphs/wave_execute.meta.json"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": ["test:guard-gates"],
+  "expectedReason": "bucket_guard_only"
+}

@@ -1,0 +1,119 @@
+{
+  "docs_policy/v1": {
+    "freshness": {
+      "default_review_policy": "periodic-7",
+      "review_policies": [
+        {
+          "id": "codebound",
+          "mode": "codebound"
+        },
+        {
+          "id": "generated",
+          "mode": "generated"
+        },
+        {
+          "id": "historical",
+          "mode": "historical"
+        },
+        {
+          "id": "periodic-7",
+          "mode": "periodic",
+          "max_age_days": 7
+        }
+      ],
+      "path_defaults": [
+        {
+          "path": "docs/**",
+          "review_policy": "periodic-7"
+        },
+        {
+          "path": "docs/INDEX.md",
+          "review_policy": "generated"
+        },
+        {
+          "path": "docs/contracts/**",
+          "review_policy": "periodic-7"
+        },
+        {
+          "path": "docs/state-machines.md",
+          "review_policy": "codebound"
+        }
+      ]
+    },
+    "in_scope_paths": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "CODEX.md",
+      "README.md",
+      "docs/**"
+    ],
+    "required_doc_types": [
+      {
+        "doc_type": "architecture",
+        "path": "docs/architecture/factory-internals.md"
+      },
+      {
+        "doc_type": "state_machines",
+        "path": "docs/state-machines.md"
+      },
+      {
+        "doc_type": "vision",
+        "path": "docs/vision.md"
+      }
+    ],
+    "ownership": {
+      "owners": [
+        {
+          "id": "docs-stewards",
+          "display_name": "Docs Stewards"
+        },
+        {
+          "id": "hatch-runtime",
+          "display_name": "Hatch Runtime"
+        },
+        {
+          "id": "mothership-factory",
+          "display_name": "Mothership Factory"
+        }
+      ],
+      "canonical_roots": [
+        {
+          "path": "apps/hatch/",
+          "owner_id": "hatch-runtime"
+        },
+        {
+          "path": "docs/",
+          "owner_id": "docs-stewards"
+        },
+        {
+          "path": "factories/mothership/",
+          "owner_id": "mothership-factory"
+        }
+      ],
+      "root_doc_owner_id": "docs-stewards"
+    },
+    "root_docs_allowlist": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "CODEX.md",
+      "README.md"
+    ],
+    "root_level_exceptions": [
+      "CLAUDE.md",
+      "CODEX.md"
+    ],
+    "orphan_exclude_globs": [
+      "docs/skills/**"
+    ],
+    "migration_debt": {
+      "allow_unowned_in_scope_paths": true,
+      "allow_missing_required_doc_types": false,
+      "legacy_in_scope_allowlist": [
+        "docs/architecture/pre-commit-gates.md",
+        "docs/factory-design-principles.md",
+        "docs/intent-digest.md"
+      ],
+      "max_legacy_in_scope_allowlist_entries": 25
+    }
+  }
+}

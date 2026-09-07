@@ -1,0 +1,29 @@
+{
+  "instance_id": "example-web",
+  "kind_id": "example-web",
+  "workspace_mode": "checkout",
+  "service_registry_path": "factory-registry.json",
+  "installation_manifest_path": ".hatch/hosts/example-web/installation.json",
+  "target_repo": {
+    "provider": "github",
+    "full_name": "example-org/example-web"
+  },
+  "control_plane_repo": "recallnet/astrochicken",
+  "intake": {
+    "issue_selector": {
+      "labels": [
+        "goal",
+        "ready"
+      ]
+    }
+  },
+  "destinations": {
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "managed-factory-bug",
+        "factory:example-web"
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "kind_id": "brainstorm",
+  "execution_mode": "issues_only",
+  "shared_supervisor_shell": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
+}

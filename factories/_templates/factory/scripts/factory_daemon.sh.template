@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Factory daemon is shared across all factories.
+# Start with: scripts/factory-daemon.sh {{factory_id}}
+# See docs/factory-supervisor-tick.md for details.
+exec "$(cd "$(dirname "$0")/../../.." && pwd)/scripts/factory-daemon.sh" "{{factory_id}}"

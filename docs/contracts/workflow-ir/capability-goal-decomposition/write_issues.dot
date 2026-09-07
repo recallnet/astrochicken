@@ -1,0 +1,13 @@
+// Generated from packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs. Do not edit by hand.
+digraph write_issues {
+    label = "write_issues"
+    workflow_source = "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    fan_in [type="fan_in.dynamic" label="Collect issue URLs" output_key="issue_urls" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_in.dynamic"]
+    fan_out [type="fan_out.dynamic" label="Issue fan-out" output_key="issue_url" export_keys="issue_url" item_key="feature" max_concurrency="1" source_key="approved_features" template="@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_out.dynamic"]
+    sanitize_issue_urls [type="tool" governance="reversible" action_runtime="in_process" action_id="common.normalize_issue_urls" label="Normalize issue URLs" output_key="issue_urls" action_value="${issue_urls}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    start [shape="Mdiamond"]
+    start -> fan_out -> fan_in -> sanitize_issue_urls -> done
+}

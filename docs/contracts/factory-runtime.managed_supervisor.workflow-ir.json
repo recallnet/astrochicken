@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "managed_supervisor",
+  "familyId": "runtime",
+  "sourcePath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+  "outputPath": "docs/contracts/factory-runtime.managed_supervisor.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+    "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "runtime",
+      "correlation_id": "workflow-ir-contract:managed_supervisor",
+      "factory_id": "factory-runtime",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "managed_supervisor",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "managed_supervisor"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "runtime",
+        "correlation_id": "workflow-ir-contract:managed_supervisor",
+        "factory_id": "factory-runtime",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "managed_supervisor",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "managed_supervisor"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+      "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpmYWN0b3J5LXJ1bnRpbWUtbWFuYWdlZF9zdXBlcnZpc29yIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogIm1hbmFnZWRfc3VwZXJ2aXNvciIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9mYWN0b3J5LXJ1bnRpbWUvd29ya2Zsb3dzL21hbmFnZWRfc3VwZXJ2aXNvci9tYW5hZ2VkX3N1cGVydmlzb3Iud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJtYW5hZ2VkX3N1cGVydmlzb3IiLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "managed_supervisor"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "managed_supervisor",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:792a911bce2408904687e77c3fafad4bc799135786e97cb9e1e51d64a51d2e05",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs. Do not edit by hand.\ndigraph managed_supervisor {\n    label = \"managed_supervisor\"\n    workflow_source = \"packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    action_item_gate [shape=\"diamond\" label=\"Action items unresolved?\" recovery_owner=\"supervisor\"]\n    check_control_state [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_control_state_gate\" label=\"Check control state\" output_format=\"json\" outputs=\"control_gate,control_state_action,control_state_reason,should_run,parse_error,state_path\" action_factory_id=\"${factory_id}\" action_root_dir=\"${repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_active [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_health_classifier\" label=\"Lifecycle -> active\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" action_control_gate=\"${control_gate}\" action_has_action_items=\"false\" action_has_domain_failure=\"false\" action_has_open_upstream_bugs=\"false\" action_has_selected_work=\"true\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_blocked_platform [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_health_classifier\" label=\"Lifecycle -> blocked_platform\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" action_control_gate=\"${control_gate}\" action_has_action_items=\"${has_action_items}\" action_has_domain_failure=\"false\" action_has_open_upstream_bugs=\"true\" action_has_selected_work=\"false\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_degraded [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_health_classifier\" label=\"Lifecycle -> degraded\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" action_control_gate=\"${control_gate}\" action_has_action_items=\"false\" action_has_domain_failure=\"true\" action_has_open_upstream_bugs=\"false\" action_has_selected_work=\"true\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_domain_failure [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_failure_classifier\" label=\"Classify domain failure\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" action_domain_error=\"${__composite_reason}\" action_gate=\"${control_gate}\" action_parse_error=\"${parse_error}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_idle [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_health_classifier\" label=\"Lifecycle -> idle\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" action_control_gate=\"${control_gate}\" action_has_action_items=\"false\" action_has_domain_failure=\"false\" action_has_open_upstream_bugs=\"false\" action_has_selected_work=\"false\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_manifest_failure [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_failure_classifier\" label=\"Classify manifest failure\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" action_domain_error=\"${manifest_error}\" action_gate=\"manifest\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_paused [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_health_classifier\" label=\"Lifecycle -> paused/draining\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" action_control_gate=\"${control_gate}\" action_has_action_items=\"false\" action_has_domain_failure=\"false\" action_has_open_upstream_bugs=\"false\" action_has_selected_work=\"false\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_paused_failure [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_failure_classifier\" label=\"Classify paused/draining as local control-state owner\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" action_domain_error=\"${control_state_action}:${control_state_reason}\" action_gate=\"control_state\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    close_stale_merge_followups_on_idle [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"supervisor.close_stale_merge_followups\" label=\"Close stale merge follow-ups (idle path)\" output_key=\"__close_stale_merge_followups_on_idle_result\" action_repo=\"${target_repo}\" action_stale_hours=\"24\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    control_state_gate [shape=\"diamond\" label=\"Control state allows tick?\" recovery_owner=\"supervisor\"]\n    domain_failure_gate [shape=\"diamond\" label=\"Domain failure observed?\" recovery_owner=\"supervisor\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\" recovery_owner=\"supervisor\"]\n    emit_run_summary [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_emit_run_summary\" label=\"Emit structured managed run summary\" output_key=\"managed_run_summary\" action_factory_id=\"${factory_id}\" action_action_item_count=\"${action_item_count}\" action_control_gate=\"${control_gate}\" action_control_plane_repo=\"${control_plane_repo}\" action_control_state_action=\"${control_state_action}\" action_control_state_reason=\"${control_state_reason}\" action_domain_result=\"${domain_result}\" action_failure_classification=\"${failure_classification}\" action_failure_reason=\"${failure_reason}\" action_has_action_items=\"${has_action_items}\" action_has_issue=\"${has_issue}\" action_has_open_upstream_bugs=\"${has_open_upstream_bugs}\" action_health_state=\"${health_state}\" action_target_repo_compat=\"${target_repo}\" action_instance_id=\"${instance_id}\" action_kind_id=\"${kind_id}\" action_latest_incidents=\"[]\" action_lifecycle_state=\"${lifecycle_state}\" action_manifest_error=\"${manifest_error}\" action_manifest_ok=\"${manifest_ok}\" action_oldest_work_age_seconds=\"0\" action_open_upstream_bug_count=\"${open_upstream_bug_count}\" action_open_upstream_bug_numbers=\"${open_upstream_bug_numbers}\" action_parse_error=\"${parse_error}\" action_queue_depth=\"${action_item_count}\" action_selected_issue_number=\"${selected_issue_number}\" action_target_repo=\"${target_repo}\" action_trust_domain=\"${trust_domain}\" action_trust_role=\"${trust_role}\" action_unresolved_actions=\"${action_item_count}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_action_items [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_action_item_gate\" label=\"Evaluate unresolved action items\" output_format=\"json\" outputs=\"has_action_items,action_item_count\" action_snapshot=\"${state_snapshot}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_open_bug_gate [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.open_bug_gate\" label=\"Evaluate open bug gate\" output_format=\"json\" outputs=\"has_open_bugs,open_bug_count,parse_error\" action_repo=\"${target_repo}\" action_factory_id=\"${factory_id}\" action_target_repo=\"${target_repo}\" action_control_plane_repo=\"${control_plane_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_upstream_blockers [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.upstream_bug_gate\" label=\"Evaluate upstream managed blockers\" output_format=\"json\" outputs=\"has_open_upstream_bugs,open_upstream_bug_count,open_upstream_bug_numbers,parse_error\" action_repo=\"${control_plane_repo}\" action_label_filters=\"[\\\"managed-factory-bug\\\",\\\"kind:${kind_id}\\\"]\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    intake_gate [shape=\"diamond\" label=\"Intake work selected?\" recovery_owner=\"supervisor\"]\n    load_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_load_context\" label=\"Load managed kind + instance context\" output_format=\"json\" outputs=\"manifest_ok,manifest_error,factory_id,factory_root,kind_path,instance_path,kind_id,instance_id,target_repo,control_plane_repo,domain_graph,shared_supervisor_shell,destinations_json,intake_json,kind_context_json,trust_domain,trust_role\" action_factory_id=\"${factory_id}\" action_control_plane_repo=\"${control_plane_repo}\" action_destinations_json=\"${destinations_json}\" action_factory_root=\"${factory_root}\" action_target_repo_compat=\"${target_repo}\" action_instance_id=\"${instance_id}\" action_instance_path=\"${instance_path}\" action_kind_id=\"${kind_id}\" action_kind_path=\"${kind_path}\" action_root_dir=\"${repo}\" action_target_repo=\"${target_repo}\" action_trust_domain=\"${trust_domain}\" action_trust_role=\"${trust_role}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    manifest_gate [shape=\"diamond\" label=\"Manifests valid?\" recovery_owner=\"supervisor\"]\n    open_bug_gate [shape=\"diamond\" label=\"Open bugs? (self-heal route)\" recovery_owner=\"supervisor\"]\n    persist_lifecycle_state [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_persist_state\" label=\"Persist lifecycle state snapshot\" output_format=\"json\" outputs=\"ok,state_path,state_version,mirror_path,mirror_version,mirror_updated_at,mirror_error,lifecycle_state,lifecycle_reason,lifecycle_failure_classification,lifecycle_failure_reason,lifecycle_updated_at,blockers,unresolved_actions,queue_depth,oldest_work_age_seconds,latest_incidents,error,message\" action_factory_id=\"${factory_id}\" action_action_item_count=\"${action_item_count}\" action_actor=\"managed_supervisor\" action_failure_classification=\"${failure_classification}\" action_failure_reason=\"${failure_reason}\" action_has_action_items=\"${has_action_items}\" action_has_open_upstream_bugs=\"${has_open_upstream_bugs}\" action_instance_id=\"${instance_id}\" action_latest_incidents=\"[]\" action_lifecycle_reason=\"${failure_reason}\" action_lifecycle_state=\"${lifecycle_state}\" action_oldest_work_age_seconds=\"0\" action_open_upstream_bug_count=\"${open_upstream_bug_count}\" action_open_upstream_bug_numbers=\"${open_upstream_bug_numbers}\" action_queue_depth=\"${action_item_count}\" action_root_dir=\"${repo}\" action_unresolved_actions=\"${action_item_count}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    run_domain_graph [type=\"pipeline\" label=\"Run kind domain graph\" export_keys=\"domain_result\" fail_open=\"true\" inherit_context=\"true\" pipeline=\"${domain_graph}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    select_intake [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.managed_intake_selector\" label=\"Select next intake unit\" output_format=\"json\" outputs=\"has_issue,selected_issue_number,selected_issue_title,selected_issue_body,intake_json,parse_error\" action_repo=\"${target_repo}\" action_intake_json=\"${intake_json}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_empty_domain_result [type=\"tool\" governance=\"reversible\" label=\"Set empty domain result\" output_key=\"domain_result\" prompt=\"printf '{}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_classification_infrastructure [type=\"tool\" governance=\"reversible\" label=\"Set failure classification: infrastructure\" output_key=\"failure_classification\" prompt=\"printf 'infrastructure'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_classification_none_manifest [type=\"tool\" governance=\"reversible\" label=\"Set failure classification: none (manifest path)\" output_key=\"failure_classification\" prompt=\"printf 'none'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_reason_empty_manifest [type=\"tool\" governance=\"reversible\" label=\"Set empty failure reason (manifest path)\" output_key=\"failure_reason\" prompt=\"printf ''\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_reason_upstream [type=\"tool\" governance=\"reversible\" label=\"Set failure reason: upstream blocker gate\" output_key=\"failure_reason\" prompt=\"printf 'open_upstream_bugs=%s issue_numbers=%s parse_error=%s' '${open_upstream_bug_count}' '${open_upstream_bug_numbers}' '${parse_error}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    snapshot_state [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"supervisor.state_snapshot\" label=\"Load durable snapshot\" output_key=\"state_snapshot\" action_repo=\"${target_repo}\" action_factory_id=\"${factory_id}\" action_control_plane_repo=\"${control_plane_repo}\" action_runs_dir=\"${runs_dir}\" action_target_repo=\"${target_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\" recovery_owner=\"supervisor\"]\n    sweep_completed_goals_on_idle [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.sweep_completed\" label=\"Sweep completed goals (idle path)\" output_key=\"__sweep_completed_goals_on_idle_result\" action_repo=\"${target_repo}\" action_repo_root=\"${repo}\" action_factory_id=\"${factory_id}\" action_runs_dir=\"${runs_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    upstream_gate [shape=\"diamond\" label=\"Open upstream blockers?\" recovery_owner=\"supervisor\"]\n    classify_degraded -> persist_lifecycle_state\n    classify_idle -> set_empty_domain_result\n    persist_lifecycle_state -> emit_run_summary -> done\n    run_domain_graph -> classify_domain_failure -> domain_failure_gate\n    set_empty_domain_result -> persist_lifecycle_state\n    start -> load_context -> manifest_gate\n    action_item_gate -> run_domain_graph [condition=\"has_action_items=true\"]\n    action_item_gate -> select_intake [condition=\"has_action_items!=true\"]\n    check_control_state -> control_state_gate\n    classify_active -> persist_lifecycle_state\n    classify_blocked_platform -> set_empty_domain_result\n    classify_manifest_failure -> classify_degraded [condition=\"failure_classification!=none\"]\n    classify_manifest_failure -> set_failure_classification_none_manifest [condition=\"failure_classification=none\"]\n    classify_paused_failure -> set_empty_domain_result\n    classify_paused -> classify_paused_failure\n    close_stale_merge_followups_on_idle -> classify_idle\n    control_state_gate -> classify_paused [condition=\"should_run!=true\"]\n    control_state_gate -> evaluate_upstream_blockers [condition=\"should_run=true\"]\n    domain_failure_gate -> classify_active [condition=\"failure_classification=none\"]\n    domain_failure_gate -> classify_degraded [condition=\"failure_classification!=none\"]\n    evaluate_action_items -> action_item_gate\n    evaluate_open_bug_gate -> open_bug_gate\n    evaluate_upstream_blockers -> upstream_gate\n    intake_gate -> evaluate_open_bug_gate [condition=\"has_issue!=true\"]\n    intake_gate -> run_domain_graph [condition=\"has_issue=true\"]\n    manifest_gate -> classify_manifest_failure [condition=\"manifest_ok!=true\"]\n    manifest_gate -> snapshot_state [condition=\"manifest_ok=true\"]\n    open_bug_gate -> run_domain_graph [condition=\"has_open_bugs=true\"]\n    open_bug_gate -> sweep_completed_goals_on_idle [condition=\"has_open_bugs!=true\"]\n    select_intake -> intake_gate\n    set_failure_classification_infrastructure -> set_failure_reason_upstream\n    set_failure_classification_none_manifest -> set_failure_reason_empty_manifest [condition=\"failure_classification=none\"]\n    set_failure_reason_empty_manifest -> classify_idle [condition=\"failure_classification=none\"]\n    set_failure_reason_upstream -> classify_blocked_platform\n    snapshot_state -> check_control_state\n    sweep_completed_goals_on_idle -> close_stale_merge_followups_on_idle\n    upstream_gate -> evaluate_action_items [condition=\"has_open_upstream_bugs!=true\"]\n    upstream_gate -> set_failure_classification_infrastructure [condition=\"has_open_upstream_bugs=true\"]\n}"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "@hatch/capability-release-reporting",
+	"version": "0.1.0",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"description": "Hatch release reporting capability: release narration, Slack delivery, dedup and tick-idle cursor updates",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"graphs",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"workflows"
+	]
+}

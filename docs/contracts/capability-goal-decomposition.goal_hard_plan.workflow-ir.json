@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "goal_hard_plan",
+  "familyId": "goal_decomposition",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+  "outputPath": "docs/contracts/capability-goal-decomposition.goal_hard_plan.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_decomposition",
+      "correlation_id": "workflow-ir-contract:goal_hard_plan",
+      "factory_id": "capability-goal-decomposition",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "goal_hard_plan",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "goal_hard_plan"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_decomposition",
+        "correlation_id": "workflow-ir-contract:goal_hard_plan",
+        "factory_id": "capability-goal-decomposition",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "goal_hard_plan",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "goal_hard_plan"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi1nb2FsX2hhcmRfcGxhbiIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJnb2FsX2hhcmRfcGxhbiIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9jYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi93b3JrZmxvd3MvZ29hbF9oYXJkX3BsYW4vZ29hbF9oYXJkX3BsYW4ud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJnb2FsX2hhcmRfcGxhbiIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "goal_hard_plan"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "goal_hard_plan",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:78ff571786b9a46c29d803f48ba4481a6427d6f1cf40076fe14d072145fb9a75",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs. Do not edit by hand.\ndigraph goal_hard_plan {\n    label = \"goal_hard_plan\"\n    workflow_source = \"packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    attach_hard_plan_artifact [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.attach_planning_artifacts\" label=\"Attach hard planning artifact to goal\" output_format=\"json\" outputs=\"planning_attachment_posted,planning_attachment_reason,planning_artifact_path,planning_packet_id,run_id\" action_repo=\"${gh_repo}\" action_goal_issue_number=\"${issue_number}\" action_run_id=\"${__run_id}\" action_planning_artifact_path=\"${hard_plan_packet_path}\" action_planning_packet_id=\"${hard_plan_packet_id}\" action_summary=\"hard_path_planning_completed\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    encode_approved_features_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode approved features payload\" output_key=\"approved_features_b64\" action_value=\"${approved_features}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_factory_request_goal_graph_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode factory-request goal graph payload\" output_key=\"factory_request_goal_graph_b64\" action_value=\"${factory_request_goal_graph}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_goal_context_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode goal context payload\" output_key=\"goal_context_b64\" action_value=\"${goal_context}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_goal_issue_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode goal issue payload\" output_key=\"goal_issue_b64\" action_value=\"${goal_issue}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    intake_decompose [type=\"pipeline\" label=\"Build hard planning artifact\" export_keys=\"goal_issue,goal_context,approved_features,factory_request_goal_graph,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    mark_hard_plan_pending_review [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.mark_planned\" label=\"Mark hard goal planned and hold for review\" output_format=\"json\" outputs=\"goal_issue_number,goal_execution_path,goal_routing_state,decomposition_state,planning_state,planning_artifact_path,goal_execution_path_packet_id,goal_execution_path_packet_path,ready_label_removed,ready_removed_comment_posted\" action_repo=\"${gh_repo}\" action_goal_issue_number=\"${issue_number}\" action_goal_execution_path=\"${goal_execution_path}\" action_goal_routing_state=\"${goal_routing_state}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_hard_plan\" action_node_id=\"mark_hard_plan_pending_review\" action_control_plane_repo=\"${control_plane_repo}\" action_planning_artifact_path=\"${hard_plan_packet_path}\" action_target_repo=\"${target_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    persist_hard_plan_packet [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.persist_hard_plan_artifact\" label=\"Persist hard planning artifact\" outputs=\"hard_plan_packet_path,hard_plan_packet_id,hard_plan_packet_type,hard_plan_packet_schema_version\" action_goal_issue_number=\"${issue_number}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_hard_plan\" action_node_id=\"persist_hard_plan_packet\" action_approved_features_b64=\"${approved_features_b64}\" action_control_plane_repo=\"${control_plane_repo}\" action_factory_request_goal_graph_b64=\"${factory_request_goal_graph_b64}\" action_goal_context_b64=\"${goal_context_b64}\" action_goal_issue_b64=\"${goal_issue_b64}\" action_target_repo=\"${target_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    start [shape=\"Mdiamond\"]\n    validate_hard_plan_packet [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.validate_planning_artifact\" label=\"Validate hard planning artifact\" output_format=\"json\" outputs=\"planning_artifact_valid,planning_artifact_error,planning_artifact_path,planning_packet_id,goal_issue_number,approved_feature_count\" action_packet_path=\"${hard_plan_packet_path}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    start -> intake_decompose -> encode_goal_issue_b64 -> encode_goal_context_b64 -> encode_approved_features_b64 -> encode_factory_request_goal_graph_b64 -> persist_hard_plan_packet -> validate_hard_plan_packet -> attach_hard_plan_artifact -> mark_hard_plan_pending_review -> done\n}"
+}

@@ -1,0 +1,546 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "wave_dispatch",
+  "familyId": "wave_execution",
+  "title": "Wave dispatch",
+  "description": "Typed source for the mothership wave dispatch workflow.",
+  "sourcePath": "factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/wave_dispatch.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "wave_dispatch",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "acquire_dispatch_lease",
+        "runtimeNodeId": "acquire_dispatch_lease"
+      },
+      {
+        "sourceNodeId": "create_ready",
+        "runtimeNodeId": "create_ready"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "ensure_labels",
+        "runtimeNodeId": "ensure_labels"
+      },
+      {
+        "sourceNodeId": "gate",
+        "runtimeNodeId": "gate"
+      },
+      {
+        "sourceNodeId": "lease_gate",
+        "runtimeNodeId": "lease_gate"
+      },
+      {
+        "sourceNodeId": "list_milestones",
+        "runtimeNodeId": "list_milestones"
+      },
+      {
+        "sourceNodeId": "list_priorities",
+        "runtimeNodeId": "list_priorities"
+      },
+      {
+        "sourceNodeId": "list_ready_issues",
+        "runtimeNodeId": "list_ready_issues"
+      },
+      {
+        "sourceNodeId": "release_dispatch_lease",
+        "runtimeNodeId": "release_dispatch_lease"
+      },
+      {
+        "sourceNodeId": "sanitize_state",
+        "runtimeNodeId": "sanitize_state"
+      },
+      {
+        "sourceNodeId": "set_factory_id",
+        "runtimeNodeId": "set_factory_id"
+      },
+      {
+        "sourceNodeId": "set_factory_lease_seconds",
+        "runtimeNodeId": "set_factory_lease_seconds"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_stale_run_minutes",
+        "runtimeNodeId": "set_stale_run_minutes"
+      },
+      {
+        "sourceNodeId": "set_tracking_issue",
+        "runtimeNodeId": "set_tracking_issue"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "acquire_dispatch_lease",
+      "kind": "tool_action",
+      "title": "Acquire distributed dispatch lease",
+      "handlerType": "tool",
+      "actionId": "factory.acquire_lease",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_lease_name": "wave_dispatch",
+        "action_lease_seconds": "${factory_lease_seconds}",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_tracking_issue": "${tracking_issue_number}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "lease_acquired",
+          "lease_reason",
+          "lease_tracking_issue_number",
+          "lease_factory_id",
+          "lease_name",
+          "lease_run_id",
+          "lease_holder_id",
+          "lease_expires_at",
+          "lease_version",
+          "lease_comment_id",
+          "lease_comment_etag"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "create_ready",
+      "kind": "tool_action",
+      "title": "Create ready issues",
+      "handlerType": "tool",
+      "actionId": "wave.create_ready_markers",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_selected_waves": "${selected_waves}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__create_ready_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "decide",
+      "kind": "tool_action",
+      "title": "Select waves",
+      "handlerType": "tool",
+      "actionId": "wave.dispatch_select",
+      "dotAttributes": {
+        "action_max_concurrent": "${max_concurrent_waves}",
+        "action_milestones_b64": "${milestones_b64}",
+        "action_priorities_issue_b64": "${priorities_issue_b64}",
+        "action_ready_issues_b64": "${ready_issues_b64}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "selected_waves",
+          "in_flight_count",
+          "ready_count",
+          "priorities_text",
+          "control_plane_blocked_items",
+          "control_plane_blocked_waves"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      }
+    },
+    {
+      "id": "ensure_labels",
+      "kind": "tool_action",
+      "title": "Ensure wave labels",
+      "handlerType": "tool",
+      "actionId": "labels.ensure_factory",
+      "dotAttributes": {
+        "action_factory_id": "mothership",
+        "action_keys": "ready,wave_in_progress,priorities,quarantined,blocked_control_plane",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__ensure_wave_labels_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "gate",
+      "kind": "decision",
+      "title": "Select any?"
+    },
+    {
+      "id": "lease_gate",
+      "kind": "decision",
+      "title": "Lease acquired?"
+    },
+    {
+      "id": "list_milestones",
+      "kind": "tool_action",
+      "title": "List open wave milestones",
+      "handlerType": "tool",
+      "actionId": "wave.list_milestones_b64",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "milestones_b64"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "list_priorities",
+      "kind": "tool_action",
+      "title": "Find priorities issue",
+      "handlerType": "tool",
+      "actionId": "wave.list_priorities_b64",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "priorities_issue_b64"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "list_ready_issues",
+      "kind": "tool_action",
+      "title": "List ready wave markers",
+      "handlerType": "tool",
+      "actionId": "wave.list_ready_issues_b64",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "ready_issues_b64"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "release_dispatch_lease",
+      "kind": "tool_action",
+      "title": "Release distributed dispatch lease",
+      "handlerType": "tool",
+      "actionId": "factory.release_lease",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_holder_id": "${lease_holder_id}",
+        "action_lease_name": "wave_dispatch",
+        "action_reason": "wave_dispatch_terminal",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_tracking_issue": "${lease_tracking_issue_number}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "lease_released",
+          "lease_release_reason"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "sanitize_state",
+      "kind": "tool_action",
+      "title": "Normalize wave-ready state",
+      "handlerType": "tool",
+      "actionId": "wave.sanitize_state",
+      "dotAttributes": {
+        "action_apply": "true",
+        "action_pipeline": "wave_dispatch",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_stale_run_minutes": "${stale_run_minutes}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__sanitize_state_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_factory_id",
+      "kind": "tool_action",
+      "title": "Resolve factory id",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "mothership/factory_supervisor",
+        "action_runtime": "in_process",
+        "action_value": "${factory_id}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "factory_id"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_factory_lease_seconds",
+      "kind": "tool_action",
+      "title": "Resolve distributed lease seconds",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "600",
+        "action_runtime": "in_process",
+        "action_value": "${factory_lease_seconds}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "factory_lease_seconds"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Resolve GitHub repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_gh_repo",
+      "dotAttributes": {
+        "action_gh_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "gh_repo"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_stale_run_minutes",
+      "kind": "tool_action",
+      "title": "Resolve stale lease threshold",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "20",
+        "action_runtime": "in_process",
+        "action_value": "${stalled_wave_minutes}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "stale_run_minutes"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_tracking_issue",
+      "kind": "tool_action",
+      "title": "Resolve factory tracking issue",
+      "handlerType": "tool",
+      "actionId": "factory.resolve_tracking_issue",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_tracking_issue": "${factory_tracking_issue_number}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "tracking_issue_number"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start"
+    }
+  ],
+  "edges": [
+    {
+      "from": "acquire_dispatch_lease",
+      "to": "lease_gate"
+    },
+    {
+      "from": "create_ready",
+      "to": "release_dispatch_lease"
+    },
+    {
+      "from": "decide",
+      "to": "gate"
+    },
+    {
+      "from": "ensure_labels",
+      "to": "set_stale_run_minutes"
+    },
+    {
+      "from": "gate",
+      "to": "create_ready",
+      "condition": "selected_waves!=[]"
+    },
+    {
+      "from": "gate",
+      "to": "release_dispatch_lease",
+      "condition": "selected_waves=[]"
+    },
+    {
+      "from": "lease_gate",
+      "to": "done",
+      "condition": "lease_acquired!=true"
+    },
+    {
+      "from": "lease_gate",
+      "to": "ensure_labels",
+      "condition": "lease_acquired=true"
+    },
+    {
+      "from": "list_milestones",
+      "to": "list_ready_issues"
+    },
+    {
+      "from": "list_priorities",
+      "to": "decide"
+    },
+    {
+      "from": "list_ready_issues",
+      "to": "list_priorities"
+    },
+    {
+      "from": "release_dispatch_lease",
+      "to": "done"
+    },
+    {
+      "from": "sanitize_state",
+      "to": "list_milestones"
+    },
+    {
+      "from": "set_factory_id",
+      "to": "set_tracking_issue"
+    },
+    {
+      "from": "set_factory_lease_seconds",
+      "to": "acquire_dispatch_lease"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "set_factory_id"
+    },
+    {
+      "from": "set_stale_run_minutes",
+      "to": "sanitize_state"
+    },
+    {
+      "from": "set_tracking_issue",
+      "to": "set_factory_lease_seconds"
+    },
+    {
+      "from": "start",
+      "to": "set_gh_repo"
+    }
+  ]
+}

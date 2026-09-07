@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STAGED_FILE_LIST=$(mktemp)
+trap 'rm -f "$STAGED_FILE_LIST"' EXIT
+
+git diff --cached --name-only --diff-filter=ACMRD -M -z | tr '\0' '\n' > "$STAGED_FILE_LIST"
+
+LOG_DIR="$(git rev-parse --show-toplevel)/.hook-logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/pre-commit.log"
+
+bootstrap_missing() {
+  [ ! -e node_modules/acorn/package.json ] ||
+  [ ! -e node_modules/ajv/package.json ] ||
+  [ ! -e node_modules/zod/package.json ] ||
+  [ ! -e node_modules/@hatch/factory-ops/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/@hatch/factory-core/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/clipanion/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/hatch/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/pg/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/@hatch/github-adapter/package.json ] ||
+  [ ! -e packages/factory-ops/node_modules/@recallnet/factory-telemetry/package.json ] ||
+  [ ! -e packages/github-adapter/node_modules/@hatch/factory-core/package.json ] ||
+  [ ! -e packages/github-adapter/node_modules/zod/package.json ]
+}
+
+if [ -f package.json ] && bootstrap_missing; then
+  if [ -e node_modules/.pnpm ] && [ -f scripts/postinstall-bootstrap.mjs ]; then
+    node scripts/postinstall-bootstrap.mjs >/dev/null 2>&1 || true
+  fi
+fi
+
+if [ -f package.json ] && bootstrap_missing; then
+  echo "[pre-commit] bootstrap_missing reason=workspace_dependencies_unavailable remedy=\"pnpm install --frozen-lockfile\"" | tee "$LOG_FILE" >&2
+  exit 1
+fi
+
+if node scripts/run-gates.mjs --profile strict --telemetry-prefix pre-commit --staged-file-list "$STAGED_FILE_LIST" 2>&1 | tee "$LOG_FILE"; then
+  echo "[pre-commit] ok (log: .hook-logs/pre-commit.log)"
+else
+  rc=${PIPESTATUS[0]}
+  echo "[pre-commit] failed (full log: .hook-logs/pre-commit.log)"
+  exit $rc
+fi

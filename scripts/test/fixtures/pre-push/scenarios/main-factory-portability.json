@@ -1,0 +1,14 @@
+{
+  "changedPath": "packages/factory-ops/src/lib/factory-context-resolver.mjs",
+  "expectedNpmCalls": [
+    "build",
+    "knip",
+    "test:platform:cli-context-portability",
+    "test:platform:supervisor-recovery",
+    "test:platform:scaffold-contract",
+    "test:platform:factory-portability",
+    "test:platform:external-factory-portability-matrix",
+    "test:platform:docs-skills-templates",
+    "typecheck"
+  ]
+}

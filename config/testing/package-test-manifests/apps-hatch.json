@@ -1,0 +1,38 @@
+{
+  "schema": "hatch.package-test-manifest.v1",
+  "package_name": "hatch",
+  "package_path": "apps/hatch",
+  "default_suite": "default",
+  "suites": [
+    {
+      "name": "default",
+      "runner": "vitest",
+      "working_directory": "apps/hatch",
+      "entrypoints": [
+        "src/cli",
+        "src/complexity",
+        "src/dispatch",
+        "src/event-store",
+        "src/factory",
+        "src/intent",
+        "src/pipeline",
+        "src/server"
+      ],
+      "command": "vitest --run --passWithNoTests --reporter=dot src/cli src/complexity src/dispatch src/event-store src/factory src/intent src/pipeline src/server"
+    },
+    {
+      "name": "guard-gates",
+      "runner": "vitest",
+      "working_directory": "apps/hatch",
+      "entrypoints": [
+        "src/pipeline/engine-execution.unit.test.ts",
+        "src/pipeline/guard-core.unit.test.ts",
+        "src/pipeline/guard-eventbus.unit.test.ts",
+        "src/pipeline/guard-recovery.unit.test.ts",
+        "src/pipeline/guard-scope.unit.test.ts",
+        "src/pipeline/runtime-path-guard.integration.test.ts"
+      ],
+      "command": "mkdir -p coverage/.tmp && vitest --run --coverage --coverage.reporter=text-summary --coverage.include=src/pipeline/engine-execution.ts --coverage.include=src/pipeline/guard.ts --coverage.include=src/pipeline/guard-core.ts --coverage.include=src/pipeline/guard-eventbus.ts --coverage.include=src/pipeline/guard-recovery.ts --reporter=dot src/pipeline/engine-execution.unit.test.ts src/pipeline/guard-core.unit.test.ts src/pipeline/guard-eventbus.unit.test.ts src/pipeline/guard-recovery.unit.test.ts src/pipeline/guard-scope.unit.test.ts src/pipeline/runtime-path-guard.integration.test.ts"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "_contract_ref": "docs/contracts/factory-public-contract.v1.json",
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "{{factory_id}}",
+  "instance_id": "{{instance_id}}",
+  "target_repo": "{{target_repo}}",
+  "control_plane_repo": "{{control_plane_repo}}",
+  "factory_root": "factories/{{factory_id}}",
+  "tracking_issue": "{{tracking_issue_url}}",
+  "trust": {
+    "domain": "{{trust_domain}}",
+    "roles": [
+      "{{trust_domain}}.codergen",
+      "{{trust_domain}}.tool",
+      "{{trust_domain}}.agent.worktree",
+      "{{trust_domain}}.pipeline",
+      "{{trust_domain}}.fan_out.dynamic",
+      "{{trust_domain}}.fan_in.dynamic"
+    ]
+  },
+  "dispatch": {
+    "graph": "{{dispatch_graph}}"
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md"
+  },
+  "scenarios": {
+    "root": "factories/{{factory_id}}/scenarios/{{factory_id}}"
+  },
+  "pipeline": {
+    "supervisor_tick": "{{dispatch_graph}}"
+  },
+  "conformance": {
+    "entrypoint": "factories/{{factory_id}}/scripts/run-conformance.sh",
+    "fixtures": "factories/{{factory_id}}/conformance/fixtures",
+    "smoke_graph": "factories/{{factory_id}}/conformance/factory_supervisor_tick.dot",
+    "runs_dir": "{{runs_dir}}"
+  },
+  "isolation": {
+    "_note": "Factory-local isolation contract. Override auth/model/provider/runtime paths per factory; avoid implicit shared-process inheritance.",
+    "auth": {
+      "github": {
+        "tokenEnvVar": "HATCH_FACTORY_GITHUB_TOKEN",
+        "repo": "{{target_repo}}",
+        "factoryId": "{{factory_id}}"
+      }
+    },
+    "authStoragePath": "~/.pi/auth-{{instance_id}}.json",
+    "provider": {
+      "envVar": "HATCH_MODEL_PROVIDER",
+      "value": "{{provider}}"
+    },
+    "model": {
+      "envVar": "HATCH_MODEL",
+      "value": "{{model}}"
+    },
+    "paths": {
+      "runs": "{{runs_dir}}",
+      "logs": ".hatch/{{factory_id}}/logs",
+      "tmp": ".hatch/{{factory_id}}/tmp",
+      "cache": ".hatch/{{factory_id}}/cache"
+    }
+  },
+  "capabilities": {
+    "goal_decomposition": {
+      "timeouts": {
+        "issue_draft": "30m",
+        "issue_repair": "30m",
+        "issue_judge": "30m",
+        "issue_revise": "30m"
+      }
+    }
+  },
+  "provider": "{{provider}}",
+  "model": "{{model}}",
+  "runs_dir": "{{runs_dir}}",
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "policyPack": {
+    "version": "v1",
+    "overrides": {}
+  },
+  "max_concurrent_waves": 3,
+  "max_goal_runs_per_tick": 2
+}

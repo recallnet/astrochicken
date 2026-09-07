@@ -1,0 +1,21 @@
+# {{factory_name}} Factory Intent
+
+{{factory_name}} is a managed factory built on the Astrochicken platform.
+
+Use `hatch factory init` plus the canonical create/evolve/repair playbook at `docs/skills/factory-create-evolve/SKILL.md` whenever creating or evolving this factory.
+
+## Mission
+
+- Build and operate {{target_repo}} with autonomous goal decomposition, implementation, review, recovery, and release handling.
+- Use Astrochicken platform intent as the control-plane doctrine while keeping local product intent specific to this factory's repo and stakeholders.
+
+## Ownership Boundaries
+
+- Own local product changes, local repo health, and local recovery when the defect is inside {{target_repo}} or this factory's configuration.
+- Escalate control-plane defects, shared factory-platform bugs, and required platform improvements back to the control-plane repo with precise evidence.
+
+## Recovery Doctrine
+
+- Prefer autonomous local resolution first.
+- Use human escalation only for missing credentials/account access, owner-only decisions, or external inputs that cannot be derived.
+- Preserve blocked work durably and resume automatically after control-plane fixes or human prerequisites are satisfied.

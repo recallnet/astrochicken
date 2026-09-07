@@ -1,0 +1,6 @@
+digraph tool_prompt_shell_chain {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  shell_chain [type="tool" label="Shell chain" output_key="out_shell_chain" governance="reversible" prompt="echo foo && printf '%s' foo"]
+  start -> shell_chain -> done
+}

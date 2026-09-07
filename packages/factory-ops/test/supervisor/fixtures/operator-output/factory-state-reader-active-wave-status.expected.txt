@@ -1,0 +1,20 @@
+Factory: (unresolved)
+Factory ID: mothership
+Home Repo: recallnet/astrochicken
+Target Repo: recallnet/astrochicken
+Factory Mode: standalone
+Control Plane: (unresolved)
+Runs Dir: <runs-dir>
+
+Control plane gate: channel=general reason=control_plane_manifest_unavailable can_resume=false
+  Manifest: local_fs .hatch/releases/canary/release-manifest.json @ (unknown)
+  Resume condition: Publish or sync a control-plane release manifest.
+
+Managed state: action=none health=control_plane_blocked
+  Reason: Publish or sync a control-plane release manifest.
+
+Active runs: 3  |  Completed: 0  |  Failed: 0
+
+supervis  (factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs)  node=wave_execute  <age> ago
+  └─ wave-act  (factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs)  node=execute_issue_in_wave #42 [goal-42-wave-1]  <age> ago  goal_execution_path=unknown  goal_execution_path_version=unknown
+    └─ issue-ac  (factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs)  node=execute_issue #42 [goal-42-wave-1]  <age> ago  goal_execution_path=unknown  goal_execution_path_version=unknown

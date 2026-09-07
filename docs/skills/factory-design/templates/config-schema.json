@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://recallnet.dev/schemas/factory-design-template-config.schema.json",
+  "title": "Factory Design Template Config",
+  "description": "Schema for scaffolding Hatch factory topology/config from docs/skills/factory-design/templates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "factory_repo",
+    "target_repo",
+    "infra_issue_repo",
+    "entry_graph",
+    "model_overrides",
+    "capacity_limits",
+    "state_storage_path"
+  ],
+  "properties": {
+    "factory_repo": {
+      "type": "string",
+      "description": "Repo containing factory graphs/ops/skills (e.g. owner/factory-infra)."
+    },
+    "target_repo": {
+      "type": "string",
+      "description": "Repo where product work is executed and merged."
+    },
+    "infra_issue_repo": {
+      "type": "string",
+      "description": "Repo where factory design/runtime bugs are filed and tracked."
+    },
+    "entry_graph": {
+      "type": "string",
+      "description": "DOT entrypoint path for the supervisor outer loop (repo-root relative)."
+    },
+    "model_overrides": {
+      "type": "object",
+      "description": "Model/provider overrides by node id and role name.",
+      "additionalProperties": false,
+      "required": ["nodes", "roles"],
+      "properties": {
+        "nodes": {
+          "type": "object",
+          "description": "Per-node model overrides keyed by DOT node id.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["llm_model"],
+            "properties": {
+              "llm_model": {
+                "type": "string",
+                "description": "Model id used for this node (e.g. openai/gpt-5.3-codex)."
+              },
+              "llm_provider": {
+                "type": "string",
+                "description": "Provider id used for this node (e.g. openrouter)."
+              },
+              "reasoning_effort": {
+                "type": "string",
+                "enum": ["low", "medium", "high"],
+                "description": "Optional reasoning effort hint for this node."
+              }
+            }
+          }
+        },
+        "roles": {
+          "type": "object",
+          "description": "Per-role model overrides keyed by role name (supervisor, coder, reviewer, merger, judge, triage_writer).",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["llm_model"],
+            "properties": {
+              "llm_model": {
+                "type": "string",
+                "description": "Default model id for all nodes run by this role."
+              },
+              "llm_provider": {
+                "type": "string",
+                "description": "Default provider id for all nodes run by this role."
+              }
+            }
+          }
+        }
+      }
+    },
+    "capacity_limits": {
+      "type": "object",
+      "description": "Concurrency, retry, and stale-run controls used by supervisor/wave routing.",
+      "additionalProperties": false,
+      "required": [
+        "max_concurrent_waves",
+        "max_goal_runs_per_tick",
+        "max_issues_per_wave",
+        "review_max_attempts",
+        "stale_run_minutes"
+      ],
+      "properties": {
+        "max_concurrent_waves": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum simultaneous wave executions."
+        },
+        "max_goal_runs_per_tick": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum goals decomposed in one supervisor tick."
+        },
+        "max_issues_per_wave": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum issues executed in one wave before roll-forward."
+        },
+        "review_max_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum coder↔reviewer loop attempts before terminal routing."
+        },
+        "stale_run_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Minutes before a run/wave is treated as stale for recovery sweep."
+        }
+      }
+    },
+    "state_storage_path": {
+      "type": "string",
+      "description": "Path to runtime state directory (e.g. .hatch or custom state root)."
+    },
+    "self_report_infra_bugs": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, supervisor may file infra bugs automatically to infra_issue_repo."
+    },
+    "worktree_strategy": {
+      "type": "string",
+      "enum": ["shared_wave_branch", "per_issue_worktree"],
+      "description": "Worktree/branch strategy for coder execution and merge flow."
+    },
+    "local_repo_path": {
+      "type": "string",
+      "description": "Absolute or repo-relative filesystem path used by local CLI/tool commands."
+    },
+    "infra_monitoring_repo": {
+      "type": "string",
+      "description": "Optional repo used for operational dashboards, monitoring artifacts, and incident summaries."
+    }
+  }
+}

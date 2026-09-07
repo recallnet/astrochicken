@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "apps/hatch/src/cli.ts",
+    "apps/hatch/src/index.ts",
+    "packages/factory-ops/src/cli.ts",
+    "packages/github-adapter/src/github-adapter.ts",
+    "scripts/**/*.mjs"
+  ],
+  "project": [
+    "apps/**/*.{ts,tsx}",
+    "packages/**/*.{js,mjs,ts,tsx}",
+    "scripts/**/*.mjs"
+  ],
+  "ignore": [
+    "packages/factory-ops/src/commands/brainstorm-context-cursor.ts",
+    "packages/factory-ops/src/commands/control-plane-manifest-sync.ts",
+    "packages/factory-ops/src/commands/supervisor-close-non-goals.ts",
+    "packages/factory-ops/src/lib/cli-usage.ts",
+    "packages/factory-ops/src/lib/analysis/lens-bundle-contract.ts",
+    "packages/capability-*/capability-contract.mjs",
+    "packages/capability-*/src/in-process-action-owners.mjs",
+    "packages/factory-runtime/src/in-process-action-owners.mjs",
+    "packages/**/workflows/**/*.workflow-source.mjs",
+    "**/*.test.*",
+    "**/test/**",
+    "**/__fixtures__/**",
+    "scripts/test/**",
+    "docs/**",
+    "examples/**",
+    "factories/**",
+    "reports/**"
+  ]
+}

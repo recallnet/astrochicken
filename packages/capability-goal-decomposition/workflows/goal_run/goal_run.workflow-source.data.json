@@ -1,0 +1,1318 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_run",
+  "familyId": "goal_decomposition",
+  "title": "Goal Run",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_run.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_run"
+  },
+  "sourceMap": {
+    "graphName": "goal_run",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "admission_check",
+        "runtimeNodeId": "admission_check"
+      },
+      {
+        "sourceNodeId": "admission_gate",
+        "runtimeNodeId": "admission_gate"
+      },
+      {
+        "sourceNodeId": "append_rationale_feature",
+        "runtimeNodeId": "append_rationale_feature"
+      },
+      {
+        "sourceNodeId": "apply_feature_blockers",
+        "runtimeNodeId": "apply_feature_blockers"
+      },
+      {
+        "sourceNodeId": "approved_hard_plan_resume",
+        "runtimeNodeId": "approved_hard_plan_resume"
+      },
+      {
+        "sourceNodeId": "check_already_decomposed",
+        "runtimeNodeId": "check_already_decomposed"
+      },
+      {
+        "sourceNodeId": "check_decompose_retries",
+        "runtimeNodeId": "check_decompose_retries"
+      },
+      {
+        "sourceNodeId": "clear_direct_execution_reason",
+        "runtimeNodeId": "clear_direct_execution_reason"
+      },
+      {
+        "sourceNodeId": "compute_close",
+        "runtimeNodeId": "compute_close"
+      },
+      {
+        "sourceNodeId": "count_approved_features",
+        "runtimeNodeId": "count_approved_features"
+      },
+      {
+        "sourceNodeId": "count_issues",
+        "runtimeNodeId": "count_issues"
+      },
+      {
+        "sourceNodeId": "current_decompose_attempt",
+        "runtimeNodeId": "current_decompose_attempt"
+      },
+      {
+        "sourceNodeId": "decide_close",
+        "runtimeNodeId": "decide_close"
+      },
+      {
+        "sourceNodeId": "decompose_retry_gate",
+        "runtimeNodeId": "decompose_retry_gate"
+      },
+      {
+        "sourceNodeId": "decomposition_feature_gate",
+        "runtimeNodeId": "decomposition_feature_gate"
+      },
+      {
+        "sourceNodeId": "decomposition_issue_gate",
+        "runtimeNodeId": "decomposition_issue_gate"
+      },
+      {
+        "sourceNodeId": "direct_execution_result_gate",
+        "runtimeNodeId": "direct_execution_result_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "duplicate_decompose_guard",
+        "runtimeNodeId": "duplicate_decompose_guard"
+      },
+      {
+        "sourceNodeId": "easy_execution_gate",
+        "runtimeNodeId": "easy_execution_gate"
+      },
+      {
+        "sourceNodeId": "encode_approved_features_b64",
+        "runtimeNodeId": "encode_approved_features_b64"
+      },
+      {
+        "sourceNodeId": "encode_goal_context_b64",
+        "runtimeNodeId": "encode_goal_context_b64"
+      },
+      {
+        "sourceNodeId": "encode_goal_issue_b64",
+        "runtimeNodeId": "encode_goal_issue_b64"
+      },
+      {
+        "sourceNodeId": "encode_issue_urls_b64",
+        "runtimeNodeId": "encode_issue_urls_b64"
+      },
+      {
+        "sourceNodeId": "execute_easy_goal",
+        "runtimeNodeId": "execute_easy_goal"
+      },
+      {
+        "sourceNodeId": "exhaust_decompose_retries",
+        "runtimeNodeId": "exhaust_decompose_retries"
+      },
+      {
+        "sourceNodeId": "fail_duplicate_admission",
+        "runtimeNodeId": "fail_duplicate_admission"
+      },
+      {
+        "sourceNodeId": "hard_plan",
+        "runtimeNodeId": "hard_plan"
+      },
+      {
+        "sourceNodeId": "hard_planning_gate",
+        "runtimeNodeId": "hard_planning_gate"
+      },
+      {
+        "sourceNodeId": "hard_planning_hold_done",
+        "runtimeNodeId": "hard_planning_hold_done"
+      },
+      {
+        "sourceNodeId": "intake_decompose",
+        "runtimeNodeId": "intake_decompose"
+      },
+      {
+        "sourceNodeId": "issues",
+        "runtimeNodeId": "issues"
+      },
+      {
+        "sourceNodeId": "keep_open",
+        "runtimeNodeId": "keep_open"
+      },
+      {
+        "sourceNodeId": "keep_open_direct",
+        "runtimeNodeId": "keep_open_direct"
+      },
+      {
+        "sourceNodeId": "label_issues",
+        "runtimeNodeId": "label_issues"
+      },
+      {
+        "sourceNodeId": "mark_decompose_attempt",
+        "runtimeNodeId": "mark_decompose_attempt"
+      },
+      {
+        "sourceNodeId": "mark_dispatched",
+        "runtimeNodeId": "mark_dispatched"
+      },
+      {
+        "sourceNodeId": "materialize_hard_plan",
+        "runtimeNodeId": "materialize_hard_plan"
+      },
+      {
+        "sourceNodeId": "normalize_issue_index",
+        "runtimeNodeId": "normalize_issue_index"
+      },
+      {
+        "sourceNodeId": "persist_decomposition_packet",
+        "runtimeNodeId": "persist_decomposition_packet"
+      },
+      {
+        "sourceNodeId": "resolve_deps",
+        "runtimeNodeId": "resolve_deps"
+      },
+      {
+        "sourceNodeId": "resolve_execution_path",
+        "runtimeNodeId": "resolve_execution_path"
+      },
+      {
+        "sourceNodeId": "resolve_hard_goal_state",
+        "runtimeNodeId": "resolve_hard_goal_state"
+      },
+      {
+        "sourceNodeId": "set_empty_issue_urls",
+        "runtimeNodeId": "set_empty_issue_urls"
+      },
+      {
+        "sourceNodeId": "set_goal_execution_mode_direct",
+        "runtimeNodeId": "set_goal_execution_mode_direct"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "zip_feature_map",
+        "runtimeNodeId": "zip_feature_map"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "admission_check",
+      "kind": "tool_action",
+      "title": "Goal decomposition/planning admission check",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.inspect_run_admission",
+        "label": "Goal decomposition/planning admission check",
+        "output_format": "json",
+        "outputs": "goal_admission_allowed,goal_admission_decision,goal_admission_reason,goal_admission_error_code,decomposition_packet_present,planning_locked,planning_lock_bypassed,prerequisite_open_blockers,hard_goal,hard_goal_state,hard_goal_state_reason,hard_plan_packet_present,hard_plan_packet_id,hard_plan_packet_path,hard_plan_artifact_count,ready_label_present,awaiting_human_label_present",
+        "action_repo_root": "${repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_goal_execution_path": "${goal_execution_path}",
+        "action_goal_routing_state": "${goal_routing_state}",
+        "action_factory_id": "${factory_id}",
+        "action_hard_goal": "${hard_goal}",
+        "action_hard_goal_state": "${hard_goal_state}",
+        "action_hard_goal_state_reason": "${hard_goal_state_reason}",
+        "action_ready_label_present": "${ready_label_present}",
+        "action_awaiting_human_label_present": "${awaiting_human_label_present}",
+        "action_hard_plan_packet_present": "${hard_plan_packet_present}",
+        "action_hard_plan_packet_id": "${hard_plan_packet_id}",
+        "action_hard_plan_packet_path": "${hard_plan_packet_path}",
+        "action_hard_plan_comment_marker": "${hard_plan_comment_marker}",
+        "action_hard_plan_comment_id": "${hard_plan_comment_id}",
+        "action_hard_plan_comment_url": "${hard_plan_comment_url}",
+        "action_hard_plan_artifact_count": "${hard_plan_artifact_count}",
+        "action_hard_plan_artifact_refs": "${hard_plan_artifact_refs}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "admission_gate",
+      "kind": "decision",
+      "title": "Goal admission allowed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Goal admission allowed?"
+      }
+    },
+    {
+      "id": "append_rationale_feature",
+      "kind": "tool_action",
+      "title": "Append required rationale-doc feature",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.append_rationale_feature",
+        "label": "Append required rationale-doc feature",
+        "output_format": "json",
+        "outputs": "approved_features,understanding_risk,rationale_required,rationale_feature_added",
+        "action_goal_issue_number": "${issue_number}",
+        "action_approved_features": "${approved_features}",
+        "action_execution_path": "${goal_execution_path}",
+        "action_goal_issue": "${goal_issue}",
+        "action_rationale_required": "${rationale_required}",
+        "action_understanding_risk": "${understanding_risk}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "apply_feature_blockers",
+      "kind": "tool_action",
+      "title": "Apply human and control-plane blockers",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.apply_feature_blockers",
+        "label": "Apply human and control-plane blockers",
+        "output_format": "json",
+        "outputs": "blocker_result",
+        "action_repo": "${gh_repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_feature_issue_map": "${resolved_feature_issue_map}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "approved_hard_plan_resume",
+      "kind": "tool_action",
+      "title": "Mark approved hard-plan resume path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.inspect_json",
+        "label": "Mark approved hard-plan resume path",
+        "output_format": "json",
+        "outputs": "approved,decompose_attempt_number,decompose_parse_status,decompose_parse_source",
+        "action_raw": "{\"approved\":\"true\",\"decompose_attempt_number\":\"0\",\"decompose_parse_status\":\"approved_hard_plan_resume\",\"decompose_parse_source\":\"goal_run.materialize_hard_plan\"}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "check_already_decomposed",
+      "kind": "tool_action",
+      "title": "Check if goal already has sub-issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.check_already_decomposed",
+        "label": "Check if goal already has sub-issues",
+        "output_key": "has_sub_issues",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "check_decompose_retries",
+      "kind": "tool_action",
+      "title": "Count previous decompose attempts",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.count_decompose_attempts",
+        "label": "Count previous decompose attempts",
+        "output_key": "decompose_retry_count",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "clear_direct_execution_reason",
+      "kind": "llm_prompt",
+      "title": "Clear direct execution failure reason",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Clear direct execution failure reason",
+        "output_key": "__composite_reason",
+        "prompt": "printf ''",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "compute_close",
+      "kind": "tool_action",
+      "title": "Compute close condition",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.compute_close_condition",
+        "label": "Compute close condition",
+        "output_key": "should_close",
+        "action_issue_count": "${issue_count}",
+        "action_approved_feature_count": "${approved_feature_count}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "count_approved_features",
+      "kind": "tool_action",
+      "title": "Count approved features",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_json_items",
+        "label": "Count approved features",
+        "output_key": "approved_feature_count",
+        "action_raw": "${approved_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "count_issues",
+      "kind": "tool_action",
+      "title": "Count created issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_json_items",
+        "label": "Count created issues",
+        "output_key": "issue_count",
+        "action_raw": "${issue_urls}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "current_decompose_attempt",
+      "kind": "tool_action",
+      "title": "Compute current decompose attempt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.increment_counter",
+        "label": "Compute current decompose attempt",
+        "output_key": "decompose_attempt_number",
+        "action_value": "${decompose_retry_count}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "decide_close",
+      "kind": "decision",
+      "title": "Close goal?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Close goal?"
+      }
+    },
+    {
+      "id": "decompose_retry_gate",
+      "kind": "decision",
+      "title": "Decompose retry budget?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Decompose retry budget?"
+      }
+    },
+    {
+      "id": "decomposition_feature_gate",
+      "kind": "decision",
+      "title": "Approved features created?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Approved features created?"
+      }
+    },
+    {
+      "id": "decomposition_issue_gate",
+      "kind": "decision",
+      "title": "Issues created?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Issues created?"
+      }
+    },
+    {
+      "id": "direct_execution_result_gate",
+      "kind": "decision",
+      "title": "Direct execution failed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Direct execution failed?"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "duplicate_decompose_guard",
+      "kind": "tool_action",
+      "title": "Fail closed duplicate decomposition attempt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.guard_duplicate_decompose",
+        "label": "Fail closed duplicate decomposition attempt",
+        "output_key": "__goal_duplicate_decompose_guard_result",
+        "output_format": "json",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_run",
+        "action_node_id": "duplicate_decompose_guard",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "easy_execution_gate",
+      "kind": "decision",
+      "title": "Direct easy execution?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Direct easy execution?"
+      }
+    },
+    {
+      "id": "encode_approved_features_b64",
+      "kind": "tool_action",
+      "title": "Encode approved features packet payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode approved features packet payload",
+        "output_key": "approved_features_b64",
+        "action_value": "${approved_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_goal_context_b64",
+      "kind": "tool_action",
+      "title": "Encode goal context packet payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode goal context packet payload",
+        "output_key": "goal_context_b64",
+        "action_value": "${goal_context}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_goal_issue_b64",
+      "kind": "tool_action",
+      "title": "Encode goal issue packet payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode goal issue packet payload",
+        "output_key": "goal_issue_b64",
+        "action_value": "${goal_issue}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_issue_urls_b64",
+      "kind": "tool_action",
+      "title": "Encode issue urls packet payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode issue urls packet payload",
+        "output_key": "issue_urls_b64",
+        "action_value": "${issue_urls}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "execute_easy_goal",
+      "kind": "pipeline",
+      "title": "Execute easy goal directly",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Execute easy goal directly",
+        "fail_open": "true",
+        "inherit_context": "true",
+        "pipeline": "factories/mothership/graphs/goal_execute.dot",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "exhaust_decompose_retries",
+      "kind": "tool_action",
+      "title": "Exhaust decompose retries",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.exhaust_decompose_retries",
+        "label": "Exhaust decompose retries",
+        "output_key": "__exhaust_retries_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "action_decompose_retry_count": "${decompose_retry_count}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fail_duplicate_admission",
+      "kind": "tool_action",
+      "title": "Fail duplicate decomposition/planning admission",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.build_admission_failure",
+        "label": "Fail duplicate decomposition/planning admission",
+        "output_key": "__goal_admission_failure_result",
+        "output_format": "json",
+        "action_goal_issue_number": "${issue_number}",
+        "action_decomposition_packet_present": "${decomposition_packet_present}",
+        "action_goal_admission_decision": "${goal_admission_decision}",
+        "action_goal_admission_error_code": "${goal_admission_error_code}",
+        "action_goal_admission_reason": "${goal_admission_reason}",
+        "action_planning_locked": "${planning_locked}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "hard_plan",
+      "kind": "pipeline",
+      "title": "Run hard-path planning hold",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Run hard-path planning hold",
+        "export_keys": "goal_issue,goal_context,approved_features,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source,planning_state,planning_artifact_path,goal_execution_path_packet_id,goal_execution_path_packet_path,ready_label_removed,ready_removed_comment_posted",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "hard_planning_gate",
+      "kind": "decision",
+      "title": "Hard planning approved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Hard planning approved?"
+      }
+    },
+    {
+      "id": "hard_planning_hold_done",
+      "kind": "tool_action",
+      "title": "Emit hard planning hold outcome",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.inspect_json",
+        "label": "Emit hard planning hold outcome",
+        "output_format": "json",
+        "outputs": "planning_state,planning_artifact_path,planning_review_required,goal_admission_reason",
+        "action_raw": "{\"planning_state\":\"${planning_state}\",\"planning_artifact_path\":\"${planning_artifact_path}\",\"planning_review_required\":\"true\",\"goal_admission_reason\":\"${goal_admission_reason}\"}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "intake_decompose",
+      "kind": "pipeline",
+      "title": "Intake and decompose goal",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Intake and decompose goal",
+        "export_keys": "goal_issue,goal_context,approved_features,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "issues",
+      "kind": "pipeline",
+      "title": "Write issues",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Write issues",
+        "export_keys": "issue_urls",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "keep_open",
+      "kind": "tool_action",
+      "title": "Leave goal open for retry",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.post_retry_comment",
+        "label": "Leave goal open for retry",
+        "output_key": "__keep_open_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "action_approved_feature_count": "${approved_feature_count}",
+        "action_decompose_approved": "${approved}",
+        "action_decompose_attempts": "${decompose_attempt_number}",
+        "action_decompose_parse_source": "${decompose_parse_source}",
+        "action_decompose_parse_status": "${decompose_parse_status}",
+        "action_issue_count": "${issue_count}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "keep_open_direct",
+      "kind": "tool_action",
+      "title": "Leave direct easy goal open for retry",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.post_retry_comment",
+        "label": "Leave direct easy goal open for retry",
+        "output_key": "__keep_open_direct_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "action_approved_feature_count": "0",
+        "action_decompose_approved": "false",
+        "action_decompose_attempts": "0",
+        "action_decompose_parse_source": "${__composite_reason}",
+        "action_decompose_parse_status": "direct_execution_failed",
+        "action_issue_count": "0",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "label_issues",
+      "kind": "tool_action",
+      "title": "Add triaged label to created issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.label_created_issues",
+        "label": "Add triaged label to created issues",
+        "output_format": "json",
+        "outputs": "label_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_urls": "${issue_urls}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "mark_decompose_attempt",
+      "kind": "tool_action",
+      "title": "Mark decompose attempt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.post_decompose_attempt",
+        "label": "Mark decompose attempt",
+        "output_key": "__mark_attempt_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "action_decompose_attempt_number": "${decompose_attempt_number}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "mark_dispatched",
+      "kind": "tool_action",
+      "title": "Mark goal dispatched",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.mark_dispatched",
+        "label": "Mark goal dispatched",
+        "output_key": "__mark_dispatched_result",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "materialize_hard_plan",
+      "kind": "tool_action",
+      "title": "Materialize approved hard plan into issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.materialize_approved_plan",
+        "label": "Materialize approved hard plan into issues",
+        "output_format": "json",
+        "outputs": "goal_issue_number,goal_issue,goal_context,approved_features,plan_packet_id,planning_artifact_path,decomposition_packet_id,decomposition_packet_path,materialization_state,already_completed,issue_urls,created_issue_numbers,feature_issue_map,blocked_by_edges,traceability_chain,materialization_packet_path,materialization_packet_id,planning_state,goal_execution_path_packet_id,goal_execution_path_packet_path,awaiting_human_label_removed",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_goal_number": "${issue_number}",
+        "action_plan_packet_id": "${hard_plan_packet_id}",
+        "action_planning_artifact_path": "${hard_plan_packet_path}",
+        "action_target_repo": "${target_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_issue_index",
+      "kind": "tool_action",
+      "title": "Normalize issue index from URLs",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "triage.normalize_issue_urls",
+        "label": "Normalize issue index from URLs",
+        "output_format": "json",
+        "outputs": "normalized_issues",
+        "action_issue_urls": "${issue_urls}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "persist_decomposition_packet",
+      "kind": "tool_action",
+      "title": "Persist goal decomposition packet",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.persist_decomposition_packet",
+        "label": "Persist goal decomposition packet",
+        "outputs": "goal_decomposition_packet_path,goal_decomposition_packet_id,goal_decomposition_packet_type,goal_decomposition_packet_schema_version,goal_decomposition_packet_storage_class",
+        "action_repo_root": "${repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_run",
+        "action_node_id": "persist_decomposition_packet",
+        "action_approved_features_b64": "${approved_features_b64}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_goal_context_b64": "${goal_context_b64}",
+        "action_goal_issue_b64": "${goal_issue_b64}",
+        "action_issue_urls_b64": "${issue_urls_b64}",
+        "action_target_repo": "${target_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_deps",
+      "kind": "tool_action",
+      "title": "Resolve feature dependencies to issue numbers",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "triage.resolve_feature_dependencies",
+        "label": "Resolve feature dependencies to issue numbers",
+        "output_format": "json",
+        "outputs": "resolved_feature_issue_map",
+        "action_repo": "${gh_repo}",
+        "action_feature_issue_map": "${feature_issue_map}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_execution_path",
+      "kind": "tool_action",
+      "title": "Resolve canonical goal execution-path metadata",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "software.resolve_goal_execution_path",
+        "label": "Resolve canonical goal execution-path metadata",
+        "output_format": "json",
+        "outputs": "goal_issue_number,goal_execution_path,goal_routing_state,goal_execution_path_version,classification_version,goal_execution_path_packet_id,goal_execution_path_packet_path,goal_execution_path_source,understanding_risk,rationale_required",
+        "action_repo": "${repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_goal_execution_paths": "${goal_execution_paths}",
+        "action_factory_id": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_hard_goal_state",
+      "kind": "tool_action",
+      "title": "Resolve hard-goal planning/re-entry state",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.inspect_hard_state",
+        "label": "Resolve hard-goal planning/re-entry state",
+        "output_format": "json",
+        "outputs": "hard_goal,hard_goal_state,hard_goal_state_reason,hard_plan_packet_present,hard_plan_packet_id,hard_plan_packet_path,hard_plan_comment_marker,hard_plan_comment_id,hard_plan_comment_url,hard_plan_artifact_count,hard_plan_artifact_refs,ready_label_present,awaiting_human_label_present",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_goal_execution_path": "${goal_execution_path}",
+        "action_goal_routing_state": "${goal_routing_state}",
+        "action_factory_id": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_empty_issue_urls",
+      "kind": "llm_prompt",
+      "title": "Set empty issue urls for direct goal path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set empty issue urls for direct goal path",
+        "output_key": "__set_empty_issue_urls_result",
+        "prompt": "printf '[]'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_goal_execution_mode_direct",
+      "kind": "llm_prompt",
+      "title": "Mark direct easy execution mode",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Mark direct easy execution mode",
+        "output_key": "__set_goal_execution_mode_direct_result",
+        "prompt": "printf 'direct'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "zip_feature_map",
+      "kind": "tool_action",
+      "title": "Zip features to created issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "triage.zip_features_to_issues",
+        "label": "Zip features to created issues",
+        "output_format": "json",
+        "outputs": "feature_issue_map",
+        "action_approved_features": "${approved_features}",
+        "action_normalized_issues": "${normalized_issues}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "encode_goal_issue_b64",
+      "to": "encode_goal_context_b64"
+    },
+    {
+      "from": "encode_goal_context_b64",
+      "to": "encode_approved_features_b64"
+    },
+    {
+      "from": "encode_approved_features_b64",
+      "to": "encode_issue_urls_b64"
+    },
+    {
+      "from": "encode_issue_urls_b64",
+      "to": "persist_decomposition_packet"
+    },
+    {
+      "from": "persist_decomposition_packet",
+      "to": "normalize_issue_index"
+    },
+    {
+      "from": "normalize_issue_index",
+      "to": "zip_feature_map"
+    },
+    {
+      "from": "zip_feature_map",
+      "to": "resolve_deps"
+    },
+    {
+      "from": "resolve_deps",
+      "to": "label_issues"
+    },
+    {
+      "from": "label_issues",
+      "to": "apply_feature_blockers"
+    },
+    {
+      "from": "apply_feature_blockers",
+      "to": "compute_close"
+    },
+    {
+      "from": "compute_close",
+      "to": "decide_close"
+    },
+    {
+      "from": "keep_open",
+      "to": "done"
+    },
+    {
+      "from": "mark_dispatched",
+      "to": "done"
+    },
+    {
+      "from": "start",
+      "to": "resolve_execution_path"
+    },
+    {
+      "from": "resolve_execution_path",
+      "to": "resolve_hard_goal_state"
+    },
+    {
+      "from": "resolve_hard_goal_state",
+      "to": "admission_check"
+    },
+    {
+      "from": "admission_check",
+      "to": "admission_gate"
+    },
+    {
+      "from": "admission_gate",
+      "to": "easy_execution_gate",
+      "condition": "goal_admission_allowed=true",
+      "dotAttributes": {
+        "condition": "goal_admission_allowed=true"
+      }
+    },
+    {
+      "from": "admission_gate",
+      "to": "fail_duplicate_admission",
+      "condition": "goal_admission_allowed!=true",
+      "dotAttributes": {
+        "condition": "goal_admission_allowed!=true"
+      }
+    },
+    {
+      "from": "append_rationale_feature",
+      "to": "issues"
+    },
+    {
+      "from": "approved_hard_plan_resume",
+      "to": "encode_goal_issue_b64"
+    },
+    {
+      "from": "check_already_decomposed",
+      "to": "check_decompose_retries",
+      "condition": "has_sub_issues!=true",
+      "dotAttributes": {
+        "condition": "has_sub_issues!=true"
+      }
+    },
+    {
+      "from": "check_already_decomposed",
+      "to": "done",
+      "condition": "has_sub_issues=true",
+      "dotAttributes": {
+        "condition": "has_sub_issues=true"
+      }
+    },
+    {
+      "from": "check_decompose_retries",
+      "to": "duplicate_decompose_guard"
+    },
+    {
+      "from": "clear_direct_execution_reason",
+      "to": "execute_easy_goal"
+    },
+    {
+      "from": "count_approved_features",
+      "to": "count_issues"
+    },
+    {
+      "from": "count_issues",
+      "to": "decomposition_feature_gate"
+    },
+    {
+      "from": "current_decompose_attempt",
+      "to": "decompose_retry_gate"
+    },
+    {
+      "from": "decide_close",
+      "to": "keep_open",
+      "condition": "should_close!=true",
+      "dotAttributes": {
+        "condition": "should_close!=true"
+      }
+    },
+    {
+      "from": "decide_close",
+      "to": "mark_dispatched",
+      "condition": "should_close=true",
+      "dotAttributes": {
+        "condition": "should_close=true"
+      }
+    },
+    {
+      "from": "decompose_retry_gate",
+      "to": "exhaust_decompose_retries",
+      "condition": "decompose_retry_count>=3",
+      "dotAttributes": {
+        "condition": "decompose_retry_count>=3"
+      }
+    },
+    {
+      "from": "decompose_retry_gate",
+      "to": "mark_decompose_attempt",
+      "condition": "decompose_retry_count<3",
+      "dotAttributes": {
+        "condition": "decompose_retry_count<3"
+      }
+    },
+    {
+      "from": "decomposition_feature_gate",
+      "to": "decomposition_issue_gate",
+      "condition": "approved_feature_count!=0",
+      "dotAttributes": {
+        "condition": "approved_feature_count!=0"
+      }
+    },
+    {
+      "from": "decomposition_feature_gate",
+      "to": "keep_open",
+      "condition": "approved_feature_count=0",
+      "dotAttributes": {
+        "condition": "approved_feature_count=0"
+      }
+    },
+    {
+      "from": "decomposition_issue_gate",
+      "to": "encode_goal_issue_b64",
+      "condition": "issue_count!=0",
+      "dotAttributes": {
+        "condition": "issue_count!=0"
+      }
+    },
+    {
+      "from": "decomposition_issue_gate",
+      "to": "keep_open",
+      "condition": "issue_count=0",
+      "dotAttributes": {
+        "condition": "issue_count=0"
+      }
+    },
+    {
+      "from": "direct_execution_result_gate",
+      "to": "keep_open_direct",
+      "condition": "__composite_reason=child_failed",
+      "dotAttributes": {
+        "condition": "__composite_reason=child_failed"
+      }
+    },
+    {
+      "from": "direct_execution_result_gate",
+      "to": "mark_dispatched",
+      "condition": "__composite_reason!=child_failed",
+      "dotAttributes": {
+        "condition": "__composite_reason!=child_failed"
+      }
+    },
+    {
+      "from": "duplicate_decompose_guard",
+      "to": "current_decompose_attempt"
+    },
+    {
+      "from": "easy_execution_gate",
+      "to": "check_already_decomposed",
+      "condition": "goal_execution_path=medium",
+      "dotAttributes": {
+        "condition": "goal_execution_path=medium"
+      }
+    },
+    {
+      "from": "easy_execution_gate",
+      "to": "hard_planning_gate",
+      "condition": "goal_execution_path=hard",
+      "dotAttributes": {
+        "condition": "goal_execution_path=hard"
+      }
+    },
+    {
+      "from": "easy_execution_gate",
+      "to": "set_goal_execution_mode_direct",
+      "condition": "goal_execution_path=easy",
+      "dotAttributes": {
+        "condition": "goal_execution_path=easy"
+      }
+    },
+    {
+      "from": "execute_easy_goal",
+      "to": "set_empty_issue_urls"
+    },
+    {
+      "from": "exhaust_decompose_retries",
+      "to": "done"
+    },
+    {
+      "from": "fail_duplicate_admission",
+      "to": "done"
+    },
+    {
+      "from": "hard_plan",
+      "to": "hard_planning_hold_done"
+    },
+    {
+      "from": "hard_planning_gate",
+      "to": "hard_plan",
+      "condition": "planning_state!=approved",
+      "dotAttributes": {
+        "condition": "planning_state!=approved"
+      }
+    },
+    {
+      "from": "hard_planning_gate",
+      "to": "materialize_hard_plan",
+      "condition": "planning_state=approved",
+      "dotAttributes": {
+        "condition": "planning_state=approved"
+      }
+    },
+    {
+      "from": "hard_planning_hold_done",
+      "to": "done"
+    },
+    {
+      "from": "intake_decompose",
+      "to": "append_rationale_feature"
+    },
+    {
+      "from": "issues",
+      "to": "count_approved_features"
+    },
+    {
+      "from": "keep_open_direct",
+      "to": "done"
+    },
+    {
+      "from": "mark_decompose_attempt",
+      "to": "intake_decompose"
+    },
+    {
+      "from": "materialize_hard_plan",
+      "to": "approved_hard_plan_resume"
+    },
+    {
+      "from": "set_empty_issue_urls",
+      "to": "direct_execution_result_gate"
+    },
+    {
+      "from": "set_goal_execution_mode_direct",
+      "to": "clear_direct_execution_reason"
+    }
+  ]
+}

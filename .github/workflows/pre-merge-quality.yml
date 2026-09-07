@@ -1,0 +1,62 @@
+name: Pre-Merge Quality
+
+on:
+  pull_request:
+
+jobs:
+  pre-merge-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        # @context:integration NODE_OPTIONS is set per-step (not job-level) because
+        # --experimental-strip-types is not allowed in Node 20, which the runner uses
+        # for action bootstrap steps (checkout, setup-node, etc.).  Node 22 is only
+        # available in project run steps.
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PACKAGES_TOKEN }}
+          NODE_OPTIONS: --experimental-strip-types
+        run: pnpm install --frozen-lockfile
+
+      - name: Build hatch
+        env:
+          NODE_OPTIONS: --experimental-strip-types
+        run: pnpm --filter hatch --silent build
+
+      - name: Run pre-merge repo QA
+        env:
+          NODE_OPTIONS: --experimental-strip-types
+        run: pnpm --silent qa:pre-merge
+
+      - name: Run checked-in factory health
+        env:
+          NODE_OPTIONS: --experimental-strip-types
+        run: pnpm --silent factory:health:ci -- --strict
+
+      - name: Open ticket on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f .github/scripts/ci-failure-ticket.sh ]; then
+            .github/scripts/ci-failure-ticket.sh "pre-merge-quality" "${{ github.run_id }}"
+          else
+            echo "::warning::Checkout failed — ticket script unavailable"
+          fi

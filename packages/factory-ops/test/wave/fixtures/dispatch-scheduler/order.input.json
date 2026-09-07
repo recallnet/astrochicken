@@ -1,0 +1,27 @@
+{
+  "issues": [
+    {
+      "number": 2,
+      "factory_id": "mothership",
+      "state": "OPEN",
+      "labels": ["ready"],
+      "ready_at": "2024-01-02T00:00:00Z"
+    },
+    {
+      "number": 1,
+      "factory_id": "mothership",
+      "state": "OPEN",
+      "labels": ["ready"],
+      "ready_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "number": 3,
+      "factory_id": "mothership",
+      "state": "OPEN",
+      "labels": ["ready"],
+      "ready_at": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "maxConcurrentGlobal": 3,
+  "maxConcurrentPerFactory": { "mothership": 3 }
+}

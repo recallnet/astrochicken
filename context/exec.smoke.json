@@ -1,0 +1,4 @@
+{
+  "integration_command": "turbo run test",
+  "execution_mode": "smoke"
+}

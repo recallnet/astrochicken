@@ -1,0 +1,112 @@
+{
+  "capabilityId": "foreman",
+  "contractPath": "packages/capability-foreman/capability-contract.v1.json",
+  "description": "Foreman host scheduling, incident ownership, telemetry, and extension-facing tool surfaces.",
+  "discoveredSurfaces": {
+    "graphs": [],
+    "producerPaths": [
+      "src/host.ts",
+      "src/telemetry.ts"
+    ],
+    "prompts": [],
+    "skills": [],
+    "supportFiles": [
+      "src/host.ts",
+      "src/telemetry.ts"
+    ]
+  },
+  "entrypoints": [
+    {
+      "description": "Exports the foreman package runtime surface through the package root entrypoint.",
+      "id": "foreman_module_api",
+      "kind": "module",
+      "path": ".",
+      "title": "Foreman module surface",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./capability-contract.v1.json": "./capability-contract.v1.json",
+    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
+    "./contract": "./capability-contract.v1.json",
+    "./manifest": "./capability-manifest.v1.json"
+  },
+  "manifestPath": "packages/capability-foreman/capability-manifest.v1.json",
+  "nonGoals": [],
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Writes the canonical foreman cycle history artifact under the run-scoped foreman directory.",
+        "id": "foreman_cycle_artifact",
+        "producerPaths": [
+          "src/host.ts",
+          "src/telemetry.ts"
+        ],
+        "ref": "foreman_cycle_artifact/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Foreman cycle artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": []
+  },
+  "ownedStages": [],
+  "packageDescription": "Foreman capability primitives: host scheduling, incident ownership, telemetry, and extension-facing tool surfaces",
+  "packageJsonPath": "packages/capability-foreman/package.json",
+  "packageName": "@hatch/capability-foreman",
+  "packageRoot": "packages/capability-foreman",
+  "publishedFiles": [
+    "capability-contract.v1.json",
+    "capability-manifest.v1.json",
+    "dist"
+  ],
+  "requiredContextKeys": [
+    "factory_id",
+    "foreman_config"
+  ],
+  "requiredHandlers": [],
+  "requiredRoles": [
+    ".foreman"
+  ],
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_manifest/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "vitest.config.ts",
+      "refs": []
+    },
+    {
+      "path": "src/extension.ts",
+      "refs": []
+    },
+    {
+      "path": "src/host.ts",
+      "refs": [
+        "foreman_cycle_artifact/v1"
+      ]
+    },
+    {
+      "path": "src/index.ts",
+      "refs": []
+    },
+    {
+      "path": "src/telemetry.ts",
+      "refs": [
+        "foreman_cycle_artifact/v1"
+      ]
+    },
+    {
+      "path": "src/types.ts",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-foreman/capability-contract.mjs",
+  "title": "Foreman Capability",
+  "version": "0.1.0"
+}

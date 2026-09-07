@@ -1,0 +1,57 @@
+digraph edge_selection_order {
+	node [governance="reversible" tool_id="shell" action_id="file.write" recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	phase_condition [type="tool" label="Phase Condition" output_key="phase_condition_gate"]
+	condition_selected [type="tool" label="Condition Selected" output_key="phase_condition_pick"]
+	condition_wrong [type="tool" label="Condition Wrong" output_key="phase_condition_pick"]
+	phase_preferred [type="tool" label="Phase Preferred" output_key="phase_preferred_gate"]
+	preferred_left [type="tool" label="Preferred Left" output_key="phase_preferred_pick"]
+	preferred_right [type="tool" label="Preferred Right" output_key="phase_preferred_pick"]
+	phase_suggested [type="tool" label="Phase Suggested" output_key="phase_suggested_gate"]
+	suggested_alpha [type="tool" label="Suggested Alpha" output_key="phase_suggested_pick"]
+	suggested_beta [type="tool" label="Suggested Beta" output_key="phase_suggested_pick"]
+	phase_weight [type="tool" label="Phase Weight" output_key="phase_weight_gate"]
+	weight_low [type="tool" label="Weight Low" output_key="phase_weight_pick"]
+	weight_high [type="tool" label="Weight High" output_key="phase_weight_pick"]
+	phase_lexical [type="tool" label="Phase Lexical" output_key="phase_lexical_gate"]
+	lexical_z [type="tool" label="Lexical Z" output_key="phase_lexical_pick"]
+	lexical_a [type="tool" label="Lexical A" output_key="phase_lexical_pick"]
+	no_match_phase [type="tool" label="No Match Phase" output_key="no_match_phase_gate"]
+	done [shape=Msquare]
+
+	start -> phase_condition [condition="scenario=ordered" name="start_ordered"]
+	start -> no_match_phase [condition="scenario=no_match" name="start_no_match"]
+
+	phase_condition -> condition_selected [condition="condition_route=selected" name="condition_selected"]
+	phase_condition -> condition_wrong [condition="condition_route=wrong" name="condition_wrong"]
+
+	condition_selected -> phase_preferred
+	condition_wrong -> phase_preferred
+
+	phase_preferred -> preferred_left [condition="preferred_gate=true" label="take_left" name="preferred_left"]
+	phase_preferred -> preferred_right [condition="preferred_gate=true" label="take_right" name="preferred_right"]
+
+	preferred_left -> phase_suggested
+	preferred_right -> phase_suggested
+
+	phase_suggested -> suggested_alpha [condition="suggested_gate=true" name="suggested_alpha"]
+	phase_suggested -> suggested_beta [condition="suggested_gate=true" name="suggested_beta"]
+
+	suggested_alpha -> phase_weight
+	suggested_beta -> phase_weight
+
+	phase_weight -> weight_low [condition="weight_gate=true" weight="1" name="weight_low"]
+	phase_weight -> weight_high [condition="weight_gate=true" weight="9" name="weight_high"]
+
+	weight_low -> phase_lexical
+	weight_high -> phase_lexical
+
+	phase_lexical -> lexical_z [condition="lexical_gate=true" weight="5" name="lexical_z"]
+	phase_lexical -> lexical_a [condition="lexical_gate=true" weight="5" name="lexical_a"]
+
+	lexical_a -> done
+	lexical_z -> done
+
+	no_match_phase -> done [condition="no_match_choice=left" label="no_match_left" name="no_match_left"]
+	no_match_phase -> done [condition="no_match_choice=right" label="no_match_right" name="no_match_right"]
+}

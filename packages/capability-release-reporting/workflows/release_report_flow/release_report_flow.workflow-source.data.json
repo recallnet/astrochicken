@@ -1,0 +1,453 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "release_report_flow",
+  "familyId": "release_reporting",
+  "title": "Release Report Flow",
+  "description": "Typed workflow source owner for packages/capability-release-reporting/graphs/release_report_flow.dot.",
+  "sourcePath": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "release_report_flow",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "release_report_flow",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "build_release_report_context",
+        "runtimeNodeId": "build_release_report_context"
+      },
+      {
+        "sourceNodeId": "build_release_slack_blocks",
+        "runtimeNodeId": "build_release_slack_blocks"
+      },
+      {
+        "sourceNodeId": "create_shaping_followup_issue",
+        "runtimeNodeId": "create_shaping_followup_issue"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_release_narrative_document",
+        "runtimeNodeId": "emit_release_narrative_document"
+      },
+      {
+        "sourceNodeId": "encode_release_narrative",
+        "runtimeNodeId": "encode_release_narrative"
+      },
+      {
+        "sourceNodeId": "encode_release_report_context",
+        "runtimeNodeId": "encode_release_report_context"
+      },
+      {
+        "sourceNodeId": "encode_release_slack_payload",
+        "runtimeNodeId": "encode_release_slack_payload"
+      },
+      {
+        "sourceNodeId": "load_release_narrator_skill",
+        "runtimeNodeId": "load_release_narrator_skill"
+      },
+      {
+        "sourceNodeId": "narrative_delivery_gate",
+        "runtimeNodeId": "narrative_delivery_gate"
+      },
+      {
+        "sourceNodeId": "post_release_to_slack",
+        "runtimeNodeId": "post_release_to_slack"
+      },
+      {
+        "sourceNodeId": "publish_release_report",
+        "runtimeNodeId": "publish_release_report"
+      },
+      {
+        "sourceNodeId": "release_narrator",
+        "runtimeNodeId": "release_narrator"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "update_release_dedup_cursor",
+        "runtimeNodeId": "update_release_dedup_cursor"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "build_release_report_context",
+      "kind": "tool_action",
+      "title": "Build release report context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "release.build_report_context",
+        "label": "Build release report context",
+        "output_key": "release_report_context",
+        "action_repo": "${gh_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_output_contract": "release.report_context@v1",
+        "action_repo_path": "${repo_path}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "build_release_slack_blocks",
+      "kind": "tool_action",
+      "title": "Build release Slack Block Kit payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "release.build_slack_blocks",
+        "label": "Build release Slack Block Kit payload",
+        "output_key": "release_slack_payload",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_input_contract": "release.report_context@v1+release.narrative@v1",
+        "action_narrative_b64": "${release_narrative_b64}",
+        "action_output_contract": "release.slack_payload@v1",
+        "action_report_issue_url": "${release_report_issue_url}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "create_shaping_followup_issue",
+      "kind": "tool_action",
+      "title": "Create example-web comprehension follow-up issue (best-effort)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "release.shaping_followup",
+        "label": "Create example-web comprehension follow-up issue (best-effort)",
+        "output_key": "release_shaping_followup_delivery",
+        "action_factory_id": "${factory_id}",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_input_contract": "release.report_context@v1+release.narrative@v1",
+        "action_narrative_b64": "${release_narrative_b64}",
+        "action_output_contract": "release.shaping_followup_delivery@v1",
+        "action_repo_path": "${repo_path}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "emit_release_narrative_document",
+      "kind": "tool_action",
+      "title": "Emit release narrative document",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "release.emit_narrative_document",
+        "label": "Emit release narrative document",
+        "output_key": "release_narrative_document_delivery",
+        "output_format": "json",
+        "outputs": "release_narrative_document_json_path:json_path,release_narrative_document_markdown_path:markdown_path",
+        "action_factory_id": "${factory_id}",
+        "action_category": "delivery",
+        "action_contains_internal_only": "false",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_input_contract": "release.report_context@v1+release.narrative@v1+release.report_issue_delivery@v1",
+        "action_internal_only_sections": "[]",
+        "action_issue_url": "${release_report_issue_url}",
+        "action_narrative_b64": "${release_narrative_b64}",
+        "action_output_contract": "release.narrative_document_delivery@v1",
+        "action_output_dir": "reports/release/narratives",
+        "action_publishable": "true",
+        "action_repo_path": "${repo_path}",
+        "action_tags": "[\"release-report\",\"factory-ops\"]",
+        "action_taxonomy": "[\"delivery\",\"operations\"]",
+        "action_topics": "[\"${gh_repo}\",\"${factory_id}\"]",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "encode_release_narrative",
+      "kind": "tool_action",
+      "title": "Encode release narrative (base64)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode release narrative (base64)",
+        "output_key": "release_narrative_b64",
+        "action_value": "${release_narrative}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "encode_release_report_context",
+      "kind": "tool_action",
+      "title": "Encode release context (base64)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode release context (base64)",
+        "output_key": "release_report_context_b64",
+        "action_value": "${release_report_context}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "encode_release_slack_payload",
+      "kind": "tool_action",
+      "title": "Encode release Slack payload (base64)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode release Slack payload (base64)",
+        "output_key": "release_slack_payload_b64",
+        "action_value": "${release_slack_payload}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_release_narrator_skill",
+      "kind": "llm_prompt",
+      "title": "Load release narrator skill",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load release narrator skill",
+        "output_key": "release_narrator_skill_content",
+        "prompt": "cat packages/factory-skills/skills/runtime/release_narrator/SKILL.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "narrative_delivery_gate",
+      "kind": "decision",
+      "title": "Narrative wants delivery?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Narrative wants delivery?"
+      }
+    },
+    {
+      "id": "post_release_to_slack",
+      "kind": "tool_action",
+      "title": "Post release report to Slack",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "release.post_to_slack",
+        "label": "Post release report to Slack",
+        "output_key": "release_slack_delivery",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_input_contract": "release.report_context@v1+release.slack_payload@v1",
+        "action_output_contract": "release.slack_delivery@v1",
+        "action_payload_b64": "${release_slack_payload_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "publish_release_report",
+      "kind": "tool_action",
+      "title": "Publish release understanding issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "release.publish_report",
+        "label": "Publish release understanding issue",
+        "output_key": "release_report_issue_delivery",
+        "output_format": "json",
+        "outputs": "release_report_issue_url:issue_url",
+        "action_repo": "${release_reporting_repo}",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_input_contract": "release.report_context@v1+release.narrative@v1",
+        "action_narrative_b64": "${release_narrative_b64}",
+        "action_output_contract": "release.report_issue_delivery@v1",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "release_narrator",
+      "kind": "llm_prompt",
+      "title": "Narrate release capability shift",
+      "dotAttributes": {
+        "class": "release_narrator",
+        "benchmark_job_id": "supervisor.tick.release_narrate",
+        "llm_path_id": "capability.release_report_flow.release_narrator",
+        "prompt_version": "2026-03-21.r1",
+        "role_version": "2.0.0",
+        "skill_id": "supervisor.release_narrator",
+        "label": "Narrate release capability shift",
+        "output_key": "release_narrative",
+        "output_format": "json",
+        "outputs": "delivery_decision,headline,summary,report_body",
+        "reasoning_effort": "low",
+        "timeout": "5m",
+        "prompt": "You are the release narrator for ${gh_repo}.\n\n${release_narrator_skill_content}\n\nRelease context JSON:\n${release_report_context}\n\nReturn a JSON object with the keys described in the skill contract above. No markdown fences.",
+        "session_id": "supervisor-${factory_id}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "update_release_dedup_cursor",
+      "kind": "tool_action",
+      "title": "Update release dedup cursor",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "release.update_dedup_cursor",
+        "label": "Update release dedup cursor",
+        "output_key": "__release_dedup_cursor_result",
+        "action_factory_id": "${factory_id}",
+        "action_context_b64": "${release_report_context_b64}",
+        "action_delivery_status": "${release_report_issue_delivery}",
+        "action_input_contract": "release.report_context@v1+release.delivery_status@v1",
+        "action_output_contract": "release.dedup_cursor_update@v1",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "build_release_report_context"
+    },
+    {
+      "from": "build_release_report_context",
+      "to": "load_release_narrator_skill"
+    },
+    {
+      "from": "load_release_narrator_skill",
+      "to": "release_narrator"
+    },
+    {
+      "from": "release_narrator",
+      "to": "narrative_delivery_gate"
+    },
+    {
+      "from": "update_release_dedup_cursor",
+      "to": "done"
+    },
+    {
+      "from": "build_release_slack_blocks",
+      "to": "encode_release_slack_payload"
+    },
+    {
+      "from": "create_shaping_followup_issue",
+      "to": "build_release_slack_blocks",
+      "condition": "delivery_decision=slack_and_issue",
+      "dotAttributes": {
+        "condition": "delivery_decision=slack_and_issue"
+      }
+    },
+    {
+      "from": "create_shaping_followup_issue",
+      "to": "update_release_dedup_cursor",
+      "condition": "delivery_decision=issue_only",
+      "dotAttributes": {
+        "condition": "delivery_decision=issue_only"
+      }
+    },
+    {
+      "from": "emit_release_narrative_document",
+      "to": "create_shaping_followup_issue"
+    },
+    {
+      "from": "encode_release_narrative",
+      "to": "publish_release_report"
+    },
+    {
+      "from": "encode_release_report_context",
+      "to": "encode_release_narrative"
+    },
+    {
+      "from": "encode_release_slack_payload",
+      "to": "post_release_to_slack"
+    },
+    {
+      "from": "narrative_delivery_gate",
+      "to": "done",
+      "condition": "delivery_decision=skip",
+      "dotAttributes": {
+        "condition": "delivery_decision=skip"
+      }
+    },
+    {
+      "from": "narrative_delivery_gate",
+      "to": "encode_release_report_context",
+      "condition": "delivery_decision!=skip",
+      "dotAttributes": {
+        "condition": "delivery_decision!=skip"
+      }
+    },
+    {
+      "from": "post_release_to_slack",
+      "to": "update_release_dedup_cursor"
+    },
+    {
+      "from": "publish_release_report",
+      "to": "emit_release_narrative_document"
+    }
+  ]
+}

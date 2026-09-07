@@ -1,0 +1,51 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "instances": [
+    {
+      "instance_id": "brainstorm",
+      "kind_id": "brainstorm",
+      "control_plane_repo": "example/astrochicken",
+      "target_repo": "example/brainstorm-home",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "mothership",
+      "kind_id": "mothership",
+      "control_plane_repo": "example/astrochicken",
+      "target_repo": "example/mothership-home",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "example-trading",
+      "kind_id": "example-trading",
+      "control_plane_repo": "example/astrochicken",
+      "target_repo": "example/example-trading-home",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "installation_manifest_path": ".hatch/hosts/example-trading/installation.json",
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    }
+  ]
+}

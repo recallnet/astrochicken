@@ -1,0 +1,244 @@
+{
+  "schema": "hatch.spec-registry.v1",
+  "required_owner_ids": [
+    "factory_ops.supervisor",
+    "factory_ops.packets",
+    "factory_ops.scenarios",
+    "hatch.runtime"
+  ],
+  "specs": [
+    {
+      "id": "factory-ops.supervisor.tick",
+      "title": "Supervisor Tick Orchestration Contract",
+      "owner_id": "factory_ops.supervisor",
+      "owner_package": "@hatch/factory-ops",
+      "subsystem": "supervisor",
+      "status": "active",
+      "path": "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "factories/mothership/graphs/factory_supervisor_tick.dot"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "contract",
+          "path": "packages/factory-ops/test/supervisor/supervisor-tick.contract.test.mjs"
+        },
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/supervisor-fast-route-contract.test.ts"
+        }
+      ],
+      "merge_blockers": [
+        "Do not change supervisor control flow without updating this spec and its proving suites in the same change.",
+        "Do not ship mixed supervisor routing semantics across DOT and test contracts."
+      ]
+    },
+    {
+      "id": "hatch.runtime.wave-execution-topology",
+      "title": "Wave Execution Topology Contract",
+      "owner_id": "hatch.runtime",
+      "owner_package": "hatch",
+      "subsystem": "runtime",
+      "status": "active",
+      "path": "apps/hatch/specs/runtime/wave-execution-topology.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "factories/mothership/graphs/factory_supervisor_tick.dot"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/supervisor-wave-topology-contract.test.ts"
+        },
+        {
+          "kind": "contract",
+          "path": "packages/factory-ops/test/wave/wave-split-results.test.mjs"
+        }
+      ],
+      "merge_blockers": [
+        "Do not reintroduce legacy wave-dispatch topology or parallel edge chains without updating the topology contract.",
+        "Wave execution ownership changes must land with spec and executable proof updates together."
+      ]
+    },
+    {
+      "id": "factory-ops.packets.merge-conflict",
+      "title": "Merge Conflict Packet Contract",
+      "owner_id": "factory_ops.packets",
+      "owner_package": "@hatch/factory-ops",
+      "subsystem": "packets",
+      "status": "active",
+      "path": "packages/factory-ops/specs/packets/merge-conflict-packets.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "packages/factory-ops/src/lib/packet-core.mjs"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "contract",
+          "path": "packages/factory-ops/test/packets/packet-takeover-cold-start.contract.test.mjs"
+        },
+        {
+          "kind": "unit",
+          "path": "packages/factory-ops/test/supervisor/supervisor-state-snapshot-merge-conflict.unit.test.mjs"
+        }
+      ],
+      "merge_blockers": [
+        "Durable merge-conflict takeover packets must remain continuation-sufficient for cold start recovery.",
+        "Do not change merge-conflict packet naming or lifecycle semantics without updating packet proofs."
+      ]
+    },
+    {
+      "id": "factory-ops.scenarios.validation",
+      "title": "Scenario Validation Contract",
+      "owner_id": "factory_ops.scenarios",
+      "owner_package": "@hatch/factory-ops",
+      "subsystem": "scenarios",
+      "status": "active",
+      "path": "packages/factory-ops/specs/scenarios/scenario-validation.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "packages/factory-ops/src/commands/scenario-validate-scope.mjs",
+        "packages/factory-ops/src/commands/scenario-validate-payload.mjs"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "unit",
+          "path": "packages/factory-ops/test/scenarios/scenario-validate-scope.unit.test.mjs"
+        },
+        {
+          "kind": "contract",
+          "path": "packages/factory-ops/test/scenarios/write-scenarios.contract.test.mjs"
+        },
+        {
+          "kind": "contract",
+          "path": "packages/factory-ops/test/scenarios/write-scenario-item.contract.test.mjs"
+        }
+      ],
+      "merge_blockers": [
+        "Scenario scoping must fail closed on malformed registry paths or invalid JSON.",
+        "Do not expand scenario author outputs without updating the validation contract and its proof surfaces."
+      ]
+    },
+    {
+      "id": "hatch.runtime.codergen-timeout-abort",
+      "title": "Codergen Timeout And Abort Contract",
+      "owner_id": "hatch.runtime",
+      "owner_package": "hatch",
+      "subsystem": "runtime",
+      "status": "active",
+      "path": "apps/hatch/specs/runtime/codergen-timeout-abort.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "apps/hatch/src/pipeline/handler/codergen.ts"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "unit",
+          "path": "apps/hatch/src/pipeline/handler/codergen-abort-cached-session.unit.test.ts"
+        },
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/runtime/engine-node-timeout.contract.test.ts"
+        },
+        {
+          "kind": "unit",
+          "path": "apps/hatch/src/pipeline/runtime/graph-timeout-resolution.unit.test.ts"
+        }
+      ],
+      "merge_blockers": [
+        "Codergen nodes must abort deterministically and evict poisoned cached sessions.",
+        "Configured node timeouts must remain enforceable through graph resolution and handler execution."
+      ]
+    },
+    {
+      "id": "hatch.runtime.run-recovery",
+      "title": "Run Recovery Contract",
+      "owner_id": "hatch.runtime",
+      "owner_package": "hatch",
+      "subsystem": "runtime",
+      "status": "active",
+      "path": "apps/hatch/specs/runtime/run-recovery.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "apps/hatch/src/pipeline/recovery-contract.ts"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "regression",
+          "path": "apps/hatch/src/pipeline/regressions/run-stale-heartbeat-requeue.regression.test.ts"
+        },
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/validate-recovery.test.ts"
+        },
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/graph-recovery-invariants.test.ts"
+        }
+      ],
+      "merge_blockers": [
+        "Stale running runs must fail closed into deterministic recovery outcomes.",
+        "Recovery guardrails and regression proofs must be updated together when stale-run handling changes."
+      ]
+    },
+    {
+      "id": "hatch.runtime.langfuse-eventbus-enrichment",
+      "title": "Runtime Langfuse Eventbus Enrichment Contract",
+      "owner_id": "hatch.runtime",
+      "owner_package": "hatch",
+      "subsystem": "runtime",
+      "status": "active",
+      "path": "apps/hatch/specs/runtime/langfuse-eventbus-enrichment.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "apps/hatch/src/pipeline/engine-telemetry.ts"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "contract",
+          "path": "apps/hatch/src/pipeline/telemetry/langfuse-eventbus-enrichment.contract.test.ts"
+        },
+        {
+          "kind": "unit",
+          "path": "apps/hatch/src/pipeline/handler/langfuse-instrumentation.test.ts"
+        }
+      ],
+      "merge_blockers": [
+        "Runtime eventbus emissions must carry deterministic Langfuse session and trace metadata.",
+        "Benchmark identity enrichment changes must land with telemetry proof updates."
+      ]
+    },
+    {
+      "id": "hatch.runtime.lock-lease-heartbeat",
+      "title": "Lock Lease Heartbeat Contract",
+      "owner_id": "hatch.runtime",
+      "owner_package": "hatch",
+      "subsystem": "runtime",
+      "status": "active",
+      "path": "apps/hatch/specs/runtime/lock-lease-heartbeat.md",
+      "authoritative_configs": [
+        "config/testing/spec-registry.json",
+        "config/testing/subsystem-ownership.json",
+        "apps/hatch/src/pipeline/lock.ts"
+      ],
+      "test_surfaces": [
+        {
+          "kind": "unit",
+          "path": "apps/hatch/src/pipeline/leases/lock-lease-heartbeat.unit.test.ts"
+        }
+      ],
+      "merge_blockers": [
+        "Active leases must refresh, stale leases must be reclaimed deterministically, and reclaim artifacts must remain structured.",
+        "Lease lifecycle changes must land with heartbeat and reclaim proofs in the same change."
+      ]
+    }
+  ]
+}

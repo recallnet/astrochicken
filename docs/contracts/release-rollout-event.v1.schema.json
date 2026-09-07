@@ -1,0 +1,77 @@
+{
+  "$id": "https://recallnet.dev/contracts/release-rollout-event.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Canonical release rollout controller event payload persisted in control-plane release manifests.",
+  "properties": {
+    "action": {
+      "type": "string"
+    },
+    "asset_id": {
+      "type": "string"
+    },
+    "asset_url": {
+      "type": "string"
+    },
+    "at": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "holder_id": {
+      "type": "string"
+    },
+    "manifest_path": {
+      "type": "string"
+    },
+    "previous_release_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "release_sha": {
+      "type": "string"
+    },
+    "release_tag": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "release_rollout_event/v1",
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "tracking_issue_number": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "action",
+    "channel",
+    "status",
+    "reason",
+    "release_id",
+    "release_tag",
+    "release_sha",
+    "previous_release_id",
+    "run_id",
+    "holder_id",
+    "tracking_issue_number",
+    "asset_id",
+    "asset_url",
+    "manifest_path",
+    "at"
+  ],
+  "title": "Release Rollout Event Payload",
+  "type": "object"
+}

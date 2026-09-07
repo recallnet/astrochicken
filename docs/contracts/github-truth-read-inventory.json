@@ -1,0 +1,11 @@
+{
+  "schema_version": "github_truth_read_inventory/v1",
+  "generated_at": "checked-in",
+  "summary": {
+    "files_scanned": 34,
+    "allowlisted_findings": 0,
+    "unallowlisted_findings": 0,
+    "stale_allowlist_entries": 0
+  },
+  "inventory": []
+}

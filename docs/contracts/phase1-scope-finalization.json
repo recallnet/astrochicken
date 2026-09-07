@@ -1,0 +1,13 @@
+{
+  "schema_version": "phase1_scope_finalization/v1",
+  "phase1_target_frozen": true,
+  "no_rescope_rule": "The Phase 1 target set can change only by updating this checked-in classification contract and regenerating the Phase 1 burn-down inventory in the same change.",
+  "remaining_active_classifications": [
+    {
+      "file": "packages/factory-ops/src/commands/goal-final-state-review.ts",
+      "surface": "command_thinness",
+      "determinism_classification": "deterministic_internal_transport",
+      "rationale": "Goal final-state review reconciliation logic calls github-adapter and canonical event projections; transport is deterministic but command file is thick"
+    }
+  ]
+}

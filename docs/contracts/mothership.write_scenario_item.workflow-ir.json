@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "write_scenario_item",
+  "familyId": "scenario_writing",
+  "sourcePath": "factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs",
+  "runtimeGraphPath": "factories/mothership/graphs/write_scenario_item.dot",
+  "outputPath": "docs/contracts/mothership.write_scenario_item.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item",
+  "generatedFiles": [
+    "factories/mothership/graphs/write_scenario_item.dot",
+    "factories/mothership/graphs/write_scenario_item.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "scenario_writing",
+      "correlation_id": "workflow-ir-contract:write_scenario_item",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "write_scenario_item",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "write_scenario_item"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "scenario_writing",
+        "correlation_id": "workflow-ir-contract:write_scenario_item",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "write_scenario_item",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "write_scenario_item"
+    },
+    "files": [
+      {
+        "path": "factories/mothership/graphs/write_scenario_item.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "factories/mothership/graphs/write_scenario_item.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "factories/mothership/graphs/write_scenario_item.dot",
+      "factories/mothership/graphs/write_scenario_item.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLXdyaXRlX3NjZW5hcmlvX2l0ZW0iCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAid3JpdGVfc2NlbmFyaW9faXRlbSIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJmYWN0b3JpZXMvbW90aGVyc2hpcC93b3JrZmxvd3Mvc2NlbmFyaW8td3JpdGluZy93cml0ZV9zY2VuYXJpb19pdGVtLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAid3JpdGVfc2NlbmFyaW9faXRlbSIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "write_scenario_item"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "write_scenario_item",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:088f9818ea19608069762b51de5996634d90cf4ca6f1e018d7ffe17122cc0e3b",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs. Do not edit by hand.\n@import \"../roles.stylesheet\"\n\ndigraph write_scenario_item {\n    label = \"write_scenario_item\"\n    workflow_source = \"factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs\"\n    done [shape=\"Msquare\" label=\"Done\" recovery_sink_type=\"terminal\"]\n    normalize_structure [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.ensure_structure\" label=\"Normalize scenario structure\" output_format=\"json\" outputs=\"scenario_domain,scenario_slug,scenario_md\" action_payload=\"${scenario_payload}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    payload_gate [shape=\"diamond\" label=\"Scenario payload valid?\"]\n    renormalize_structure [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.ensure_structure\" label=\"Normalize repaired scenario structure\" output_format=\"json\" outputs=\"scenario_domain,scenario_slug,scenario_md\" action_payload=\"${scenario_payload}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    repair_payload [class=\"scenario_author\" benchmark_job_id=\"goal.write_scenario.write_repair\" llm_path_id=\"mothership.write_scenario_item.repair_payload\" prompt_version=\"2026-03-12.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_scenario\" llm_model=\"openai/gpt-5.1-codex-mini\" label=\"Repair scenario payload\" output_key=\"scenario_payload\" output_format=\"json\" reasoning_effort=\"low\" timeout=\"2m\" prompt=\"Your previous scenario payload failed deterministic validation.\\n\\nOriginal scenario JSON:\\n${scenario_payload}\\n\\nRepair instructions:\\n${retry_prompt}\\n\\nReturn JSON only with scenario_domain, scenario_slug, and scenario_md.\" recovery_owner=\"supervisor\"]\n    repaired_payload_gate [shape=\"diamond\" label=\"Repaired payload valid?\"]\n    save [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"scenario.save\" label=\"Write scenario file\" output_key=\"scenario_path\" action_payload=\"${payload}\" action_registry_root=\"${scenarios_root}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    start [shape=\"Mdiamond\" label=\"Start\"]\n    validate_payload [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.validate_payload\" label=\"Validate scenario payload\" output_format=\"json\" outputs=\"ok,error,retry_prompt,scenario_domain,scenario_slug,scenario_md,payload\" action_payload=\"${scenario_payload}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    validate_repaired_payload [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"scenario.validate_payload\" label=\"Validate repaired scenario payload\" output_format=\"json\" outputs=\"ok,error,retry_prompt,scenario_domain,scenario_slug,scenario_md,payload\" action_payload=\"${scenario_payload}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    write [class=\"scenario_author\" benchmark_job_id=\"goal.write_scenario.write\" llm_path_id=\"mothership.write_scenario_item.write\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_scenario\" llm_model=\"openai/gpt-5.1-codex-mini\" label=\"Write scenario\" output_key=\"scenario_payload\" output_format=\"json\" outputs=\"scenario_domain,scenario_slug,scenario_md\" reasoning_effort=\"low\" timeout=\"2m\" prompt=\"Load the globally installed scenario writing skill by reading ~/.claude/skills/scenario-writer/SKILL.md, then follow it precisely. If the scenario-format reference is unavailable, proceed anyway.\\n\\nWrite a concrete, durable AstroChicken scenario that captures a known high-value product or factory judgment pattern.\\nDo not write minutia, tiny edge-case scenarios, or exhaustive regression catalogs.\\nThe scenario should be valuable enough that a future judge would plausibly reuse it across multiple related changes.\\n\\nHard format requirements for scenario_md:\\n- Include ALL six sections with exact level-2 headings:\\n  - ## Context\\n  - ## Preconditions\\n  - ## Trigger\\n  - ## Expected Behavior\\n  - ## Assertions\\n  - ## Edge Cases\\n- Include at least one '- [ ]' checkbox assertion.\\nScenario brief JSON:\\n${scenario_brief}\\n\\nReturn JSON with fields scenario_domain, scenario_slug, and scenario_md (full SCENARIO.md content). Return JSON only.\"]\n    save -> done\n    start -> write -> normalize_structure -> validate_payload -> payload_gate\n    payload_gate -> repair_payload [condition=\"ok!=true\" label=\"repair\"]\n    payload_gate -> save [condition=\"ok=true\" label=\"valid\"]\n    renormalize_structure -> validate_repaired_payload\n    repair_payload -> renormalize_structure\n    repaired_payload_gate -> done [condition=\"ok!=true\" label=\"fail_closed\"]\n    repaired_payload_gate -> save [condition=\"ok=true\" label=\"valid\"]\n    validate_repaired_payload -> repaired_payload_gate\n}"
+}

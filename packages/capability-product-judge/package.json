@@ -1,0 +1,20 @@
+{
+  "name": "@hatch/capability-product-judge",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Hatch product judge capability: post-merge alignment judgment graph",
+  "exports": {
+    "./graphs/*": "./graphs/*",
+    "./skills/*": "./skills/*",
+    "./manifest": "./capability-manifest.v1.json",
+    "./contract": "./capability-contract.v1.json",
+    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
+    "./capability-contract.v1.json": "./capability-contract.v1.json"
+  },
+  "files": [
+    "graphs",
+    "skills",
+    "capability-manifest.v1.json",
+    "capability-contract.v1.json"
+  ]
+}

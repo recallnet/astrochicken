@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "milestone_execute_parallel_item",
+  "familyId": "goal_execution",
+  "title": "Milestone execute parallel item",
+  "description": "Typed source for the mothership per-item milestone execution workflow.",
+  "sourcePath": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "milestone_execute_parallel_item",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "execute_issue",
+        "runtimeNodeId": "execute_issue"
+      },
+      {
+        "sourceNodeId": "extract_parallel_issue",
+        "runtimeNodeId": "extract_parallel_issue"
+      },
+      {
+        "sourceNodeId": "isolate_parallel_context",
+        "runtimeNodeId": "isolate_parallel_context"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      }
+    },
+    {
+      "id": "execute_issue",
+      "kind": "pipeline",
+      "title": "Execute issue in isolated milestone branch",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "export_keys": "impl_result",
+        "inherit_context": "true",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.pipeline"
+      },
+      "composition": {
+        "workflowRef": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "extract_parallel_issue",
+      "kind": "tool_action",
+      "title": "Extract parallel issue context",
+      "actionRuntime": "in_process",
+      "actionId": "coding.extract_issue_item",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_issue_item": "${parallel_issue}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "next_issue_number",
+          "next_issue_title"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "isolate_parallel_context",
+      "kind": "tool_action",
+      "title": "Build issue-isolated branch/session context",
+      "actionRuntime": "in_process",
+      "actionId": "software.build_milestone_parallel_context",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_issue_number": "${next_issue_number}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "branch",
+          "worktree_dir",
+          "agent_session_id"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start"
+    }
+  ],
+  "edges": [
+    {
+      "from": "execute_issue",
+      "to": "done"
+    },
+    {
+      "from": "extract_parallel_issue",
+      "to": "isolate_parallel_context"
+    },
+    {
+      "from": "isolate_parallel_context",
+      "to": "execute_issue"
+    },
+    {
+      "from": "start",
+      "to": "extract_parallel_issue"
+    }
+  ]
+}

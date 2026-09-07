@@ -1,0 +1,3 @@
+{
+  "integration_command": "./node_modules/.bin/turbo run test"
+}

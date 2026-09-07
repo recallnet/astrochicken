@@ -1,0 +1,18 @@
+// Generated from factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs. Do not edit by hand.
+@import "../roles.stylesheet"
+
+digraph daily_release_report {
+    label = "daily_release_report"
+    workflow_source = "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs"
+    workdir = "."
+    done [shape="Msquare" label="Done" recovery_sink_type="terminal"]
+    run_release_report_flow [type="pipeline" label="Run release reporting flow" recovery_owner="supervisor" pipeline="packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs" context_keys="release_reporting_repo" inherit_context="true" fail_open="true" trust_domain="mothership.local" trust_role="mothership.local.pipeline"]
+    set_factory_id [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Bind factory id" output_key="factory_id" recovery_owner="supervisor" action_value="${factory_id}" action_fallback="mothership" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_release_reporting_repo [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Set release-reporting repo" output_key="release_reporting_repo" recovery_owner="supervisor" action_value="${gh_repo}" action_fallback="${gh_repo}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_repo [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Bind report repo" output_key="gh_repo" recovery_owner="supervisor" action_value="${repo}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_repo_path [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Bind repo path" output_key="repo_path" recovery_owner="supervisor" action_value="${repo_path}" action_fallback="." trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_trust_domain [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Bind trust domain" output_key="trust_domain" recovery_owner="supervisor" action_value="${trust_domain}" action_fallback="mothership.local" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_trust_role [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Bind trust role" output_key="trust_role" recovery_owner="supervisor" action_value="${trust_role}" action_fallback="mothership.local.tool" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start [shape="Mdiamond" label="Start"]
+    start -> set_repo -> set_factory_id -> set_repo_path -> set_trust_domain -> set_trust_role -> set_release_reporting_repo -> run_release_report_flow -> done
+}

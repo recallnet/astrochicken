@@ -1,0 +1,16 @@
+{
+  "issue_number": "461",
+  "issue_title": "Empty issue_changed_files handling",
+  "issue_body_excerpt": "Ensure empty issue_changed_files is preserved deterministically.",
+  "branch": "wave/goal-227-wave-3",
+  "worktree_dir": "/tmp/wave-shared",
+  "commits_ahead": "5",
+  "issue_commits": "0",
+  "changed_files": [
+    "README.md",
+    "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs"
+  ],
+  "issue_changed_files": [],
+  "snapshot_sha": "1111111111111111111111111111111111111111",
+  "summary": "No issue-scoped file delta"
+}

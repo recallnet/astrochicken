@@ -1,0 +1,6 @@
+{
+  "issue_draft": "30m",
+  "issue_repair": "30m",
+  "issue_judge": "30m",
+  "issue_revise": "30m"
+}

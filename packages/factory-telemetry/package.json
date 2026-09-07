@@ -1,0 +1,39 @@
+{
+  "name": "@recallnet/factory-telemetry",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./daily-lens-langfuse": "./src/daily-lens-langfuse.ts",
+    "./daily-lens-langfuse-metrics": "./src/daily-lens-langfuse-metrics.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node ../../scripts/run-package-test-manifest.mjs --repo-root ../.. --manifest config/testing/package-test-manifests/packages-factory-telemetry.json --suite default",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@opentelemetry/api-logs": "^0.206.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.206.0",
+    "@opentelemetry/sdk-logs": "^0.206.0",
+    "@hatch/factory-core": "workspace:*",
+    "langfuse": "^3.38.6"
+  },
+  "devDependencies": {
+    "@hatch/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

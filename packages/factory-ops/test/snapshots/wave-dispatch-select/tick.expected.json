@@ -1,0 +1,99 @@
+{
+  "inputs": {
+    "blocked_by": [
+      {
+        "blocked_by": [],
+        "issue_number": 201
+      },
+      {
+        "blocked_by": [],
+        "issue_number": 202
+      }
+    ],
+    "control_plane_blocked": [],
+    "max_concurrent": 1,
+    "milestone_issues": [
+      {
+        "issues": [
+          {
+            "number": 201,
+            "title": "Add feature A"
+          },
+          {
+            "number": 202,
+            "title": "Add feature B"
+          }
+        ],
+        "milestone": "goal-2-wave-1"
+      }
+    ],
+    "milestones": [
+      {
+        "number": 1,
+        "title": "goal-1-wave-1"
+      },
+      {
+        "number": 2,
+        "title": "goal-2-wave-1"
+      }
+    ],
+    "priorities_text": "goal-2-wave-1",
+    "ready_issues": [
+      {
+        "labels": [
+          "ready"
+        ],
+        "milestone": "goal-1-wave-1",
+        "number": 301,
+        "title": "Wave Ready: goal-1-wave-1"
+      }
+    ],
+    "repo": "recallnet/astrochicken",
+    "run_id": "run-123"
+  },
+  "runs": [
+    {
+      "run_id": "wave:goal-1-wave-1",
+      "skip_reason": "already_ready",
+      "status": "skipped",
+      "wave": "goal-1-wave-1"
+    },
+    {
+      "run_id": "wave:goal-2-wave-1",
+      "slot_id": "slot-1",
+      "status": "launched",
+      "wave": "goal-2-wave-1"
+    }
+  ],
+  "schema_version": "tick.v1",
+  "slots": [
+    {
+      "run_id": "wave:goal-2-wave-1",
+      "slot_id": "slot-1",
+      "state": "launched",
+      "wave": "goal-2-wave-1"
+    }
+  ],
+  "throughput_invariants": {
+    "active_wave_count": 0,
+    "duplicate_claims": {
+      "expected_contention": [],
+      "expected_contention_count": 0,
+      "markers": [],
+      "total_duplicate_claims": 0,
+      "unsafe_drift": [],
+      "unsafe_drift_count": 0
+    },
+    "idle_slot_count": 1,
+    "idle_with_runnable_backlog": true,
+    "max_concurrent_waves": 1,
+    "ready_backlog_count": 1,
+    "refill_latency": {
+      "latest_ms": null,
+      "p50_ms": null,
+      "p95_ms": null,
+      "sample_count": 0,
+      "samples": []
+    }
+  }
+}

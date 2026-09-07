@@ -1,0 +1,1506 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_issue_execute",
+  "familyId": "software_development",
+  "title": "Goal Issue Execute",
+  "description": "Typed workflow source owner for packages/capability-software-development/graphs/goal_issue_execute.dot.",
+  "sourcePath": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "label": "goal_issue_execute",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "goal_issue_execute",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "approve_attempt",
+        "runtimeNodeId": "approve_attempt"
+      },
+      {
+        "sourceNodeId": "assert_main_after_build",
+        "runtimeNodeId": "assert_main_after_build"
+      },
+      {
+        "sourceNodeId": "build",
+        "runtimeNodeId": "build"
+      },
+      {
+        "sourceNodeId": "build_review_context",
+        "runtimeNodeId": "build_review_context"
+      },
+      {
+        "sourceNodeId": "bump_approve",
+        "runtimeNodeId": "bump_approve"
+      },
+      {
+        "sourceNodeId": "bump_revise",
+        "runtimeNodeId": "bump_revise"
+      },
+      {
+        "sourceNodeId": "cleanup_legacy",
+        "runtimeNodeId": "cleanup_legacy"
+      },
+      {
+        "sourceNodeId": "commit_push",
+        "runtimeNodeId": "commit_push"
+      },
+      {
+        "sourceNodeId": "commit_push_gate",
+        "runtimeNodeId": "commit_push_gate"
+      },
+      {
+        "sourceNodeId": "complexity_gate",
+        "runtimeNodeId": "complexity_gate"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "decide_existing_reuse",
+        "runtimeNodeId": "decide_existing_reuse"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_review_verdict_telemetry",
+        "runtimeNodeId": "emit_review_verdict_telemetry"
+      },
+      {
+        "sourceNodeId": "encode_builder_output",
+        "runtimeNodeId": "encode_builder_output"
+      },
+      {
+        "sourceNodeId": "enforce_visual_refinement_evidence",
+        "runtimeNodeId": "enforce_visual_refinement_evidence"
+      },
+      {
+        "sourceNodeId": "ensure_toolchain",
+        "runtimeNodeId": "ensure_toolchain"
+      },
+      {
+        "sourceNodeId": "estimate_complexity",
+        "runtimeNodeId": "estimate_complexity"
+      },
+      {
+        "sourceNodeId": "existing_gate",
+        "runtimeNodeId": "existing_gate"
+      },
+      {
+        "sourceNodeId": "fetch_goal_issue",
+        "runtimeNodeId": "fetch_goal_issue"
+      },
+      {
+        "sourceNodeId": "fetch_issue",
+        "runtimeNodeId": "fetch_issue"
+      },
+      {
+        "sourceNodeId": "init",
+        "runtimeNodeId": "init"
+      },
+      {
+        "sourceNodeId": "inspect_changes",
+        "runtimeNodeId": "inspect_changes"
+      },
+      {
+        "sourceNodeId": "inspect_existing",
+        "runtimeNodeId": "inspect_existing"
+      },
+      {
+        "sourceNodeId": "load_agent_guidance_context",
+        "runtimeNodeId": "load_agent_guidance_context"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "mode_gate",
+        "runtimeNodeId": "mode_gate"
+      },
+      {
+        "sourceNodeId": "report_approved",
+        "runtimeNodeId": "report_approved"
+      },
+      {
+        "sourceNodeId": "report_build_failed",
+        "runtimeNodeId": "report_build_failed"
+      },
+      {
+        "sourceNodeId": "report_retry_failed",
+        "runtimeNodeId": "report_retry_failed"
+      },
+      {
+        "sourceNodeId": "report_setup_failed",
+        "runtimeNodeId": "report_setup_failed"
+      },
+      {
+        "sourceNodeId": "reset_stale_branch",
+        "runtimeNodeId": "reset_stale_branch"
+      },
+      {
+        "sourceNodeId": "resolve_mode",
+        "runtimeNodeId": "resolve_mode"
+      },
+      {
+        "sourceNodeId": "resolve_review_route",
+        "runtimeNodeId": "resolve_review_route"
+      },
+      {
+        "sourceNodeId": "retry_gate",
+        "runtimeNodeId": "retry_gate"
+      },
+      {
+        "sourceNodeId": "review",
+        "runtimeNodeId": "review"
+      },
+      {
+        "sourceNodeId": "review_context_gate",
+        "runtimeNodeId": "review_context_gate"
+      },
+      {
+        "sourceNodeId": "revise_attempt",
+        "runtimeNodeId": "revise_attempt"
+      },
+      {
+        "sourceNodeId": "route_default_complexity",
+        "runtimeNodeId": "route_default_complexity"
+      },
+      {
+        "sourceNodeId": "route_high_complexity",
+        "runtimeNodeId": "route_high_complexity"
+      },
+      {
+        "sourceNodeId": "route_medium_complexity",
+        "runtimeNodeId": "route_medium_complexity"
+      },
+      {
+        "sourceNodeId": "route_non_high_complexity",
+        "runtimeNodeId": "route_non_high_complexity"
+      },
+      {
+        "sourceNodeId": "send_review_message",
+        "runtimeNodeId": "send_review_message"
+      },
+      {
+        "sourceNodeId": "set_issue_context",
+        "runtimeNodeId": "set_issue_context"
+      },
+      {
+        "sourceNodeId": "set_max_review_attempts",
+        "runtimeNodeId": "set_max_review_attempts"
+      },
+      {
+        "sourceNodeId": "setup",
+        "runtimeNodeId": "setup"
+      },
+      {
+        "sourceNodeId": "setup_gate",
+        "runtimeNodeId": "setup_gate"
+      },
+      {
+        "sourceNodeId": "should_retry_review",
+        "runtimeNodeId": "should_retry_review"
+      },
+      {
+        "sourceNodeId": "smoke_skip",
+        "runtimeNodeId": "smoke_skip"
+      },
+      {
+        "sourceNodeId": "snapshot_head",
+        "runtimeNodeId": "snapshot_head"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "validate_review_context",
+        "runtimeNodeId": "validate_review_context"
+      },
+      {
+        "sourceNodeId": "visual_refinement_gate",
+        "runtimeNodeId": "visual_refinement_gate"
+      },
+      {
+        "sourceNodeId": "write_review_evidence",
+        "runtimeNodeId": "write_review_evidence"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "approve_attempt",
+      "kind": "llm_prompt",
+      "title": "Record approve attempt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Record approve attempt",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "assert_main_after_build",
+      "kind": "tool_action",
+      "title": "Assert canonical checkout on main after build",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.assert_main_branch",
+        "label": "Assert canonical checkout on main after build",
+        "output_format": "json",
+        "outputs": "corrected,ok",
+        "action_repo": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "build",
+      "kind": "llm_prompt",
+      "title": "Implement issue",
+      "dotAttributes": {
+        "type": "agent.worktree",
+        "governance": "irreversible",
+        "class": "coder",
+        "benchmark_job_id": "goal.execute.issue.build",
+        "llm_path_id": "mothership.goal_issue_execute.build",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.issue",
+        "label": "Implement issue",
+        "output_key": "builder_output",
+        "timeout": "300m",
+        "prompt": "You are working on goal #${goal_issue_number} on a shared goal branch.\n\nIntent stack JSON:\n${intent_stack}\n\nAGENTS.md excerpt (repo governance contract):\n${agents_excerpt}\n\nAGENT-LEARNINGS.md excerpt (recent proven lessons):\n${agent_learnings_excerpt}\n\nParent goal: #${goal_issue_number}\nThe parent goal context below is for alignment only. Do not implement the whole goal in this pass. Implement only the current issue first.\n\nParent goal issue JSON:\n${goal_issue}\n\nCurrent implementation issue #${issue_number}: ${issue_title}\n\n${issue_body}\n\nComplexity estimate:\n${complexity_estimate}\n\nReviewer notes (if any):\n${review_notes}\n\nFollow repo conventions. Run scoped checks relevant to your changes. Commit your work with a clear message. The commit message MUST include 'Closes #${issue_number}' so GitHub auto-closes the issue on merge. Use the platform and factory intent to favor real shipped completion over ceremony. If reviewer notes are present, address them directly in code/tests before handing back to review.\n\nScope discipline:\n- Only modify files that are directly required by THIS issue's acceptance criteria.\n- If a pre-commit test or contract test fails on code you did NOT write or change, do NOT modify the failing test or the code it guards to make it pass. Instead, report the failure in BUILDER_NOTES so the reviewer and supervisor can route it correctly.\n- This branch is shared with sibling issues. Changing files outside your scope can silently revert or break their work.\n\nOptional handoff:\n- If most of the issue was already satisfied before this pass, or the final diff is intentionally tiny because you verified/reused existing work, you may end your final response with:\n  BUILDER_NOTES: <brief reviewer-facing explanation>\n- Keep BUILDER_NOTES short and specific. Omit it when unnecessary.",
+        "base": "main",
+        "branch": "${branch}",
+        "max_retries": "1",
+        "repo": "${repo}",
+        "session_id": "${agent_session_id}",
+        "skip_prompt_if_commits_exist": "false"
+      }
+    },
+    {
+      "id": "build_review_context",
+      "kind": "tool_action",
+      "title": "Build reviewer context contract",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_review_context",
+        "label": "Build reviewer context contract",
+        "output_format": "json",
+        "outputs": "review_context_path,review_context_sha256,review_context_valid,review_context_error",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "bump_approve",
+      "kind": "tool_action",
+      "title": "Increment review attempt (approve)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.next_review_attempt",
+        "label": "Increment review attempt (approve)",
+        "output_key": "review_attempt",
+        "action_attempt": "${review_attempt}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "bump_revise",
+      "kind": "tool_action",
+      "title": "Increment review attempt (revise)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.next_review_attempt",
+        "label": "Increment review attempt (revise)",
+        "output_key": "review_attempt",
+        "action_attempt": "${review_attempt}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "cleanup_legacy",
+      "kind": "tool_action",
+      "title": "Cleanup legacy worktree path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.cleanup_legacy_worktree",
+        "label": "Cleanup legacy worktree path",
+        "output_format": "json",
+        "outputs": "removed,reason",
+        "action_repo": "${repo}",
+        "action_legacy_worktree_dir": "${legacy_worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "commit_push",
+      "kind": "tool_action",
+      "title": "Commit changes (local only)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.commit_local",
+        "label": "Commit changes (local only)",
+        "output_format": "json",
+        "outputs": "ok,reason",
+        "action_repo": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_run_id": "${__run_id}",
+        "action_issue_title": "${issue_title}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "commit_push_gate",
+      "kind": "decision",
+      "title": "Commit succeeded?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Commit succeeded?"
+      }
+    },
+    {
+      "id": "complexity_gate",
+      "kind": "decision",
+      "title": "Complexity class route",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Complexity class route"
+      }
+    },
+    {
+      "id": "decide",
+      "kind": "decision",
+      "title": "Review approved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Review approved?"
+      }
+    },
+    {
+      "id": "decide_existing_reuse",
+      "kind": "tool_action",
+      "title": "Decide existing-commit reuse",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.decide_existing_reuse_with_notes",
+        "label": "Decide existing-commit reuse",
+        "output_format": "json",
+        "outputs": "reuse_existing_commits,review_notes",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_existing_commits": "${existing_commits}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "emit_review_verdict_telemetry",
+      "kind": "tool_action",
+      "title": "Emit review verdict telemetry",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.emit_review_verdict_telemetry",
+        "label": "Emit review verdict telemetry",
+        "output_key": "review_verdict_telemetry_emitted",
+        "action_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_max_review_attempts": "${max_review_attempts}",
+        "action_milestone": "${goal_issue_number}",
+        "action_retry_attempt": "${review_attempt}",
+        "action_verdict": "${verdict}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_builder_output",
+      "kind": "tool_action",
+      "title": "Encode optional builder handoff",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode optional builder handoff",
+        "output_key": "builder_output_b64",
+        "action_value": "${builder_output}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "enforce_visual_refinement_evidence",
+      "kind": "tool_action",
+      "title": "Enforce visual-refinement review evidence",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.verify_visual_refinement_evidence",
+        "label": "Enforce visual-refinement review evidence",
+        "output_format": "json",
+        "outputs": "visual_refinement_gate_pass,visual_refinement_gate_code,visual_refinement_required,visual_refinement_missing,visual_refinement_notes,visual_refinement_scenario_root",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "action_factory_root": "${factory_root}",
+        "action_review_context_gate_code": "${review_context_gate_code}",
+        "action_review_context_gate_pass": "${review_context_gate_pass}",
+        "action_review_context_path": "${review_context_path}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "ensure_toolchain",
+      "kind": "tool_action",
+      "title": "Ensure worktree toolchain access",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.ensure_worktree_toolchain",
+        "label": "Ensure worktree toolchain access",
+        "output_format": "json",
+        "outputs": "linked,reason",
+        "action_repo": "${repo}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "estimate_complexity",
+      "kind": "tool_action",
+      "title": "Estimate issue complexity class",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.estimate_issue_complexity",
+        "label": "Estimate issue complexity class",
+        "output_key": "complexity_estimate",
+        "output_format": "json",
+        "outputs": "complexity_class,complexity_signals,complexity_reason,complexity_otel_key",
+        "action_issue_body": "${issue_body}",
+        "action_issue_title": "${issue_title}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "existing_gate",
+      "kind": "decision",
+      "title": "Reuse existing commits?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Reuse existing commits?"
+      }
+    },
+    {
+      "id": "fetch_goal_issue",
+      "kind": "tool_action",
+      "title": "Fetch goal issue context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.fetch_goal_issue",
+        "label": "Fetch goal issue context",
+        "output_key": "goal_issue",
+        "action_repo": "${gh_repo}",
+        "action_goal_number": "${goal_issue_number}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fetch_issue",
+      "kind": "tool_action",
+      "title": "Fetch issue body",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.fetch_issue_body",
+        "label": "Fetch issue body",
+        "output_key": "issue_body",
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${issue_number}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "init",
+      "kind": "tool_action",
+      "title": "Init worktree",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.init_wave_issue_worktree",
+        "label": "Init worktree",
+        "output_key": "worktree_info",
+        "output_format": "json",
+        "outputs": "branch,worktree_dir,legacy_worktree_dir,agent_session_id",
+        "action_repo": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_agent_session_id": "${agent_session_id}",
+        "action_branch": "${branch}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inspect_changes",
+      "kind": "tool_action",
+      "title": "Inspect branch changes",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.inspect_branch_changes",
+        "label": "Inspect branch changes",
+        "output_format": "json",
+        "outputs": "commits_ahead,changed_files,latest_issue_change_summary",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inspect_existing",
+      "kind": "tool_action",
+      "title": "Inspect existing branch state",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.inspect_existing_commits",
+        "label": "Inspect existing branch state",
+        "output_format": "json",
+        "outputs": "existing_commits",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_agent_guidance_context",
+      "kind": "tool_action",
+      "title": "Load AGENTS/AGENT-LEARNINGS context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.load_agent_guidance_context",
+        "label": "Load AGENTS/AGENT-LEARNINGS context",
+        "output_format": "json",
+        "outputs": "agents_path,agents_found,agents_excerpt,agent_learnings_path,agent_learnings_found,agent_learnings_excerpt,agent_learnings_entry_count",
+        "action_repo_root": "${repo}",
+        "action_agents_path": "${factory_root}/AGENTS.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_intent_stack",
+        "label": "Load intent stack",
+        "output_key": "intent_stack",
+        "action_factory_root": "${factory_root}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "mode_gate",
+      "kind": "decision",
+      "title": "Smoke mode?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Smoke mode?"
+      }
+    },
+    {
+      "id": "report_approved",
+      "kind": "tool_action",
+      "title": "Report approved result (merge deferred to goal end)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_approved_result",
+        "label": "Report approved result (merge deferred to goal end)",
+        "output_key": "impl_result",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_max_review_attempts": "${max_review_attempts}",
+        "action_review_attempt": "${review_attempt}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "action_review_notes": "${review_notes}",
+        "action_worktree_dir": "${worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "report_build_failed",
+      "kind": "tool_action",
+      "title": "Report build system failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_failed_result",
+        "label": "Report build system failure",
+        "output_key": "impl_result",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_max_review_attempts": "${max_review_attempts}",
+        "action_review_attempt": "${review_attempt}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "action_review_notes": "Implementation infrastructure failure before coding session startup.",
+        "action_worktree_dir": "${worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "report_retry_failed",
+      "kind": "tool_action",
+      "title": "Report review retry exhaustion",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_failed_result",
+        "label": "Report review retry exhaustion",
+        "output_key": "impl_result",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_max_review_attempts": "${max_review_attempts}",
+        "action_review_attempt": "${review_attempt}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "action_review_notes": "Review rejected the issue through the full retry budget.",
+        "action_worktree_dir": "${worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "report_setup_failed",
+      "kind": "tool_action",
+      "title": "Report worktree setup failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_infra_failure_result",
+        "label": "Report worktree setup failure",
+        "output_key": "impl_result",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_reason": "${reason}",
+        "action_worktree_dir": "${worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "reset_stale_branch",
+      "kind": "tool_action",
+      "title": "Reset stale branch (wrong-scope commits)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.reset_stale_branch",
+        "label": "Reset stale branch (wrong-scope commits)",
+        "output_format": "json",
+        "outputs": "reset,prior_commits",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_mode",
+      "kind": "tool_action",
+      "title": "Resolve execution mode (full|smoke; non-smoke follows full path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.resolve_execution_mode",
+        "label": "Resolve execution mode (full|smoke; non-smoke follows full path)",
+        "output_key": "execution_mode",
+        "action_mode": "${execution_mode}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_review_route",
+      "kind": "tool_action",
+      "title": "Resolve deterministic review route",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.resolve_review_route",
+        "label": "Resolve deterministic review route",
+        "output_format": "json",
+        "outputs": "disposition,confidence,recommended_transition,reason_codes,notes,route_reason,verdict",
+        "action_review_context_error": "${review_context_error}",
+        "action_review_context_gate_code": "${review_context_gate_code}",
+        "action_review_context_gate_pass": "${review_context_gate_pass}",
+        "action_review_context_path": "${review_context_path}",
+        "action_verdict": "${verdict}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "retry_gate",
+      "kind": "decision",
+      "title": "Retry issue implementation?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Retry issue implementation?"
+      }
+    },
+    {
+      "id": "review",
+      "kind": "llm_prompt",
+      "title": "Code review",
+      "dotAttributes": {
+        "class": "reviewer",
+        "benchmark_job_id": "goal.execute.issue.review",
+        "llm_path_id": "mothership.goal_issue_execute.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.issue",
+        "label": "Code review",
+        "prompt": "You are the semantic code reviewer for issue completion in this goal. Your job is to decide whether issue #${issue_number} is actually complete and correct against the issue contract, the parent goal intent, the platform/factory intent, and the current codebase.\n\nLoad the local code review skill by reading:\n- ${capability_coding_skills}/code_review/SKILL.md\n- ${factory_root}/skills/code_review/REPO.md (if available)\n\nFollow both when present, with REPO.md taking precedence for repo-specific policy.\n\n## Context packet (must use all of it)\n- Intent stack JSON:\n${intent_stack}\n- Parent goal issue number: ${goal_issue_number}\n- Parent goal issue JSON:\n${goal_issue}\n- Current issue number: ${issue_number}\n- Current issue title: ${issue_title}\n- Current issue body:\n${issue_body}\n- Current goal: #${goal_issue_number}\n- Worktree path: ${worktree_dir}\n- Branch: ${branch}\n- Evidence artifact path: ${review_evidence_path}\n- Reviewer context artifact path: ${review_context_path}\n- Reviewer context hash (sha256): ${review_context_sha256}\n- Builder notes (optional): ${builder_notes}\n- Commits ahead: ${commits_ahead}\n- Full branch changed files (includes all issues on this shared goal branch — do NOT use as the judge scope): ${changed_files}\n- Issue-scoped changed files (only files changed by THIS issue #${issue_number}, excludes sibling goal work — use this as your judge scope): ${issue_changed_files}\n- Latest issue change summary: ${latest_issue_change_summary}\n\nIMPORTANT: Judge the implementation against issue_changed_files only. Do not penalize or request revision for work in changed_files that does not appear in issue_changed_files — that work belongs to other issues on this shared branch.\n\nTreat the reviewer context artifact as the canonical, versioned contract. Require schema_version=reviewer_context/v1 and deterministic policy resolution metadata (`policy_sources`, `effective_policy`) with global policy loaded first and repo policy loaded second (repo overrides key conflicts). If the reviewer context artifact is missing/malformed, policy metadata is missing, or required keys are missing, return a code-review verdict envelope with disposition=reject, recommended_transition=revise, and REVIEW_CONTEXT_INVALID in reason_codes.\n\nRequired review flow:\n1. Restate the promised change in precise terms from the goal and issue. Derive what counts as done, what is out of scope, and what acceptance evidence is required.\n2. Inspect the actual issue-scoped change, not just the builder narrative. Treat latest_issue_change_summary as an untrusted hint, not ground truth.\n3. Inspect the touched files and the surrounding callsites, contracts, interfaces, and wiring needed to prove the behavior is reachable and correctly integrated.\n4. Use review evidence, tests, and local repo state to judge whether the issue contract is actually satisfied. Do not approve partial wiring, dead code, or unproven claims.\n5. Apply platform and factory intent as a semantic quality bar: prefer real shipped completion over ceremony, partial enablement, or unresolved coordination work.\n6. Approve only if the issue is truly complete. Otherwise return concrete, issue-scoped revision findings.\n\nIf anything is ambiguous, underspecified, or inconsistent, actively inspect first-party context before deciding:\n- Run gh issue view ${issue_number} --repo ${gh_repo} --json number,title,body,labels\n- Run gh issue view ${goal_issue_number} --repo ${gh_repo} --json number,title,body,labels\n- Inspect the local repo at ${worktree_dir}, focusing on issue-scoped files, evidence-scoped diffs, and surrounding callsites/interfaces.\n\nPolicy override: if `effective_policy.values.review.route_override` resolves to `revise`, return disposition=reject with recommended_transition=revise even when findings are otherwise clean.\n\nCode review is not QA. Do not turn this into a generic QA executor and do not rerun the entire pre-commit/build suite by default. But you must still judge whether the claimed acceptance criteria are actually evidenced by the code, tests, and integration points present. Require additional QA/test execution only when the issue contract explicitly calls for it or when the existing evidence is insufficient to prove correctness.\n\nIf revising, provide issue-scoped actionable guidance: point to concrete files/functions/tests or missing wiring, explain what is incomplete or incorrect relative to the issue/goal contract, and state what must change to earn approval.\n\nReturn JSON with:\n{\n  \"schema\": \"verdict/v1\",\n  \"verdict_kind\": \"code_review\",\n  \"disposition\": \"approve|reject\",\n  \"confidence\": \"high|medium|low\",\n  \"recommended_transition\": \"approved|revise\",\n  \"observation\": {\n    \"scope_status\": \"aligned|mismatch\",\n    \"evidence_status\": \"sufficient|insufficient\",\n    \"integration_status\": \"proven|unproven\"\n  },\n  \"recommendation\": {\n    \"action\": \"report_approved|revise_issue\",\n    \"fixes\": [\"Actionable revision guidance when rejecting\"]\n  },\n  \"reason_codes\": [\"APPROVED|EVIDENCE_MISSING|REVIEW_CONTEXT_INVALID|SCOPE_MISMATCH|TESTS_MISSING|LOGIC_INCORRECT|SECURITY_CONCERN|REVIEW_OUTPUT_SCHEMA_INVALID\"],\n  \"notes\": \"Actionable feedback for revisions\"\n}\n\nRules:\n- reason_codes must be a non-empty array of canonical codes from the list above.\n- If disposition=approve, recommended_transition must be approved and reason_codes must be exactly [\"APPROVED\"].\n- If disposition=reject, recommended_transition must be revise and APPROVED must not appear in reason_codes.\n\nReturn JSON only.",
+        "max_retries": "1",
+        "session_id": "${reviewer_session_id}"
+      }
+    },
+    {
+      "id": "review_context_gate",
+      "kind": "decision",
+      "title": "Reviewer context completeness passed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Reviewer context completeness passed?"
+      }
+    },
+    {
+      "id": "revise_attempt",
+      "kind": "llm_prompt",
+      "title": "Record revise attempt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Record revise attempt",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "route_default_complexity",
+      "kind": "llm_prompt",
+      "title": "Route default complexity path (low|unknown|unexpected)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Route default complexity path (low|unknown|unexpected)",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "route_high_complexity",
+      "kind": "llm_prompt",
+      "title": "Route high-complexity issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Route high-complexity issue",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "route_medium_complexity",
+      "kind": "llm_prompt",
+      "title": "Route medium-complexity issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Route medium-complexity issue",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "route_non_high_complexity",
+      "kind": "llm_prompt",
+      "title": "Route non-high complexity issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Route non-high complexity issue",
+        "prompt": ":",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "send_review_message",
+      "kind": "tool_action",
+      "title": "Send review feedback directly to coding agent",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.send_review_message",
+        "label": "Send review feedback directly to coding agent",
+        "output_key": "review_message_result",
+        "action_issue_number": "${issue_number}",
+        "action_agent_session_id": "${agent_session_id}",
+        "action_issue_title": "${issue_title}",
+        "action_verdict": "${verdict}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_issue_context",
+      "kind": "tool_action",
+      "title": "Set issue context from parent",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.set_issue_context",
+        "label": "Set issue context from parent",
+        "output_format": "json",
+        "outputs": "issue_number,issue_title",
+        "action_issue_number": "${next_issue_number}",
+        "action_issue_title": "${next_issue_title}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_max_review_attempts",
+      "kind": "tool_action",
+      "title": "Resolve max review attempts and init counter",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.resolve_max_review_attempts",
+        "label": "Resolve max review attempts and init counter",
+        "output_format": "json",
+        "outputs": "max_review_attempts,review_attempt",
+        "action_max_review_attempts": "${max_review_attempts}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "setup",
+      "kind": "tool_action",
+      "title": "Setup worktree",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.setup_wave_issue_worktree",
+        "label": "Setup worktree",
+        "output_format": "json",
+        "outputs": "setup,reason",
+        "action_repo": "${repo}",
+        "action_branch": "${branch}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "setup_gate",
+      "kind": "decision",
+      "title": "Worktree ready?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Worktree ready?"
+      }
+    },
+    {
+      "id": "should_retry_review",
+      "kind": "tool_action",
+      "title": "Should retry review?",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.should_retry_review",
+        "label": "Should retry review?",
+        "output_key": "retry_review",
+        "action_attempt": "${review_attempt}",
+        "action_max_attempts": "${max_review_attempts}",
+        "action_review_verdict": "${disposition}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "smoke_skip",
+      "kind": "tool_action",
+      "title": "Smoke-mode skip",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.build_impl_result",
+        "label": "Smoke-mode skip",
+        "output_key": "impl_result",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_review_evidence_path": "${review_evidence_path}",
+        "action_review_failed": "true",
+        "action_review_notes": "Smoke mode: skipped implementation agent for deterministic validation only.",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "snapshot_head",
+      "kind": "tool_action",
+      "title": "Snapshot branch HEAD before build",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.snapshot_branch_head",
+        "label": "Snapshot branch HEAD before build",
+        "output_format": "json",
+        "outputs": "snapshot_sha",
+        "action_existing_snapshot": "${snapshot_sha}",
+        "action_worktree_dir": "${worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "validate_review_context",
+      "kind": "tool_action",
+      "title": "Validate reviewer context completeness",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.validate_review_context",
+        "label": "Validate reviewer context completeness",
+        "output_format": "json",
+        "outputs": "review_context_gate_pass,review_context_gate_code,review_context_error,disposition,confidence,recommended_transition,reason_codes,notes,verdict",
+        "action_review_context_error": "${review_context_error}",
+        "action_review_context_path": "${review_context_path}",
+        "action_review_context_sha256": "${review_context_sha256}",
+        "action_review_context_valid": "${review_context_valid}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "visual_refinement_gate",
+      "kind": "decision",
+      "title": "Visual-refinement evidence passed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Visual-refinement evidence passed?"
+      }
+    },
+    {
+      "id": "write_review_evidence",
+      "kind": "tool_action",
+      "title": "Write review evidence artifact",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "coding.write_review_evidence",
+        "label": "Write review evidence artifact",
+        "output_format": "json",
+        "outputs": "review_evidence_path,builder_notes,issue_changed_files",
+        "action_repo": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_builder_notes_b64": "${builder_output_b64}",
+        "action_integration_command": "${integration_command}",
+        "action_review_qa_command": "${review_qa_command}",
+        "action_snapshot_sha": "${snapshot_sha}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "init",
+      "to": "cleanup_legacy"
+    },
+    {
+      "from": "cleanup_legacy",
+      "to": "setup"
+    },
+    {
+      "from": "setup",
+      "to": "setup_gate"
+    },
+    {
+      "from": "report_build_failed",
+      "to": "done"
+    },
+    {
+      "from": "report_retry_failed",
+      "to": "done"
+    },
+    {
+      "from": "resolve_mode",
+      "to": "mode_gate"
+    },
+    {
+      "from": "resolve_review_route",
+      "to": "emit_review_verdict_telemetry"
+    },
+    {
+      "from": "emit_review_verdict_telemetry",
+      "to": "decide"
+    },
+    {
+      "from": "set_max_review_attempts",
+      "to": "snapshot_head"
+    },
+    {
+      "from": "snapshot_head",
+      "to": "build"
+    },
+    {
+      "from": "build",
+      "to": "assert_main_after_build"
+    },
+    {
+      "from": "start",
+      "to": "set_issue_context"
+    },
+    {
+      "from": "set_issue_context",
+      "to": "fetch_issue"
+    },
+    {
+      "from": "fetch_issue",
+      "to": "fetch_goal_issue"
+    },
+    {
+      "from": "fetch_goal_issue",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "load_agent_guidance_context"
+    },
+    {
+      "from": "load_agent_guidance_context",
+      "to": "estimate_complexity"
+    },
+    {
+      "from": "estimate_complexity",
+      "to": "complexity_gate"
+    },
+    {
+      "from": "approve_attempt",
+      "to": "bump_approve"
+    },
+    {
+      "from": "assert_main_after_build",
+      "to": "commit_push",
+      "condition": "ok=true",
+      "dotAttributes": {
+        "condition": "ok=true"
+      }
+    },
+    {
+      "from": "assert_main_after_build",
+      "to": "report_build_failed",
+      "condition": "ok!=true",
+      "dotAttributes": {
+        "condition": "ok!=true"
+      }
+    },
+    {
+      "from": "build_review_context",
+      "to": "validate_review_context"
+    },
+    {
+      "from": "bump_approve",
+      "to": "report_approved"
+    },
+    {
+      "from": "bump_revise",
+      "to": "should_retry_review"
+    },
+    {
+      "from": "commit_push_gate",
+      "to": "inspect_changes",
+      "condition": "ok=true",
+      "dotAttributes": {
+        "condition": "ok=true"
+      }
+    },
+    {
+      "from": "commit_push_gate",
+      "to": "report_build_failed",
+      "condition": "ok!=true",
+      "dotAttributes": {
+        "condition": "ok!=true"
+      }
+    },
+    {
+      "from": "commit_push",
+      "to": "commit_push_gate"
+    },
+    {
+      "from": "complexity_gate",
+      "to": "route_high_complexity",
+      "condition": "complexity_class=high",
+      "dotAttributes": {
+        "condition": "complexity_class=high"
+      }
+    },
+    {
+      "from": "complexity_gate",
+      "to": "route_non_high_complexity",
+      "condition": "complexity_class!=high",
+      "dotAttributes": {
+        "condition": "complexity_class!=high"
+      }
+    },
+    {
+      "from": "decide_existing_reuse",
+      "to": "existing_gate"
+    },
+    {
+      "from": "decide",
+      "to": "approve_attempt",
+      "condition": "disposition=approve",
+      "dotAttributes": {
+        "condition": "disposition=approve"
+      }
+    },
+    {
+      "from": "decide",
+      "to": "revise_attempt",
+      "condition": "disposition!=approve",
+      "dotAttributes": {
+        "condition": "disposition!=approve"
+      }
+    },
+    {
+      "from": "encode_builder_output",
+      "to": "write_review_evidence"
+    },
+    {
+      "from": "enforce_visual_refinement_evidence",
+      "to": "visual_refinement_gate"
+    },
+    {
+      "from": "ensure_toolchain",
+      "to": "inspect_existing"
+    },
+    {
+      "from": "existing_gate",
+      "to": "reset_stale_branch",
+      "condition": "reuse_existing_commits=reset",
+      "dotAttributes": {
+        "condition": "reuse_existing_commits=reset"
+      }
+    },
+    {
+      "from": "existing_gate",
+      "to": "resolve_mode",
+      "condition": "reuse_existing_commits=false",
+      "dotAttributes": {
+        "condition": "reuse_existing_commits=false"
+      }
+    },
+    {
+      "from": "existing_gate",
+      "to": "set_max_review_attempts",
+      "condition": "reuse_existing_commits=true",
+      "dotAttributes": {
+        "condition": "reuse_existing_commits=true"
+      }
+    },
+    {
+      "from": "inspect_changes",
+      "to": "encode_builder_output"
+    },
+    {
+      "from": "inspect_existing",
+      "to": "decide_existing_reuse"
+    },
+    {
+      "from": "mode_gate",
+      "to": "set_max_review_attempts",
+      "condition": "execution_mode!=smoke",
+      "dotAttributes": {
+        "condition": "execution_mode!=smoke"
+      }
+    },
+    {
+      "from": "mode_gate",
+      "to": "smoke_skip",
+      "condition": "execution_mode=smoke",
+      "dotAttributes": {
+        "condition": "execution_mode=smoke"
+      }
+    },
+    {
+      "from": "report_approved",
+      "to": "done"
+    },
+    {
+      "from": "report_setup_failed",
+      "to": "done"
+    },
+    {
+      "from": "reset_stale_branch",
+      "to": "resolve_mode"
+    },
+    {
+      "from": "retry_gate",
+      "to": "report_retry_failed",
+      "condition": "retry_review!=true",
+      "dotAttributes": {
+        "condition": "retry_review!=true"
+      }
+    },
+    {
+      "from": "retry_gate",
+      "to": "snapshot_head",
+      "condition": "retry_review=true",
+      "dotAttributes": {
+        "condition": "retry_review=true"
+      }
+    },
+    {
+      "from": "review_context_gate",
+      "to": "enforce_visual_refinement_evidence",
+      "condition": "review_context_gate_pass=true",
+      "dotAttributes": {
+        "condition": "review_context_gate_pass=true"
+      }
+    },
+    {
+      "from": "review_context_gate",
+      "to": "resolve_review_route",
+      "condition": "review_context_gate_pass!=true",
+      "dotAttributes": {
+        "condition": "review_context_gate_pass!=true"
+      }
+    },
+    {
+      "from": "review",
+      "to": "resolve_review_route"
+    },
+    {
+      "from": "revise_attempt",
+      "to": "send_review_message"
+    },
+    {
+      "from": "route_default_complexity",
+      "to": "init"
+    },
+    {
+      "from": "route_high_complexity",
+      "to": "init"
+    },
+    {
+      "from": "route_medium_complexity",
+      "to": "init"
+    },
+    {
+      "from": "route_non_high_complexity",
+      "to": "route_default_complexity",
+      "condition": "complexity_class!=medium",
+      "dotAttributes": {
+        "condition": "complexity_class!=medium"
+      }
+    },
+    {
+      "from": "route_non_high_complexity",
+      "to": "route_medium_complexity",
+      "condition": "complexity_class=medium",
+      "dotAttributes": {
+        "condition": "complexity_class=medium"
+      }
+    },
+    {
+      "from": "send_review_message",
+      "to": "bump_revise"
+    },
+    {
+      "from": "setup_gate",
+      "to": "ensure_toolchain",
+      "condition": "setup=true",
+      "dotAttributes": {
+        "condition": "setup=true"
+      }
+    },
+    {
+      "from": "setup_gate",
+      "to": "report_setup_failed",
+      "condition": "setup!=true",
+      "dotAttributes": {
+        "condition": "setup!=true"
+      }
+    },
+    {
+      "from": "should_retry_review",
+      "to": "retry_gate"
+    },
+    {
+      "from": "smoke_skip",
+      "to": "done"
+    },
+    {
+      "from": "validate_review_context",
+      "to": "review_context_gate"
+    },
+    {
+      "from": "visual_refinement_gate",
+      "to": "report_retry_failed",
+      "condition": "visual_refinement_gate_pass!=true",
+      "dotAttributes": {
+        "condition": "visual_refinement_gate_pass!=true"
+      }
+    },
+    {
+      "from": "visual_refinement_gate",
+      "to": "review",
+      "condition": "visual_refinement_gate_pass=true",
+      "dotAttributes": {
+        "condition": "visual_refinement_gate_pass=true"
+      }
+    },
+    {
+      "from": "write_review_evidence",
+      "to": "build_review_context"
+    }
+  ]
+}

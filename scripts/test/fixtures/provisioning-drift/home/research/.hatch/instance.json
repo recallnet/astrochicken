@@ -1,0 +1,27 @@
+{
+  "instance_id": "research",
+  "kind_id": "research",
+  "target_repo": {
+    "provider": "github",
+    "full_name": "example/research-home"
+  },
+  "control_plane_repo": "recallnet/astrochicken",
+  "workspace_mode": "",
+  "intake": {
+    "issue_selector": {
+      "labels": [
+        "managed-factory-bug",
+        "kind:research"
+      ]
+    }
+  },
+  "destinations": {
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "managed-factory-bug",
+        "kind:research"
+      ]
+    }
+  }
+}

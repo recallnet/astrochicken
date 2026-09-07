@@ -1,0 +1,21 @@
+{
+  "schema": "hatch.intent.patch.v1",
+  "intent_id": "intent.sample.onboarding",
+  "operations": [
+    {
+      "op": "replace",
+      "path": "/summary",
+      "value": "Provide a guided onboarding flow for new users with clear checkpoints."
+    },
+    {
+      "op": "add",
+      "path": "/constraints/-",
+      "value": "No new third-party SDKs"
+    },
+    {
+      "op": "add",
+      "path": "/acceptance_criteria/-",
+      "value": "Resetting the account clears onboarding state"
+    }
+  ]
+}

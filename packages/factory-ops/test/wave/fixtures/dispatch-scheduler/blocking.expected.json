@@ -1,0 +1,61 @@
+{
+  "selected_issues": [
+    {
+      "issue_id": 11,
+      "issue_number": 11,
+      "factory_id": "mothership",
+      "sort_key": "mothership#11",
+      "decision": "selected",
+      "reason_code": "selected",
+      "reason_details": {},
+      "notes": [
+        "blocked_by_missing",
+        "related_to_missing"
+      ]
+    }
+  ],
+  "skipped_issues": [
+    {
+      "issue_id": 10,
+      "issue_number": 10,
+      "factory_id": "mothership",
+      "sort_key": "mothership#10",
+      "decision": "skipped",
+      "reason_code": "blocked_by_open",
+      "reason_details": {
+        "blocked_by": [
+          {
+            "issue_key": "mothership#11",
+            "issue_number": 11,
+            "state": "OPEN"
+          }
+        ],
+        "blocks_confirmed_by": [
+          "mothership#11"
+        ]
+      },
+      "notes": [
+        "blocks_missing",
+        "related_to_missing"
+      ]
+    }
+  ],
+  "requeued_issues": [],
+  "stats": {
+    "total_issues": 2,
+    "eligible_count": 1,
+    "selected_count": 1,
+    "skipped_count": 1,
+    "requeued_count": 0,
+    "global_limit": 2,
+    "global_in_flight": 0,
+    "global_slots": 2,
+    "per_factory": {
+      "mothership": {
+        "limit": 2,
+        "in_flight": 0,
+        "slots_available": 1
+      }
+    }
+  }
+}

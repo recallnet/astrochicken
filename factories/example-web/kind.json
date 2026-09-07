@@ -1,0 +1,22 @@
+{
+  "kind_id": "example-web",
+  "schema_version": 1,
+  "managed": true,
+  "execution_mode": "code",
+  "default_workspace_mode": "checkout",
+  "shared_supervisor_shell": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "domain_graph": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+  "shell_hooks": {
+    "managed_load_context": "hatch-ops supervisor managed-load-context",
+    "managed_domain_contract": "hatch-ops supervisor managed-domain-contract"
+  },
+  "supported_destinations": [
+    "platform_incidents"
+  ],
+  "required_labels": [
+    "goal",
+    "ready",
+    "managed-factory-bug",
+    "factory:example-web"
+  ]
+}

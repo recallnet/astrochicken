@@ -1,0 +1,23 @@
+{
+  "name": "@hatch/factory-runtime-guard",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./canonical-worktree": "./src/canonical-worktree.ts",
+    "./cli-helpers": "./src/cli-helpers.ts",
+    "./factory-repo-roles": "./src/factory-repo-roles.ts",
+    "./git-mutation-guard": "./src/git-mutation-guard.ts",
+    "./io": "./src/io.ts",
+    "./mutation-policy-contract": "./src/mutation-policy-contract.ts"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.ts",
+    "typecheck": "find src test -name '*.ts' -print0 | sort -z | xargs -0 node --check"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

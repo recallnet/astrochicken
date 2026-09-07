@@ -1,0 +1,93 @@
+.reviewer {
+  type = "codergen";
+  reviewer = "true";
+  output_key = "review_result";
+  output_format = "json";
+  outputs = "disposition,confidence,recommended_transition,reason_codes,notes,verdict";
+}
+
+.judge {
+  type = "codergen";
+  judge = "true";
+  judge_context_scope = "identity";
+  output_key = "judge_result";
+  output_format = "json";
+  outputs = "disposition,confidence,recommended_transition,reason_codes,notes,verdict";
+}
+
+.issue_quality_judge {
+  type = "codergen";
+  judge = "true";
+  judge_context_scope = "identity";
+  output_key = "judge_result";
+  output_format = "json";
+  outputs = "disposition,confidence,recommended_transition,reason_codes,notes,verdict";
+}
+
+.post_merge_judge {
+  type = "codergen";
+  judge = "true";
+  judge_context_scope = "identity";
+  output_key = "judge_result";
+  output_format = "json";
+  outputs = "disposition,confidence,recommended_transition,reason_codes,notes,verdict";
+}
+
+.coder {
+  type = "agent.worktree";
+  governance = "irreversible";
+}
+
+.supervisor {
+  type = "stack.manager_loop";
+  governance = "irreversible";
+}
+
+.merge_resolver {
+  type = "stack.manager_loop";
+  governance = "irreversible";
+}
+
+.issue_writer {
+  type = "stack.manager_loop";
+  governance = "irreversible";
+}
+
+.triage_planner {
+  type = "stack.manager_loop";
+  governance = "irreversible";
+}
+
+.knowledge_worker {
+  type = "codergen";
+}
+
+.goal_decomposer {
+  type = "codergen";
+}
+
+.goal_batch_reviewer {
+  type = "codergen";
+}
+
+.scenario_author {
+  type = "codergen";
+}
+
+.release_narrator {
+  type = "codergen";
+}
+
+.red_strategist {
+  type = "agent.kw";
+  llm_provider = "anthropic";
+  llm_model = "claude-sonnet-4-6";
+  persona = "Contrarian product strategist. Finds gaps, challenges assumptions, and prioritizes ROI density over breadth.";
+}
+
+.blue_strategist {
+  type = "agent.kw";
+  llm_provider = "anthropic";
+  llm_model = "claude-opus-4-6";
+  persona = "Systems-minded architect. Synthesizes critiques into scoped, actionable goals with measurable success criteria.";
+}

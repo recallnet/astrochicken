@@ -1,0 +1,81 @@
+{
+  "$id": "https://recallnet.dev/contracts/factory-service-registry.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Versioned managed factory service registry document.",
+  "properties": {
+    "instances": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "allowed_runtime_version": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "assigned_host_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "feature_flags": {
+            "additionalProperties": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "propertyNames": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "instance_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "reserved_capacity": {
+            "type": "number"
+          },
+          "scheduler_weight": {
+            "type": "number"
+          },
+          "service_tier": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "support_owner": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "target_repo": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "upgrade_channel": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "instance_id",
+          "kind_id",
+          "target_repo",
+          "status",
+          "assigned_host_id"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "instances"
+  ],
+  "title": "Factory Service Registry",
+  "type": "object"
+}

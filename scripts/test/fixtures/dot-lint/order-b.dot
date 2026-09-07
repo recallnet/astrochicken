@@ -1,0 +1,7 @@
+digraph order_b {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  beta [type="tool" governance="reversible" prompt=":" trust_role="example.local.tool"]
+  alpha [type="tool" governance="reversible" prompt=":" trust_participant="example.local/example.local.tool"]
+  start -> beta -> alpha -> done
+}

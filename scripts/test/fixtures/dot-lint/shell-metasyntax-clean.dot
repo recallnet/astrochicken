@@ -1,0 +1,7 @@
+digraph shell_metasyntax_clean {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  judge_context_ok [type="tool" label="Judge context" output_key="judge_out" governance="reversible" prompt="node ops/cli.mjs judge --context '${context.judge_context}' --repo '${context.repo}'"]
+  body_file_ok [type="tool" label="Body file" output_key="body_out" governance="reversible" prompt="node ops/cli.mjs issue comment --repo '${context.repo}' --issue '${context.issue_number}' --body-file '${context.body_file}'"]
+  start -> judge_context_ok -> body_file_ok -> done
+}

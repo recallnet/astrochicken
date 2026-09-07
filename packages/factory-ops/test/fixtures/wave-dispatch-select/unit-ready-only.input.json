@@ -1,0 +1,26 @@
+{
+  "input": {
+    "milestones": [
+      { "title": "goal-1-wave-1" },
+      { "title": "goal-1-wave-2" }
+    ],
+    "readyIssues": [
+      {
+        "number": 11,
+        "title": "Wave Ready: goal-1-wave-1",
+        "labels": [{ "name": "ready" }],
+        "milestone": { "title": "goal-1-wave-1" }
+      }
+    ],
+    "prioritiesText": "",
+    "maxConcurrent": 1
+  },
+  "milestoneIssues": {
+    "goal-1-wave-2": [
+      { "number": 201, "title": "Add feature" }
+    ]
+  },
+  "blockedBy": {
+    "201": []
+  }
+}

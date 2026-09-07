@@ -1,0 +1,34 @@
+{
+  "instance_id": "brainstorm",
+  "kind_id": "brainstorm",
+  "workspace_mode": "api_only",
+  "target_repo": {
+    "provider": "github",
+    "repo_id": "R_kgDOExample",
+    "full_name": "example-org/example-notes"
+  },
+  "control_plane_repo": "recallnet/astrochicken",
+  "intake": {
+    "issue_selector": {
+      "labels": [
+        "brainstorm"
+      ]
+    }
+  },
+  "destinations": {
+    "goal_issues": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "goal",
+        "source:brainstorm"
+      ]
+    },
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "managed-factory-bug",
+        "kind:brainstorm"
+      ]
+    }
+  }
+}

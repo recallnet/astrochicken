@@ -1,0 +1,6 @@
+{
+  "factory_id": "example-trading",
+  "target_repo": "example-org/example-trading",
+  "control_plane_repo": "recallnet/astrochicken",
+  "work_dir": "/tmp/example-trading"
+}

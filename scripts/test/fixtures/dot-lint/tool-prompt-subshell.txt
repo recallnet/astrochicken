@@ -1,0 +1,6 @@
+digraph tool_prompt_subshell {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  subshell_prompt [type="tool" label="Subshell prompt" output_key="out_subshell" governance="reversible" prompt="node ops/cli.mjs run --body $(base64 /tmp/payload.txt)"]
+  start -> subshell_prompt -> done
+}

@@ -1,0 +1,9 @@
+// Generated from packages/factory-patterns/workflows/echo/echo.workflow-source.mjs. Do not edit by hand.
+digraph echo {
+    label = "echo"
+    workflow_source = "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs"
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    echo [type="tool" governance="reversible" label="Echo" output_key="echo_output" prompt="printf package-resolution-ok" trust_domain="hatch.factory_patterns" trust_role="hatch.factory_patterns.tool"]
+    start [shape="Mdiamond"]
+    start -> echo -> done
+}

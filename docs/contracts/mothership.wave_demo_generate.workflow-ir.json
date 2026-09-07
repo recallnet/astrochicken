@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "wave_demo_generate",
+  "familyId": "wave_execution",
+  "sourcePath": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+  "outputPath": "docs/contracts/mothership.wave_demo_generate.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+    "docs/contracts/workflow-ir/mothership/wave_demo_generate.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "wave_execution",
+      "correlation_id": "workflow-ir-contract:wave_demo_generate",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "wave_demo_generate",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "wave_demo_generate"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "wave_execution",
+        "correlation_id": "workflow-ir-contract:wave_demo_generate",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "wave_demo_generate",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "wave_demo_generate"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/mothership/wave_demo_generate.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+      "docs/contracts/workflow-ir/mothership/wave_demo_generate.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLXdhdmVfZGVtb19nZW5lcmF0ZSIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJ3YXZlX2RlbW9fZ2VuZXJhdGUiCiAgICAgIH0sCiAgICAgICJyZXNvbHZlZF9kZXBlbmRlbmNpZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImRpZ2VzdCI6IHsKICAgICAgICAgICAgInNoYTI1NiI6ICJ0eXBlZC1zb3VyY2UtZ2VuZXJhdGVkIgogICAgICAgICAgfSwKICAgICAgICAgICJ1cmkiOiAiZmFjdG9yaWVzL21vdGhlcnNoaXAvd29ya2Zsb3dzL3dhdmUtZXhlY3V0aW9uL3dhdmVfZGVtb19nZW5lcmF0ZS53b3JrZmxvdy1zb3VyY2UubWpzIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJydW5fZGV0YWlscyI6IHsKICAgICAgImJ1aWxkZXIiOiB7CiAgICAgICAgImlkIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZGVycy93b3JrZmxvdy1pciIKICAgICAgfSwKICAgICAgIm1ldGFkYXRhIjogewogICAgICAgICJmaW5pc2hlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAxLjAwMFoiLAogICAgICAgICJpbnZvY2F0aW9uX2lkIjogIndhdmVfZGVtb19nZW5lcmF0ZSIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "wave_demo_generate"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "wave_demo_generate",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:02fc11becdb80ceeffaa9d7cb07fb1a437c85efdb285fde6546d29303e569a9b",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs. Do not edit by hand.\n@import \"../../../../factories/mothership/roles.stylesheet\"\n\ndigraph wave_demo_generate {\n    label = \"wave_demo_generate\"\n    workflow_source = \"factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    classify_demo_strategy [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.classify_wave_demo_strategy\" label=\"Classify demo strategy\" output_format=\"json\" outputs=\"demo_strategy,demo_decision,reason_codes,no_demo,telemetry\" action_pipeline=\"wave_demo_generate\" action_demo_strategy=\"${demo_strategy_policy}\" action_issue_metadata=\"${issue_metadata}\" action_merged_results=\"${merged_results}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    demo_decision_gate [shape=\"diamond\" label=\"Generate demo?\"]\n    demo_generation_gate [shape=\"diamond\" label=\"Demo generation succeeded?\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    generate_terminal_demo [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"software.generate_wave_terminal_demo\" label=\"Generate terminal demo artifact\" output_format=\"json\" outputs=\"ok,demo_generation_status,demo_generation_error,demo_artifact_path,demo_artifact_bytes,demo_strategy,merged_count\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_issue_titles=\"${issue_titles}\" action_merge_stderr=\"${merge_stderr}\" action_merge_stdout=\"${merge_stdout}\" action_merged_results=\"${merged_results}\" action_milestone_title=\"${milestone_title}\" action_ready_issue_number=\"${ready_issue_number}\" action_runs_dir=\"${runs_dir}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\" fail_open=\"true\"]\n    publish_demo_artifact [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"software.publish_wave_demo_artifact\" label=\"Publish demo artifact\" output_format=\"json\" outputs=\"ok,artifact_url,demo_artifact_url,demo_publish_status,demo_publish_error\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_pipeline=\"wave_demo_generate\" action_demo_artifact_path=\"${demo_artifact_path}\" action_demo_strategy=\"${demo_strategy_resolved}\" action_milestone_title=\"${milestone_title}\" action_ready_issue_number=\"${ready_issue_number}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\" fail_open=\"true\"]\n    resolve_demo_policy [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_factory_config\" label=\"Resolve demo policy\" output_key=\"demo_strategy_policy\" action_factory_root=\"${factory_root}\" action_fallback=\"${demo_strategy_policy}\" action_key=\"demo_strategy\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_artifact_url_empty [type=\"tool\" governance=\"reversible\" label=\"Set artifact URL: empty\" output_key=\"artifact_url\" prompt=\"printf ''\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_error_empty [type=\"tool\" governance=\"reversible\" label=\"Set demo error: empty\" output_key=\"demo_error\" prompt=\"printf ''\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_error_from_generation [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set demo error from generation result\" output_key=\"demo_error\" action_fallback=\"demo_generation_failed\" action_value=\"${demo_generation_error}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_error_from_publish [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set demo error from publish result\" output_key=\"demo_error\" action_value=\"${demo_publish_error}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_error_unsupported [type=\"tool\" governance=\"reversible\" label=\"Set demo error: unsupported strategy\" output_key=\"demo_error\" prompt=\"printf 'unsupported_demo_strategy'\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_status_from_generation [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set demo status from generation result\" output_key=\"demo_status\" action_fallback=\"failed\" action_value=\"${demo_generation_status}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_status_from_publish [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set demo status from publish result\" output_key=\"demo_status\" action_fallback=\"failed\" action_value=\"${demo_publish_status}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_status_skipped [type=\"tool\" governance=\"reversible\" label=\"Set demo status: skipped\" output_key=\"demo_status\" prompt=\"printf 'skipped'\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_status_skipped_unsupported [type=\"tool\" governance=\"reversible\" label=\"Set demo status: skipped (unsupported strategy)\" output_key=\"demo_status\" prompt=\"printf 'skipped'\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_demo_strategy_resolved [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve effective demo strategy\" output_key=\"demo_strategy_resolved\" action_fallback=\"${demo_strategy_policy}\" action_value=\"${demo_strategy}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    start [shape=\"Mdiamond\"]\n    strategy_support_gate [shape=\"diamond\" label=\"Strategy supported?\"]\n    set_artifact_url_empty -> done\n    start -> resolve_demo_policy -> classify_demo_strategy -> set_demo_strategy_resolved -> demo_decision_gate\n    demo_decision_gate -> set_demo_status_skipped [condition=\"demo_decision!=generate\"]\n    demo_decision_gate -> strategy_support_gate [condition=\"demo_decision=generate\"]\n    demo_generation_gate -> publish_demo_artifact [condition=\"demo_generation_status=generated\"]\n    demo_generation_gate -> set_demo_status_from_generation [condition=\"demo_generation_status!=generated\"]\n    generate_terminal_demo -> demo_generation_gate\n    publish_demo_artifact -> set_demo_status_from_publish\n    set_demo_error_empty -> set_artifact_url_empty\n    set_demo_error_from_generation -> set_artifact_url_empty\n    set_demo_error_from_publish -> done\n    set_demo_error_unsupported -> set_demo_status_skipped_unsupported\n    set_demo_status_from_generation -> set_demo_error_from_generation\n    set_demo_status_from_publish -> set_demo_error_from_publish\n    set_demo_status_skipped_unsupported -> set_artifact_url_empty\n    set_demo_status_skipped -> set_demo_error_empty\n    strategy_support_gate -> generate_terminal_demo [condition=\"demo_strategy_resolved=terminal\"]\n    strategy_support_gate -> set_demo_error_unsupported [condition=\"demo_strategy_resolved!=terminal\"]\n}"
+}

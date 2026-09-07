@@ -1,0 +1,64 @@
+{
+  "$id": "https://recallnet.dev/contracts/judge-evidence-artifact-metadata.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Judge evidence bundle packaged for durable OCI publication.",
+  "properties": {
+    "artifact_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "type": "string"
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "factory_id": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "traceparent": {
+          "type": "string"
+        },
+        "tracestate": {
+          "type": "string"
+        },
+        "workflow_id": {
+          "type": "string"
+        },
+        "workflow_source_revision": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "factory_id",
+        "run_id",
+        "capability_id",
+        "workflow_id",
+        "workflow_source_revision",
+        "correlation_id"
+      ],
+      "type": "object"
+    },
+    "judge_kind": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "judge_evidence_artifact_metadata/v1",
+      "type": "string"
+    },
+    "subject_artifact_ref": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_identity",
+    "judge_kind",
+    "subject_artifact_ref"
+  ],
+  "title": "Judge Evidence Bundle Metadata",
+  "type": "object"
+}

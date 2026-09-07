@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "daily_lens_publish",
+  "familyId": "daily_reporting",
+  "sourcePath": "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
+  "runtimeGraphPath": "factories/mothership/graphs/daily_lens_publish.dot",
+  "outputPath": "docs/contracts/mothership.daily_lens_publish.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish",
+  "generatedFiles": [
+    "factories/mothership/graphs/daily_lens_publish.dot",
+    "factories/mothership/graphs/daily_lens_publish.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "daily_reporting",
+      "correlation_id": "workflow-ir-contract:daily_lens_publish",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "daily_lens_publish",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "daily_lens_publish"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "daily_reporting",
+        "correlation_id": "workflow-ir-contract:daily_lens_publish",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "daily_lens_publish",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "daily_lens_publish"
+    },
+    "files": [
+      {
+        "path": "factories/mothership/graphs/daily_lens_publish.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "factories/mothership/graphs/daily_lens_publish.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "factories/mothership/graphs/daily_lens_publish.dot",
+      "factories/mothership/graphs/daily_lens_publish.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLWRhaWx5X2xlbnNfcHVibGlzaCIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJkYWlseV9sZW5zX3B1Ymxpc2giCiAgICAgIH0sCiAgICAgICJyZXNvbHZlZF9kZXBlbmRlbmNpZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImRpZ2VzdCI6IHsKICAgICAgICAgICAgInNoYTI1NiI6ICJ0eXBlZC1zb3VyY2UtZ2VuZXJhdGVkIgogICAgICAgICAgfSwKICAgICAgICAgICJ1cmkiOiAiZmFjdG9yaWVzL21vdGhlcnNoaXAvd29ya2Zsb3dzL2RhaWx5LXJlcG9ydGluZy9kYWlseV9sZW5zX3B1Ymxpc2gud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJkYWlseV9sZW5zX3B1Ymxpc2giLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "daily_lens_publish"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "daily_lens_publish",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:434ba517222ead85f6c683cbe7995d2b281be002b0946200d74312c640bb42b4",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs. Do not edit by hand.\n@import \"../roles.stylesheet\"\n\ndigraph daily_lens_publish {\n    label = \"daily_lens_publish\"\n    workflow_source = \"factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs\"\n    workdir = \".\"\n    analyze_daily_lens [class=\"knowledge_worker\" benchmark_job_id=\"daily_lens.graph.analysis\" llm_path_id=\"mothership.daily_lens.analysis\" prompt_version=\"2026-03-17.r2\" role_version=\"1.0.0\" skill_id=\"daily_lens.analysis\" label=\"Analyze Daily Lens bundle\" output_key=\"daily_lens_agent_result\" output_format=\"json\" outputs=\"ok,analysis_path,summary\" timeout=\"45m\" prompt=\"${daily_lens_analysis_prompt}\\n\\nExecution context JSON:\\n{\\\"date\\\":\\\"${date}\\\",\\\"repo\\\":\\\"${repo}\\\",\\\"factory_id\\\":\\\"${factory_id}\\\",\\\"window_start\\\":\\\"${window_start}\\\",\\\"window_end\\\":\\\"${window_end}\\\",\\\"bundle_manifest_path\\\":\\\"${bundle_manifest_path}\\\",\\\"bundle_path\\\":\\\"${bundle_path}\\\",\\\"analysis_output_path\\\":\\\"${analysis_output_path}\\\"}\\n\\nUse tools to inspect the bundle files and write the final JSON analysis file.\\nReturn JSON only.\" recovery_owner=\"supervisor\" session_id=\"daily-lens-${factory_id}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.codergen\"]\n    done [shape=\"Msquare\" label=\"Done\" recovery_sink_type=\"terminal\"]\n    finalize_daily_lens [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"daily_lens.finalize\" label=\"Finalize Daily Lens artifacts and publication\" output_format=\"json\" outputs=\"ok,scheduled_job_issue_url,scheduled_job_issue_number\" action_repo=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" timeout=\"10m\" recovery_owner=\"supervisor\" action_date=\"${date}\" action_output_dir=\"${output_dir}\" action_bundle_path=\"${bundle_path}\" action_analysis_path=\"${analysis_output_path}\" action_window_start=\"${window_start}\" action_window_end=\"${window_end}\" action_notify_slack=\"${notify_slack}\" action_issue_labels_json=\"${issue_labels_json}\" action_agent_result_json=\"${daily_lens_agent_result}\" action_skip_followup_candidates=\"true\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    generate_followup_candidates [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"daily_lens.generate_followup_candidates\" label=\"Generate Daily Lens follow-up candidates\" output_format=\"json\" outputs=\"ok,created_count,updated_count\" action_repo=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" recovery_owner=\"supervisor\" action_report_issue_number=\"${scheduled_job_issue_number}\" action_analysis_path=\"${analysis_output_path}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    load_daily_lens_analysis_prompt [type=\"tool\" governance=\"reversible\" label=\"Load Daily Lens analysis prompt\" output_key=\"daily_lens_analysis_prompt\" prompt=\"cat packages/factory-prompts/prompts/daily_lens/agent_analysis.md\" recovery_owner=\"supervisor\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    prepare_daily_lens [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"daily_lens.prepare\" label=\"Prepare Daily Lens bundle\" output_format=\"json\" outputs=\"ok,date,repo,factory_id,window_start,window_end,bundle_path,bundle_manifest_path,analysis_output_path,output_dir,issue_labels_json,notify_slack\" action_repo=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" timeout=\"10m\" recovery_owner=\"supervisor\" action_date=\"${date}\" action_output_dir=\"${output_dir}\" action_window_start=\"${window_start}\" action_window_end=\"${window_end}\" action_runs_dir=\"${runs_dir}\" action_repo_path=\"${repo_path}\" action_issue_labels_json=\"${issue_labels_json}\" action_notify_slack=\"${notify_slack}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_date [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind report date\" output_key=\"date\" recovery_owner=\"supervisor\" action_value=\"${date}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_factory_id [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind factory id\" output_key=\"factory_id\" recovery_owner=\"supervisor\" action_value=\"${factory_id}\" action_fallback=\"mothership\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_issue_labels_json [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind issue labels\" output_key=\"issue_labels_json\" recovery_owner=\"supervisor\" action_value=\"${issue_labels_json}\" action_fallback=\"[\\\"daily-lens\\\"]\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_notify_slack [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind Slack notify flag\" output_key=\"notify_slack\" recovery_owner=\"supervisor\" action_value=\"${notify_slack}\" action_fallback=\"false\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_output_dir [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind output dir\" output_key=\"output_dir\" recovery_owner=\"supervisor\" action_value=\"${output_dir}\" action_fallback=\"reports/lens\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind report repo\" output_key=\"repo\" recovery_owner=\"supervisor\" action_value=\"${repo}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_repo_path [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind repo path\" output_key=\"repo_path\" recovery_owner=\"supervisor\" action_value=\"${repo_path}\" action_fallback=\".\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_runs_dir [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind runs dir\" output_key=\"runs_dir\" recovery_owner=\"supervisor\" action_value=\"${runs_dir}\" action_fallback=\".hatch/runs\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_window_end [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind window end\" output_key=\"window_end\" recovery_owner=\"supervisor\" action_value=\"${window_end}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    set_window_start [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind window start\" output_key=\"window_start\" recovery_owner=\"supervisor\" action_value=\"${window_start}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    start [shape=\"Mdiamond\" label=\"Start\"]\n    start -> set_date -> set_repo -> set_factory_id -> set_window_start -> set_window_end -> set_output_dir -> set_runs_dir -> set_repo_path -> set_issue_labels_json -> set_notify_slack -> prepare_daily_lens -> load_daily_lens_analysis_prompt -> analyze_daily_lens -> finalize_daily_lens -> generate_followup_candidates -> done\n}"
+}

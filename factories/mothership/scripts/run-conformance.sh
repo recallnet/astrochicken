@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+FACTORY_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$FACTORY_ROOT/../.." && pwd)"
+
+FACTORY_CONFIG="${FACTORY_CONFIG:-$FACTORY_ROOT/factory.config.json}"
+if [[ ! -f "$FACTORY_CONFIG" ]]; then
+  echo "factory config not found: $FACTORY_CONFIG" >&2
+  exit 1
+fi
+
+read_config() {
+  local key="$1"
+  node -e '
+const fs = require("fs");
+const path = process.argv[1];
+const key = process.argv[2];
+const obj = JSON.parse(fs.readFileSync(path, "utf8"));
+const parts = key.split(".");
+let value = obj;
+for (const part of parts) {
+  if (value && Object.prototype.hasOwnProperty.call(value, part)) value = value[part];
+  else { value = ""; break; }
+}
+if (value === undefined || value === null) value = "";
+if (typeof value === "object") process.stdout.write(JSON.stringify(value));
+else process.stdout.write(String(value));
+' "$FACTORY_CONFIG" "$key"
+}
+
+CONFORMANCE_ENTRYPOINT="$(read_config conformance.entrypoint)"
+if [[ -z "$CONFORMANCE_ENTRYPOINT" ]]; then
+  echo "conformance.entrypoint missing in $FACTORY_CONFIG" >&2
+  exit 1
+fi
+
+EXPECTED_ENTRYPOINT="$FACTORY_ROOT/scripts/run-conformance.sh"
+if [[ "$CONFORMANCE_ENTRYPOINT" != "${EXPECTED_ENTRYPOINT#$REPO_ROOT/}" ]]; then
+  echo "conformance.entrypoint mismatch: expected ${EXPECTED_ENTRYPOINT#$REPO_ROOT/}, got $CONFORMANCE_ENTRYPOINT" >&2
+  exit 1
+fi
+
+CONFORMANCE_FIXTURES="$(read_config conformance.fixtures)"
+if [[ -z "$CONFORMANCE_FIXTURES" ]]; then
+  echo "conformance.fixtures missing in $FACTORY_CONFIG" >&2
+  exit 1
+fi
+
+FIXTURES_PATH="$CONFORMANCE_FIXTURES"
+if [[ "$FIXTURES_PATH" != /* ]]; then
+  FIXTURES_PATH="$REPO_ROOT/$FIXTURES_PATH"
+fi
+if [[ ! -d "$FIXTURES_PATH" ]]; then
+  echo "conformance fixtures directory not found: $FIXTURES_PATH" >&2
+  exit 1
+fi
+
+RUNS_DIR="${HATCH_CONFORMANCE_RUNS_DIR:-$(read_config conformance.runs_dir)}"
+if [[ -z "$RUNS_DIR" ]]; then
+  RUNS_DIR="$(read_config runs_dir)"
+fi
+if [[ -z "$RUNS_DIR" && -n "${HATCH_RUNS_DIR:-}" ]]; then
+  RUNS_DIR="$HATCH_RUNS_DIR"
+fi
+
+HARNESS_RUNNER="${HATCH_CONFORMANCE_RUNNER:-$REPO_ROOT/scripts/run-conformance-harness.mjs}"
+if [[ ! -f "$HARNESS_RUNNER" ]]; then
+  echo "conformance harness runner not found: $HARNESS_RUNNER" >&2
+  exit 1
+fi
+
+export HATCH_CONFORMANCE_FIXTURES="$FIXTURES_PATH"
+
+cd "$REPO_ROOT"
+node "$HARNESS_RUNNER" \
+  --factory-root "$FACTORY_ROOT" \
+  --repo-root "$REPO_ROOT" \
+  --runs-dir "$RUNS_DIR"

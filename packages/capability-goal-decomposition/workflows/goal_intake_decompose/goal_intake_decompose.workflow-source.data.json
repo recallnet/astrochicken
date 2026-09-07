@@ -1,0 +1,919 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_intake_decompose",
+  "familyId": "goal_decomposition",
+  "title": "Goal Intake Decompose",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_intake_decompose.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_intake_decompose",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "goal_intake_decompose",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "analyze",
+        "runtimeNodeId": "analyze"
+      },
+      {
+        "sourceNodeId": "assess_decompose_auto_approve",
+        "runtimeNodeId": "assess_decompose_auto_approve"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "decompose_auto_gate",
+        "runtimeNodeId": "decompose_auto_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_retry_fallback_defect",
+        "runtimeNodeId": "emit_retry_fallback_defect"
+      },
+      {
+        "sourceNodeId": "fallback",
+        "runtimeNodeId": "fallback"
+      },
+      {
+        "sourceNodeId": "fetch_issue",
+        "runtimeNodeId": "fetch_issue"
+      },
+      {
+        "sourceNodeId": "fetch_skill",
+        "runtimeNodeId": "fetch_skill"
+      },
+      {
+        "sourceNodeId": "goal_intake_gate",
+        "runtimeNodeId": "goal_intake_gate"
+      },
+      {
+        "sourceNodeId": "inc_attempts",
+        "runtimeNodeId": "inc_attempts"
+      },
+      {
+        "sourceNodeId": "init_attempts",
+        "runtimeNodeId": "init_attempts"
+      },
+      {
+        "sourceNodeId": "init_parse_diagnostics",
+        "runtimeNodeId": "init_parse_diagnostics"
+      },
+      {
+        "sourceNodeId": "inject_retry_signal",
+        "runtimeNodeId": "inject_retry_signal"
+      },
+      {
+        "sourceNodeId": "inspect_approved",
+        "runtimeNodeId": "inspect_approved"
+      },
+      {
+        "sourceNodeId": "inspect_fallback",
+        "runtimeNodeId": "inspect_fallback"
+      },
+      {
+        "sourceNodeId": "inspect_proposed_features",
+        "runtimeNodeId": "inspect_proposed_features"
+      },
+      {
+        "sourceNodeId": "list_issues",
+        "runtimeNodeId": "list_issues"
+      },
+      {
+        "sourceNodeId": "load_goal_decompose_analyze_task_prompt",
+        "runtimeNodeId": "load_goal_decompose_analyze_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_goal_decompose_propose_task_prompt",
+        "runtimeNodeId": "load_goal_decompose_propose_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_goal_decompose_review_task_prompt",
+        "runtimeNodeId": "load_goal_decompose_review_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_goal_decomposer_system_prompt",
+        "runtimeNodeId": "load_goal_decomposer_system_prompt"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "normalize_approved",
+        "runtimeNodeId": "normalize_approved"
+      },
+      {
+        "sourceNodeId": "normalize_features",
+        "runtimeNodeId": "normalize_features"
+      },
+      {
+        "sourceNodeId": "parse_external_bug_report",
+        "runtimeNodeId": "parse_external_bug_report"
+      },
+      {
+        "sourceNodeId": "propose",
+        "runtimeNodeId": "propose"
+      },
+      {
+        "sourceNodeId": "resolve_decompose_auto_approve",
+        "runtimeNodeId": "resolve_decompose_auto_approve"
+      },
+      {
+        "sourceNodeId": "retry_budget",
+        "runtimeNodeId": "retry_budget"
+      },
+      {
+        "sourceNodeId": "review",
+        "runtimeNodeId": "review"
+      },
+      {
+        "sourceNodeId": "scan_inventory",
+        "runtimeNodeId": "scan_inventory"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "validate_approved_features",
+        "runtimeNodeId": "validate_approved_features"
+      },
+      {
+        "sourceNodeId": "validate_goal_eligible",
+        "runtimeNodeId": "validate_goal_eligible"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "analyze",
+      "kind": "llm_prompt",
+      "title": "Analyze goal",
+      "dotAttributes": {
+        "class": "goal_decomposer",
+        "benchmark_job_id": "goal.decompose.analyze",
+        "llm_path_id": "capability.goal_intake_decompose.analyze",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose",
+        "label": "Analyze goal",
+        "output_key": "goal_context",
+        "output_format": "json",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_draft}",
+        "prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\n${goal_decompose_analyze_task_prompt}\n\n--- Skill instructions ---\n${goal_analyzer_skill}\n--- End skill instructions ---\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nExternal bug report JSON:\n${external_bug_report}\n\nExternal bug parse errors JSON:\n${external_bug_errors}\n\nExternal bug present:\n${external_bug_present}\n\nExternal bug intake activated:\n${external_bug_intake_activated}\n\nExisting issues JSON:\n${existing_issues}\n\nFeature inventory scan:\n${feature_inventory}",
+        "prompt_input_keys": "gh_repo,goal_analyzer_skill,intent_stack,goal_issue,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated,existing_issues,feature_inventory",
+        "prompt_source": "goal_decompose_analyze_task_prompt",
+        "session_id": "goal-decomposer-${issue_number}",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_analyze_task_prompt"
+      }
+    },
+    {
+      "id": "assess_decompose_auto_approve",
+      "kind": "tool_action",
+      "title": "Assess decompose complexity floor",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "ceremony.decompose_auto_approve",
+        "label": "Assess decompose complexity floor",
+        "output_format": "json",
+        "outputs": "skip,auto_approve,approved,approved_features,factory_request_goal_graph,review_notes,reason,decompose_complexity,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason",
+        "action_pipeline": "goal_intake_decompose",
+        "action_decompose_auto_approve": "${decompose_auto_approve}",
+        "action_features": "${proposed_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "decide",
+      "kind": "decision",
+      "title": "Approved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Approved?"
+      }
+    },
+    {
+      "id": "decompose_auto_gate",
+      "kind": "decision",
+      "title": "Auto-approve decomposition?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Auto-approve decomposition?"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "emit_retry_fallback_defect",
+      "kind": "tool_action",
+      "title": "Emit retry-exhausted fallback defect",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.emit_fallback_defect",
+        "label": "Emit retry-exhausted fallback defect",
+        "output_key": "retry_fallback_defect",
+        "action_goal_issue_number": "${issue_number}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_intake_decompose",
+        "action_approved": "${approved}",
+        "action_decompose_parse_status": "${decompose_parse_status}",
+        "action_fallback_node": "fallback",
+        "action_issues_created": "0",
+        "action_trigger_reason": "decompose_retry_exhausted",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fallback",
+      "kind": "tool_action",
+      "title": "Fallback to latest reviewed features",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.fallback_feature_pair",
+        "label": "Fallback to latest reviewed features",
+        "output_key": "approved_features",
+        "action_primary": "${approved_features}",
+        "action_secondary": "${proposed_features}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fetch_issue",
+      "kind": "llm_prompt",
+      "title": "Fetch goal issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Fetch goal issue",
+        "output_key": "goal_issue",
+        "prompt": "gh issue view ${issue_number} --repo ${gh_repo} --json number,title,body,labels,state",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fetch_skill",
+      "kind": "llm_prompt",
+      "title": "Fetch goal analyzer skill",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Fetch goal analyzer skill",
+        "output_key": "goal_analyzer_skill",
+        "prompt": "cat ${capability_goal_decomposition_skills}/goal_analyzer/current.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "goal_intake_gate",
+      "kind": "decision",
+      "title": "Goal eligible for intake?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Goal eligible for intake?"
+      }
+    },
+    {
+      "id": "inc_attempts",
+      "kind": "tool_action",
+      "title": "Increment attempts",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.increment_counter",
+        "label": "Increment attempts",
+        "output_key": "decompose_attempts",
+        "action_value": "${decompose_attempts}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "init_attempts",
+      "kind": "llm_prompt",
+      "title": "Init review attempts",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Init review attempts",
+        "output_key": "decompose_attempts",
+        "prompt": "echo 0",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "init_parse_diagnostics",
+      "kind": "llm_prompt",
+      "title": "Init parse diagnostics",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Init parse diagnostics",
+        "output_format": "json",
+        "outputs": "decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source",
+        "prompt": "printf '%s' '{\"decompose_parse_status\":\"not_inspected\",\"decompose_parse_error\":\"\",\"decompose_proposed_excerpt\":\"\",\"decompose_parse_source\":\"not_inspected\"}'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inject_retry_signal",
+      "kind": "tool_action",
+      "title": "Inject retry signal",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.build_retry_signal",
+        "label": "Inject retry signal",
+        "output_key": "review_notes",
+        "action_decompose_attempts": "${decompose_attempts}",
+        "action_decompose_parse_error": "${decompose_parse_error}",
+        "action_decompose_parse_status": "${decompose_parse_status}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inspect_approved",
+      "kind": "tool_action",
+      "title": "Inspect approved features parse status",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.inspect_json_pair",
+        "label": "Inspect approved features parse status",
+        "output_format": "json",
+        "outputs": "decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source",
+        "action_primary": "${approved_features}",
+        "action_secondary": "[]",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inspect_fallback",
+      "kind": "tool_action",
+      "title": "Inspect fallback parse status",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.inspect_json_pair",
+        "label": "Inspect fallback parse status",
+        "output_format": "json",
+        "outputs": "decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source",
+        "action_primary": "${approved_features}",
+        "action_secondary": "${proposed_features}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "inspect_proposed_features",
+      "kind": "tool_action",
+      "title": "Inspect proposed feature count",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_feature_objects",
+        "label": "Inspect proposed feature count",
+        "output_key": "__inspect_proposed_features_result",
+        "action_raw": "${proposed_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "list_issues",
+      "kind": "llm_prompt",
+      "title": "List existing goal issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "List existing goal issues",
+        "output_key": "existing_issues",
+        "prompt": "gh issue list --repo ${gh_repo} --state open --label goal --limit 25 --json number,title,labels",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_goal_decompose_analyze_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load goal analyze task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load goal analyze task prompt",
+        "output_key": "goal_decompose_analyze_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/goal_decomposer/analyze.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_goal_decompose_propose_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load goal propose task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load goal propose task prompt",
+        "output_key": "goal_decompose_propose_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/goal_decomposer/propose.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_goal_decompose_review_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load goal review task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load goal review task prompt",
+        "output_key": "goal_decompose_review_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/goal_decomposer/review.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_goal_decomposer_system_prompt",
+      "kind": "llm_prompt",
+      "title": "Load goal decomposer system prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load goal decomposer system prompt",
+        "output_key": "goal_decomposer_system_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/goal_decomposer/system.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_intent_stack",
+        "label": "Load intent stack",
+        "output_key": "intent_stack",
+        "action_factory_root": "${factory_root}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_approved",
+      "kind": "tool_action",
+      "title": "Normalize approval flag",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.normalize_approved",
+        "label": "Normalize approval flag",
+        "output_key": "approved",
+        "action_value": "${approved}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_features",
+      "kind": "tool_action",
+      "title": "Normalize approved features",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.normalize_approved_features",
+        "label": "Normalize approved features",
+        "output_key": "approved_features",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_intake_decompose",
+        "action_approved": "${approved}",
+        "action_approved_features": "${approved_features}",
+        "action_goal_issue_json": "${goal_issue}",
+        "action_decompose_parse_status": "${decompose_parse_status}",
+        "action_goal_number": "${issue_number}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "parse_external_bug_report",
+      "kind": "tool_action",
+      "title": "Parse external bug intake",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.parse_external_bug_report",
+        "label": "Parse external bug intake",
+        "output_format": "json",
+        "outputs": "external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated",
+        "action_goal_issue_json": "${goal_issue}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "propose",
+      "kind": "llm_prompt",
+      "title": "Propose feature breakdown",
+      "dotAttributes": {
+        "class": "goal_decomposer",
+        "benchmark_job_id": "goal.decompose.propose",
+        "llm_path_id": "capability.goal_intake_decompose.propose",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose",
+        "label": "Propose feature breakdown",
+        "output_key": "proposed_features",
+        "output_format": "json",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_draft}",
+        "prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\nIntent stack JSON:\n${intent_stack}\n\nGoal context JSON:\n${goal_context}\n\nReviewer notes (if any):\n${review_notes}\n\n${goal_decompose_propose_task_prompt}",
+        "prompt_input_keys": "gh_repo,intent_stack,goal_context,review_notes",
+        "prompt_source": "goal_decompose_propose_task_prompt",
+        "session_id": "goal-decomposer-${issue_number}",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_propose_task_prompt"
+      }
+    },
+    {
+      "id": "resolve_decompose_auto_approve",
+      "kind": "tool_action",
+      "title": "Resolve decompose auto-approve toggle",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_boolean",
+        "label": "Resolve decompose auto-approve toggle",
+        "output_key": "decompose_auto_approve",
+        "action_fallback": "false",
+        "action_value": "${decompose_auto_approve}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "retry_budget",
+      "kind": "decision",
+      "title": "Retry budget left?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Retry budget left?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "review",
+      "kind": "llm_prompt",
+      "title": "Review decomposition",
+      "dotAttributes": {
+        "class": "goal_decomposer",
+        "benchmark_job_id": "goal.decompose.review",
+        "llm_path_id": "capability.goal_intake_decompose.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.decompose",
+        "label": "Review decomposition",
+        "output_key": "review_result",
+        "output_format": "json",
+        "outputs": "approved,approved_features,factory_request_goal_graph,review_notes",
+        "reasoning_effort": "medium",
+        "timeout": "${goal_decomposition_timeouts.issue_judge}",
+        "prompt": "${goal_decomposer_system_prompt}\n\nRepository: ${gh_repo}\n\nIntent stack JSON:\n${intent_stack}\n\nGoal context JSON:\n${goal_context}\n\nProposed features JSON:\n${proposed_features}\n\nComplexity floor signal:\n- decompose_complexity=${decompose_complexity}\n- complexity_reason=${reason}\n\n${goal_decompose_review_task_prompt}",
+        "prompt_input_keys": "gh_repo,intent_stack,goal_context,proposed_features,decompose_complexity,reason",
+        "prompt_source": "goal_decompose_review_task_prompt",
+        "session_id": "goal-decomposer-${issue_number}",
+        "system_prompt_source": "goal_decomposer_system_prompt",
+        "task_prompt_source": "goal_decompose_review_task_prompt"
+      }
+    },
+    {
+      "id": "scan_inventory",
+      "kind": "llm_prompt",
+      "title": "Scan code inventory",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Scan code inventory",
+        "output_key": "feature_inventory",
+        "prompt": "# hatch:no-inline-script-ok\nfind apps/hatch/src ${factory_root} -maxdepth 4 -type f | sort | head -160",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "validate_approved_features",
+      "kind": "tool_action",
+      "title": "Validate approved features non-empty",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.validate_approved_features",
+        "label": "Validate approved features non-empty",
+        "output_key": "approved",
+        "action_approved": "${approved}",
+        "action_approved_features": "${approved_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "validate_goal_eligible",
+      "kind": "tool_action",
+      "title": "Validate goal is open and goal-labeled",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.validate_intake",
+        "label": "Validate goal is open and goal-labeled",
+        "output_key": "goal_intake_eligible",
+        "action_goal_issue_json": "${goal_issue}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "load_goal_decompose_propose_task_prompt",
+      "to": "propose"
+    },
+    {
+      "from": "propose",
+      "to": "inspect_proposed_features"
+    },
+    {
+      "from": "inspect_proposed_features",
+      "to": "assess_decompose_auto_approve"
+    },
+    {
+      "from": "assess_decompose_auto_approve",
+      "to": "decompose_auto_gate"
+    },
+    {
+      "from": "normalize_features",
+      "to": "done"
+    },
+    {
+      "from": "start",
+      "to": "fetch_issue"
+    },
+    {
+      "from": "fetch_issue",
+      "to": "validate_goal_eligible"
+    },
+    {
+      "from": "validate_goal_eligible",
+      "to": "goal_intake_gate"
+    },
+    {
+      "from": "analyze",
+      "to": "init_attempts"
+    },
+    {
+      "from": "decide",
+      "to": "inspect_approved",
+      "condition": "approved=true",
+      "dotAttributes": {
+        "condition": "approved=true"
+      }
+    },
+    {
+      "from": "decide",
+      "to": "retry_budget",
+      "condition": "approved!=true",
+      "dotAttributes": {
+        "condition": "approved!=true"
+      }
+    },
+    {
+      "from": "decompose_auto_gate",
+      "to": "inspect_approved",
+      "condition": "auto_approve=true",
+      "dotAttributes": {
+        "condition": "auto_approve=true"
+      }
+    },
+    {
+      "from": "decompose_auto_gate",
+      "to": "load_goal_decompose_review_task_prompt",
+      "condition": "auto_approve!=true",
+      "dotAttributes": {
+        "condition": "auto_approve!=true"
+      }
+    },
+    {
+      "from": "emit_retry_fallback_defect",
+      "to": "fallback",
+      "dotAttributes": {
+        "input_key": "goal_issue"
+      }
+    },
+    {
+      "from": "fallback",
+      "to": "normalize_features",
+      "dotAttributes": {
+        "input_key": "goal_issue"
+      }
+    },
+    {
+      "from": "fetch_skill",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "goal_intake_gate",
+      "to": "done",
+      "condition": "goal_intake_eligible!=eligible",
+      "label": "ineligible: skip",
+      "dotAttributes": {
+        "condition": "goal_intake_eligible!=eligible",
+        "label": "ineligible: skip"
+      }
+    },
+    {
+      "from": "goal_intake_gate",
+      "to": "parse_external_bug_report",
+      "condition": "goal_intake_eligible=eligible",
+      "dotAttributes": {
+        "condition": "goal_intake_eligible=eligible"
+      }
+    },
+    {
+      "from": "inc_attempts",
+      "to": "decide"
+    },
+    {
+      "from": "init_attempts",
+      "to": "init_parse_diagnostics"
+    },
+    {
+      "from": "init_parse_diagnostics",
+      "to": "resolve_decompose_auto_approve"
+    },
+    {
+      "from": "inject_retry_signal",
+      "to": "load_goal_decompose_propose_task_prompt"
+    },
+    {
+      "from": "inspect_approved",
+      "to": "normalize_features",
+      "dotAttributes": {
+        "input_key": "goal_issue"
+      }
+    },
+    {
+      "from": "inspect_fallback",
+      "to": "emit_retry_fallback_defect",
+      "dotAttributes": {
+        "input_key": "goal_issue"
+      }
+    },
+    {
+      "from": "list_issues",
+      "to": "scan_inventory"
+    },
+    {
+      "from": "load_goal_decompose_analyze_task_prompt",
+      "to": "analyze"
+    },
+    {
+      "from": "load_goal_decompose_review_task_prompt",
+      "to": "review"
+    },
+    {
+      "from": "load_goal_decomposer_system_prompt",
+      "to": "load_goal_decompose_analyze_task_prompt"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "load_goal_decomposer_system_prompt"
+    },
+    {
+      "from": "normalize_approved",
+      "to": "validate_approved_features"
+    },
+    {
+      "from": "parse_external_bug_report",
+      "to": "list_issues"
+    },
+    {
+      "from": "resolve_decompose_auto_approve",
+      "to": "load_goal_decompose_propose_task_prompt"
+    },
+    {
+      "from": "retry_budget",
+      "to": "inject_retry_signal",
+      "condition": "decompose_attempts<2",
+      "label": "revise",
+      "dotAttributes": {
+        "condition": "decompose_attempts<2",
+        "label": "revise"
+      }
+    },
+    {
+      "from": "retry_budget",
+      "to": "inspect_fallback",
+      "condition": "decompose_attempts>=2",
+      "dotAttributes": {
+        "condition": "decompose_attempts>=2"
+      }
+    },
+    {
+      "from": "review",
+      "to": "normalize_approved"
+    },
+    {
+      "from": "scan_inventory",
+      "to": "fetch_skill"
+    },
+    {
+      "from": "validate_approved_features",
+      "to": "inc_attempts"
+    }
+  ]
+}

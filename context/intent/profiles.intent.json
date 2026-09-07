@@ -1,0 +1,27 @@
+{
+  "schema": "hatch.intent.v1",
+  "id": "intent.sample.onboarding.profiles",
+  "title": "Guided onboarding flow",
+  "summary": "Provide a guided onboarding flow that helps new users complete setup.",
+  "profiles": {
+    "enterprise": {
+      "audience": "IT administrators",
+      "constraints": [
+        "Must support SSO",
+        "Audit events must be logged"
+      ],
+      "acceptance_criteria": [
+        "Admins can set defaults for new accounts"
+      ]
+    },
+    "self_serve": {
+      "audience": "Individual contributors",
+      "goals": [
+        "Drive activation within the first session"
+      ],
+      "acceptance_criteria": [
+        "Onboarding completes in under two minutes"
+      ]
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "asyncapi": "2.6.0",
+  "channels": {
+    "hatch.run.lifecycle": {
+      "address": "hatch.run.lifecycle",
+      "description": "Lifecycle CloudEvents emitted for Hatch pipeline runs.",
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/HatchRunLifecycleCloudEvent"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "HatchRunLifecycleCloudEvent": {
+        "contentType": "application/json",
+        "name": "HatchRunLifecycleCloudEvent",
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "data": {
+              "additionalProperties": false,
+              "properties": {
+                "artifactUrl": {
+                  "type": "string"
+                },
+                "event": {
+                  "enum": [
+                    "run-start",
+                    "complete",
+                    "fail",
+                    "node-change",
+                    "merge",
+                    "artifact"
+                  ],
+                  "type": "string"
+                },
+                "graph": {
+                  "type": "string"
+                },
+                "issue": {
+                  "type": "string"
+                },
+                "mergeStatus": {
+                  "type": "string"
+                },
+                "milestone": {
+                  "type": "string"
+                },
+                "node": {
+                  "type": "string"
+                },
+                "prevNode": {
+                  "type": "string"
+                },
+                "runId": {
+                  "type": "string"
+                },
+                "schemaVersion": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "ts": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "ts",
+                "event",
+                "runId",
+                "graph",
+                "node"
+              ],
+              "type": "object"
+            },
+            "datacontenttype": {
+              "const": "application/json",
+              "type": "string"
+            },
+            "dataschema": {
+              "const": "https://recallnet.dev/contracts/hatch-run-lifecycle-event.v1.schema.json",
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "openlineage": {
+              "additionalProperties": false,
+              "properties": {
+                "eventType": {
+                  "enum": [
+                    "START",
+                    "COMPLETE",
+                    "FAIL",
+                    "RUN",
+                    "INPUT",
+                    "OUTPUT"
+                  ],
+                  "type": "string"
+                },
+                "inputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "job": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "namespace": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "namespace",
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "outputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "run": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "runId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "runId"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "eventType"
+              ],
+              "type": "object"
+            },
+            "source": {
+              "const": "/hatch/run-lifecycle",
+              "type": "string"
+            },
+            "specversion": {
+              "const": "1.0",
+              "type": "string"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            },
+            "traceparent": {
+              "type": "string"
+            },
+            "tracestate": {
+              "type": "string"
+            },
+            "type": {
+              "const": "dev.recallnet.hatch.run.lifecycle",
+              "type": "string"
+            }
+          },
+          "required": [
+            "specversion",
+            "id",
+            "type",
+            "source",
+            "time",
+            "datacontenttype",
+            "dataschema",
+            "data"
+          ],
+          "type": "object"
+        },
+        "summary": "CloudEvent envelope carrying versioned Hatch run lifecycle payloads and lineage-compatible metadata.",
+        "title": "Hatch Run Lifecycle CloudEvent"
+      }
+    }
+  },
+  "info": {
+    "description": "Governed CloudEvents lifecycle channel consumed by hatch-ops factory subscribe.",
+    "title": "Hatch Run Lifecycle Event Stream",
+    "version": "hatch_run_lifecycle_asyncapi/v1"
+  }
+}

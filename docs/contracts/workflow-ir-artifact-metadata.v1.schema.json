@@ -1,0 +1,64 @@
+{
+  "$id": "https://recallnet.dev/contracts/workflow-ir-artifact-metadata.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Compiled workflow IR and companion publication-intent metadata for a later governed OCI publish path.",
+  "properties": {
+    "artifact_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "type": "string"
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "factory_id": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "traceparent": {
+          "type": "string"
+        },
+        "tracestate": {
+          "type": "string"
+        },
+        "workflow_id": {
+          "type": "string"
+        },
+        "workflow_source_revision": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "factory_id",
+        "run_id",
+        "capability_id",
+        "workflow_id",
+        "workflow_source_revision",
+        "correlation_id"
+      ],
+      "type": "object"
+    },
+    "compiler_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "workflow_ir_artifact_metadata/v1",
+      "type": "string"
+    },
+    "workflow_graph_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_identity",
+    "workflow_graph_id",
+    "compiler_version"
+  ],
+  "title": "Workflow IR Bundle Metadata",
+  "type": "object"
+}

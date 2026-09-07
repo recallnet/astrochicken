@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "hatch.shared-surface-manifest.v1",
+  "generatedAt": "static",
+  "surfaces": [
+    {
+      "id": "write_scenario_item",
+      "description": "Fan-out child: writes and validates a single scenario file",
+      "templatePath": "factories/_shared/surfaces/graphs/write_scenario_item.dot.template",
+      "platformVersion": "1.0.0",
+      "contract": {
+        "requiredSkillPaths": [],
+        "requiredContextKeys": [
+          "scenario_brief",
+          "scenarios_root"
+        ],
+        "exportKeys": [
+          "scenario_path"
+        ]
+      }
+    },
+    {
+      "id": "write_scenarios",
+      "description": "LLM-scoped scenario writer: scans registry, recommends 0-2 scenarios, fans out to write_scenario_item",
+      "templatePath": "factories/_shared/surfaces/graphs/write_scenarios.dot.template",
+      "platformVersion": "1.0.0",
+      "contract": {
+        "requiredSkillPaths": [],
+        "requiredContextKeys": [
+          "approved_features",
+          "scenarios_root"
+        ],
+        "exportKeys": [
+          "scenario_paths"
+        ]
+      }
+    }
+  ]
+}

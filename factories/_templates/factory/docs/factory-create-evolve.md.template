@@ -1,0 +1,162 @@
+# Factory Create/Evolve Quickstart
+
+This factory is scaffolded via the supported `hatch factory init` flow.
+
+## Canonical playbook
+
+Use [factory-create-evolve skill](../../../../docs/skills/factory-create-evolve/SKILL.md) as the authoritative create/evolve/repair playbook.
+
+Use [Factory Public Contract (v1)](../../../docs/reference/factory-public-contract.md) as the canonical boundary for required/optional/managed-only surfaces.
+Machine-readable contract: [`docs/contracts/factory-public-contract.v1.json`](../../../docs/contracts/factory-public-contract.v1.json).
+
+## Public install contract
+
+The canonical public install contract is maintained in `docs/reference/snippets/external-install-contract.md`. Keep the section below synchronized verbatim with that snippet.
+
+<!-- public-contract -->
+<!-- external-install-contract:copied-from=docs/reference/snippets/external-install-contract.md -->
+
+Required packages:
+- `hatch` — required package; provides the `hatch` binary for runtime/conformance commands.
+- `@hatch/factory-ops` — required package; provides the `hatch-ops` binary for operator/runtime status and recovery commands.
+- `@hatch/replay` — optional package for replay/lab workflows; not required for baseline external factory installs.
+- Internal-only surfaces: `apps/*` and private `packages/*` implementation tooling are not part of the external install contract.
+
+| Stable entrypoint | Owning binary/package | Intended persona | Install smoke check |
+| --- | --- | --- | --- |
+| `hatch run <file.dot>` | `hatch` (`hatch`) | External adopter | `hatch run --help` |
+| `hatch validate <file.dot>` | `hatch` (`hatch`) | External adopter | `hatch validate --help` |
+| `hatch factory conformance` | `hatch` (`hatch`) | External adopter | `hatch factory conformance --help` |
+| `hatch-ops factory status` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory status --help` |
+| `hatch-ops factory tick-status` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory tick-status --help` |
+| `hatch-ops factory recovery-sweep` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory recovery-sweep --help` |
+
+This block is the public install contract for docs and generated quickstarts. Include tooling is not available in this docs stack, so update `docs/reference/snippets/external-install-contract.md` first, then copy this block verbatim into each consumer document/template.
+
+Contract classification for this scaffold:
+- **Required public:** baseline `factory.config.json` keys, supervisor graph, scenarios root, policy-pack metadata/keys, and conformance phases.
+- **Optional public:** local policy overrides and isolation/path/model tuning that stays within the public schema.
+- **Managed-only:** daemon/release orchestration fields and `hatch-ops factory host-*` lifecycle semantics.
+- **Generated inspectable:** `factories/{{factory_id}}/inventory/factory-composition-manifest.v1.json`
+
+## Factory identity
+
+- `factory_id`: `{{factory_id}}`
+- `target_repo`: `{{target_repo}}`
+- `control_plane_repo`: `{{control_plane_repo}}`
+- `runs_dir`: `{{runs_dir}}`
+
+For managed cross-repo factories, `control_plane_repo` is the host/control-plane repo and `target_repo` is the repo the factory mutates.
+
+## Plan
+
+1. Resolve/create tracking issue for `{{factory_id}}`.
+2. Scaffold templates into `factories/{{factory_id}}/`.
+3. Validate generated `factories/{{factory_id}}/factory.config.json` against typed schema.
+4. Upsert `factory-registry.json` with this factory's dispatch graph and repo mapping.
+
+## Commands
+
+### Official scaffold command
+
+From repo root:
+
+```bash
+hatch factory init \
+  --id {{factory_id}} \
+  --repo {{target_repo}} \
+  --control-plane {{control_plane_repo}} \
+  --runs-dir {{runs_dir}}
+```
+
+Use `--force` only when intentionally re-scaffolding:
+
+```bash
+hatch factory init \
+  --id {{factory_id}} \
+  --repo {{target_repo}} \
+  --control-plane {{control_plane_repo}} \
+  --runs-dir {{runs_dir}} \
+  --force
+```
+
+### Immediate validation commands
+
+```bash
+pnpm test -- apps/hatch/src/factory/scaffold.test.ts apps/hatch/src/factory/init.test.ts
+# Full conformance gate (config schema, graph validation, recovery ownership, run-dir isolation)
+pnpm test -- apps/hatch/src/factory/conformance-harness.test.ts
+pnpm docs:check
+pnpm docs:state:check
+```
+
+## Policy-pack contract
+
+The `policy-pack/v1/` directory is scaffolded with required shared keys. Do not remove `shared.*` keys — they are platform-owned defaults.
+
+Read the authoritative contract before customizing:
+- `docs/skills/factory-authoring/policy-pack.md`
+
+Allowed local overrides live under `factory.*` keys in each policy JSON file and in `factory.config.json → policyPack.overrides`.
+
+## Files touched by scaffold
+
+- `factories/{{factory_id}}/factory.config.json`
+- `factories/{{factory_id}}/inventory/factory-composition-manifest.v1.json`
+- `factories/{{factory_id}}/graphs/factory_supervisor_tick.dot`
+- `factories/{{factory_id}}/conformance/factory_supervisor_tick.dot`
+- `packages/factory-skills/skills/runtime/supervisor_review/SKILL.md`
+- `factories/{{factory_id}}/INTENT.md`
+- `factories/{{factory_id}}/roles.stylesheet`
+- `factories/{{factory_id}}/scripts/factory_daemon.sh`
+- `factories/{{factory_id}}/policy-pack/v1/*.json`
+- `factories/{{factory_id}}/docs/factory-create-evolve.md` (this file)
+- `factory-registry.json` (upserted)
+
+## Validation evidence
+
+```bash
+hatch validate factories/{{factory_id}}/graphs/<graph>.dot
+node scripts/lint-dot.mjs factories/{{factory_id}}/graphs/<graph>.dot
+pnpm test -- apps/hatch/src/factory/scaffold.test.ts apps/hatch/src/factory/init.test.ts
+# Run full conformance harness (programmatic)
+# See docs/skills/factory-create-evolve/SKILL.md#conformance-harness for the API
+pnpm test -- apps/hatch/src/factory/conformance-harness.test.ts
+pnpm docs:check
+pnpm docs:state:check
+hatch validate factories/{{factory_id}}/graphs/factory_supervisor_tick.dot
+node scripts/lint-dot.mjs factories/{{factory_id}}/graphs/factory_supervisor_tick.dot
+```
+
+## Common failure modes and repair
+
+1. `missing required --id` / `--repo must be owner/repo`
+   - Pass valid required flags and rerun init.
+
+2. `factory already exists: factories/{{factory_id}}`
+   - Rerun with `--force` only when replacement is intentional.
+
+3. `generated factory config is invalid (...)`
+   - Fix template keys/placeholders.
+   - Rerun `hatch factory init --force ...`.
+   - Rerun scaffold/init tests.
+
+4. Docs checks fail after editing
+   - Update skill/frontmatter/links and rerun `pnpm docs:check`.
+
+5. Unclear runtime vs scaffold drift
+   - Inspect with `hatch-ops factory status --factory-id {{factory_id}}` before editing templates.
+
+## Repair quick checks
+
+```bash
+# Check factory runtime state before/after repair
+hatch-ops factory status --factory-id {{factory_id}}
+hatch-ops factory tick-status --factory-id {{factory_id}}
+```
+
+If generated config/template output drifts, fix templates and re-run `hatch factory init --force ...`.
+
+## Baseline note
+
+Goal #1415 recovery work is the baseline and must not be reimplemented. Keep this template aligned with [factory-create-evolve skill](../../../../docs/skills/factory-create-evolve/SKILL.md); if guidance conflicts, update this template to match the skill.

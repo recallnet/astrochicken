@@ -1,0 +1,20 @@
+{
+	"name": "@hatch/capability-artifact-ingestion",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch artifact ingestion capability: poll artifact issues from source repos and draft goals in control-plane repo",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"graphs",
+		"workflows",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json"
+	]
+}

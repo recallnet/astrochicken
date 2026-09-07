@@ -1,0 +1,9 @@
+digraph child_terminal_case_timeout {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	slow [type="tool" label="Slow Child" output_key="slow_child_signal" prompt="sleep 2" timeout="200ms" governance="reversible" tool_id="shell" action_id="file.write"]
+	done [shape=Msquare]
+
+	start -> slow
+	slow -> done [condition="outcome=success"]
+}

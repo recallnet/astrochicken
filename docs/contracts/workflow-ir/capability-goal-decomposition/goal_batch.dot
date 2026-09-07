@@ -1,0 +1,44 @@
+// Generated from packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs. Do not edit by hand.
+digraph goal_batch {
+    label = "goal_batch"
+    workflow_source = "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    apply_decisions [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.apply_decisions" label="Apply goal decisions" output_key="__apply_decisions_result" action_repo="${gh_repo}" action_decisions_b64="${decisions_b64}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    count_goals [type="tool" governance="irreversible" action_runtime="in_process" action_id="common.count_json_items" label="Count goals" output_key="goal_count" action_raw_b64="${goal_issues_b64}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    decisions_gate [shape="diamond" label="Decisions valid?"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    evaluate_goal_review_skip [type="tool" governance="reversible" action_runtime="in_process" action_id="ceremony.goal_review_skip" label="Evaluate single-goal review bypass" output_format="json" outputs="skip,reason,goal_count,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason" action_pipeline="goal_batch" action_goal_count="${goal_count}" action_skip_review_single_goal="${skip_review_single_goal}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    fallback_decisions [type="tool" governance="reversible" label="Fallback keep decisions" output_key="__fallback_decisions_result" prompt="printf '[]'" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    fan_in [type="fan_in.dynamic" label="Collect goal runs" output_key="goal_runs" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_in.dynamic"]
+    fan_out [type="fan_out.dynamic" label="Run goal factory" item_key="issue_number" max_concurrency="2" source_key="kept_goals" template="@hatch/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_out.dynamic"]
+    filter_kept [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.filter_kept_goals" label="Keep goals" output_key="kept_goals" action_decisions_b64="${decisions_b64}" action_issues_b64="${goal_issues_b64}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    gate [shape="diamond" label="Any goals?"]
+    init_skip_decisions [type="tool" governance="reversible" label="Init empty decisions for bypass" output_key="__init_skip_decisions_result" prompt="printf '[]'" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    list_goals [type="tool" governance="reversible" label="List open goals" output_key="goal_issues" prompt="gh issue list --repo ${gh_repo} --state open --label goal,ready --limit 50 --json number,title,body,labels" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    repair_decisions [class="goal_batch_reviewer" benchmark_job_id="goal.batch.repair" llm_path_id="capability.goal_batch.repair" prompt_version="2026-03-12.r1" role_version="1.0.0" skill_id="goal.batch" label="Repair goal decisions" output_key="review_result" output_format="json" outputs="decisions" prompt="Your previous goal review JSON failed deterministic validation.\n\nOriginal review JSON:\n${review_result}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with a top-level decisions array." recovery_owner="supervisor"]
+    repaired_decisions_gate [shape="diamond" label="Repaired decisions valid?"]
+    resolve_skip_review_single_goal [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_boolean" label="Resolve single-goal review toggle" output_key="skip_review_single_goal" action_fallback="false" action_value="${skip_review_single_goal}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    review_goals [class="goal_batch_reviewer" benchmark_job_id="goal.batch.review" llm_path_id="capability.goal_batch.review" prompt_version="2026-03-09.r1" role_version="1.0.0" skill_id="goal.batch" label="Review goals" output_key="review_result" output_format="json" outputs="decisions" prompt="You are reviewing open goal issues to detect duplicates or obsolete goals.\n\nGoal issues JSON:\n${goal_issues}\n\nReturn JSON with:\n{\n  \"decisions\": [\n    {\n      \"issue_number\": 3,\n      \"decision\": \"keep|duplicate|close\",\n      \"canonical_issue\": 0,\n      \"reason\": \"short rationale\"\n    }\n  ]\n}\n\nRules:\n- Include every goal issue exactly once.\n- Use duplicate when the goal is substantively the same as another; set canonical_issue to the issue number to keep.\n- Use close only if the goal is clearly complete/obsolete even if not a duplicate.\n- Otherwise use keep.\n- Use only issue numbers from the input.\n\nReturn JSON only."]
+    skip_review_gate [shape="diamond" label="Skip review_goals?"]
+    start [shape="Mdiamond"]
+    validate_decisions [type="tool" governance="reversible" action_runtime="in_process" action_id="goal.validate_decisions" label="Validate goal decisions" output_format="json" outputs="ok,error,retry_prompt,decisions" action_decisions="${review_result}" action_goal_issues="${goal_issues}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    validate_repaired_decisions [type="tool" governance="reversible" action_runtime="in_process" action_id="goal.validate_decisions" label="Validate repaired goal decisions" output_format="json" outputs="ok,error,retry_prompt,decisions" action_decisions="${review_result}" action_goal_issues="${goal_issues}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    apply_decisions -> filter_kept
+    filter_kept -> fan_out -> fan_in -> done
+    start -> list_goals -> count_goals -> resolve_skip_review_single_goal -> gate
+    decisions_gate -> apply_decisions [condition="ok=true" label="valid"]
+    decisions_gate -> repair_decisions [condition="ok!=true" label="repair"]
+    evaluate_goal_review_skip -> skip_review_gate
+    fallback_decisions -> apply_decisions
+    gate -> done [condition="goal_count=0"]
+    gate -> evaluate_goal_review_skip [condition="goal_count>0"]
+    init_skip_decisions -> filter_kept
+    repair_decisions -> validate_repaired_decisions
+    repaired_decisions_gate -> apply_decisions [condition="ok=true" label="valid"]
+    repaired_decisions_gate -> fallback_decisions [condition="ok!=true" label="fallback"]
+    review_goals -> validate_decisions
+    skip_review_gate -> init_skip_decisions [condition="skip=true"]
+    skip_review_gate -> review_goals [condition="skip!=true"]
+    validate_decisions -> decisions_gate
+    validate_repaired_decisions -> repaired_decisions_gate
+}

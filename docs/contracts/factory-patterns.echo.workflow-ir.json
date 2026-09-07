@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "echo",
+  "familyId": "patterns",
+  "sourcePath": "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+  "outputPath": "docs/contracts/factory-patterns.echo.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+    "docs/contracts/workflow-ir/factory-patterns/echo.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "patterns",
+      "correlation_id": "workflow-ir-contract:echo",
+      "factory_id": "factory-patterns",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "echo",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "echo"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "patterns",
+        "correlation_id": "workflow-ir-contract:echo",
+        "factory_id": "factory-patterns",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "echo",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "echo"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/factory-patterns/echo.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+      "docs/contracts/workflow-ir/factory-patterns/echo.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpmYWN0b3J5LXBhdHRlcm5zLWVjaG8iCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAiZWNobyIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9mYWN0b3J5LXBhdHRlcm5zL3dvcmtmbG93cy9lY2hvL2VjaG8ud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJlY2hvIiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "echo"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "echo",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:05b5c08b13df283581d1b2f2935be8f2bf915a5074dde9257370ae68268a013e",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/factory-patterns/workflows/echo/echo.workflow-source.mjs. Do not edit by hand.\ndigraph echo {\n    label = \"echo\"\n    workflow_source = \"packages/factory-patterns/workflows/echo/echo.workflow-source.mjs\"\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    echo [type=\"tool\" governance=\"reversible\" label=\"Echo\" output_key=\"echo_output\" prompt=\"printf package-resolution-ok\" trust_domain=\"hatch.factory_patterns\" trust_role=\"hatch.factory_patterns.tool\"]\n    start [shape=\"Mdiamond\"]\n    start -> echo -> done\n}"
+}

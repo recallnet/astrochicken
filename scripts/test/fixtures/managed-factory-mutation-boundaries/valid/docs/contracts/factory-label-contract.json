@@ -1,0 +1,22 @@
+{
+  "schema_version": "factory_label_contract/v1",
+  "factories": [
+    {
+      "factory_id": "mothership",
+      "labels": [
+        {
+          "key": "managed_factory_bug",
+          "name": "managed-factory-bug"
+        },
+        {
+          "key": "incident_fingerprint",
+          "name": "incident-fingerprint"
+        },
+        {
+          "key": "kind_brainstorm",
+          "name": "kind:brainstorm"
+        }
+      ]
+    }
+  ]
+}

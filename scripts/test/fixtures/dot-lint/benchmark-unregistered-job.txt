@@ -1,0 +1,6 @@
+digraph benchmark_unregistered_job {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  review [class="reviewer" label="Review" benchmark_job_id="not.in.registry" prompt_version="2026-03-09.r1" role_version="1.0.0" skill_id="wave.execute.issue"]
+  start -> review -> done
+}

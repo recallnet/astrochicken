@@ -1,0 +1,28 @@
+// Generated from packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs. Do not edit by hand.
+digraph goal_queue {
+    label = "goal_queue"
+    workflow_source = "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    auto_ready_artifacts [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.auto_ready_artifacts" label="Auto-ready artifact goals" output_key="__auto_ready_artifacts_result" action_repo="${gh_repo}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    count_goals [type="tool" governance="irreversible" action_runtime="in_process" action_id="common.count_json_items" label="Count goals" output_key="goal_count" action_raw_b64="${goal_issues_b64}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    evaluate_goal_review_skip [type="tool" governance="reversible" action_runtime="in_process" action_id="ceremony.goal_review_skip" label="Evaluate single-goal review bypass" output_format="json" outputs="skip,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason" action_pipeline="goal_queue" action_goal_count="${goal_count}" action_skip_review_single_goal="${skip_review_single_goal}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    fan_in [type="fan_in.dynamic" label="Collect goal runs" output_key="goal_runs" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_in.dynamic"]
+    fan_out [type="fan_out.dynamic" label="Run goal" item_key="issue_number" max_concurrency="2" source_key="kept_goals" template="@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs" trust_domain="${trust_domain}" trust_role="${trust_role}.fan_out.dynamic"]
+    gate [shape="diamond" label="Any goals?"]
+    keep_all [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.filter_kept_goals" label="Keep all goals" output_key="kept_goals" action_decisions_b64="W10=" action_issues_b64="${goal_issues_b64}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    list_goals [type="tool" governance="reversible" action_runtime="in_process" action_id="goal.list_ready" label="List open goals" output_key="goal_issues" action_repo="${gh_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    normalize_labels [type="tool" governance="reversible" action_runtime="in_process" action_id="labels.normalize_issue_state" label="Normalize issue labels" output_key="__normalize_labels_result" action_repo="${gh_repo}" action_state="open" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    resolve_skip_review_single_goal [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_boolean" label="Resolve single-goal review toggle" output_key="skip_review_single_goal" action_fallback="false" action_value="${skip_review_single_goal}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    sanitize_goal_duplicates [type="tool" governance="irreversible" action_runtime="in_process" action_id="goal.sanitize_duplicates" label="Normalize goal duplicates" output_key="__sanitize_goal_duplicates_result" action_repo="${gh_repo}" action_run_id="${__run_id}" action_pipeline="goal_queue" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    sanitize_governance_overlap [type="tool" governance="irreversible" action_runtime="in_process" action_id="governance.sanitize_overlap" label="Normalize governance overlap" output_key="__sanitize_governance_overlap_result" action_repo="${gh_repo}" action_run_id="${__run_id}" action_pipeline="goal_queue" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    skip_review_gate [shape="diamond" label="Skip review ceremony?"]
+    start [shape="Mdiamond"]
+    keep_all -> fan_out -> fan_in -> done
+    start -> normalize_labels -> sanitize_governance_overlap -> auto_ready_artifacts -> sanitize_goal_duplicates -> list_goals -> count_goals -> resolve_skip_review_single_goal -> gate
+    evaluate_goal_review_skip -> skip_review_gate
+    gate -> done [condition="goal_count=0"]
+    gate -> evaluate_goal_review_skip [condition="goal_count!=0"]
+    skip_review_gate -> keep_all [condition="skip!=true" label="full"]
+    skip_review_gate -> keep_all [condition="skip=true" label="skip"]
+}

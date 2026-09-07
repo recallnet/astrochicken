@@ -1,0 +1,550 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "wave_demo_generate",
+  "familyId": "wave_execution",
+  "title": "Wave demo generate",
+  "description": "Typed source for deterministic post-merge wave demo generation.",
+  "sourcePath": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "wave_demo_generate",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "resolve_demo_policy",
+        "runtimeNodeId": "resolve_demo_policy"
+      },
+      {
+        "sourceNodeId": "classify_demo_strategy",
+        "runtimeNodeId": "classify_demo_strategy"
+      },
+      {
+        "sourceNodeId": "set_demo_strategy_resolved",
+        "runtimeNodeId": "set_demo_strategy_resolved"
+      },
+      {
+        "sourceNodeId": "demo_decision_gate",
+        "runtimeNodeId": "demo_decision_gate"
+      },
+      {
+        "sourceNodeId": "strategy_support_gate",
+        "runtimeNodeId": "strategy_support_gate"
+      },
+      {
+        "sourceNodeId": "generate_terminal_demo",
+        "runtimeNodeId": "generate_terminal_demo"
+      },
+      {
+        "sourceNodeId": "demo_generation_gate",
+        "runtimeNodeId": "demo_generation_gate"
+      },
+      {
+        "sourceNodeId": "publish_demo_artifact",
+        "runtimeNodeId": "publish_demo_artifact"
+      },
+      {
+        "sourceNodeId": "set_demo_status_from_publish",
+        "runtimeNodeId": "set_demo_status_from_publish"
+      },
+      {
+        "sourceNodeId": "set_demo_error_from_publish",
+        "runtimeNodeId": "set_demo_error_from_publish"
+      },
+      {
+        "sourceNodeId": "set_demo_status_from_generation",
+        "runtimeNodeId": "set_demo_status_from_generation"
+      },
+      {
+        "sourceNodeId": "set_demo_error_from_generation",
+        "runtimeNodeId": "set_demo_error_from_generation"
+      },
+      {
+        "sourceNodeId": "set_demo_status_skipped",
+        "runtimeNodeId": "set_demo_status_skipped"
+      },
+      {
+        "sourceNodeId": "set_demo_error_unsupported",
+        "runtimeNodeId": "set_demo_error_unsupported"
+      },
+      {
+        "sourceNodeId": "set_demo_status_skipped_unsupported",
+        "runtimeNodeId": "set_demo_status_skipped_unsupported"
+      },
+      {
+        "sourceNodeId": "set_demo_error_empty",
+        "runtimeNodeId": "set_demo_error_empty"
+      },
+      {
+        "sourceNodeId": "set_artifact_url_empty",
+        "runtimeNodeId": "set_artifact_url_empty"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "start",
+      "kind": "start"
+    },
+    {
+      "id": "resolve_demo_policy",
+      "kind": "tool_action",
+      "title": "Resolve demo policy",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${demo_strategy_policy}",
+        "action_key": "demo_strategy",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_strategy_policy"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "classify_demo_strategy",
+      "kind": "tool_action",
+      "title": "Classify demo strategy",
+      "handlerType": "tool",
+      "actionId": "software.classify_wave_demo_strategy",
+      "dotAttributes": {
+        "action_demo_strategy": "${demo_strategy_policy}",
+        "action_issue_metadata": "${issue_metadata}",
+        "action_merged_results": "${merged_results}",
+        "action_pipeline": "wave_demo_generate",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "demo_strategy",
+          "demo_decision",
+          "reason_codes",
+          "no_demo",
+          "telemetry"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_strategy_resolved",
+      "kind": "tool_action",
+      "title": "Resolve effective demo strategy",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "${demo_strategy_policy}",
+        "action_runtime": "in_process",
+        "action_value": "${demo_strategy}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_strategy_resolved"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "demo_decision_gate",
+      "kind": "decision",
+      "title": "Generate demo?"
+    },
+    {
+      "id": "strategy_support_gate",
+      "kind": "decision",
+      "title": "Strategy supported?"
+    },
+    {
+      "id": "generate_terminal_demo",
+      "kind": "tool_action",
+      "title": "Generate terminal demo artifact",
+      "handlerType": "tool",
+      "actionId": "software.generate_wave_terminal_demo",
+      "dotAttributes": {
+        "action_issue_titles": "${issue_titles}",
+        "action_merge_stderr": "${merge_stderr}",
+        "action_merge_stdout": "${merge_stdout}",
+        "action_merged_results": "${merged_results}",
+        "action_milestone_title": "${milestone_title}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "fail_open": "true"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "ok",
+          "demo_generation_status",
+          "demo_generation_error",
+          "demo_artifact_path",
+          "demo_artifact_bytes",
+          "demo_strategy",
+          "merged_count"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "demo_generation_gate",
+      "kind": "decision",
+      "title": "Demo generation succeeded?"
+    },
+    {
+      "id": "publish_demo_artifact",
+      "kind": "tool_action",
+      "title": "Publish demo artifact",
+      "handlerType": "tool",
+      "actionId": "software.publish_wave_demo_artifact",
+      "dotAttributes": {
+        "action_demo_artifact_path": "${demo_artifact_path}",
+        "action_demo_strategy": "${demo_strategy_resolved}",
+        "action_milestone_title": "${milestone_title}",
+        "action_pipeline": "wave_demo_generate",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "fail_open": "true"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "ok",
+          "artifact_url",
+          "demo_artifact_url",
+          "demo_publish_status",
+          "demo_publish_error"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "set_demo_status_from_publish",
+      "kind": "tool_action",
+      "title": "Set demo status from publish result",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "failed",
+        "action_runtime": "in_process",
+        "action_value": "${demo_publish_status}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_error_from_publish",
+      "kind": "tool_action",
+      "title": "Set demo error from publish result",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "",
+        "action_runtime": "in_process",
+        "action_value": "${demo_publish_error}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_error"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_status_from_generation",
+      "kind": "tool_action",
+      "title": "Set demo status from generation result",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "failed",
+        "action_runtime": "in_process",
+        "action_value": "${demo_generation_status}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_error_from_generation",
+      "kind": "tool_action",
+      "title": "Set demo error from generation result",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "demo_generation_failed",
+        "action_runtime": "in_process",
+        "action_value": "${demo_generation_error}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_error"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_status_skipped",
+      "kind": "tool_action",
+      "title": "Set demo status: skipped",
+      "prompt": "printf 'skipped'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_error_unsupported",
+      "kind": "tool_action",
+      "title": "Set demo error: unsupported strategy",
+      "prompt": "printf 'unsupported_demo_strategy'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_error"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_status_skipped_unsupported",
+      "kind": "tool_action",
+      "title": "Set demo status: skipped (unsupported strategy)",
+      "prompt": "printf 'skipped'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_demo_error_empty",
+      "kind": "tool_action",
+      "title": "Set demo error: empty",
+      "prompt": "printf ''",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_error"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_artifact_url_empty",
+      "kind": "tool_action",
+      "title": "Set artifact URL: empty",
+      "prompt": "printf ''",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "artifact_url"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "resolve_demo_policy"
+    },
+    {
+      "from": "resolve_demo_policy",
+      "to": "classify_demo_strategy"
+    },
+    {
+      "from": "classify_demo_strategy",
+      "to": "set_demo_strategy_resolved"
+    },
+    {
+      "from": "set_demo_strategy_resolved",
+      "to": "demo_decision_gate"
+    },
+    {
+      "from": "demo_decision_gate",
+      "to": "strategy_support_gate",
+      "condition": "demo_decision=generate"
+    },
+    {
+      "from": "demo_decision_gate",
+      "to": "set_demo_status_skipped",
+      "condition": "demo_decision!=generate"
+    },
+    {
+      "from": "strategy_support_gate",
+      "to": "generate_terminal_demo",
+      "condition": "demo_strategy_resolved=terminal"
+    },
+    {
+      "from": "strategy_support_gate",
+      "to": "set_demo_error_unsupported",
+      "condition": "demo_strategy_resolved!=terminal"
+    },
+    {
+      "from": "set_demo_error_unsupported",
+      "to": "set_demo_status_skipped_unsupported"
+    },
+    {
+      "from": "set_demo_status_skipped_unsupported",
+      "to": "set_artifact_url_empty"
+    },
+    {
+      "from": "set_demo_status_skipped",
+      "to": "set_demo_error_empty"
+    },
+    {
+      "from": "set_demo_error_empty",
+      "to": "set_artifact_url_empty"
+    },
+    {
+      "from": "generate_terminal_demo",
+      "to": "demo_generation_gate"
+    },
+    {
+      "from": "demo_generation_gate",
+      "to": "publish_demo_artifact",
+      "condition": "demo_generation_status=generated"
+    },
+    {
+      "from": "demo_generation_gate",
+      "to": "set_demo_status_from_generation",
+      "condition": "demo_generation_status!=generated"
+    },
+    {
+      "from": "set_demo_status_from_generation",
+      "to": "set_demo_error_from_generation"
+    },
+    {
+      "from": "set_demo_error_from_generation",
+      "to": "set_artifact_url_empty"
+    },
+    {
+      "from": "publish_demo_artifact",
+      "to": "set_demo_status_from_publish"
+    },
+    {
+      "from": "set_demo_status_from_publish",
+      "to": "set_demo_error_from_publish"
+    },
+    {
+      "from": "set_demo_error_from_publish",
+      "to": "done"
+    },
+    {
+      "from": "set_artifact_url_empty",
+      "to": "done"
+    }
+  ]
+}

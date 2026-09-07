@@ -1,0 +1,94 @@
+{
+  "schema_version": "boundary_schema_registry/v1",
+  "summary": {
+    "registered_boundaries": 6,
+    "governed_outputs": 6,
+    "discovered_sources": 10,
+    "diagnostics": 0
+  },
+  "governed_output_paths": [
+    "docs/contracts/factory-config.json",
+    "docs/contracts/factory-installation-manifest.json",
+    "docs/contracts/factory-instance-manifest.json",
+    "docs/contracts/factory-kind-definition.json",
+    "docs/contracts/factory-service-registry.json",
+    "docs/contracts/hatch-intent.json"
+  ],
+  "registered_output_paths": [
+    "docs/contracts/factory-config.json",
+    "docs/contracts/factory-installation-manifest.json",
+    "docs/contracts/factory-instance-manifest.json",
+    "docs/contracts/factory-kind-definition.json",
+    "docs/contracts/factory-service-registry.json",
+    "docs/contracts/hatch-intent.json"
+  ],
+  "discovered_source_paths": [
+    "apps/hatch/src/intent/schema.ts",
+    "packages/factory-core/src/hatch-config-schema-boundaries.ts",
+    "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
+    "packages/factory-core/src/workflow-ir-registry.ts",
+    "packages/factory-core/src/workflow-source-registry.ts",
+    "packages/factory-ops/src/lib/host-runtime-release-schema.ts",
+    "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
+    "packages/factory-ops/src/lib/resume-policy-schema.ts",
+    "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts",
+    "packages/github-adapter/src/backend-selection-schema.ts"
+  ],
+  "boundaries": [
+    {
+      "id": "https://recallnet.dev/contracts/factory-config.json",
+      "version": "hatch.factory.config.v1",
+      "document_version_field": "schema",
+      "title": "Factory Config Document",
+      "source_path": "apps/hatch/src/factory/config-schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/factory-config.json"
+    },
+    {
+      "id": "https://recallnet.dev/contracts/factory-installation-manifest.json",
+      "version": "factory_installation_manifest/v1",
+      "document_version_field": "schema_version",
+      "title": "Factory Installation Manifest",
+      "source_path": "apps/hatch/src/factory/config-schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/factory-installation-manifest.json"
+    },
+    {
+      "id": "https://recallnet.dev/contracts/factory-instance-manifest.json",
+      "version": "factory_instance_manifest/v1",
+      "document_version_field": "schema_version",
+      "title": "Factory Instance Manifest",
+      "source_path": "apps/hatch/src/factory/config-schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/factory-instance-manifest.json"
+    },
+    {
+      "id": "https://recallnet.dev/contracts/factory-kind-definition.json",
+      "version": "factory_kind_definition/v1",
+      "document_version_field": "schema_version",
+      "title": "Factory Kind Definition",
+      "source_path": "apps/hatch/src/factory/config-schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/factory-kind-definition.json"
+    },
+    {
+      "id": "https://recallnet.dev/contracts/factory-service-registry.json",
+      "version": "factory_service_registry/v1",
+      "document_version_field": "schema_version",
+      "title": "Factory Service Registry",
+      "source_path": "apps/hatch/src/factory/config-schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/factory-service-registry.json"
+    },
+    {
+      "id": "https://recallnet.dev/contracts/hatch-intent.json",
+      "version": "hatch.intent.v1",
+      "document_version_field": "schema_version",
+      "title": "Hatch Intent Document",
+      "source_path": "apps/hatch/src/intent/schema.ts",
+      "definition_module_path": "",
+      "output_path": "docs/contracts/hatch-intent.json"
+    }
+  ],
+  "diagnostics": []
+}

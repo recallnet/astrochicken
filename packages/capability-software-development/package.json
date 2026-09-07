@@ -1,0 +1,21 @@
+{
+	"name": "@hatch/capability-software-development",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch software-development capability: goal intake/decomposition to execution/review/merge/reporting handoff contracts",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"graphs",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"README.md",
+		"workflows"
+	]
+}

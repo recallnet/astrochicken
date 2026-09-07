@@ -1,0 +1,68 @@
+# Factory Conformance Harness
+
+Run this harness before the first real supervisor tick or wave dispatch.
+
+Canonical boundary reference:
+- [Factory Public Contract (v1)](../../../docs/reference/factory-public-contract.md)
+- Machine-readable contract: [`docs/contracts/factory-public-contract.v1.json`](../../../docs/contracts/factory-public-contract.v1.json)
+
+Classification for this harness:
+- **Required public:** conformance phases and baseline pass criteria in the public contract.
+- **Optional public:** local wrappers/automation around the shared harness.
+- **Managed-only:** control-plane release gating layered on top of shared phase results.
+
+## Contract
+
+The canonical public install contract is maintained in `docs/reference/snippets/external-install-contract.md`. Scaffolds are expected to keep the section below synchronized verbatim with that snippet.
+
+<!-- public-contract -->
+<!-- external-install-contract:copied-from=docs/reference/snippets/external-install-contract.md -->
+
+### Public install contract
+
+Required packages:
+- `hatch` — required package; provides the `hatch` binary for runtime/conformance commands.
+- `@hatch/factory-ops` — required package; provides the `hatch-ops` binary for operator/runtime status and recovery commands.
+- `@hatch/replay` — optional package for replay/lab workflows; not required for baseline external factory installs.
+- Internal-only surfaces: `apps/*` and private `packages/*` implementation tooling are not part of the external install contract.
+
+| Stable entrypoint | Owning binary/package | Intended persona | Install smoke check |
+| --- | --- | --- | --- |
+| `hatch run <file.dot>` | `hatch` (`hatch`) | External adopter | `hatch run --help` |
+| `hatch validate <file.dot>` | `hatch` (`hatch`) | External adopter | `hatch validate --help` |
+| `hatch factory conformance` | `hatch` (`hatch`) | External adopter | `hatch factory conformance --help` |
+| `hatch-ops factory status` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory status --help` |
+| `hatch-ops factory tick-status` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory tick-status --help` |
+| `hatch-ops factory recovery-sweep` | `hatch-ops` (`@hatch/factory-ops`) | Internal operator | `hatch-ops factory recovery-sweep --help` |
+
+This block is the public install contract for docs and generated quickstarts. Include tooling is not available in this docs stack, so update `docs/reference/snippets/external-install-contract.md` first, then copy this block verbatim into each consumer document/template.
+
+## Canonical command (required)
+
+```bash
+pnpm factory:health -- --factory-root factories/{{factory_id}}
+```
+
+Equivalent factory-local wrapper command:
+
+```bash
+factories/{{factory_id}}/scripts/run-conformance.sh
+```
+
+This wrapper runs the shared conformance harness (`scripts/run-conformance-harness.mjs`) against this scaffolded factory using `factory.config.json` and deterministic fixture metadata in `conformance/fixtures/`.
+
+## Invariants exercised
+
+- config completeness and schema validation
+- DOT graph parse/validate + DOT lint
+- recovery ownership on reachable graph nodes
+- run-dir isolation (`.hatch/<factory_id>/runs` contract)
+- deterministic conformance smoke graph execution
+- operational E2E proof that emitted supervisor runs are visible through `hatch-ops` operator surfaces
+- required ops CLI command/output contract probes
+- failure-path ownership: no unowned terminal/dead-end branch
+
+## Expected outcome
+
+- **Pass**: the factory is operational for first live use.
+- **Fail**: fix the reported failed phase first; do not launch real ticks/waves until the harness passes.

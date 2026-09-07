@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "product_judge",
+  "familyId": "product_judge",
+  "sourcePath": "packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+  "outputPath": "docs/contracts/capability-product-judge.product_judge.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+    "docs/contracts/workflow-ir/capability-product-judge/product_judge.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "product_judge",
+      "correlation_id": "workflow-ir-contract:product_judge",
+      "factory_id": "capability-product-judge",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "product_judge",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "product_judge"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "product_judge",
+        "correlation_id": "workflow-ir-contract:product_judge",
+        "factory_id": "capability-product-judge",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "product_judge",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "product_judge"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-product-judge/product_judge.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+      "docs/contracts/workflow-ir/capability-product-judge/product_judge.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LXByb2R1Y3QtanVkZ2UtcHJvZHVjdF9qdWRnZSIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJwcm9kdWN0X2p1ZGdlIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktcHJvZHVjdC1qdWRnZS93b3JrZmxvd3MvcHJvZHVjdF9qdWRnZS9wcm9kdWN0X2p1ZGdlLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAicHJvZHVjdF9qdWRnZSIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "product_judge"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "product_judge",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:ae4f1b10dbd140c7e6af5fb3da4cf90010f2d053a49b395c1bf4505712b77d6a",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs. Do not edit by hand.\ndigraph product_judge {\n    label = \"product_judge\"\n    workflow_source = \"packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    build_judge_context [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.build_context_contract\" label=\"Build judge context contract\" output_format=\"json\" outputs=\"judge_context_path,judge_context_sha256,judge_context_valid,judge_context_error,judge_scenario_selection_path,judge_scenario_selection_sha256,judge_scenario_selection_signature_sha256\" action_gh_repo=\"${gh_repo}\" action_judge_context_raw=\"${merge_candidates}\" action_judge_evidence_path=\"${judge_evidence_path}\" action_judge_evidence_sha256=\"${judge_evidence_sha256}\" action_judge_kind=\"issue_execution_post_merge\" action_judge_rubric=\"alignment.default\" action_milestone_title=\"${milestone_title}\" action_objective_id=\"post_merge_alignment\" action_scenario_selector=\"astrochicken\" action_subject_id=\"${milestone_title}\" action_worktree_dir=\"${repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    build_judge_context_recovery_packet [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.build_recovery_packet\" label=\"Build judge context recovery packet\" output_format=\"json\" outputs=\"judge_context_recovery_packet_path,judge_context_recovery_packet_id,judge_context_recovery_packet_schema_version,judge_context_recovery_packet_storage_class,judge_context_recovery_packet_type\" action_repo=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"issue_execution\" action_node_id=\"build_judge_context_recovery_packet\" action_control_plane_repo=\"${control_plane_repo}\" action_error_text=\"${judge_context_error}\" action_gate_code=\"${judge_context_gate_code}\" action_judge_context_path=\"${judge_context_path}\" action_judge_context_scope_identity=\"issue_execution\" action_judge_evidence_path=\"${judge_evidence_path}\" action_judge_kind=\"issue_execution_post_merge\" action_milestone_title=\"${milestone_title}\" action_packet_type=\"judge_context_contract_recovery\" action_route_code=\"${judge_route_code}\" action_target_repo=\"${gh_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    build_judge_evidence [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.build_evidence_contract\" label=\"Build judge evidence contract\" output_format=\"json\" outputs=\"judge_evidence_path,judge_evidence_sha256,judge_evidence_valid,judge_evidence_error\" action_judge_context_raw=\"${merge_candidates}\" action_judge_kind=\"issue_execution_post_merge\" action_require_qa_markers=\"true\" action_subject_id=\"${milestone_title}\" action_worktree_dir=\"${repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    build_judge_evidence_recovery_packet [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.build_recovery_packet\" label=\"Build judge evidence recovery packet\" output_format=\"json\" outputs=\"judge_evidence_recovery_packet_path,judge_evidence_recovery_packet_id,judge_evidence_recovery_packet_schema_version,judge_evidence_recovery_packet_storage_class,judge_evidence_recovery_packet_type\" action_repo=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"issue_execution\" action_node_id=\"build_judge_evidence_recovery_packet\" action_control_plane_repo=\"${control_plane_repo}\" action_error_text=\"${judge_evidence_error}\" action_gate_code=\"${judge_evidence_gate_code}\" action_judge_context_path=\"${judge_context_path}\" action_judge_context_scope_identity=\"issue_execution\" action_judge_evidence_path=\"${judge_evidence_path}\" action_judge_kind=\"issue_execution_post_merge\" action_milestone_title=\"${milestone_title}\" action_packet_type=\"judge_evidence_contract_recovery\" action_route_code=\"${judge_route_code}\" action_target_repo=\"${gh_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    close_milestone [type=\"tool\" governance=\"irreversible\" label=\"Close milestone\" output_key=\"close_milestone_status\" prompt=\"# hatch:no-inline-script-ok\\ngh api repos/${gh_repo}/milestones --state open --jq '.[] | select(.title==\\\"${milestone_title}\\\") | .number' | xargs -I{} gh api -X PATCH repos/${gh_repo}/milestones/{} -f state=closed >/dev/null\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    decide [shape=\"diamond\" label=\"Judge pass?\" recovery_owner=\"supervisor\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    judge [class=\"post_merge_judge\" benchmark_job_id=\"issue.execute.judge\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"issue.execute\" label=\"Post-merge judge\" outputs=\"disposition,confidence,recommended_transition,reason_codes,notes,verdict\" prompt=\"You are the post-merge judge for ${gh_repo}.\\n\\nSurvey the existing scenario registry and use zero, one, or at most two scenarios only when they materially sharpen judgment for this merged work. Scenarios are optional and sparse; do not force them.\\nTreat scenarios as high-value judgment aids, not exhaustive checklists.\\nDo NOT reveal or quote any scenario. Provide a redacted verdict envelope.\\n\\nMerged issues: ${merge_results}\\n\\nReturn JSON:\\n{\\n  \\\"schema\\\": \\\"verdict/v1\\\",\\n  \\\"verdict_kind\\\": \\\"post_merge_judge\\\",\\n  \\\"disposition\\\": \\\"approve|reject|defer|escalate\\\",\\n  \\\"confidence\\\": \\\"high|medium|low\\\",\\n  \\\"recommended_transition\\\": \\\"close_milestone|open_followup|request_more_evidence|escalate_contract\\\",\\n  \\\"observation\\\": {\\n    \\\"alignment_score\\\": 0.0,\\n    \\\"constraint_violations\\\": [],\\n    \\\"missing_evidence\\\": []\\n  },\\n  \\\"recommendation\\\": {\\n    \\\"action\\\": \\\"close_milestone|open_followup|request_more_evidence|escalate_contract\\\",\\n    \\\"next_steps\\\": [\\\"Redacted feedback or confirmation\\\"]\\n  },\\n  \\\"reason_codes\\\": [\\\"POST_MERGE_ALIGNED|POST_MERGE_MISALIGNED|POST_MERGE_EVIDENCE_GAP|POST_MERGE_CONTRACT_INVALID\\\"],\\n  \\\"notes\\\": \\\"Concise human-readable rationale\\\"\\n}\\n\\nRules:\\n- If disposition=approve, recommended_transition must be close_milestone.\\n- If disposition=reject, recommended_transition must be open_followup.\\n- If disposition=defer, recommended_transition must be request_more_evidence.\\n- If disposition=escalate, recommended_transition must be escalate_contract.\\n- reason_codes must be non-empty.\\nReturn JSON only.\" objective_id=\"post_merge_alignment\" scenarios=\"astrochicken\"]\n    judge_context_gate [shape=\"diamond\" label=\"Judge context complete?\"]\n    judge_evidence_gate [shape=\"diamond\" label=\"Judge evidence complete?\"]\n    open_followup [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"wave.open_judge_followup\" label=\"Open follow-up\" output_key=\"open_followup_status\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_pipeline=\"issue_execution\" action_judge_notes=\"${notes}\" action_milestone_title=\"${milestone_title}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\"]\n    validate_judge_context [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.validate_context_contract\" label=\"Validate judge context contract\" output_format=\"json\" outputs=\"judge_context_gate_pass,judge_context_gate_code,judge_context_error,judge_context_path,judge_context_sha256,judge_scenario_selection_path,judge_scenario_selection_sha256,judge_scenario_selection_signature_sha256,judge_route_code,disposition,confidence,recommended_transition,reason_codes,notes,verdict\" action_judge_context_error=\"${judge_context_error}\" action_judge_context_path=\"${judge_context_path}\" action_judge_context_raw=\"${merge_candidates}\" action_judge_context_sha256=\"${judge_context_sha256}\" action_judge_context_valid=\"${judge_context_valid}\" action_judge_evidence_path=\"${judge_evidence_path}\" action_judge_evidence_sha256=\"${judge_evidence_sha256}\" action_judge_kind=\"issue_execution_post_merge\" action_judge_rubric=\"alignment.default\" action_objective_id=\"post_merge_alignment\" action_scenario_selector=\"astrochicken\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    validate_judge_evidence [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"judge.validate_evidence_contract\" label=\"Validate judge evidence contract\" output_format=\"json\" outputs=\"judge_evidence_gate_pass,judge_evidence_gate_code,judge_evidence_error,judge_route_code,disposition,confidence,recommended_transition,reason_codes,notes,verdict\" action_judge_context_raw=\"${merge_candidates}\" action_judge_evidence_error=\"${judge_evidence_error}\" action_judge_evidence_path=\"${judge_evidence_path}\" action_judge_evidence_sha256=\"${judge_evidence_sha256}\" action_judge_evidence_valid=\"${judge_evidence_valid}\" action_judge_kind=\"issue_execution_post_merge\" action_require_qa_markers=\"true\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start -> build_judge_evidence\n    validate_judge_evidence -> judge_evidence_gate\n    build_judge_context_recovery_packet -> decide\n    build_judge_context -> validate_judge_context\n    build_judge_evidence_recovery_packet -> decide\n    build_judge_evidence -> build_judge_context\n    build_judge_evidence -> validate_judge_evidence [condition=\"judge_evidence_valid=__contract_edge__\"]\n    close_milestone -> done\n    decide -> close_milestone [condition=\"disposition=approve\"]\n    decide -> open_followup [condition=\"disposition!=approve\"]\n    judge_context_gate -> build_judge_context_recovery_packet [condition=\"judge_context_gate_pass!=true\"]\n    judge_context_gate -> validate_judge_evidence [condition=\"judge_context_gate_pass=true\"]\n    judge_evidence_gate -> build_judge_evidence_recovery_packet [condition=\"judge_evidence_gate_pass!=true\"]\n    judge_evidence_gate -> judge [condition=\"judge_evidence_gate_pass=true\"]\n    judge -> decide\n    open_followup -> done\n    validate_judge_context -> judge_context_gate\n}"
+}

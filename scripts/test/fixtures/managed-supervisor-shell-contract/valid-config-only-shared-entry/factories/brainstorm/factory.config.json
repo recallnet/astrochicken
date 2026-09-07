@@ -1,0 +1,9 @@
+{
+  "factory_id": "brainstorm",
+  "dispatch": {
+    "graph": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  },
+  "pipeline": {
+    "supervisor_tick": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  }
+}

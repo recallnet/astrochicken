@@ -1,0 +1,26 @@
+{
+  "threshold": 5,
+  "minLines": 8,
+  "minTokens": 50,
+  "reporters": ["console", "json"],
+  "output": "./reports/jscpd-tests",
+  "gitignore": true,
+  "noSymlinks": true,
+  "path": ["apps", "packages", "scripts", "factories"],
+  "pattern": "**/{__tests__/**/*,test/**/*,*.{test,spec,unit.test,integration.test,contract.test,cli.test}}.{js,jsx,ts,tsx,mjs,cjs}",
+  "ignore": [
+    "scripts/test/fixtures/**",
+    "scripts/fixtures/**",
+    "packages/**/test/fixtures/**",
+    "**/scripts/test/fixtures/**",
+    "**/scripts/fixtures/**",
+    "**/packages/**/test/fixtures/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.turbo/**",
+    "**/coverage/**",
+    "**/reports/**",
+    "**/.git/**"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "selected_issues": [
+    {
+      "issue_id": 5,
+      "issue_number": 5,
+      "factory_id": "mothership",
+      "sort_key": "mothership#5",
+      "decision": "selected",
+      "reason_code": "selected",
+      "reason_details": {},
+      "notes": [
+        "blocked_by_missing",
+        "blocks_missing",
+        "related_to_missing"
+      ]
+    }
+  ],
+  "skipped_issues": [],
+  "requeued_issues": [],
+  "stats": {
+    "total_issues": 1,
+    "eligible_count": 1,
+    "selected_count": 1,
+    "skipped_count": 0,
+    "requeued_count": 0,
+    "global_limit": 1,
+    "global_in_flight": 0,
+    "global_slots": 1,
+    "per_factory": {
+      "mothership": {
+        "limit": 1,
+        "in_flight": 0,
+        "slots_available": 0
+      }
+    }
+  }
+}

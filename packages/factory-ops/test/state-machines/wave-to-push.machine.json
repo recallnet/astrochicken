@@ -1,0 +1,394 @@
+{
+  "schema_version": "wave_to_push_machine/v1",
+  "description": "Canonical wave->push transition map for deterministic contract testing.",
+  "graphs": {
+    "wave_execute": {
+      "start": "find_ready_wave",
+      "terminal_states": [
+        "done",
+        "cp_blocked_exit",
+        "set_wave_merge_failed"
+      ],
+      "transitions": [
+        {
+          "from": "find_ready_wave",
+          "to": "gate",
+          "condition": "always"
+        },
+        {
+          "from": "gate",
+          "to": "check_cp_blocker",
+          "condition": "milestone_title!="
+        },
+        {
+          "from": "check_cp_blocker",
+          "to": "cp_blocked_exit",
+          "condition": "blocker_active=true"
+        },
+        {
+          "from": "check_cp_blocker",
+          "to": "lock_wave",
+          "condition": "blocker_active!=true"
+        },
+        {
+          "from": "lock_wave",
+          "to": "lock_gate",
+          "condition": "always"
+        },
+        {
+          "from": "lock_gate",
+          "to": "list_issues",
+          "condition": "lock_granted=true"
+        },
+        {
+          "from": "next_issue",
+          "to": "issue_loop_gate",
+          "condition": "always"
+        },
+        {
+          "from": "issue_loop_gate",
+          "to": "clear_impl_result",
+          "condition": "has_next=true"
+        },
+        {
+          "from": "issue_loop_gate",
+          "to": "split_results",
+          "condition": "has_next!=true"
+        },
+        {
+          "from": "resolve_merge_context",
+          "to": "setup_merge_worktree",
+          "condition": "always"
+        },
+        {
+          "from": "setup_merge_worktree",
+          "to": "rebase_shared_branch",
+          "condition": "always"
+        },
+        {
+          "from": "rebase_shared_gate",
+          "to": "set_resolution_source_deterministic",
+          "condition": "rebase_status=ready"
+        },
+        {
+          "from": "set_resolution_source_deterministic",
+          "to": "merge_shared_branch",
+          "condition": "always"
+        },
+        {
+          "from": "rebase_shared_gate",
+          "to": "set_resolution_source_llm",
+          "condition": "rebase_status!=ready"
+        },
+        {
+          "from": "set_resolution_source_llm",
+          "to": "build_conflict_packet",
+          "condition": "always"
+        },
+        {
+          "from": "build_conflict_packet",
+          "to": "resolve_conflict",
+          "condition": "always"
+        },
+        {
+          "from": "resolve_conflict",
+          "to": "finalize_merge_commit",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_merge_commit",
+          "to": "finalize_gate",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_gate",
+          "to": "verify_resolution",
+          "condition": "finalize_status=ok"
+        },
+        {
+          "from": "finalize_gate",
+          "to": "retry_resolve_conflict",
+          "condition": "finalize_status!=ok"
+        },
+        {
+          "from": "retry_resolve_conflict",
+          "to": "verify_resolution",
+          "condition": "always"
+        },
+        {
+          "from": "verify_resolution",
+          "to": "resolution_gate",
+          "condition": "always"
+        },
+        {
+          "from": "resolution_gate",
+          "to": "merge_shared_branch",
+          "condition": "resolution_status=resolved"
+        },
+        {
+          "from": "resolution_gate",
+          "to": "emit_resolution_failure",
+          "condition": "resolution_status!=resolved"
+        },
+        {
+          "from": "emit_resolution_failure",
+          "to": "set_wave_merge_failed",
+          "condition": "always"
+        },
+        {
+          "from": "shared_merge_gate",
+          "to": "set_wave_merged",
+          "condition": "merge_status=merged"
+        },
+        {
+          "from": "shared_merge_gate",
+          "to": "set_wave_already_merged",
+          "condition": "merge_status=already_merged"
+        },
+        {
+          "from": "shared_merge_gate",
+          "to": "build_post_merge_packet",
+          "condition": "merge_status!=merged && merge_status!=already_merged"
+        },
+        {
+          "from": "build_post_merge_packet",
+          "to": "resolve_post_merge",
+          "condition": "always"
+        },
+        {
+          "from": "resolve_post_merge",
+          "to": "finalize_post_merge_commit",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_post_merge_commit",
+          "to": "finalize_post_merge_gate",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_post_merge_gate",
+          "to": "verify_post_merge_resolution",
+          "condition": "finalize_status=ok"
+        },
+        {
+          "from": "finalize_post_merge_gate",
+          "to": "retry_resolve_post_merge",
+          "condition": "finalize_status!=ok"
+        },
+        {
+          "from": "retry_resolve_post_merge",
+          "to": "verify_post_merge_resolution",
+          "condition": "always"
+        },
+        {
+          "from": "verify_post_merge_resolution",
+          "to": "post_merge_resolution_gate",
+          "condition": "always"
+        },
+        {
+          "from": "post_merge_resolution_gate",
+          "to": "set_wave_merged",
+          "condition": "resolution_status=resolved"
+        },
+        {
+          "from": "post_merge_resolution_gate",
+          "to": "set_wave_merge_failed",
+          "condition": "resolution_status!=resolved"
+        },
+        {
+          "from": "push_gate",
+          "to": "close_merged_issues",
+          "condition": "push_status=pushed"
+        },
+        {
+          "from": "push_gate",
+          "to": "build_push_failure_packet",
+          "condition": "push_status!=pushed"
+        },
+        {
+          "from": "build_push_failure_packet",
+          "to": "resolve_push_failure",
+          "condition": "always"
+        },
+        {
+          "from": "resolve_push_failure",
+          "to": "retry_push_main",
+          "condition": "always"
+        },
+        {
+          "from": "retry_push_main",
+          "to": "retry_push_gate",
+          "condition": "always"
+        },
+        {
+          "from": "retry_push_gate",
+          "to": "close_merged_issues",
+          "condition": "push_status=pushed"
+        },
+        {
+          "from": "retry_push_gate",
+          "to": "set_wave_merge_failed",
+          "condition": "push_status!=pushed"
+        },
+        {
+          "from": "build_merged_results",
+          "to": "handle_merge_failures",
+          "condition": "always"
+        },
+        {
+          "from": "handle_merge_failures",
+          "to": "clear_demo_artifact_url",
+          "condition": "always"
+        },
+        {
+          "from": "clear_demo_artifact_url",
+          "to": "clear_demo_status",
+          "condition": "always"
+        },
+        {
+          "from": "clear_demo_status",
+          "to": "clear_demo_error",
+          "condition": "always"
+        },
+        {
+          "from": "clear_demo_error",
+          "to": "resolve_demo_strategy_policy",
+          "condition": "always"
+        },
+        {
+          "from": "resolve_demo_strategy_policy",
+          "to": "merge_gate",
+          "condition": "always"
+        },
+        {
+          "from": "merge_gate",
+          "to": "run_demo_gate",
+          "condition": "merged_count!=0"
+        },
+        {
+          "from": "merge_gate",
+          "to": "unlock_no_merge",
+          "condition": "merged_count=0"
+        },
+        {
+          "from": "run_demo_gate",
+          "to": "judge",
+          "condition": "demo_strategy_policy=none"
+        },
+        {
+          "from": "run_demo_gate",
+          "to": "run_wave_demo_generate",
+          "condition": "demo_strategy_policy!=none"
+        },
+        {
+          "from": "run_wave_demo_generate",
+          "to": "judge",
+          "condition": "always"
+        }
+      ]
+    },
+    "merge_item": {
+      "start": "extract_merge",
+      "terminal_states": [
+        "done"
+      ],
+      "transitions": [
+        {
+          "from": "rebase_gate",
+          "to": "set_resolution_source_deterministic",
+          "condition": "rebase_status=ready"
+        },
+        {
+          "from": "set_resolution_source_deterministic",
+          "to": "attempt_merge",
+          "condition": "always"
+        },
+        {
+          "from": "rebase_gate",
+          "to": "set_resolution_source_llm",
+          "condition": "rebase_status!=ready"
+        },
+        {
+          "from": "merge_gate",
+          "to": "set_status_merged",
+          "condition": "merge_status=merged"
+        },
+        {
+          "from": "merge_gate",
+          "to": "set_status_already",
+          "condition": "merge_status=already_merged"
+        },
+        {
+          "from": "merge_gate",
+          "to": "set_resolution_source_llm",
+          "condition": "merge_status=conflict"
+        },
+        {
+          "from": "merge_gate",
+          "to": "route_error_to_resolver",
+          "condition": "merge_status=error"
+        },
+        {
+          "from": "route_error_to_resolver",
+          "to": "set_resolution_source_llm",
+          "condition": "always"
+        },
+        {
+          "from": "set_resolution_source_llm",
+          "to": "build_conflict_packet",
+          "condition": "always"
+        },
+        {
+          "from": "build_conflict_packet",
+          "to": "resolve_conflict",
+          "condition": "always"
+        },
+        {
+          "from": "resolve_conflict",
+          "to": "finalize_merge_commit",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_merge_commit",
+          "to": "finalize_gate",
+          "condition": "always"
+        },
+        {
+          "from": "finalize_gate",
+          "to": "verify_resolution",
+          "condition": "finalize_status=ok"
+        },
+        {
+          "from": "finalize_gate",
+          "to": "retry_resolve_conflict",
+          "condition": "finalize_status!=ok"
+        },
+        {
+          "from": "retry_resolve_conflict",
+          "to": "verify_resolution",
+          "condition": "always"
+        },
+        {
+          "from": "resolution_gate",
+          "to": "set_status_merged",
+          "condition": "resolution_status=resolved"
+        },
+        {
+          "from": "resolution_gate",
+          "to": "set_status_failed",
+          "condition": "resolution_status!=resolved"
+        },
+        {
+          "from": "verify_resolution",
+          "to": "resolution_gate",
+          "condition": "always"
+        },
+        {
+          "from": "setup_merge_worktree",
+          "to": "rebase_on_main",
+          "condition": "always"
+        }
+      ]
+    }
+  }
+}

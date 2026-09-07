@@ -1,0 +1,1 @@
+The merge succeeded but the push was rejected. Fetch origin/main, reconcile canonical main and the merge worktree while preserving the merge work, and leave both in a state where the deterministic push-recovery verifier passes and the next retry push can run without manual intervention. Do not stop at "ready to push."

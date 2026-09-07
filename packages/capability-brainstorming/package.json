@@ -1,0 +1,22 @@
+{
+	"name": "@hatch/capability-brainstorming",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch brainstorming capability: multi-agent red/blue deliberation graph + skill bundle",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./skills/*": "./skills/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"graphs",
+		"skills",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"workflows"
+	]
+}

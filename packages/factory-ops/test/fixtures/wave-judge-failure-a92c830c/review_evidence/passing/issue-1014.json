@@ -1,0 +1,20 @@
+{
+  "commits_ahead": "1",
+  "issue_commits": "1",
+  "issue_changed_files": [
+    "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"
+  ],
+  "qa": {
+    "status": "pass",
+    "command": "npm run test:wave-claim-gates"
+  },
+  "judge_context_scope_identity": "wave_execute",
+  "judge_context": {
+    "scenario_selector": "astrochicken",
+    "subject": "goal-1-wave-1",
+    "milestone": "goal-1-wave-1",
+    "scope_identity": "wave_execute"
+  },
+  "judge_context_valid": "true",
+  "judge_context_error": ""
+}

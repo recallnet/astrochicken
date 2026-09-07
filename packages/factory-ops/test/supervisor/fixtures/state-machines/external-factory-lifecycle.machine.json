@@ -1,0 +1,390 @@
+{
+  "schema_version": "external_factory_lifecycle_machine/v1",
+  "description": "Canonical lifecycle outcome contract for supervisor external-factory resume gating.",
+  "states": [
+    {
+      "id": "waiting_for_release",
+      "lifecycle_state": "waiting_for_release",
+      "resume_allowed": false,
+      "reason_codes": [
+        "manifest_ambiguous",
+        "verification_failed"
+      ]
+    },
+    {
+      "id": "operator_paused",
+      "lifecycle_state": "waiting_for_release",
+      "resume_allowed": false,
+      "reason_codes": [
+        "operator_paused"
+      ]
+    },
+    {
+      "id": "operator_quarantined",
+      "lifecycle_state": "waiting_for_release",
+      "resume_allowed": false,
+      "reason_codes": [
+        "operator_quarantined"
+      ]
+    },
+    {
+      "id": "release_rollout_blocked",
+      "lifecycle_state": "waiting_for_release",
+      "resume_allowed": false,
+      "reason_codes": [
+        "rollout_blocked"
+      ]
+    },
+    {
+      "id": "self_update_failed",
+      "lifecycle_state": "waiting_for_release",
+      "resume_allowed": false,
+      "reason_codes": [
+        "self_update_failed"
+      ]
+    },
+    {
+      "id": "rejected_upstream",
+      "lifecycle_state": "rejected_upstream",
+      "resume_allowed": false,
+      "reason_codes": [
+        "rejected_upstream"
+      ]
+    },
+    {
+      "id": "restart_failed",
+      "lifecycle_state": "restart_failed",
+      "resume_allowed": false,
+      "reason_codes": [
+        "host_restart_failed",
+        "host_health_failed"
+      ]
+    },
+    {
+      "id": "ready_to_resume",
+      "lifecycle_state": "ready_to_resume",
+      "resume_allowed": true,
+      "reason_codes": [
+        "ready_to_resume"
+      ]
+    }
+  ],
+  "transitions": [
+    { "from": "waiting_for_release", "to": "operator_paused", "condition": "operator_control_state=pause" },
+    { "from": "waiting_for_release", "to": "operator_quarantined", "condition": "operator_control_state=quarantine" },
+    { "from": "operator_paused", "to": "waiting_for_release", "condition": "operator_resume_action" },
+    { "from": "operator_quarantined", "to": "waiting_for_release", "condition": "operator_resume_action" },
+    { "from": "waiting_for_release", "to": "release_rollout_blocked", "condition": "rollout_not_promoted" },
+    { "from": "waiting_for_release", "to": "self_update_failed", "condition": "attempted_self_update=true self_update_ok=false" },
+    { "from": "waiting_for_release", "to": "rejected_upstream", "condition": "upstream_release_rejected_or_superseded" },
+    { "from": "waiting_for_release", "to": "ready_to_resume", "condition": "gate_can_resume=true" },
+    { "from": "release_rollout_blocked", "to": "waiting_for_release", "condition": "retry_after_rollout_change" },
+    { "from": "self_update_failed", "to": "waiting_for_release", "condition": "manual_fix_then_retry" },
+    { "from": "rejected_upstream", "to": "waiting_for_release", "condition": "wait_for_new_upstream_release" },
+    { "from": "ready_to_resume", "to": "restart_failed", "condition": "require_restart=true restart_or_health_failed" },
+    { "from": "restart_failed", "to": "ready_to_resume", "condition": "restart_retry_succeeds" }
+  ],
+  "scenarios": [
+    {
+      "id": "manifest_ambiguous_wait",
+      "state": "waiting_for_release",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508,
+        "blockedItems": [
+          { "issue_number": 1508 }
+        ]
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": false,
+          "can_resume": false,
+          "reason": "manifest_schema_mismatch",
+          "manifest_release": { "tag": "v1.0.0" }
+        }
+      },
+      "expected": {
+        "lifecycle_state": "waiting_for_release",
+        "resume_allowed": false,
+        "reason": "manifest_ambiguous"
+      }
+    },
+    {
+      "id": "operator_paused_wait",
+      "state": "operator_paused",
+      "input": {
+        "factoryId": "external/issue-worker",
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508
+      },
+      "stubs": {
+        "read_control_state": {
+          "factory_id": "external/issue-worker",
+          "action_state": {
+            "pause": { "active": true },
+            "quarantine": { "active": false },
+            "retry": { "active": false },
+            "unblock": { "active": false },
+            "resume": { "active": false }
+          },
+          "reason": "operator requested pause"
+        }
+      },
+      "expected": {
+        "lifecycle_state": "waiting_for_release",
+        "resume_allowed": false,
+        "reason": "operator_paused"
+      }
+    },
+    {
+      "id": "operator_quarantined_wait",
+      "state": "operator_quarantined",
+      "input": {
+        "factoryId": "external/issue-worker",
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508
+      },
+      "stubs": {
+        "read_control_state": {
+          "factory_id": "external/issue-worker",
+          "action_state": {
+            "pause": { "active": false },
+            "quarantine": { "active": true },
+            "retry": { "active": false },
+            "unblock": { "active": false },
+            "resume": { "active": false }
+          },
+          "reason": "awaiting cooldown"
+        }
+      },
+      "expected": {
+        "lifecycle_state": "waiting_for_release",
+        "resume_allowed": false,
+        "reason": "operator_quarantined"
+      }
+    },
+    {
+      "id": "rollout_blocked_wait",
+      "state": "release_rollout_blocked",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": false,
+          "reason": "release_not_promoted_to_general",
+          "rollout_gate": {
+            "reason": "release_not_promoted_to_general"
+          }
+        }
+      },
+      "expected": {
+        "lifecycle_state": "waiting_for_release",
+        "resume_allowed": false,
+        "reason": "rollout_blocked"
+      }
+    },
+    {
+      "id": "self_update_failed_wait",
+      "state": "self_update_failed",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": false,
+          "reason": "factory_release_below_required",
+          "attempted_self_update": true,
+          "self_update_ok": false
+        }
+      },
+      "expected": {
+        "lifecycle_state": "waiting_for_release",
+        "resume_allowed": false,
+        "reason": "self_update_failed"
+      }
+    },
+    {
+      "id": "rejected_upstream_wait",
+      "state": "rejected_upstream",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": false,
+          "reason": "rejected_upstream",
+          "status": "rejected",
+          "blockerRef": "#4242"
+        }
+      },
+      "expected": {
+        "lifecycle_state": "rejected_upstream",
+        "resume_allowed": false,
+        "reason": "rejected_upstream"
+      }
+    },
+    {
+      "id": "ready_without_restart",
+      "state": "ready_to_resume",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508,
+        "requireRestart": false
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": true,
+          "reason": "ready_to_resume"
+        }
+      },
+      "expected": {
+        "lifecycle_state": "ready_to_resume",
+        "resume_allowed": true,
+        "reason": "ready_to_resume"
+      }
+    },
+    {
+      "id": "host_restart_failed",
+      "state": "restart_failed",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508,
+        "factoryId": "external/issue-worker",
+        "requireRestart": true
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": true,
+          "reason": "ready_to_resume"
+        },
+        "resolve_host_paths": {
+          "baseDir": "/tmp/host",
+          "logsDir": "/tmp/host/logs",
+          "runsDir": "/tmp/host/runs",
+          "tmpDir": "/tmp/host/tmp",
+          "socketDir": "/tmp/host/sockets",
+          "pidDir": "/tmp/host/pid",
+          "pidFile": "/tmp/host/pid/factory-daemon.pid",
+          "lockDir": "/tmp/host/pid/factory-daemon.lock"
+        },
+        "host_restart": {
+          "ok": false,
+          "status": "restart_failed",
+          "message": "factory_host_process_not_running"
+        }
+      },
+      "expected": {
+        "lifecycle_state": "restart_failed",
+        "resume_allowed": false,
+        "reason": "host_restart_failed"
+      }
+    },
+    {
+      "id": "host_health_failed",
+      "state": "restart_failed",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508,
+        "factoryId": "external/issue-worker",
+        "requireRestart": true
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": true,
+          "reason": "ready_to_resume"
+        },
+        "resolve_host_paths": {
+          "baseDir": "/tmp/host",
+          "logsDir": "/tmp/host/logs",
+          "runsDir": "/tmp/host/runs",
+          "tmpDir": "/tmp/host/tmp",
+          "socketDir": "/tmp/host/sockets",
+          "pidDir": "/tmp/host/pid",
+          "pidFile": "/tmp/host/pid/factory-daemon.pid",
+          "lockDir": "/tmp/host/pid/factory-daemon.lock"
+        },
+        "host_restart": {
+          "ok": true,
+          "status": "restarted",
+          "message": "factory_host_started",
+          "pid": 4242
+        },
+        "host_health": {
+          "ok": true,
+          "status": "stopped",
+          "running": false,
+          "pid": 0
+        }
+      },
+      "expected": {
+        "lifecycle_state": "restart_failed",
+        "resume_allowed": false,
+        "reason": "host_health_failed"
+      }
+    },
+    {
+      "id": "ready_after_restart",
+      "state": "ready_to_resume",
+      "input": {
+        "controlPlaneRepo": "recallnet/astrochicken",
+        "sourceRepo": "example/external-factory",
+        "sourceIssueNumber": 1508,
+        "factoryId": "external/issue-worker",
+        "requireRestart": true
+      },
+      "stubs": {
+        "ensure_resume_ready": {
+          "ok": true,
+          "can_resume": true,
+          "reason": "ready_to_resume"
+        },
+        "resolve_host_paths": {
+          "baseDir": "/tmp/host",
+          "logsDir": "/tmp/host/logs",
+          "runsDir": "/tmp/host/runs",
+          "tmpDir": "/tmp/host/tmp",
+          "socketDir": "/tmp/host/sockets",
+          "pidDir": "/tmp/host/pid",
+          "pidFile": "/tmp/host/pid/factory-daemon.pid",
+          "lockDir": "/tmp/host/pid/factory-daemon.lock"
+        },
+        "host_restart": {
+          "ok": true,
+          "status": "restarted",
+          "message": "factory_host_started",
+          "pid": 4242
+        },
+        "host_health": {
+          "ok": true,
+          "status": "running",
+          "running": true,
+          "pid": 4242
+        }
+      },
+      "expected": {
+        "lifecycle_state": "ready_to_resume",
+        "resume_allowed": true,
+        "reason": "ready_to_resume"
+      }
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "goal_queue",
+  "familyId": "goal_decomposition",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+  "outputPath": "docs/contracts/capability-goal-decomposition.goal_queue.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_decomposition",
+      "correlation_id": "workflow-ir-contract:goal_queue",
+      "factory_id": "capability-goal-decomposition",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "goal_queue",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "goal_queue"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_decomposition",
+        "correlation_id": "workflow-ir-contract:goal_queue",
+        "factory_id": "capability-goal-decomposition",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "goal_queue",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "goal_queue"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi1nb2FsX3F1ZXVlIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogImdvYWxfcXVldWUiCiAgICAgIH0sCiAgICAgICJyZXNvbHZlZF9kZXBlbmRlbmNpZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImRpZ2VzdCI6IHsKICAgICAgICAgICAgInNoYTI1NiI6ICJ0eXBlZC1zb3VyY2UtZ2VuZXJhdGVkIgogICAgICAgICAgfSwKICAgICAgICAgICJ1cmkiOiAicGFja2FnZXMvY2FwYWJpbGl0eS1nb2FsLWRlY29tcG9zaXRpb24vd29ya2Zsb3dzL2dvYWxfcXVldWUvZ29hbF9xdWV1ZS53b3JrZmxvdy1zb3VyY2UubWpzIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJydW5fZGV0YWlscyI6IHsKICAgICAgImJ1aWxkZXIiOiB7CiAgICAgICAgImlkIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZGVycy93b3JrZmxvdy1pciIKICAgICAgfSwKICAgICAgIm1ldGFkYXRhIjogewogICAgICAgICJmaW5pc2hlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAxLjAwMFoiLAogICAgICAgICJpbnZvY2F0aW9uX2lkIjogImdvYWxfcXVldWUiLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "goal_queue"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "goal_queue",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:eaa0128cba938cc0bc4c0f8c8cfdde33bd77387544e1d34a913ca77c8f51eb68",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs. Do not edit by hand.\ndigraph goal_queue {\n    label = \"goal_queue\"\n    workflow_source = \"packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    auto_ready_artifacts [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.auto_ready_artifacts\" label=\"Auto-ready artifact goals\" output_key=\"__auto_ready_artifacts_result\" action_repo=\"${gh_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    count_goals [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"common.count_json_items\" label=\"Count goals\" output_key=\"goal_count\" action_raw_b64=\"${goal_issues_b64}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    evaluate_goal_review_skip [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"ceremony.goal_review_skip\" label=\"Evaluate single-goal review bypass\" output_format=\"json\" outputs=\"skip,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason\" action_pipeline=\"goal_queue\" action_goal_count=\"${goal_count}\" action_skip_review_single_goal=\"${skip_review_single_goal}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    fan_in [type=\"fan_in.dynamic\" label=\"Collect goal runs\" output_key=\"goal_runs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.fan_in.dynamic\"]\n    fan_out [type=\"fan_out.dynamic\" label=\"Run goal\" item_key=\"issue_number\" max_concurrency=\"2\" source_key=\"kept_goals\" template=\"@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.fan_out.dynamic\"]\n    gate [shape=\"diamond\" label=\"Any goals?\"]\n    keep_all [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.filter_kept_goals\" label=\"Keep all goals\" output_key=\"kept_goals\" action_decisions_b64=\"W10=\" action_issues_b64=\"${goal_issues_b64}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    list_goals [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.list_ready\" label=\"List open goals\" output_key=\"goal_issues\" action_repo=\"${gh_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    normalize_labels [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"labels.normalize_issue_state\" label=\"Normalize issue labels\" output_key=\"__normalize_labels_result\" action_repo=\"${gh_repo}\" action_state=\"open\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    resolve_skip_review_single_goal [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_boolean\" label=\"Resolve single-goal review toggle\" output_key=\"skip_review_single_goal\" action_fallback=\"false\" action_value=\"${skip_review_single_goal}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    sanitize_goal_duplicates [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.sanitize_duplicates\" label=\"Normalize goal duplicates\" output_key=\"__sanitize_goal_duplicates_result\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_queue\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    sanitize_governance_overlap [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"governance.sanitize_overlap\" label=\"Normalize governance overlap\" output_key=\"__sanitize_governance_overlap_result\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_queue\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    skip_review_gate [shape=\"diamond\" label=\"Skip review ceremony?\"]\n    start [shape=\"Mdiamond\"]\n    keep_all -> fan_out -> fan_in -> done\n    start -> normalize_labels -> sanitize_governance_overlap -> auto_ready_artifacts -> sanitize_goal_duplicates -> list_goals -> count_goals -> resolve_skip_review_single_goal -> gate\n    evaluate_goal_review_skip -> skip_review_gate\n    gate -> done [condition=\"goal_count=0\"]\n    gate -> evaluate_goal_review_skip [condition=\"goal_count!=0\"]\n    skip_review_gate -> keep_all [condition=\"skip!=true\" label=\"full\"]\n    skip_review_gate -> keep_all [condition=\"skip=true\" label=\"skip\"]\n}"
+}

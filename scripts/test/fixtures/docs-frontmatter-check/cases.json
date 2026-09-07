@@ -1,0 +1,16 @@
+[
+  {
+    "name": "valid",
+    "fixturePath": "scripts/test/fixtures/docs-frontmatter-check/valid",
+    "expectedExitCode": 0,
+    "expectedReportPath": "scripts/test/fixtures/docs-frontmatter-check/valid/expected-report.json",
+    "expectedSummary": "[docs-frontmatter] result=ok diagnostics=0 docs=2 templates=4"
+  },
+  {
+    "name": "invalid-deterministic",
+    "fixturePath": "scripts/test/fixtures/docs-frontmatter-check/invalid",
+    "expectedExitCode": 1,
+    "expectedReportPath": "scripts/test/fixtures/docs-frontmatter-check/invalid/expected-report.json",
+    "expectedSummary": "[docs-frontmatter] result=fail diagnostics=17 docs=3 templates=4"
+  }
+]

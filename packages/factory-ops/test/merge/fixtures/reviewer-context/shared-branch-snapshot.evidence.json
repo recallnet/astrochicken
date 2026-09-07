@@ -1,0 +1,20 @@
+{
+  "issue_number": "461",
+  "issue_title": "Shared branch scope",
+  "issue_body_excerpt": "Use snapshot_sha scoping to isolate issue-only files.",
+  "branch": "wave/goal-227-wave-3",
+  "worktree_dir": "/tmp/wave-shared",
+  "commits_ahead": "7",
+  "issue_commits": "2",
+  "changed_files": [
+    "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs",
+    "scripts/other-issue-file.mjs"
+  ],
+  "issue_changed_files": [
+    "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs"
+  ],
+  "snapshot_sha": "d64bf24dae67469f29ef92dfd169e687d43d9d61",
+  "summary": "Issue-scoped delta on shared branch"
+}

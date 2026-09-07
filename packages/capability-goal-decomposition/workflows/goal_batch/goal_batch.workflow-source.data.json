@@ -1,0 +1,544 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_batch",
+  "familyId": "goal_decomposition",
+  "title": "Goal Batch",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_batch.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_batch",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "goal_batch",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "apply_decisions",
+        "runtimeNodeId": "apply_decisions"
+      },
+      {
+        "sourceNodeId": "count_goals",
+        "runtimeNodeId": "count_goals"
+      },
+      {
+        "sourceNodeId": "decisions_gate",
+        "runtimeNodeId": "decisions_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "evaluate_goal_review_skip",
+        "runtimeNodeId": "evaluate_goal_review_skip"
+      },
+      {
+        "sourceNodeId": "fallback_decisions",
+        "runtimeNodeId": "fallback_decisions"
+      },
+      {
+        "sourceNodeId": "fan_in",
+        "runtimeNodeId": "fan_in"
+      },
+      {
+        "sourceNodeId": "fan_out",
+        "runtimeNodeId": "fan_out"
+      },
+      {
+        "sourceNodeId": "filter_kept",
+        "runtimeNodeId": "filter_kept"
+      },
+      {
+        "sourceNodeId": "gate",
+        "runtimeNodeId": "gate"
+      },
+      {
+        "sourceNodeId": "init_skip_decisions",
+        "runtimeNodeId": "init_skip_decisions"
+      },
+      {
+        "sourceNodeId": "list_goals",
+        "runtimeNodeId": "list_goals"
+      },
+      {
+        "sourceNodeId": "repair_decisions",
+        "runtimeNodeId": "repair_decisions"
+      },
+      {
+        "sourceNodeId": "repaired_decisions_gate",
+        "runtimeNodeId": "repaired_decisions_gate"
+      },
+      {
+        "sourceNodeId": "resolve_skip_review_single_goal",
+        "runtimeNodeId": "resolve_skip_review_single_goal"
+      },
+      {
+        "sourceNodeId": "review_goals",
+        "runtimeNodeId": "review_goals"
+      },
+      {
+        "sourceNodeId": "skip_review_gate",
+        "runtimeNodeId": "skip_review_gate"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "validate_decisions",
+        "runtimeNodeId": "validate_decisions"
+      },
+      {
+        "sourceNodeId": "validate_repaired_decisions",
+        "runtimeNodeId": "validate_repaired_decisions"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "apply_decisions",
+      "kind": "tool_action",
+      "title": "Apply goal decisions",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.apply_decisions",
+        "label": "Apply goal decisions",
+        "output_key": "__apply_decisions_result",
+        "action_repo": "${gh_repo}",
+        "action_decisions_b64": "${decisions_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "count_goals",
+      "kind": "tool_action",
+      "title": "Count goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_json_items",
+        "label": "Count goals",
+        "output_key": "goal_count",
+        "action_raw_b64": "${goal_issues_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "decisions_gate",
+      "kind": "decision",
+      "title": "Decisions valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Decisions valid?"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "evaluate_goal_review_skip",
+      "kind": "tool_action",
+      "title": "Evaluate single-goal review bypass",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "ceremony.goal_review_skip",
+        "label": "Evaluate single-goal review bypass",
+        "output_format": "json",
+        "outputs": "skip,reason,goal_count,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason",
+        "action_pipeline": "goal_batch",
+        "action_goal_count": "${goal_count}",
+        "action_skip_review_single_goal": "${skip_review_single_goal}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fallback_decisions",
+      "kind": "llm_prompt",
+      "title": "Fallback keep decisions",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Fallback keep decisions",
+        "output_key": "__fallback_decisions_result",
+        "prompt": "printf '[]'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fan_in",
+      "kind": "dynamic_fan_in",
+      "title": "Collect goal runs",
+      "dotAttributes": {
+        "type": "fan_in.dynamic",
+        "label": "Collect goal runs",
+        "output_key": "goal_runs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_in.dynamic"
+      }
+    },
+    {
+      "id": "fan_out",
+      "kind": "dynamic_fan_out",
+      "title": "Run goal factory",
+      "dotAttributes": {
+        "type": "fan_out.dynamic",
+        "label": "Run goal factory",
+        "item_key": "issue_number",
+        "max_concurrency": "2",
+        "source_key": "kept_goals",
+        "template": "@hatch/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_out.dynamic"
+      }
+    },
+    {
+      "id": "filter_kept",
+      "kind": "tool_action",
+      "title": "Keep goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.filter_kept_goals",
+        "label": "Keep goals",
+        "output_key": "kept_goals",
+        "action_decisions_b64": "${decisions_b64}",
+        "action_issues_b64": "${goal_issues_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "gate",
+      "kind": "decision",
+      "title": "Any goals?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Any goals?"
+      }
+    },
+    {
+      "id": "init_skip_decisions",
+      "kind": "llm_prompt",
+      "title": "Init empty decisions for bypass",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Init empty decisions for bypass",
+        "output_key": "__init_skip_decisions_result",
+        "prompt": "printf '[]'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "list_goals",
+      "kind": "llm_prompt",
+      "title": "List open goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "List open goals",
+        "output_key": "goal_issues",
+        "prompt": "gh issue list --repo ${gh_repo} --state open --label goal,ready --limit 50 --json number,title,body,labels",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "repair_decisions",
+      "kind": "llm_prompt",
+      "title": "Repair goal decisions",
+      "dotAttributes": {
+        "class": "goal_batch_reviewer",
+        "benchmark_job_id": "goal.batch.repair",
+        "llm_path_id": "capability.goal_batch.repair",
+        "prompt_version": "2026-03-12.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.batch",
+        "label": "Repair goal decisions",
+        "output_key": "review_result",
+        "output_format": "json",
+        "outputs": "decisions",
+        "prompt": "Your previous goal review JSON failed deterministic validation.\n\nOriginal review JSON:\n${review_result}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with a top-level decisions array.",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "repaired_decisions_gate",
+      "kind": "decision",
+      "title": "Repaired decisions valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Repaired decisions valid?"
+      }
+    },
+    {
+      "id": "resolve_skip_review_single_goal",
+      "kind": "tool_action",
+      "title": "Resolve single-goal review toggle",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_boolean",
+        "label": "Resolve single-goal review toggle",
+        "output_key": "skip_review_single_goal",
+        "action_fallback": "false",
+        "action_value": "${skip_review_single_goal}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "review_goals",
+      "kind": "llm_prompt",
+      "title": "Review goals",
+      "dotAttributes": {
+        "class": "goal_batch_reviewer",
+        "benchmark_job_id": "goal.batch.review",
+        "llm_path_id": "capability.goal_batch.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.batch",
+        "label": "Review goals",
+        "output_key": "review_result",
+        "output_format": "json",
+        "outputs": "decisions",
+        "prompt": "You are reviewing open goal issues to detect duplicates or obsolete goals.\n\nGoal issues JSON:\n${goal_issues}\n\nReturn JSON with:\n{\n  \"decisions\": [\n    {\n      \"issue_number\": 3,\n      \"decision\": \"keep|duplicate|close\",\n      \"canonical_issue\": 0,\n      \"reason\": \"short rationale\"\n    }\n  ]\n}\n\nRules:\n- Include every goal issue exactly once.\n- Use duplicate when the goal is substantively the same as another; set canonical_issue to the issue number to keep.\n- Use close only if the goal is clearly complete/obsolete even if not a duplicate.\n- Otherwise use keep.\n- Use only issue numbers from the input.\n\nReturn JSON only."
+      }
+    },
+    {
+      "id": "skip_review_gate",
+      "kind": "decision",
+      "title": "Skip review_goals?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Skip review_goals?"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "validate_decisions",
+      "kind": "tool_action",
+      "title": "Validate goal decisions",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.validate_decisions",
+        "label": "Validate goal decisions",
+        "output_format": "json",
+        "outputs": "ok,error,retry_prompt,decisions",
+        "action_decisions": "${review_result}",
+        "action_goal_issues": "${goal_issues}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "validate_repaired_decisions",
+      "kind": "tool_action",
+      "title": "Validate repaired goal decisions",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.validate_decisions",
+        "label": "Validate repaired goal decisions",
+        "output_format": "json",
+        "outputs": "ok,error,retry_prompt,decisions",
+        "action_decisions": "${review_result}",
+        "action_goal_issues": "${goal_issues}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "apply_decisions",
+      "to": "filter_kept"
+    },
+    {
+      "from": "filter_kept",
+      "to": "fan_out"
+    },
+    {
+      "from": "fan_out",
+      "to": "fan_in"
+    },
+    {
+      "from": "fan_in",
+      "to": "done"
+    },
+    {
+      "from": "start",
+      "to": "list_goals"
+    },
+    {
+      "from": "list_goals",
+      "to": "count_goals"
+    },
+    {
+      "from": "count_goals",
+      "to": "resolve_skip_review_single_goal"
+    },
+    {
+      "from": "resolve_skip_review_single_goal",
+      "to": "gate"
+    },
+    {
+      "from": "decisions_gate",
+      "to": "apply_decisions",
+      "condition": "ok=true",
+      "label": "valid",
+      "dotAttributes": {
+        "condition": "ok=true",
+        "label": "valid"
+      }
+    },
+    {
+      "from": "decisions_gate",
+      "to": "repair_decisions",
+      "condition": "ok!=true",
+      "label": "repair",
+      "dotAttributes": {
+        "condition": "ok!=true",
+        "label": "repair"
+      }
+    },
+    {
+      "from": "evaluate_goal_review_skip",
+      "to": "skip_review_gate"
+    },
+    {
+      "from": "fallback_decisions",
+      "to": "apply_decisions"
+    },
+    {
+      "from": "gate",
+      "to": "done",
+      "condition": "goal_count=0",
+      "dotAttributes": {
+        "condition": "goal_count=0"
+      }
+    },
+    {
+      "from": "gate",
+      "to": "evaluate_goal_review_skip",
+      "condition": "goal_count>0",
+      "dotAttributes": {
+        "condition": "goal_count>0"
+      }
+    },
+    {
+      "from": "init_skip_decisions",
+      "to": "filter_kept"
+    },
+    {
+      "from": "repair_decisions",
+      "to": "validate_repaired_decisions"
+    },
+    {
+      "from": "repaired_decisions_gate",
+      "to": "apply_decisions",
+      "condition": "ok=true",
+      "label": "valid",
+      "dotAttributes": {
+        "condition": "ok=true",
+        "label": "valid"
+      }
+    },
+    {
+      "from": "repaired_decisions_gate",
+      "to": "fallback_decisions",
+      "condition": "ok!=true",
+      "label": "fallback",
+      "dotAttributes": {
+        "condition": "ok!=true",
+        "label": "fallback"
+      }
+    },
+    {
+      "from": "review_goals",
+      "to": "validate_decisions"
+    },
+    {
+      "from": "skip_review_gate",
+      "to": "init_skip_decisions",
+      "condition": "skip=true",
+      "dotAttributes": {
+        "condition": "skip=true"
+      }
+    },
+    {
+      "from": "skip_review_gate",
+      "to": "review_goals",
+      "condition": "skip!=true",
+      "dotAttributes": {
+        "condition": "skip!=true"
+      }
+    },
+    {
+      "from": "validate_decisions",
+      "to": "decisions_gate"
+    },
+    {
+      "from": "validate_repaired_decisions",
+      "to": "repaired_decisions_gate"
+    }
+  ]
+}

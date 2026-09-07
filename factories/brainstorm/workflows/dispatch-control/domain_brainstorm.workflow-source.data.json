@@ -1,0 +1,481 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "domain_brainstorm",
+  "familyId": "dispatch_control",
+  "title": "Domain brainstorm",
+  "description": "Typed source for the brainstorm managed domain workflow.",
+  "sourcePath": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [],
+  "graphAttributes": {},
+  "sourceMap": {
+    "graphName": "domain_brainstorm",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "build_intake_context",
+        "runtimeNodeId": "build_intake_context"
+      },
+      {
+        "sourceNodeId": "context_contract_preflight",
+        "runtimeNodeId": "context_contract_preflight"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "intake_gate",
+        "runtimeNodeId": "intake_gate"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "preflight_gate",
+        "runtimeNodeId": "preflight_gate"
+      },
+      {
+        "sourceNodeId": "set_capability_brainstorming_skills",
+        "runtimeNodeId": "set_capability_brainstorming_skills"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_domain_result",
+        "runtimeNodeId": "set_domain_result"
+      },
+      {
+        "sourceNodeId": "set_factory_root",
+        "runtimeNodeId": "set_factory_root"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_trust_domain",
+        "runtimeNodeId": "set_trust_domain"
+      },
+      {
+        "sourceNodeId": "set_trust_role",
+        "runtimeNodeId": "set_trust_role"
+      },
+      {
+        "sourceNodeId": "spawn_brainstorm",
+        "runtimeNodeId": "spawn_brainstorm"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "build_intake_context",
+      "kind": "tool_action",
+      "title": "Build brainstorm intake context from shell intake_json",
+      "handlerType": "tool",
+      "actionId": "brainstorm.build_intake_context",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_intake_json": "${intake_json}",
+        "action_repo": "${target_repo}",
+        "action_root_dir": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_issue",
+          "brainstorm_issue_number",
+          "brainstorm_issue_body",
+          "shipped_goals_since_last",
+          "open_backlog_summary",
+          "scenario_holdouts",
+          "parse_error"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "context_contract_preflight",
+      "kind": "tool_action",
+      "title": "Preflight required brainstorm context keys",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "context_contract_preflight_ok",
+        "action_runtime": "in_process",
+        "action_value": "${factory_root}${gh_repo}${repo}${intent_stack}${capability_brainstorming_skills}${trust_domain}${trust_role}${brainstorm_issue_number}${brainstorm_issue_body}${shipped_goals_since_last}${open_backlog_summary}${scenario_holdouts}${has_issue}${parse_error}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "context_contract_preflight_status"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "intake_gate",
+      "kind": "decision",
+      "title": "Shell provided intake issue?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "handlerType": "tool",
+      "actionId": "common.resolve_intent_stack",
+      "dotAttributes": {
+        "action_config_path": "${factory_root}/factory.config.json",
+        "action_factory_root": "${factory_root}",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "intent_stack"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "preflight_gate",
+      "kind": "decision",
+      "title": "Context preflight passed?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_capability_brainstorming_skills",
+      "kind": "tool_action",
+      "title": "Resolve capability skills path",
+      "handlerType": "tool",
+      "actionId": "common.resolve_capability_brainstorming_skills_path",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "capability_brainstorming_skills"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${control_plane_repo}",
+        "action_key": "control_plane_repo",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "control_plane_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_domain_result",
+      "kind": "tool_action",
+      "title": "Build domain_result payload",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "{}",
+        "action_runtime": "in_process",
+        "action_value": "{\"has_issue\":\"${has_issue}\",\"parse_error\":\"${parse_error}\",\"brainstorm_issue_number\":\"${brainstorm_issue_number}\"}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "domain_result"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_factory_root",
+      "kind": "tool_action",
+      "title": "Resolve factory root",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "factories/brainstorm",
+        "action_key": "factory_root",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "factory_root"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Set capability gh_repo context",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "${target_repo}",
+        "action_runtime": "in_process",
+        "action_value": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "gh_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Resolve repository root",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": ".",
+        "action_key": "work_dir",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_trust_domain",
+      "kind": "tool_action",
+      "title": "Resolve trust domain",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${trust_domain}",
+        "action_key": "trust_domain",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "trust_domain"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_trust_role",
+      "kind": "tool_action",
+      "title": "Resolve trust role",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${trust_role}",
+        "action_key": "trust_role",
+        "action_runtime": "in_process",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "binding": {
+        "outputKey": "trust_role"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "spawn_brainstorm",
+      "kind": "pipeline",
+      "title": "Spawn brainstorm capability",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "export_keys": "brainstorm_close_result",
+        "inherit_context": "true",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      },
+      "composition": {
+        "templateWorkflowRef": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs",
+        "workflowRef": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "build_intake_context",
+      "to": "context_contract_preflight"
+    },
+    {
+      "from": "context_contract_preflight",
+      "to": "preflight_gate"
+    },
+    {
+      "from": "intake_gate",
+      "to": "set_domain_result",
+      "condition": "has_issue!=true"
+    },
+    {
+      "from": "intake_gate",
+      "to": "spawn_brainstorm",
+      "condition": "has_issue=true"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "set_capability_brainstorming_skills"
+    },
+    {
+      "from": "preflight_gate",
+      "to": "intake_gate",
+      "condition": "context_contract_preflight_status!=context_contract_preflight_ok"
+    },
+    {
+      "from": "preflight_gate",
+      "to": "set_domain_result",
+      "condition": "context_contract_preflight_status=context_contract_preflight_ok"
+    },
+    {
+      "from": "set_capability_brainstorming_skills",
+      "to": "build_intake_context"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_trust_domain"
+    },
+    {
+      "from": "set_domain_result",
+      "to": "done"
+    },
+    {
+      "from": "set_factory_root",
+      "to": "set_gh_repo"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "set_repo"
+    },
+    {
+      "from": "set_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_trust_domain",
+      "to": "set_trust_role"
+    },
+    {
+      "from": "set_trust_role",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "spawn_brainstorm",
+      "to": "set_domain_result"
+    },
+    {
+      "from": "start",
+      "to": "set_factory_root"
+    }
+  ]
+}

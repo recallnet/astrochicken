@@ -1,0 +1,8 @@
+{
+  "instance_id": "example-trading",
+  "kind_id": "example-trading",
+  "target_repo": {
+    "provider": "github",
+    "full_name": "example-org/example-trading"
+  }
+}

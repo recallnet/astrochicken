@@ -1,0 +1,410 @@
+{
+  "$id": "https://recallnet.dev/contracts/factory-config.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Versioned Hatch factory configuration boundary for standalone and managed factories.",
+  "properties": {
+    "canonical_checkout_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "capabilities": {
+      "additionalProperties": {},
+      "properties": {
+        "demo": {
+          "additionalProperties": {},
+          "properties": {
+            "policy": {
+              "enum": [
+                "auto",
+                "terminal",
+                "browser",
+                "none"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "goal_decomposition": {
+          "additionalProperties": {},
+          "properties": {
+            "timeouts": {
+              "additionalProperties": {},
+              "properties": {
+                "issue_draft": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "issue_judge": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "issue_repair": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "issue_revise": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "conformance": {
+      "additionalProperties": {},
+      "properties": {
+        "benchmark_telemetry_exemptions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "benchmark_telemetry_warn_only": {
+          "type": "boolean"
+        },
+        "entrypoint": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "fixtures": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "runs_dir": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "smoke_graph": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "entrypoint"
+      ],
+      "type": "object"
+    },
+    "control_plane_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "destinations": {
+      "additionalProperties": {
+        "additionalProperties": {},
+        "properties": {
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "repo": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "repo"
+        ],
+        "type": "object"
+      },
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "dispatch": {
+      "additionalProperties": {},
+      "properties": {
+        "graph": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "graph"
+      ],
+      "type": "object"
+    },
+    "factory_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "instance_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "isolation": {
+      "additionalProperties": {},
+      "properties": {
+        "auth": {
+          "additionalProperties": {},
+          "properties": {
+            "github": {
+              "additionalProperties": {},
+              "properties": {
+                "factoryId": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "repo": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "tokenEnvVar": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "authStoragePath": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "model": {
+          "additionalProperties": {},
+          "properties": {
+            "envVar": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "value": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "paths": {
+          "additionalProperties": {},
+          "properties": {
+            "cache": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "logs": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "runs": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "tmp": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "provider": {
+          "additionalProperties": {},
+          "properties": {
+            "envVar": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "value": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "kind_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "managed": {
+      "type": "boolean"
+    },
+    "pipeline": {
+      "additionalProperties": {},
+      "properties": {
+        "supervisor_tick": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "supervisor_tick"
+      ],
+      "type": "object"
+    },
+    "policyPack": {},
+    "runs_dir": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "scenarios": {
+      "additionalProperties": {},
+      "properties": {
+        "root": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "root"
+      ],
+      "type": "object"
+    },
+    "schedules": {
+      "additionalProperties": {},
+      "properties": {
+        "jobs": {
+          "items": {
+            "additionalProperties": {},
+            "properties": {
+              "catch_up": {
+                "type": "boolean"
+              },
+              "cron": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "graph": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "issue_labels": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "notify_slack": {
+                "type": "boolean"
+              },
+              "output_dir": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "repo": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "report_window_hours": {
+                "type": "number"
+              },
+              "time_zone": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "cron"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "jobs"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "hatch.factory.config.v1",
+      "type": "string"
+    },
+    "skills": {
+      "additionalProperties": {},
+      "properties": {
+        "supervisor": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "supervisor"
+      ],
+      "type": "object"
+    },
+    "slack_webhook_url": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "trust": {
+      "additionalProperties": {},
+      "properties": {
+        "domain": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "domain",
+        "roles"
+      ],
+      "type": "object"
+    },
+    "upstream_bug_labels": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "upstream_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "work_dir": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "factory_id",
+    "control_plane_repo",
+    "dispatch",
+    "skills",
+    "scenarios",
+    "pipeline",
+    "runs_dir",
+    "trust"
+  ],
+  "title": "Factory Config Document",
+  "type": "object"
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": "docs_graph_check/v1",
+  "ok": false,
+  "summary": {
+    "documents": 4,
+    "edges": 1,
+    "diagnostics": 4,
+    "orphan_docs": 1
+  },
+  "roots": [
+    "docs/z-root.md"
+  ],
+  "orphan_allowlist": [
+    "docs/allowed-orphan.md"
+  ],
+  "documents": [
+    "docs/a-child.md",
+    "docs/allowed-orphan.md",
+    "docs/m-orphan.md",
+    "docs/z-root.md"
+  ],
+  "edges": [
+    {
+      "source": "docs/z-root.md",
+      "target": "docs/a-child.md"
+    }
+  ],
+  "reachable_documents": [
+    "docs/a-child.md",
+    "docs/z-root.md"
+  ],
+  "orphan_documents": [
+    "docs/m-orphan.md"
+  ],
+  "diagnostics": [
+    {
+      "id": "graph.orphan_doc:docs/m-orphan.md:0:0::",
+      "severity": "error",
+      "code": "graph.orphan_doc",
+      "message": "Document is not reachable from policy roots: docs/m-orphan.md",
+      "source_path": "docs/m-orphan.md",
+      "source_line": 0,
+      "source_column": 0,
+      "target_path": "",
+      "anchor": ""
+    },
+    {
+      "id": "link.anchor_missing:docs/z-root.md:6:1:docs/a-child.md:missing-anchor",
+      "severity": "error",
+      "code": "link.anchor_missing",
+      "message": "Anchor '#missing-anchor' not found in docs/a-child.md",
+      "source_path": "docs/z-root.md",
+      "source_line": 6,
+      "source_column": 1,
+      "target_path": "docs/a-child.md",
+      "anchor": "missing-anchor"
+    },
+    {
+      "id": "link.relative_unresolved:docs/z-root.md:4:1:../../escape.md:",
+      "severity": "error",
+      "code": "link.relative_unresolved",
+      "message": "Relative link resolves outside repository: ../../escape.md",
+      "source_path": "docs/z-root.md",
+      "source_line": 4,
+      "source_column": 1,
+      "target_path": "../../escape.md",
+      "anchor": ""
+    },
+    {
+      "id": "link.target_missing:docs/z-root.md:3:1:docs/missing.md:",
+      "severity": "error",
+      "code": "link.target_missing",
+      "message": "Linked file does not exist: docs/missing.md",
+      "source_path": "docs/z-root.md",
+      "source_line": 3,
+      "source_column": 1,
+      "target_path": "docs/missing.md",
+      "anchor": ""
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "milestone_execute_parallel_item",
+  "familyId": "goal_execution",
+  "sourcePath": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+  "outputPath": "docs/contracts/mothership.milestone_execute_parallel_item.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+    "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_execution",
+      "correlation_id": "workflow-ir-contract:milestone_execute_parallel_item",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "milestone_execute_parallel_item",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "milestone_execute_parallel_item"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_execution",
+        "correlation_id": "workflow-ir-contract:milestone_execute_parallel_item",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "milestone_execute_parallel_item",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "milestone_execute_parallel_item"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+      "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLW1pbGVzdG9uZV9leGVjdXRlX3BhcmFsbGVsX2l0ZW0iCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAibWlsZXN0b25lX2V4ZWN1dGVfcGFyYWxsZWxfaXRlbSIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJmYWN0b3JpZXMvbW90aGVyc2hpcC93b3JrZmxvd3MvZ29hbC1leGVjdXRpb24vbWlsZXN0b25lX2V4ZWN1dGVfcGFyYWxsZWxfaXRlbS53b3JrZmxvdy1zb3VyY2UubWpzIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJydW5fZGV0YWlscyI6IHsKICAgICAgImJ1aWxkZXIiOiB7CiAgICAgICAgImlkIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZGVycy93b3JrZmxvdy1pciIKICAgICAgfSwKICAgICAgIm1ldGFkYXRhIjogewogICAgICAgICJmaW5pc2hlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAxLjAwMFoiLAogICAgICAgICJpbnZvY2F0aW9uX2lkIjogIm1pbGVzdG9uZV9leGVjdXRlX3BhcmFsbGVsX2l0ZW0iLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "milestone_execute_parallel_item"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "milestone_execute_parallel_item",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:8aefa2f3d6cb34475c354a0a42b6a7a623ac98ce626f09466deeb3269d317229",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs. Do not edit by hand.\n@import \"../../../../factories/mothership/roles.stylesheet\"\n\ndigraph milestone_execute_parallel_item {\n    label = \"milestone_execute_parallel_item\"\n    workflow_source = \"factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    execute_issue [type=\"pipeline\" label=\"Execute issue in isolated milestone branch\" pipeline=\"factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs\" export_keys=\"impl_result\" inherit_context=\"true\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.pipeline\"]\n    extract_parallel_issue [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"coding.extract_issue_item\" label=\"Extract parallel issue context\" output_format=\"json\" outputs=\"next_issue_number,next_issue_title\" action_issue_item=\"${parallel_issue}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    isolate_parallel_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.build_milestone_parallel_context\" label=\"Build issue-isolated branch/session context\" output_format=\"json\" outputs=\"branch,worktree_dir,agent_session_id\" action_issue_number=\"${next_issue_number}\" action_milestone_title=\"${milestone_title}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    start [shape=\"Mdiamond\"]\n    start -> extract_parallel_issue -> isolate_parallel_context -> execute_issue -> done\n}"
+}

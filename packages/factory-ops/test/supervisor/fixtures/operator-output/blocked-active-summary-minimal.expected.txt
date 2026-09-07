@@ -1,0 +1,4 @@
+mothership  recallnet/astrochicken
+supervisor  blocked
+blocked goal-1511-wave-2 #1551
+reason  Publish or sync a control-plane release manifest.

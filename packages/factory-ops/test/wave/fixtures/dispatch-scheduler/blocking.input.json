@@ -1,0 +1,20 @@
+{
+  "issues": [
+    {
+      "number": 10,
+      "factory_id": "mothership",
+      "state": "OPEN",
+      "labels": ["ready"],
+      "blocked_by": [{ "number": 11, "state": "OPEN" }]
+    },
+    {
+      "number": 11,
+      "factory_id": "mothership",
+      "state": "OPEN",
+      "labels": ["ready"],
+      "blocks": [{ "number": 10, "state": "OPEN" }]
+    }
+  ],
+  "maxConcurrentGlobal": 2,
+  "maxConcurrentPerFactory": { "mothership": 2 }
+}

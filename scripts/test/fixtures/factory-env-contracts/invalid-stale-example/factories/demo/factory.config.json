@@ -1,0 +1,9 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "demo",
+  "canonical_checkout_path": "${HATCH_FACTORY_GITHUB_TOKEN}",
+  "model_override": {
+    "envVar": "HATCH_MODEL"
+  },
+  "slack_webhook_url": "${DEMO_SLACK_WEBHOOK_URL}"
+}

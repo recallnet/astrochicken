@@ -1,0 +1,16 @@
+// Generated from packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs. Do not edit by hand.
+digraph artifact_ingest {
+    label = "artifact_ingest"
+    workflow_source = "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    ingest [type="tool" governance="irreversible" action_runtime="in_process" action_id="artifact.ingest" label="Ingest artifact issues" output_key="artifact_ingest_result" action_control_plane_repo="${control_plane_repo}" action_dry_run="${dry_run}" action_max="${max_artifacts}" action_source_repos="${source_repos}" action_trusted_factory_ids="${trusted_factory_ids}" action_trusted_source_repos="${source_repos}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    set_control_plane_repo [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve control-plane repo" output_key="control_plane_repo" action_fallback="recallnet/astrochicken" action_value="${control_plane_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    set_dry [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_boolean" label="Resolve dry-run" output_key="dry_run" action_fallback="false" action_value="${dry_run}" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    set_max [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve max artifacts" output_key="max_artifacts" action_fallback="20" action_value="${max_artifacts}" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    set_source_repos [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve source repos" output_key="source_repos" action_fallback="${control_plane_repo}" action_value="${source_repos}" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    set_trusted_factory_ids [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve trusted factory ids" output_key="trusted_factory_ids" action_value="${trusted_factory_ids}" trust_domain="${trust_domain}" trust_role="${trust_role}"]
+    start [shape="Mdiamond"]
+    start -> set_control_plane_repo -> set_source_repos -> set_max -> set_trusted_factory_ids -> set_dry -> ingest -> done
+}

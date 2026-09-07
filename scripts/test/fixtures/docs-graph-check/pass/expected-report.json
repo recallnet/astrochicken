@@ -1,0 +1,44 @@
+{
+  "schema_version": "docs_graph_check/v1",
+  "ok": true,
+  "summary": {
+    "documents": 3,
+    "edges": 4,
+    "diagnostics": 0,
+    "orphan_docs": 0
+  },
+  "roots": [
+    "docs/z-root.md"
+  ],
+  "orphan_allowlist": [],
+  "documents": [
+    "docs/a-child.md",
+    "docs/b-child.md",
+    "docs/z-root.md"
+  ],
+  "edges": [
+    {
+      "source": "docs/a-child.md",
+      "target": "docs/z-root.md"
+    },
+    {
+      "source": "docs/b-child.md",
+      "target": "docs/a-child.md"
+    },
+    {
+      "source": "docs/z-root.md",
+      "target": "docs/a-child.md"
+    },
+    {
+      "source": "docs/z-root.md",
+      "target": "docs/b-child.md"
+    }
+  ],
+  "reachable_documents": [
+    "docs/a-child.md",
+    "docs/b-child.md",
+    "docs/z-root.md"
+  ],
+  "orphan_documents": [],
+  "diagnostics": []
+}

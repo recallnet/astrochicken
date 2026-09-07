@@ -1,0 +1,6 @@
+{
+  "stagedPaths": [],
+  "expectedStatus": 0,
+  "expectedNpmCalls": [],
+  "expectedReason": "no_staged_paths"
+}

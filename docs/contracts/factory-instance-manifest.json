@@ -1,0 +1,84 @@
+{
+  "$id": "https://recallnet.dev/contracts/factory-instance-manifest.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Versioned managed factory instance manifest document.",
+  "properties": {
+    "control_plane_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "destinations": {
+      "additionalProperties": {
+        "additionalProperties": {},
+        "properties": {
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "repo": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "repo"
+        ],
+        "type": "object"
+      },
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "instance_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "intake": {
+      "additionalProperties": {},
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "kind_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_repo": {
+      "additionalProperties": {},
+      "properties": {
+        "full_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "provider": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "repo_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "repo_id",
+        "full_name"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "instance_id",
+    "kind_id",
+    "target_repo",
+    "control_plane_repo",
+    "destinations"
+  ],
+  "title": "Factory Instance Manifest",
+  "type": "object"
+}

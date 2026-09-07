@@ -1,0 +1,65 @@
+{
+  "artifactDefaults": {
+    "canonicalCheckoutPath": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+    "runsDir": ".hatch/brainstorm/runs",
+    "scheduledGraphs": [],
+    "trustDomain": "brainstorm.local",
+    "trustRoles": [
+      "brainstorm.local.agent.worktree",
+      "brainstorm.local.codergen",
+      "brainstorm.local.fan_in.dynamic",
+      "brainstorm.local.fan_out.dynamic",
+      "brainstorm.local.pipeline",
+      "brainstorm.local.stack.manager_loop",
+      "brainstorm.local.tool"
+    ]
+  },
+  "bootstrap": {
+    "conformanceReadmePath": null,
+    "createEvolveDocPath": null,
+    "initCommand": "hatch factory init --id brainstorm --repo example-org/example-notes --control-plane recallnet/astrochicken",
+    "intentPath": "factories/brainstorm/INTENT.md",
+    "readmePath": "factories/brainstorm/README.md"
+  },
+  "compositionModel": "thin_composition",
+  "configPath": "factories/brainstorm/factory.config.json",
+  "dispatchGraphPath": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "factoryId": "brainstorm",
+  "graphBindings": [
+    {
+      "capabilityPackage": null,
+      "id": "factory_supervisor_tick",
+      "owner": "shared",
+      "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "role": "dispatch"
+    }
+  ],
+  "manifestPath": "factories/brainstorm/inventory/factory-composition-manifest.v1.json",
+  "policy": {
+    "configPath": "factories/brainstorm/factory.config.json",
+    "overrideKeys": [],
+    "policyFiles": [
+      "block-wait-retry-policy.json",
+      "escalation-policy.json",
+      "metadata.json",
+      "model-policy.json",
+      "release-policy.json",
+      "reviewer-policy.json",
+      "supervisor-policy.json"
+    ],
+    "policyPackDir": "factories/brainstorm/policy-pack/v1",
+    "policyPackVersion": "v1"
+  },
+  "privateExecutionGluePaths": [],
+  "registryPath": "factory-registry.json",
+  "schemaVersion": "factory_composition_manifest/v1",
+  "supervisorGraphPath": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "telemetryDefaults": {
+    "benchmarkTelemetryExemptions": [],
+    "benchmarkTelemetryWarnOnly": false,
+    "conformanceEntrypoint": null,
+    "conformanceRunsDir": null,
+    "dispatchLatencySloSeconds": null,
+    "maintenanceIntervalSeconds": null
+  }
+}

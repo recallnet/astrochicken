@@ -1,0 +1,62 @@
+{
+  "capabilityId": "artifact_ingestion",
+  "description": "Poll artifact issues from source repos and draft goals in the control-plane repo.",
+  "entrypoints": [
+    {
+      "description": "Ingests artifact issues and drafts control-plane goals.",
+      "id": "artifact_ingest",
+      "kind": "graph",
+      "path": "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "title": "Artifact ingest graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-artifact-ingestion/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Artifact ingestion runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-artifact-ingestion",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "control_plane_repo",
+    "dry_run",
+    "max_artifacts",
+    "source_repos",
+    "trust_domain",
+    "trust_role",
+    "trusted_factory_ids"
+  ],
+  "requiredHandlers": [
+    "tool"
+  ],
+  "requiredRoles": [],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-artifact-ingestion/capability-contract.mjs",
+  "title": "Artifact Ingestion Capability",
+  "version": "0.1.0"
+}

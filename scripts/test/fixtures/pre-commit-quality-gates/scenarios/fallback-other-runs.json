@@ -1,0 +1,7 @@
+{
+  "stagedPaths": ["README.md"],
+  "buildExit": 0,
+  "typecheckExit": 0,
+  "expectedStatus": 0,
+  "expectedNpmCalls": ["build", "typecheck", "knip"]
+}

@@ -1,0 +1,13 @@
+digraph shell_metasyntax_invalid {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  invalid_pipe [type="tool" label="Invalid pipe" output_key="out_pipe" governance="reversible" prompt="node ops/cli.mjs wave report --repo '${context.repo}' | jq -r .status"]
+  invalid_and [type="tool" label="Invalid and" output_key="out_and" governance="reversible" prompt="gh issue view '${context.issue_number}' --repo '${context.repo}' && echo done"]
+  invalid_semicolon [type="tool" label="Invalid semicolon" output_key="out_semicolon" governance="reversible" prompt="node ops/cli.mjs judge --context '${context.judge_context}' ; echo fallback"]
+  invalid_redirect_write [type="tool" label="Invalid redirect write" output_key="out_redirect_write" governance="reversible" prompt="node ops/cli.mjs run > /tmp/out.log"]
+  invalid_redirect_read [type="tool" label="Invalid redirect read" output_key="out_redirect_read" governance="reversible" prompt="cat < input.txt"]
+  invalid_heredoc [type="tool" label="Invalid heredoc" output_key="out_heredoc" governance="reversible" prompt="cat << EOF"]
+  invalid_subshell [type="tool" label="Invalid subshell" output_key="out_subshell" governance="reversible" prompt="node ops/cli.mjs run --body $(cat /tmp/x)"]
+  invalid_backticks [type="tool" label="Invalid backticks" output_key="out_backticks" governance="reversible" prompt="node ops/cli.mjs run --body `cat /tmp/x`"]
+  start -> invalid_pipe -> invalid_and -> invalid_semicolon -> invalid_redirect_write -> invalid_redirect_read -> invalid_heredoc -> invalid_subshell -> invalid_backticks -> done
+}

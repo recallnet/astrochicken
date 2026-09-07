@@ -1,0 +1,32 @@
+{
+  "name": "@hatch/web-tools",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "web-search": "bin/web-search.ts",
+    "web-fetch": "bin/web-fetch.ts"
+  },
+  "exports": {
+    "./search": "./src/search.ts",
+    "./content": "./src/content.ts",
+    "./html-to-markdown": "./src/html-to-markdown.ts"
+  },
+  "files": [
+    "bin/**/*.ts",
+    "src/**/*.ts"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "jsdom": "^26.1.0",
+    "turndown": "^7.2.0",
+    "turndown-plugin-gfm": "^1.0.2"
+  }
+}

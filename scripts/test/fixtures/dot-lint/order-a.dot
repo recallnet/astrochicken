@@ -1,0 +1,7 @@
+digraph order_a {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  zeta [type="tool" governance="reversible" prompt=":" trust_participant="example.local/example.local.tool"]
+  eta [type="tool" governance="reversible" prompt=":" trust_domain="example.local"]
+  start -> zeta -> eta -> done
+}

@@ -1,0 +1,369 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "instances": [
+    {
+      "instance_id": "example-scanner",
+      "kind_id": "example-scanner",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/example-scanner",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "installation_manifest_path": ".hatch/hosts/example-scanner/installation.json",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "managed_software_delivery_domain",
+          "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      },
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "brainstorm",
+      "kind_id": "brainstorm",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/example-notes",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "installation_manifest_path": ".hatch/hosts/brainstorm/installation.json",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      },
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "mothership",
+      "kind_id": "mothership",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "recallnet/astrochicken",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "graphs": [
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "wave_execute",
+          "path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      },
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "example-web",
+      "kind_id": "example-web",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/example-web",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "installation_manifest_path": ".hatch/hosts/example-web/installation.json",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      },
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    },
+    {
+      "instance_id": "example-trading",
+      "kind_id": "example-trading",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/example-trading",
+      "status": "active",
+      "assigned_host_id": "unassigned",
+      "installation_manifest_path": ".hatch/hosts/example-trading/installation.json",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "managed_software_delivery_domain",
+          "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"
+        },
+        {
+          "id": "daily_release_report",
+          "path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      },
+      "service_tier": "standard",
+      "scheduler_weight": 1,
+      "reserved_capacity": 0,
+      "upgrade_channel": "stable",
+      "allowed_runtime_version": "*",
+      "support_owner": "ops",
+      "feature_flags": {}
+    }
+  ],
+  "factories": [
+    {
+      "id": "example-scanner",
+      "target_repo": "example-org/example-scanner",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "managed_software_delivery_domain",
+          "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    },
+    {
+      "id": "brainstorm",
+      "target_repo": "example-org/example-notes",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    },
+    {
+      "id": "mothership",
+      "target_repo": "recallnet/astrochicken",
+      "graphs": [
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "wave_execute",
+          "path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    },
+    {
+      "id": "research",
+      "target_repo": "example-org/example-research",
+      "graphs": [
+        {
+          "id": "research_tick",
+          "path": "factories/research/graphs/research_tick.dot"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    },
+    {
+      "id": "example-web",
+      "target_repo": "example-org/example-web",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    },
+    {
+      "id": "example-trading",
+      "target_repo": "example-org/example-trading",
+      "graphs": [
+        {
+          "id": "factory_supervisor_tick",
+          "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+        },
+        {
+          "id": "managed_software_delivery_domain",
+          "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"
+        },
+        {
+          "id": "daily_release_report",
+          "path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+        },
+        {
+          "id": "goal_intake_decompose",
+          "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        },
+        {
+          "id": "goal_queue",
+          "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"
+        },
+        {
+          "id": "goal_run",
+          "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+        },
+        {
+          "id": "goal_execute",
+          "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"
+        },
+        {
+          "id": "goal_issue_execute",
+          "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        }
+      ],
+      "daemonStatus": {
+        "status": "stopped"
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+digraph strict_identity_mixed_missing {
+  start [shape=Mdiamond]
+  missing_both [label="Missing both" type="tool" governance="reversible" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+  missing_role [label="Missing role" type="codergen" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.codergen" agent_id="unknown"]
+  valid_manager [label="Valid manager" type="stack.manager_loop" governance="reversible" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.stack.manager_loop" agent_id="stack.manager_loop" agent_role="manager.supervisor"]
+  done [shape=Msquare]
+
+  start -> missing_both -> missing_role -> valid_manager -> done
+}

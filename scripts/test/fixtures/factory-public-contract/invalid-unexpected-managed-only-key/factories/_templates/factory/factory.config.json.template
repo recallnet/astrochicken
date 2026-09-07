@@ -1,0 +1,28 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "fixture-factory",
+  "instance_id": "fac_fixture",
+  "target_repo": "example-org/fixture",
+  "control_plane_repo": "recallnet/astrochicken",
+  "dispatch": {
+    "graph": "factories/fixture/graphs/factory_supervisor_tick.dot"
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md"
+  },
+  "scenarios": {
+    "root": "factories/fixture/scenarios/fixture"
+  },
+  "pipeline": {
+    "supervisor_tick": "factories/fixture/graphs/factory_supervisor_tick.dot"
+  },
+  "runs_dir": ".hatch/fixture/runs",
+  "trust": {
+    "domain": "fixture.local",
+    "roles": [
+      "fixture.local.tool"
+    ]
+  },
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "managed": true
+}

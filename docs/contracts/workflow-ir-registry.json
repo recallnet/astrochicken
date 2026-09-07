@@ -1,0 +1,402 @@
+{
+  "schema_version": "workflow_ir_registry/v1",
+  "summary": {
+    "registered_workflow_irs": 39,
+    "diagnostics": 0
+  },
+  "workflow_irs": [
+    {
+      "workflow_id": "artifact_ingest",
+      "family_id": "artifact_ingestion",
+      "source_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.png",
+      "output_path": "docs/contracts/capability-artifact-ingestion.artifact_ingest.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest"
+    },
+    {
+      "workflow_id": "brainstorm",
+      "family_id": "brainstorming",
+      "source_path": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.png",
+      "output_path": "docs/contracts/capability-brainstorming.brainstorm.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm"
+    },
+    {
+      "workflow_id": "daily_lens_publish",
+      "family_id": "daily_reporting",
+      "source_path": "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/daily_lens_publish.dot",
+      "runtime_png_path": "factories/mothership/graphs/daily_lens_publish.png",
+      "output_path": "docs/contracts/mothership.daily_lens_publish.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish"
+    },
+    {
+      "workflow_id": "daily_release_report",
+      "family_id": "daily_reporting",
+      "source_path": "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/daily_release_report.dot",
+      "runtime_png_path": "factories/mothership/graphs/daily_release_report.png",
+      "output_path": "docs/contracts/mothership.daily_release_report.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-daily_release_report"
+    },
+    {
+      "workflow_id": "domain_brainstorm",
+      "family_id": "dispatch_control",
+      "source_path": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/brainstorm/domain_brainstorm.png",
+      "output_path": "docs/contracts/brainstorm.domain_brainstorm.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm"
+    },
+    {
+      "workflow_id": "echo",
+      "family_id": "patterns",
+      "source_path": "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/factory-patterns/echo.png",
+      "output_path": "docs/contracts/factory-patterns.echo.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo"
+    },
+    {
+      "workflow_id": "factory_dispatch_reactor",
+      "family_id": "dispatch_control",
+      "source_path": "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "runtime_png_path": "factories/mothership/graphs/factory_dispatch_reactor.png",
+      "output_path": "docs/contracts/mothership.factory_dispatch_reactor.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-factory_dispatch_reactor"
+    },
+    {
+      "workflow_id": "factory_supervisor_tick",
+      "family_id": "dispatch_control",
+      "source_path": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.png",
+      "output_path": "docs/contracts/brainstorm.factory_supervisor_tick.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:brainstorm-factory_supervisor_tick"
+    },
+    {
+      "workflow_id": "factory_supervisor_tick",
+      "family_id": "dispatch_control",
+      "source_path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.png",
+      "output_path": "docs/contracts/mothership.factory_supervisor_tick.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-factory_supervisor_tick"
+    },
+    {
+      "workflow_id": "goal_batch",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_batch.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_batch"
+    },
+    {
+      "workflow_id": "goal_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/goal_execute.png",
+      "output_path": "docs/contracts/mothership.goal_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-goal_execute"
+    },
+    {
+      "workflow_id": "goal_execute",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-software-development/goal_execute.png",
+      "output_path": "docs/contracts/capability-software-development.goal_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_execute"
+    },
+    {
+      "workflow_id": "goal_execution_handoff",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.png",
+      "output_path": "docs/contracts/capability-software-development.goal_execution_handoff.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_execution_handoff"
+    },
+    {
+      "workflow_id": "goal_factory",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_factory.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory"
+    },
+    {
+      "workflow_id": "goal_hard_plan",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_hard_plan.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan"
+    },
+    {
+      "workflow_id": "goal_intake_decompose",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_intake_decompose.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_intake_decompose"
+    },
+    {
+      "workflow_id": "goal_intake_to_execution_handoff",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.png",
+      "output_path": "docs/contracts/capability-software-development.goal_intake_to_execution_handoff.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff"
+    },
+    {
+      "workflow_id": "goal_issue_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/goal_issue_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/goal_issue_execute.png",
+      "output_path": "docs/contracts/mothership.goal_issue_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-goal_issue_execute"
+    },
+    {
+      "workflow_id": "goal_issue_execute",
+      "family_id": "software_development",
+      "source_path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.png",
+      "output_path": "docs/contracts/capability-software-development.goal_issue_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_issue_execute"
+    },
+    {
+      "workflow_id": "goal_queue",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_queue.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue"
+    },
+    {
+      "workflow_id": "goal_run",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.goal_run.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run"
+    },
+    {
+      "workflow_id": "issue_execute_item",
+      "family_id": "coding",
+      "source_path": "packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-coding/issue_execute_item.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-coding/issue_execute_item.png",
+      "output_path": "docs/contracts/capability-coding.issue_execute_item.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-coding-issue_execute_item"
+    },
+    {
+      "workflow_id": "managed_software_delivery_domain",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.png",
+      "output_path": "docs/contracts/factory-runtime.managed_software_delivery_domain.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_software_delivery_domain"
+    },
+    {
+      "workflow_id": "managed_supervisor",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.png",
+      "output_path": "docs/contracts/factory-runtime.managed_supervisor.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor"
+    },
+    {
+      "workflow_id": "managed-supervisor-shell",
+      "family_id": "runtime",
+      "source_path": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.png",
+      "output_path": "docs/contracts/factory-runtime.managed-supervisor-shell.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell"
+    },
+    {
+      "workflow_id": "merge_item",
+      "family_id": "merge",
+      "source_path": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-merge/merge_item.png",
+      "output_path": "docs/contracts/capability-merge.merge_item.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item"
+    },
+    {
+      "workflow_id": "milestone_execute",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/milestone_execute.png",
+      "output_path": "docs/contracts/mothership.milestone_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute"
+    },
+    {
+      "workflow_id": "milestone_execute_parallel_item",
+      "family_id": "goal_execution",
+      "source_path": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.png",
+      "output_path": "docs/contracts/mothership.milestone_execute_parallel_item.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item"
+    },
+    {
+      "workflow_id": "product_judge",
+      "family_id": "product_judge",
+      "source_path": "packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-product-judge/product_judge.png",
+      "output_path": "docs/contracts/capability-product-judge.product_judge.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge"
+    },
+    {
+      "workflow_id": "release_report_flow",
+      "family_id": "release_reporting",
+      "source_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.png",
+      "output_path": "docs/contracts/capability-release-reporting.release_report_flow.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow"
+    },
+    {
+      "workflow_id": "wave_demo_generate",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_demo_generate.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/wave_demo_generate.png",
+      "output_path": "docs/contracts/mothership.wave_demo_generate.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate"
+    },
+    {
+      "workflow_id": "wave_dispatch",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_dispatch.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/wave_dispatch.png",
+      "output_path": "docs/contracts/mothership.wave_dispatch.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_dispatch"
+    },
+    {
+      "workflow_id": "wave_dispatch",
+      "family_id": "wave_dispatch",
+      "source_path": "packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.png",
+      "output_path": "docs/contracts/capability-wave-dispatch.wave_dispatch.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch"
+    },
+    {
+      "workflow_id": "wave_execute",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/wave_execute.png",
+      "output_path": "docs/contracts/mothership.wave_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_execute"
+    },
+    {
+      "workflow_id": "wave_issue_execute",
+      "family_id": "wave_execution",
+      "source_path": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/mothership/wave_issue_execute.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/mothership/wave_issue_execute.png",
+      "output_path": "docs/contracts/mothership.wave_issue_execute.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-wave_issue_execute"
+    },
+    {
+      "workflow_id": "write_issue_item",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.write_issue_item.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item"
+    },
+    {
+      "workflow_id": "write_issues",
+      "family_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+      "runtime_graph_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.dot",
+      "runtime_png_path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.png",
+      "output_path": "docs/contracts/capability-goal-decomposition.write_issues.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issues"
+    },
+    {
+      "workflow_id": "write_scenario_item",
+      "family_id": "scenario_writing",
+      "source_path": "factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/write_scenario_item.dot",
+      "runtime_png_path": "factories/mothership/graphs/write_scenario_item.png",
+      "output_path": "docs/contracts/mothership.write_scenario_item.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item"
+    },
+    {
+      "workflow_id": "write_scenarios",
+      "family_id": "scenario_writing",
+      "source_path": "factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs",
+      "runtime_graph_path": "factories/mothership/graphs/write_scenarios.dot",
+      "runtime_png_path": "factories/mothership/graphs/write_scenarios.png",
+      "output_path": "docs/contracts/mothership.write_scenarios.workflow-ir.json",
+      "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios"
+    }
+  ],
+  "governed_outputs": [
+    "docs/contracts/brainstorm.domain_brainstorm.workflow-ir.json",
+    "docs/contracts/brainstorm.factory_supervisor_tick.workflow-ir.json",
+    "docs/contracts/capability-artifact-ingestion.artifact_ingest.workflow-ir.json",
+    "docs/contracts/capability-brainstorming.brainstorm.workflow-ir.json",
+    "docs/contracts/capability-coding.issue_execute_item.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_batch.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_factory.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_hard_plan.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_intake_decompose.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_queue.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.goal_run.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.write_issue_item.workflow-ir.json",
+    "docs/contracts/capability-goal-decomposition.write_issues.workflow-ir.json",
+    "docs/contracts/capability-merge.merge_item.workflow-ir.json",
+    "docs/contracts/capability-product-judge.product_judge.workflow-ir.json",
+    "docs/contracts/capability-release-reporting.release_report_flow.workflow-ir.json",
+    "docs/contracts/capability-software-development.goal_execute.workflow-ir.json",
+    "docs/contracts/capability-software-development.goal_execution_handoff.workflow-ir.json",
+    "docs/contracts/capability-software-development.goal_intake_to_execution_handoff.workflow-ir.json",
+    "docs/contracts/capability-software-development.goal_issue_execute.workflow-ir.json",
+    "docs/contracts/capability-wave-dispatch.wave_dispatch.workflow-ir.json",
+    "docs/contracts/factory-patterns.echo.workflow-ir.json",
+    "docs/contracts/factory-runtime.managed_software_delivery_domain.workflow-ir.json",
+    "docs/contracts/factory-runtime.managed_supervisor.workflow-ir.json",
+    "docs/contracts/factory-runtime.managed-supervisor-shell.workflow-ir.json",
+    "docs/contracts/mothership.daily_lens_publish.workflow-ir.json",
+    "docs/contracts/mothership.daily_release_report.workflow-ir.json",
+    "docs/contracts/mothership.factory_dispatch_reactor.workflow-ir.json",
+    "docs/contracts/mothership.factory_supervisor_tick.workflow-ir.json",
+    "docs/contracts/mothership.goal_execute.workflow-ir.json",
+    "docs/contracts/mothership.goal_issue_execute.workflow-ir.json",
+    "docs/contracts/mothership.milestone_execute_parallel_item.workflow-ir.json",
+    "docs/contracts/mothership.milestone_execute.workflow-ir.json",
+    "docs/contracts/mothership.wave_demo_generate.workflow-ir.json",
+    "docs/contracts/mothership.wave_dispatch.workflow-ir.json",
+    "docs/contracts/mothership.wave_execute.workflow-ir.json",
+    "docs/contracts/mothership.wave_issue_execute.workflow-ir.json",
+    "docs/contracts/mothership.write_scenario_item.workflow-ir.json",
+    "docs/contracts/mothership.write_scenarios.workflow-ir.json"
+  ],
+  "diagnostics": []
+}

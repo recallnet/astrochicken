@@ -1,0 +1,81 @@
+{
+  "version": "v1",
+  "owned_by": "factory-platform",
+  "files": {
+    "supervisor": "supervisor-policy.json",
+    "review": "reviewer-policy.json",
+    "model": "model-policy.json",
+    "release": "release-policy.json",
+    "escalation": "escalation-policy.json",
+    "block_wait_retry": "block-wait-retry-policy.json"
+  },
+  "required_keys": {
+    "supervisor": [
+      "shared.max_review_retries",
+      "shared.review_retry_backoff_seconds",
+      "shared.force_merge_on_retry_exhaustion"
+    ],
+    "review": [
+      "shared.verdict_schema.required_fields",
+      "shared.verdict_schema.allowed_status",
+      "shared.qa.require_command_evidence"
+    ],
+    "model": [
+      "shared.default_provider",
+      "shared.default_model",
+      "shared.override_env_vars.provider",
+      "shared.override_env_vars.model"
+    ],
+    "release": [
+      "shared.default_channel",
+      "shared.channels.stable.required_checks",
+      "shared.channels.canary.required_checks"
+    ],
+    "escalation": [
+      "shared.control_plane_repo",
+      "shared.issue_labels.platform_defect",
+      "shared.issue_labels.needs_human"
+    ],
+    "block_wait_retry": [
+      "shared.retry.max_attempts",
+      "shared.retry.backoff_seconds",
+      "shared.wait.cooldown_minutes"
+    ]
+  },
+  "customizable_keys": {
+    "supervisor": [
+      "factory.max_review_retries",
+      "factory.review_retry_backoff_seconds",
+      "factory.dispatch.max_goal_runs_per_tick"
+    ],
+    "review": [
+      "factory.qa.required_command",
+      "factory.labels.approved",
+      "factory.labels.changes_requested"
+    ],
+    "model": [
+      "factory.allowed_models",
+      "factory.preferred_model",
+      "factory.provider_order",
+      "factory.benchmark_justification.query_ids",
+      "factory.benchmark_justification.evidence_date",
+      "factory.benchmark_justification.notes",
+      "factory.safe_fallback_model"
+    ],
+    "release": [
+      "factory.preferred_channel",
+      "factory.freeze_windows",
+      "factory.post_merge_notifications"
+    ],
+    "escalation": [
+      "factory.contacts.oncall",
+      "factory.contacts.slack_channel",
+      "factory.max_auto_repair_attempts"
+    ],
+    "block_wait_retry": [
+      "factory.retry.max_attempts",
+      "factory.retry.backoff_seconds",
+      "factory.wait.max_minutes"
+    ]
+  }
+}

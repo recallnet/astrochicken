@@ -1,0 +1,12 @@
+digraph managed_supervisor_shell {
+  start [shape=Mdiamond label="Start"];
+  blocker_gate [label="Blocker gate"];
+  invoke_domain_graph [label="Invoke domain graph"];
+  emit_shell_telemetry [label="Emit telemetry"];
+  finish [shape=Msquare label="Exit"];
+
+  start -> blocker_gate;
+  blocker_gate -> invoke_domain_graph;
+  invoke_domain_graph -> emit_shell_telemetry;
+  emit_shell_telemetry -> finish;
+}

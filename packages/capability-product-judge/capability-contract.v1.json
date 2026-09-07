@@ -1,0 +1,117 @@
+{
+  "capabilityId": "product_judge",
+  "description": "Post-merge alignment judgment graph.",
+  "entrypoints": [
+    {
+      "description": "Judges post-merge product alignment for merge candidates.",
+      "id": "product_judge",
+      "kind": "graph",
+      "path": "workflows/product_judge/product_judge.workflow-source.mjs",
+      "title": "Product judge graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-product-judge/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Persists the canonical judge context contract consumed by post-merge judgment.",
+        "id": "judge_context",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/product_judge/product_judge.workflow-source.mjs"
+        ],
+        "ref": "judge_context/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Judge context contract artifact"
+      },
+      {
+        "description": "Persists the canonical judge evidence contract backing product-judgment decisions.",
+        "id": "judge_evidence",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/product_judge/product_judge.workflow-source.mjs"
+        ],
+        "ref": "judge_evidence/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Judge evidence contract artifact"
+      },
+      {
+        "description": "Builds the canonical recovery packet for failed product-judge flows.",
+        "id": "judge_recovery_packet",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/product_judge/product_judge.workflow-source.mjs"
+        ],
+        "ref": "judge_recovery_packet/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Judge recovery packet artifact"
+      },
+      {
+        "description": "Emits the canonical fast-follow bug issue artifact when judge failures must be escalated.",
+        "id": "judge_followup_bug_issue",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/product_judge/product_judge.workflow-source.mjs"
+        ],
+        "ref": "judge_followup_bug_issue/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Judge follow-up bug issue artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Product judge runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/product_judge/product_judge.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-product-judge",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "control_plane_repo",
+    "factory_id",
+    "gh_repo",
+    "merge_candidates",
+    "merge_results",
+    "milestone_title",
+    "repo",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "pipeline",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".post_merge_judge"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "judge_context/v1",
+        "judge_evidence/v1",
+        "judge_followup_bug_issue/v1",
+        "judge_recovery_packet/v1"
+      ]
+    }
+  ],
+  "sourcePath": "packages/capability-product-judge/capability-contract.mjs",
+  "title": "Product Judge Capability",
+  "version": "0.1.0"
+}

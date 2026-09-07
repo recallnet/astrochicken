@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_hard_plan",
+  "familyId": "goal_decomposition",
+  "title": "Goal Hard Plan",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_hard_plan.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_hard_plan",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "goal_hard_plan",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "attach_hard_plan_artifact",
+        "runtimeNodeId": "attach_hard_plan_artifact"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "encode_approved_features_b64",
+        "runtimeNodeId": "encode_approved_features_b64"
+      },
+      {
+        "sourceNodeId": "encode_factory_request_goal_graph_b64",
+        "runtimeNodeId": "encode_factory_request_goal_graph_b64"
+      },
+      {
+        "sourceNodeId": "encode_goal_context_b64",
+        "runtimeNodeId": "encode_goal_context_b64"
+      },
+      {
+        "sourceNodeId": "encode_goal_issue_b64",
+        "runtimeNodeId": "encode_goal_issue_b64"
+      },
+      {
+        "sourceNodeId": "intake_decompose",
+        "runtimeNodeId": "intake_decompose"
+      },
+      {
+        "sourceNodeId": "mark_hard_plan_pending_review",
+        "runtimeNodeId": "mark_hard_plan_pending_review"
+      },
+      {
+        "sourceNodeId": "persist_hard_plan_packet",
+        "runtimeNodeId": "persist_hard_plan_packet"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "validate_hard_plan_packet",
+        "runtimeNodeId": "validate_hard_plan_packet"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "attach_hard_plan_artifact",
+      "kind": "tool_action",
+      "title": "Attach hard planning artifact to goal",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.attach_planning_artifacts",
+        "label": "Attach hard planning artifact to goal",
+        "output_format": "json",
+        "outputs": "planning_attachment_posted,planning_attachment_reason,planning_artifact_path,planning_packet_id,run_id",
+        "action_repo": "${gh_repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_run_id": "${__run_id}",
+        "action_planning_artifact_path": "${hard_plan_packet_path}",
+        "action_planning_packet_id": "${hard_plan_packet_id}",
+        "action_summary": "hard_path_planning_completed",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "encode_approved_features_b64",
+      "kind": "tool_action",
+      "title": "Encode approved features payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode approved features payload",
+        "output_key": "approved_features_b64",
+        "action_value": "${approved_features}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_factory_request_goal_graph_b64",
+      "kind": "tool_action",
+      "title": "Encode factory-request goal graph payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode factory-request goal graph payload",
+        "output_key": "factory_request_goal_graph_b64",
+        "action_value": "${factory_request_goal_graph}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_goal_context_b64",
+      "kind": "tool_action",
+      "title": "Encode goal context payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode goal context payload",
+        "output_key": "goal_context_b64",
+        "action_value": "${goal_context}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "encode_goal_issue_b64",
+      "kind": "tool_action",
+      "title": "Encode goal issue payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode goal issue payload",
+        "output_key": "goal_issue_b64",
+        "action_value": "${goal_issue}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "intake_decompose",
+      "kind": "pipeline",
+      "title": "Build hard planning artifact",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Build hard planning artifact",
+        "export_keys": "goal_issue,goal_context,approved_features,factory_request_goal_graph,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "mark_hard_plan_pending_review",
+      "kind": "tool_action",
+      "title": "Mark hard goal planned and hold for review",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.mark_planned",
+        "label": "Mark hard goal planned and hold for review",
+        "output_format": "json",
+        "outputs": "goal_issue_number,goal_execution_path,goal_routing_state,decomposition_state,planning_state,planning_artifact_path,goal_execution_path_packet_id,goal_execution_path_packet_path,ready_label_removed,ready_removed_comment_posted",
+        "action_repo": "${gh_repo}",
+        "action_goal_issue_number": "${issue_number}",
+        "action_goal_execution_path": "${goal_execution_path}",
+        "action_goal_routing_state": "${goal_routing_state}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_hard_plan",
+        "action_node_id": "mark_hard_plan_pending_review",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_planning_artifact_path": "${hard_plan_packet_path}",
+        "action_target_repo": "${target_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "persist_hard_plan_packet",
+      "kind": "tool_action",
+      "title": "Persist hard planning artifact",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.persist_hard_plan_artifact",
+        "label": "Persist hard planning artifact",
+        "outputs": "hard_plan_packet_path,hard_plan_packet_id,hard_plan_packet_type,hard_plan_packet_schema_version",
+        "action_goal_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_hard_plan",
+        "action_node_id": "persist_hard_plan_packet",
+        "action_approved_features_b64": "${approved_features_b64}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_request_goal_graph_b64": "${factory_request_goal_graph_b64}",
+        "action_goal_context_b64": "${goal_context_b64}",
+        "action_goal_issue_b64": "${goal_issue_b64}",
+        "action_target_repo": "${target_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "validate_hard_plan_packet",
+      "kind": "tool_action",
+      "title": "Validate hard planning artifact",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.validate_planning_artifact",
+        "label": "Validate hard planning artifact",
+        "output_format": "json",
+        "outputs": "planning_artifact_valid,planning_artifact_error,planning_artifact_path,planning_packet_id,goal_issue_number,approved_feature_count",
+        "action_packet_path": "${hard_plan_packet_path}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "intake_decompose"
+    },
+    {
+      "from": "intake_decompose",
+      "to": "encode_goal_issue_b64"
+    },
+    {
+      "from": "encode_goal_issue_b64",
+      "to": "encode_goal_context_b64"
+    },
+    {
+      "from": "encode_goal_context_b64",
+      "to": "encode_approved_features_b64"
+    },
+    {
+      "from": "encode_approved_features_b64",
+      "to": "encode_factory_request_goal_graph_b64"
+    },
+    {
+      "from": "encode_factory_request_goal_graph_b64",
+      "to": "persist_hard_plan_packet"
+    },
+    {
+      "from": "persist_hard_plan_packet",
+      "to": "validate_hard_plan_packet"
+    },
+    {
+      "from": "validate_hard_plan_packet",
+      "to": "attach_hard_plan_artifact"
+    },
+    {
+      "from": "attach_hard_plan_artifact",
+      "to": "mark_hard_plan_pending_review"
+    },
+    {
+      "from": "mark_hard_plan_pending_review",
+      "to": "done"
+    }
+  ]
+}

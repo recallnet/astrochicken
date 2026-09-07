@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["docs/guide.md", "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": [],
+  "expectedReason": "docs_or_dot_only"
+}

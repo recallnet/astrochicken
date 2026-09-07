@@ -1,0 +1,18 @@
+{
+  "schema": "hatch.intent.v1",
+  "id": "intent.test.feature",
+  "title": "Intent loader test",
+  "summary": "Ensure the loader accepts valid intent documents.",
+  "goals": ["Validate intent files"],
+  "constraints": ["Must reject unknown keys"],
+  "acceptance_criteria": ["Registry includes merged profiles"],
+  "profiles": {
+    "enterprise": {
+      "audience": "Admin users",
+      "constraints": ["Must support audit logs"]
+    }
+  },
+  "references": {
+    "doc": "https://example.com/intent"
+  }
+}

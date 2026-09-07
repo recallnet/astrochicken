@@ -1,0 +1,44 @@
+// conformance/factory_supervisor_tick.dot
+//
+// Lightweight conformance smoke graph that validates the supervisor tick
+// structural contract without hitting the GitHub API. Used by the
+// conformance harness (conformance.smoke_graph in factory.config.json).
+//
+// Exercises: start → deterministic tool nodes → done
+// Does NOT exercise: artifact_ingest, goal_queue, wave_dispatch, or any
+// GitHub API-dependent stages.
+
+@import "../roles.stylesheet"
+
+digraph factory_supervisor_tick {
+    label = "factory_supervisor_tick"
+    start [shape=Mdiamond]
+    done [shape=Msquare recovery_sink_type="terminal"]
+
+    set_gh_repo [type="tool" governance="reversible"
+                 label="Resolve GH repo"
+                 output_key="__set_gh_repo_result"
+                 prompt="echo '${repo}'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+
+    set_factory_id [type="tool" governance="reversible"
+                    label="Resolve factory ID"
+                    output_key="__set_factory_id_result"
+                    prompt="echo '${factory_id}'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+
+    snapshot_state_fast [type="tool" governance="reversible"
+                         label="Snapshot state (conformance)"
+                         output_key="__snapshot_state_result"
+                         prompt="echo '{\"conformance\":true,\"tick\":\"smoke\"}'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+
+    supervisor_health [type="tool" governance="reversible"
+                       label="Health check (conformance)"
+                       output_key="__supervisor_health_result"
+                       prompt="echo '{\"ok\":true,\"conformance\":true}'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+
+    set_date [type="tool" governance="reversible"
+              label="Set date"
+              output_key="__set_date_result"
+              prompt="date -u +%Y-%m-%dT%H:%M:%SZ" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+
+    start -> set_gh_repo -> set_factory_id -> snapshot_state_fast -> supervisor_health -> set_date -> done
+}

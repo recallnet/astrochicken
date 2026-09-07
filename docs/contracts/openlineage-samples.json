@@ -1,0 +1,46 @@
+{
+  "schema_version": "openlineage_samples/v1",
+  "samples": {
+    "hatch_run_lifecycle": {
+      "eventType": "OUTPUT",
+      "job": {
+        "namespace": "hatch.graph",
+        "name": "wave_execute"
+      },
+      "run": {
+        "runId": "sample-run"
+      },
+      "outputs": [
+        {
+          "namespace": "artifact",
+          "name": "oci://ghcr.io/recallnet/factory/release-report:sample"
+        }
+      ]
+    },
+    "release_rollout": {
+      "eventType": "COMPLETE",
+      "job": {
+        "namespace": "factory.release.rollout",
+        "name": "stable"
+      },
+      "run": {
+        "runId": "release-rollout:sample-release:publish:stable"
+      },
+      "outputs": [
+        {
+          "namespace": "release.asset",
+          "name": "oci://ghcr.io/recallnet/factory/release-report:sample"
+        }
+      ]
+    },
+    "release_report_bundle": {
+      "eventType": "OUTPUT",
+      "outputs": [
+        {
+          "namespace": "oci.artifact.release_report_bundle",
+          "name": "oci://ghcr.io/recallnet/factory/release-report:sample"
+        }
+      ]
+    }
+  }
+}

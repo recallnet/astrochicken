@@ -1,0 +1,57 @@
+{
+  "selected_waves": [
+    "goal-3-wave-1"
+  ],
+  "selected_count": 1,
+  "in_flight_count": 0,
+  "ready_count": 0,
+  "priorities_text": "goal-3-wave-1",
+  "max_concurrent": 1,
+  "candidate_waves": [
+    "goal-2-wave-1",
+    "goal-3-wave-1"
+  ],
+  "evaluations": [
+    {
+      "milestone": "goal-2-wave-1",
+      "status": "skipped",
+      "skip_reason": "slots_full"
+    },
+    {
+      "milestone": "goal-3-wave-1",
+      "status": "selected"
+    }
+  ],
+  "milestone_issues": [
+    {
+      "milestone": "goal-2-wave-1",
+      "issues": [
+        {
+          "number": 301,
+          "title": "Build A"
+        }
+      ]
+    },
+    {
+      "milestone": "goal-3-wave-1",
+      "issues": [
+        {
+          "number": 302,
+          "title": "Build B"
+        }
+      ]
+    }
+  ],
+  "blocked_by": [
+    {
+      "issue_number": 301,
+      "blocked_by": []
+    },
+    {
+      "issue_number": 302,
+      "blocked_by": []
+    }
+  ],
+  "control_plane_blocked_items": [],
+  "control_plane_blocked_waves": []
+}

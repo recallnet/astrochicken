@@ -1,0 +1,22 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond];
+  done [shape=Msquare];
+
+  check_upstream [
+    type="tool"
+    governance="reversible"
+    label="Check upstream bugs"
+    output_key="upstream_result"
+    prompt="hatch-ops supervisor run --op upstream-bug-gate --repo '${control_plane_repo}' --label 'managed-factory-bug'"
+  ];
+
+  inspect_state [
+    type="tool"
+    governance="reversible"
+    label="Inspect state"
+    output_key="state_snapshot"
+    prompt="hatch-ops supervisor run --op state-snapshot --repo '${target_repo}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}'"
+  ];
+
+  start -> check_upstream -> inspect_state -> done;
+}

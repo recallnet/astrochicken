@@ -1,0 +1,239 @@
+{
+  "asyncapi": "2.6.0",
+  "channels": {
+    "factory.release.rollout": {
+      "address": "factory.release.rollout",
+      "description": "Release rollout CloudEvents emitted when manifests are published, promoted, or rolled back.",
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/ReleaseRolloutCloudEvent"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "ReleaseRolloutCloudEvent": {
+        "contentType": "application/json",
+        "name": "ReleaseRolloutCloudEvent",
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "data": {
+              "additionalProperties": false,
+              "properties": {
+                "action": {
+                  "type": "string"
+                },
+                "asset_id": {
+                  "type": "string"
+                },
+                "asset_url": {
+                  "type": "string"
+                },
+                "at": {
+                  "type": "string"
+                },
+                "channel": {
+                  "type": "string"
+                },
+                "holder_id": {
+                  "type": "string"
+                },
+                "manifest_path": {
+                  "type": "string"
+                },
+                "previous_release_id": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "release_id": {
+                  "type": "string"
+                },
+                "release_sha": {
+                  "type": "string"
+                },
+                "release_tag": {
+                  "type": "string"
+                },
+                "run_id": {
+                  "type": "string"
+                },
+                "schema_version": {
+                  "const": "release_rollout_event/v1",
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "tracking_issue_number": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema_version",
+                "action",
+                "channel",
+                "status",
+                "reason",
+                "release_id",
+                "release_tag",
+                "release_sha",
+                "previous_release_id",
+                "run_id",
+                "holder_id",
+                "tracking_issue_number",
+                "asset_id",
+                "asset_url",
+                "manifest_path",
+                "at"
+              ],
+              "type": "object"
+            },
+            "datacontenttype": {
+              "const": "application/json",
+              "type": "string"
+            },
+            "dataschema": {
+              "const": "https://recallnet.dev/contracts/release-rollout-event.v1.schema.json",
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "openlineage": {
+              "additionalProperties": false,
+              "properties": {
+                "eventType": {
+                  "enum": [
+                    "START",
+                    "COMPLETE",
+                    "FAIL",
+                    "RUN",
+                    "INPUT",
+                    "OUTPUT"
+                  ],
+                  "type": "string"
+                },
+                "inputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "job": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "namespace": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "namespace",
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "outputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "run": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "runId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "runId"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "eventType"
+              ],
+              "type": "object"
+            },
+            "source": {
+              "const": "/factory/release-rollout",
+              "type": "string"
+            },
+            "specversion": {
+              "const": "1.0",
+              "type": "string"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            },
+            "traceparent": {
+              "type": "string"
+            },
+            "tracestate": {
+              "type": "string"
+            },
+            "type": {
+              "const": "dev.recallnet.factory.release.rollout",
+              "type": "string"
+            }
+          },
+          "required": [
+            "specversion",
+            "id",
+            "type",
+            "source",
+            "time",
+            "datacontenttype",
+            "dataschema",
+            "data"
+          ],
+          "type": "object"
+        },
+        "summary": "CloudEvent envelope carrying versioned release rollout payloads and lineage-compatible metadata.",
+        "title": "Release Rollout CloudEvent"
+      }
+    }
+  },
+  "info": {
+    "description": "Governed CloudEvents release rollout feed surfaced through control-plane release manifests and CLI readers.",
+    "title": "Release Rollout Event Feed",
+    "version": "release_rollout_events_asyncapi/v1"
+  }
+}

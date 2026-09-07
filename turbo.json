@@ -1,0 +1,48 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"ui": "stream",
+	"concurrency": "4",
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"],
+			"inputs": [
+				"src/**/*.ts",
+				"src/**/*.mts",
+				"src/**/*.cts",
+				"src/**/*.js",
+				"src/**/*.mjs",
+				"tsconfig.json",
+				"tsconfig.*",
+				"package.json",
+				"turbo.json",
+				"vite.config.*",
+				"vitest.config.*",
+				".eslintrc.*"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"test": {
+			"dependsOn": ["build"],
+			"outputs": ["coverage/**"]
+		},
+		"test:wave-claim-gates": {
+			"dependsOn": ["build"],
+			"outputs": []
+		},
+		"test:guard-gates": {
+			"dependsOn": ["build"],
+			"outputs": []
+		},
+		"lint": {
+			"outputs": []
+		},
+		"typecheck": {
+			"dependsOn": ["^build"],
+			"outputs": []
+		}
+	}
+}

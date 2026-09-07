@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "certification_version": 1,
+  "surfaces": [
+    {
+      "id": "env_auth_isolation",
+      "title": "Environment and authentication isolation",
+      "description": "Managed factories must have isolated environment variables, credentials, and auth scopes so one factory cannot read or mutate another factory's runtime identity.",
+      "severity": "required",
+      "evidence_requirements": [
+        "factory-fleet status evidence showing per-factory identity boundaries",
+        "host lifecycle checks confirming scoped credential materialization and cleanup"
+      ],
+      "failure_message": "Rollout blocked: env/auth isolation evidence is incomplete or isolation boundaries regressed."
+    },
+    {
+      "id": "fleet_visibility",
+      "title": "Fleet visibility",
+      "description": "Operators must be able to inspect managed-factory health, active work, and recent failures from deterministic ops interfaces.",
+      "severity": "required",
+      "evidence_requirements": [
+        "fleet status output covering running and recently failed factories",
+        "tick status and outcomes evidence proving observable progress and failure surfaces"
+      ],
+      "failure_message": "Rollout blocked: fleet visibility does not provide complete health and outcome coverage."
+    },
+    {
+      "id": "host_lifecycle_same_machine",
+      "title": "Same-machine host lifecycle",
+      "description": "Factory host start, stop, restart, and health transitions must be deterministic on a shared machine without manual state surgery.",
+      "severity": "required",
+      "evidence_requirements": [
+        "host lifecycle command evidence for start/restart/health paths",
+        "recovery sweep evidence proving stale ownership and dead-process cleanup"
+      ],
+      "failure_message": "Rollout blocked: same-machine host lifecycle is not yet deterministic or recoverable."
+    },
+    {
+      "id": "incident_packet_quality",
+      "title": "Incident packet quality",
+      "description": "Failures must emit incident packets with actionable context so control-plane triage can classify cause, route remediation, and prevent recurrence.",
+      "severity": "required",
+      "evidence_requirements": [
+        "incident packet validation output with required fields",
+        "sample incident packet artifacts linked to concrete run failures"
+      ],
+      "failure_message": "Rollout blocked: incident packets are missing required evidence or remediation context."
+    },
+    {
+      "id": "model_policy_benchmark_readiness",
+      "title": "Model policy and benchmark readiness",
+      "description": "Model selection, fallback policy, and benchmark evidence must be explicit so semantic jobs run on approved models with measurable quality.",
+      "severity": "required",
+      "evidence_requirements": [
+        "model policy contract evidence for reviewer and judge routes",
+        "benchmark or readiness artifacts for configured production models"
+      ],
+      "failure_message": "Rollout blocked: model policy or benchmark readiness evidence is incomplete."
+    },
+    {
+      "id": "operator_onboarding_runbook_completeness",
+      "title": "Operator onboarding and runbook completeness",
+      "description": "An operator with no local context must be able to start monitoring, interpret outcomes, and execute recovery runbooks without ad-hoc tribal knowledge.",
+      "severity": "required",
+      "evidence_requirements": [
+        "operator runbook coverage for monitoring cadence and failure routing",
+        "onboarding checklist evidence that references current ops commands"
+      ],
+      "failure_message": "Rollout blocked: operator onboarding or runbook guidance is incomplete for external-factory operations."
+    },
+    {
+      "id": "pause_quarantine_retry_ergonomics",
+      "title": "Pause, quarantine, and retry ergonomics",
+      "description": "Operators must have deterministic controls to pause dispatch, quarantine unhealthy factories, and retry safely with explicit state transitions.",
+      "severity": "required",
+      "evidence_requirements": [
+        "control-state command evidence for pause/quarantine/retry/resume actions",
+        "lifecycle gate evidence showing control actions are enforced before resume"
+      ],
+      "failure_message": "Rollout blocked: pause/quarantine/retry controls are missing, unsafe, or non-deterministic."
+    },
+    {
+      "id": "policy_template_completeness",
+      "title": "Policy template completeness",
+      "description": "Factory policy templates must fully define required governance, QA, and operating contracts so new external factories inherit safe defaults.",
+      "severity": "required",
+      "evidence_requirements": [
+        "template contract checks proving required policy sections are present",
+        "scaffold validation evidence that generated factories receive policy defaults"
+      ],
+      "failure_message": "Rollout blocked: policy templates are incomplete or do not enforce required contracts."
+    },
+    {
+      "id": "release_targeting_resume_visibility",
+      "title": "Release targeting and resume visibility",
+      "description": "Operators must be able to verify target release assignment and inspect resume eligibility/status for each managed factory.",
+      "severity": "required",
+      "evidence_requirements": [
+        "release targeting status evidence for each managed factory",
+        "resume gate evidence exposing why a factory can or cannot resume"
+      ],
+      "failure_message": "Rollout blocked: release targeting or resume visibility is incomplete."
+    }
+  ]
+}

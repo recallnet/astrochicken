@@ -1,0 +1,41 @@
+// write_issues.dot
+//
+// Usage:
+//   taxi run factories/{{factory_id}}/graphs/write_issues.dot --context features.json
+//
+// Context (features.json):
+//   {
+//     "approved_features": [
+//       "{\"title\":\"Feature A\",\"description\":\"...\"}"
+//     ]
+//   }
+
+@import "../roles.stylesheet"
+
+digraph write_issues {
+    label = "write_issues"
+    workdir = "."
+    typed_action_transport_mode = "enforced"
+    start [shape=Mdiamond]
+    done [shape=Msquare]
+
+    fan_out [type="fan_out.dynamic"
+             label="Issue fan-out"
+             source_key="approved_features"
+             item_key="feature"
+             template="{{write_issue_item_graph}}"
+             export_keys="issue_url"
+             output_key="issue_url"
+             max_concurrency="3" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.fan_out.dynamic"]
+
+    fan_in [type="fan_in.dynamic"
+            label="Collect issue URLs"
+            output_key="issue_urls" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.fan_in.dynamic"]
+
+    sanitize_issue_urls [type="tool" governance="reversible" action_runtime="in_process" action_id="common.normalize_issue_urls"
+                         label="Normalize issue URLs"
+                         output_key="issue_urls"
+                         action_value="${issue_urls}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    start -> fan_out -> fan_in -> sanitize_issue_urls -> done
+}

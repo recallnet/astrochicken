@@ -1,0 +1,290 @@
+{
+  "schema": "factory-public-contract.v1",
+  "version": "v1",
+  "drift_gate": {
+    "onboarding_docs": [
+      "docs/runbooks/external-factory-operator-onboarding.md"
+    ],
+    "required_onboarding_links": [
+      "../reference/factory-public-contract.md",
+      "../reference/factory-mode-applicability.md",
+      "../contracts/factory-public-contract.v1.json"
+    ],
+    "allowed_template_managed_only": [
+      "instance_id",
+      "canonical_checkout_path"
+    ]
+  },
+  "mode_applicability_schema": {
+    "allowed_modes": [
+      "standalone",
+      "managed",
+      "both"
+    ],
+    "key_families": {
+      "config": "config.<factory-config-key>",
+      "env": "env.<environment-key>",
+      "command": "command.<family>"
+    },
+    "validation": [
+      "all mode_applicability values must match allowed_modes",
+      "all config keys from sections[name=config].required|optional|managed_only must be represented as config.*",
+      "all documented lifecycle command families must be represented as command.*"
+    ]
+  },
+  "mode_applicability": {
+    "config.schema": "both",
+    "config.factory_id": "both",
+    "config.control_plane_repo": "both",
+    "config.dispatch.graph": "both",
+    "config.dispatch.latency_slo_seconds": "both",
+    "config.pipeline.supervisor_tick": "both",
+    "config.pipeline.maintenance_interval_seconds": "both",
+    "config.skills.supervisor": "both",
+    "config.scenarios.root": "both",
+    "config.runs_dir": "both",
+    "config.trust.domain": "both",
+    "config.trust.roles": "both",
+    "config.target_repo": "both",
+    "config.backend.type": "both",
+    "config.backend.store_root": "both",
+    "config.conformance.entrypoint": "both",
+    "config.conformance.fixtures": "both",
+    "config.conformance.runs_dir": "both",
+    "config.conformance.benchmark_telemetry_warn_only": "both",
+    "config.conformance.benchmark_telemetry_exemptions": "both",
+    "config.policyPack.version": "both",
+    "config.policyPack.overrides": "both",
+    "config.isolation.auth.github.tokenEnvVar": "both",
+    "config.isolation.auth.github.repo": "both",
+    "config.isolation.auth.github.factoryId": "both",
+    "config.isolation.authStoragePath": "both",
+    "config.isolation.model.envVar": "both",
+    "config.isolation.model.value": "both",
+    "config.isolation.provider.envVar": "both",
+    "config.isolation.provider.value": "both",
+    "config.isolation.paths.runs": "both",
+    "config.isolation.paths.logs": "both",
+    "config.isolation.paths.tmp": "both",
+    "config.isolation.paths.cache": "both",
+    "config.capabilities.goal_decomposition.timeouts.issue_draft": "both",
+    "config.capabilities.goal_decomposition.timeouts.issue_repair": "both",
+    "config.capabilities.goal_decomposition.timeouts.issue_judge": "both",
+    "config.capabilities.goal_decomposition.timeouts.issue_revise": "both",
+    "config.capabilities.goal_decomposition.timeouts.triage_plan": "both",
+    "config.capabilities.goal_decomposition.timeouts.triage_repair": "both",
+    "config.managed": "managed",
+    "config.kind_id": "managed",
+    "config.instance_id": "managed",
+    "config.destinations": "managed",
+    "config.upstream_repo": "managed",
+    "config.work_dir": "managed",
+    "config.upstream_bug_labels": "managed",
+    "config.slack_webhook_url": "managed",
+    "config.canonical_checkout_path": "managed",
+    "config.schedules": "managed",
+    "env.HATCH_MODEL": "both",
+    "env.HATCH_PROVIDER": "both",
+    "env.HATCH_BACKEND_TYPE": "both",
+    "env.HATCH_BACKEND_STORE_ROOT": "both",
+    "env.HATCH_INTENT_PATHS": "both",
+    "env.HATCH_DISPATCH_INTERVAL_MS": "both",
+    "env.HATCH_DISPATCH_MAX_PER_TICK": "both",
+    "env.HATCH_FACTORY_ID": "managed",
+    "env.HATCH_RUNS_DIR": "managed",
+    "env.HATCH_HOST_BASE_DIR": "managed",
+    "env.FACTORY_DAEMON_LOG_DIR": "managed",
+    "env.FACTORY_DAEMON_PID_DIR": "managed",
+    "env.FACTORY_DAEMON_PID_FILE": "managed",
+    "env.FACTORY_DAEMON_LOCK_DIR": "managed",
+    "env.FACTORY_DAEMON_TMP_DIR": "managed",
+    "env.FACTORY_DAEMON_SOCKET_DIR": "managed",
+    "command.hatch.run": "both",
+    "command.hatch.validate": "both",
+    "command.hatch.factory.conformance": "both",
+    "command.hatch_ops.factory.status": "both",
+    "command.hatch_ops.factory.tick_status": "both",
+    "command.hatch_ops.factory.subscribe": "both",
+    "command.hatch_ops.factory.host_install": "managed",
+    "command.hatch_ops.factory.host_start": "managed",
+    "command.hatch_ops.factory.host_stop": "managed",
+    "command.hatch_ops.factory.host_restart": "managed",
+    "command.hatch_ops.factory.host_health": "managed",
+    "command.hatch_ops.factory.host_version": "managed",
+    "command.hatch_ops.factory.host_logs": "managed"
+  },
+  "sections": [
+    {
+      "name": "config",
+      "required": [
+        "schema",
+        "factory_id",
+        "control_plane_repo",
+        "dispatch.graph",
+        "pipeline.supervisor_tick",
+        "skills.supervisor",
+        "scenarios.root",
+        "runs_dir",
+        "trust.domain",
+        "trust.roles"
+      ],
+      "optional": [
+        "target_repo",
+        "dispatch.latency_slo_seconds",
+        "pipeline.maintenance_interval_seconds",
+        "backend.type",
+        "backend.store_root",
+        "conformance.entrypoint",
+        "conformance.fixtures",
+        "conformance.runs_dir",
+        "conformance.benchmark_telemetry_warn_only",
+        "conformance.benchmark_telemetry_exemptions",
+        "policyPack.version",
+        "policyPack.overrides",
+        "isolation.auth.github.tokenEnvVar",
+        "isolation.auth.github.repo",
+        "isolation.auth.github.factoryId",
+        "isolation.authStoragePath",
+        "isolation.model.envVar",
+        "isolation.model.value",
+        "isolation.provider.envVar",
+        "isolation.provider.value",
+        "isolation.paths.runs",
+        "isolation.paths.logs",
+        "isolation.paths.tmp",
+        "isolation.paths.cache",
+        "capabilities.goal_decomposition.timeouts.issue_draft",
+        "capabilities.goal_decomposition.timeouts.issue_repair",
+        "capabilities.goal_decomposition.timeouts.issue_judge",
+        "capabilities.goal_decomposition.timeouts.issue_revise",
+        "capabilities.goal_decomposition.timeouts.triage_plan",
+        "capabilities.goal_decomposition.timeouts.triage_repair"
+      ],
+      "managed_only": [
+        "managed",
+        "kind_id",
+        "instance_id",
+        "destinations",
+        "upstream_repo",
+        "work_dir",
+        "upstream_bug_labels",
+        "slack_webhook_url",
+        "canonical_checkout_path",
+        "schedules"
+      ],
+      "invariants": [
+        "must_declare_target_repo",
+        "dispatch_graph_and_pipeline_supervisor_tick_are_independent_slots",
+        "managed_true_requires_upstream_repo"
+      ],
+      "forbidden_legacy_keys": [
+        "repo",
+        "control_plane",
+        "goal_decomposition"
+      ]
+    },
+    {
+      "name": "graphs",
+      "required": [
+        "pipeline.supervisor_tick",
+        "graph_parse",
+        "graph_validate",
+        "dot_lint",
+        "recovery_ownership"
+      ],
+      "optional": [
+        "capability_subgraphs"
+      ],
+      "managed_only": [
+        "managed_release_orchestration_graphs",
+        "managed_daemon_routing"
+      ]
+    },
+    {
+      "name": "scenarios",
+      "required": [
+        "scenarios.root"
+      ],
+      "optional": [
+        "factory_defined_scenario_tree"
+      ],
+      "managed_only": [
+        "none"
+      ],
+      "invariants": [
+        "non_mothership_factories_must_not_use_astrochicken_leaf"
+      ]
+    },
+    {
+      "name": "policy_packs",
+      "required": [
+        "policy_pack_metadata_json_when_configured",
+        "policy_pack_required_keys",
+        "policy_pack_version_alignment"
+      ],
+      "optional": [
+        "policyPack.overrides_for_customizable_keys"
+      ],
+      "managed_only": [
+        "managed_release_escalation_stricter_thresholds"
+      ]
+    },
+    {
+      "name": "conformance",
+      "required": [
+        "config_schema",
+        "intent_stack",
+        "policy_pack_conformance",
+        "graph_validate",
+        "dot_lint",
+        "recovery_ownership",
+        "benchmark_telemetry",
+        "run_dir_isolation",
+        "skill_loading",
+        "scenario_root",
+        "supervisor_tick_smoke",
+        "ops_contract"
+      ],
+      "optional": [
+        "phase_subset_for_local_iteration"
+      ],
+      "managed_only": [
+        "release_gates_on_conformance_failures"
+      ]
+    },
+    {
+      "name": "runs",
+      "required": [
+        "factory_scoped_runs_dir",
+        "run_dir_isolation",
+        "supervisor_tick_smoke_artifacts"
+      ],
+      "optional": [
+        "conformance.runs_dir",
+        "isolation.paths.*"
+      ],
+      "managed_only": [
+        "daemon_health_markers",
+        "managed_tick_logs",
+        "managed_release_health_interpretation"
+      ]
+    },
+    {
+      "name": "managed_extensions",
+      "required": [
+        "standalone_contract_plus_managed_identity_and_routing"
+      ],
+      "optional": [
+        "managed_notifications_and_schedules"
+      ],
+      "managed_only": [
+        "kind_id",
+        "instance_id",
+        "destinations",
+        "upstream_repo",
+        "release_gating",
+        "daemon_contracts"
+      ]
+    }
+  ]
+}

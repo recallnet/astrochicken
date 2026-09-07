@@ -1,0 +1,66 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "example-scanner",
+  "factory_root": "factories/example-scanner",
+  "kind_id": "example-scanner",
+  "instance_id": "example-scanner",
+  "target_repo": "example-org/example-scanner",
+  "control_plane_repo": "recallnet/astrochicken",
+  "workspace_mode": "checkout",
+  "service_registry_path": "factory-registry.json",
+  "installation_manifest_path": ".hatch/hosts/example-scanner/installation.json",
+  "destinations": {
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": ["managed-factory-bug", "factory:example-scanner"]
+    }
+  },
+  "tracking_issue": 2409,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md"
+  },
+  "scenarios": {
+    "root": "packages/factory-runtime/scenarios/managed_software_delivery"
+  },
+  "pipeline": {
+    "supervisor_tick": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+  },
+  "runs_dir": ".hatch/example-scanner/runs",
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "work_dir": "/path/to/example-scanner",
+  "managed": true,
+  "upstream_repo": "recallnet/astrochicken",
+  "upstream_bug_labels": [
+    "managed-factory-bug",
+    "factory:example-scanner"
+  ],
+  "trust": {
+    "domain": "example-scanner.local",
+    "roles": [
+      "example-scanner.local.codergen",
+      "example-scanner.local.tool",
+      "example-scanner.local.agent.worktree",
+      "example-scanner.local.stack.manager_loop",
+      "example-scanner.local.pipeline",
+      "example-scanner.local.fan_out.dynamic",
+      "example-scanner.local.fan_in.dynamic"
+    ]
+  },
+  "trust_domain": "example-scanner.local",
+  "trust_roles": [
+    "example-scanner.local.codergen",
+    "example-scanner.local.tool",
+    "example-scanner.local.agent.worktree",
+    "example-scanner.local.stack.manager_loop",
+    "example-scanner.local.pipeline",
+    "example-scanner.local.fan_out.dynamic",
+    "example-scanner.local.fan_in.dynamic"
+  ],
+  "max_concurrent_waves": 1,
+  "max_goal_runs_per_tick": 1
+}

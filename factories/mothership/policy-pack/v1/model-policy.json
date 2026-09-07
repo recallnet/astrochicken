@@ -1,0 +1,32 @@
+{
+  "_policy": "model",
+  "_shared_note": "shared.* keys define cross-factory model selection and override behavior.",
+  "_factory_note": "factory.* keys allow local preference tuning while preserving shared env-var override contracts.",
+  "shared": {
+    "default_provider": "openrouter",
+    "default_model": "openai/gpt-5.3-codex",
+    "override_env_vars": {
+      "provider": "HATCH_MODEL_PROVIDER",
+      "model": "HATCH_MODEL"
+    }
+  },
+  "factory": {
+    "provider_order": [
+      "openrouter",
+      "openai-codex"
+    ],
+    "allowed_models": [
+      "*"
+    ],
+    "preferred_model": "openai/gpt-5.3-codex",
+    "benchmark_justification": {
+      "query_ids": [
+        "cross_factory_benchmark",
+        "model_comparison"
+      ],
+      "evidence_date": "",
+      "notes": "Placeholder — update with benchmark run date and scorecard evidence when policy is reviewed."
+    },
+    "safe_fallback_model": ""
+  }
+}

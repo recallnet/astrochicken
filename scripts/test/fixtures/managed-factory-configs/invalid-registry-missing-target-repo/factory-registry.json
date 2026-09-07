@@ -1,0 +1,10 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "instances": [
+    {
+      "instance_id": "fac_01VALID",
+      "kind_id": "brainstorm",
+      "status": "active"
+    }
+  ]
+}

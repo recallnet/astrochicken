@@ -1,0 +1,144 @@
+// Template: top-level supervisor graph for a Hatch factory.
+// Derived from:
+// - factories/mothership/graphs/factory_supervisor_tick.dot
+// - packages/capability-goal-decomposition/graphs/goal_queue.dot
+// - factories/mothership/graphs/wave_dispatch.dot
+// - hatch-ops command families
+
+ digraph factory_supervisor_tick_template {
+    label = "factory_supervisor_tick_template"
+    workdir = "."
+    // Set defaults here, then override per-node with {{model.*}} placeholders.
+    model_stylesheet = "\
+        * { llm_model: {{model.default}}; llm_provider: {{model.provider}}; }\
+    "
+
+    start [shape=Mdiamond]
+    done [shape=Msquare]
+
+    // Reference: factory_supervisor_tick.dot:set_gh_repo
+    set_factory_repo [type="tool" governance="reversible"
+                      label="Resolve factory repo"
+                      output_key="factory_repo"
+                      prompt="hatch-ops common run --op resolve-gh-repo --gh-repo '{{factory_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: state snapshot in factory_supervisor_tick.dot:snapshot_state_fast
+    snapshot_state [type="tool" governance="reversible"
+                    label="Snapshot factory state"
+                    output_key="state_snapshot"
+                    prompt="hatch-ops supervisor run --op state-snapshot --repo '${factory_repo}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: health-check in factory_supervisor_tick.dot:supervisor_health
+    health_check [type="tool" governance="irreversible"
+                  label="Run deterministic health check"
+                  output_key="health_result"
+                  prompt="hatch-ops supervisor run --op health-check --repo '{{target_repo}}' --run-id '${__run_id}' --pipeline 'factory_supervisor_tick_template'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Optional LLM interpretation layer for nuanced health triage.
+    health_triage [type="stack.manager_loop" governance="irreversible"
+                   label="Health triage"
+                   llm_model="{{model.health_check}}"
+                   llm_provider="{{model.provider}}"
+                   prompt="Use ${state_snapshot} and ${health_result} to classify this tick as healthy, degraded, or broken. Emit concrete actions only." trust_domain="factory.local" trust_role="factory.local.stack.manager_loop"]
+
+    // Reference: factory_supervisor_tick.dot:evaluate_open_bug_gate_fast
+    evaluate_open_bug_gate [type="tool" governance="reversible"
+                            label="Evaluate infra bug fast gate"
+                            output_format="json"
+                            outputs="has_open_bugs,open_bug_count,parse_error"
+                            prompt="hatch-ops supervisor run --op open-bug-gate --repo '{{infra_issue_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    bug_fast_gate [shape=diamond label="Open infra bugs?"]
+
+    // Reference: factory_supervisor_tick.dot:supervisor_review_bug_fast
+    fast_infra_bug_route [type="stack.manager_loop" governance="irreversible"
+                          label="Fast-route infra bug handling"
+                          llm_model="{{model.supervisor}}"
+                          llm_provider="{{model.provider}}"
+                          prompt="Process only infra bug action items from ${state_snapshot}. Use deterministic ops commands first, then summarize completed/deferred/escalated actions." trust_domain="factory.local" trust_role="factory.local.stack.manager_loop"]
+
+    // Reference: factory_supervisor_tick.dot:detect_stalled_wave
+    detect_blocked_waves [type="tool" governance="irreversible"
+                          label="Detect blocked or stalled waves"
+                          output_format="json"
+                          outputs="stalled_wave_count,stalled_wave_telemetry"
+                          prompt="hatch-ops supervisor run --op diagnose-stalled-waves --repo '{{target_repo}}' --stale-minutes '{{capacity_limits.stale_run_minutes}}' --runs-dir '{{state_storage_path}}/runs'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    blocked_gate [shape=diamond label="Blocked or stalled waves?"]
+
+    // Reference: goal_queue.dot:list_goals / factory_supervisor_tick.dot:list_ready_goals
+    list_ready_goals [type="tool" governance="reversible"
+                      label="List ready goals"
+                      output_key="ready_goals"
+                      prompt="hatch-ops goal run --op list-ready --repo '{{target_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    count_ready_goals [type="tool" governance="reversible"
+                       label="Count ready goals"
+                       output_key="ready_goal_count"
+                       prompt="hatch-ops common run --op count-json --raw '${ready_goals}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    goals_gate [shape=diamond label="Any ready goals?"]
+
+    // Reference: factory_supervisor_tick.dot:set_max_concurrent_waves
+    resolve_capacity [type="tool" governance="reversible"
+                      label="Resolve wave capacity"
+                      output_key="max_concurrent_waves"
+                      prompt="hatch-ops common run --op resolve-factory-config --key 'max_concurrent_waves' --fallback '{{capacity_limits.max_concurrent_waves}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: factory_supervisor_tick.dot:enumerate_wave_slots
+    enumerate_slots [type="tool" governance="reversible"
+                     label="Enumerate available wave slots"
+                     output_key="wave_slots"
+                     prompt="hatch-ops wave run --op enumerate-slots --max-concurrent '${max_concurrent_waves}' --ready-count '${ready_goal_count}' --in-flight-count '{{capacity_limits.in_flight_waves}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    capacity_gate [shape=diamond label="Capacity available?"]
+
+    // Reference graph composition: goal_queue.dot
+    run_goal_queue [type="pipeline"
+                    label="Run goal queue subgraph"
+                    pipeline="{{graphs.goal_queue}}"
+                    inherit_context="true"
+                    export_keys="goal_runs" trust_domain="factory.local" trust_role="factory.local.pipeline"]
+
+    // Reference graph composition: wave_dispatch.dot
+    dispatch_waves [type="pipeline"
+                    label="Run wave dispatch subgraph"
+                    pipeline="{{graphs.wave_dispatch}}"
+                    inherit_context="true"
+                    export_keys="dispatch_result" trust_domain="factory.local" trust_role="factory.local.pipeline"]
+
+    // Reference graph composition: goal_run.dot + wave_execute.dot + issue_execute_item.dot
+    execute_production_line [type="pipeline"
+                             label="Run production-line subgraph"
+                             pipeline="{{graphs.production_line}}"
+                             inherit_context="true"
+                             export_keys="production_line_result" trust_domain="factory.local" trust_role="factory.local.pipeline"]
+
+    // Reference: factory_supervisor_tick.dot:supervisor_review
+    supervisor_review [type="stack.manager_loop" governance="irreversible"
+                       label="Supervisor review and next actions"
+                       llm_model="{{model.supervisor}}"
+                       llm_provider="{{model.provider}}"
+                       prompt="Review ${state_snapshot}, ${health_result}, ${dispatch_result}, and ${production_line_result}. Emit deterministic action items for next tick." trust_domain="factory.local" trust_role="factory.local.stack.manager_loop"]
+
+    start -> set_factory_repo -> snapshot_state -> health_check -> health_triage -> evaluate_open_bug_gate -> bug_fast_gate
+
+    bug_fast_gate -> fast_infra_bug_route [condition="has_open_bugs=true"]
+    bug_fast_gate -> detect_blocked_waves [condition="has_open_bugs!=true"]
+
+    fast_infra_bug_route -> supervisor_review
+
+    detect_blocked_waves -> blocked_gate
+    blocked_gate -> supervisor_review [condition="stalled_wave_count>0"]
+    blocked_gate -> list_ready_goals [condition="stalled_wave_count=0"]
+
+    list_ready_goals -> count_ready_goals -> goals_gate
+    goals_gate -> supervisor_review [condition="ready_goal_count=0"]
+    goals_gate -> resolve_capacity [condition="ready_goal_count!=0"]
+
+    resolve_capacity -> enumerate_slots -> capacity_gate
+    capacity_gate -> supervisor_review [condition="wave_slots=[]"]
+    capacity_gate -> run_goal_queue [condition="wave_slots!=[]"]
+
+    run_goal_queue -> dispatch_waves -> execute_production_line -> supervisor_review -> done
+ }

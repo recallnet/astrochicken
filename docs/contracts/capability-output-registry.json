@@ -1,0 +1,329 @@
+{
+  "schema_version": "capability_output_registry/v1",
+  "summary": {
+    "registered_capabilities": 10,
+    "documented_events": 1,
+    "documented_artifacts": 13,
+    "documented_telemetry_expectations": 12,
+    "diagnostics": 0
+  },
+  "capabilities": [
+    {
+      "package_name": "@hatch/capability-artifact-ingestion",
+      "capability_id": "artifact_ingestion",
+      "source_path": "packages/capability-artifact-ingestion/capability-contract.mjs",
+      "output_path": "packages/capability-artifact-ingestion/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-brainstorming",
+      "capability_id": "brainstorming",
+      "source_path": "packages/capability-brainstorming/capability-contract.mjs",
+      "output_path": "packages/capability-brainstorming/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/brainstorm/brainstorm.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-coding",
+      "capability_id": "coding",
+      "source_path": "packages/capability-coding/capability-contract.mjs",
+      "output_path": "packages/capability-coding/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "review_evidence/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "reviewer_context/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "hatch.review_verdict",
+          "standard": "otel_event",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/issue_execute_item/issue_execute_item.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-foreman",
+      "capability_id": "foreman",
+      "source_path": "packages/capability-foreman/capability-contract.mjs",
+      "output_path": "packages/capability-foreman/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "foreman_cycle_artifact/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/host.ts",
+            "src/telemetry.ts"
+          ]
+        }
+      ],
+      "telemetry": []
+    },
+    {
+      "package_name": "@hatch/capability-goal-decomposition",
+      "capability_id": "goal_decomposition",
+      "source_path": "packages/capability-goal-decomposition/capability-contract.mjs",
+      "output_path": "packages/capability-goal-decomposition/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "goal_decomposition_packet/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/goal_run/goal_run.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "hard_plan_packet/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/goal_batch/goal_batch.workflow-source.mjs",
+            "workflows/goal_factory/goal_factory.workflow-source.mjs",
+            "workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+            "workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+            "workflows/goal_queue/goal_queue.workflow-source.mjs",
+            "workflows/goal_run/goal_run.workflow-source.mjs",
+            "workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+            "workflows/write_issues/write_issues.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "hatch.fallback_defect",
+          "standard": "otel_event",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-merge",
+      "capability_id": "merge",
+      "source_path": "packages/capability-merge/capability-contract.mjs",
+      "output_path": "packages/capability-merge/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "merge_conflict_packet/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/merge_item/merge_item.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "merge_report/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/merge_item/merge_item.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/merge_item/merge_item.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "hatch.merge_resolution_failure",
+          "standard": "otel_event",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/merge_item/merge_item.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-product-judge",
+      "capability_id": "product_judge",
+      "source_path": "packages/capability-product-judge/capability-contract.mjs",
+      "output_path": "packages/capability-product-judge/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "judge_context/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/product_judge/product_judge.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "judge_evidence/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/product_judge/product_judge.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "judge_recovery_packet/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/product_judge/product_judge.workflow-source.mjs"
+          ]
+        },
+        {
+          "ref": "judge_followup_bug_issue/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/product_judge/product_judge.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/product_judge/product_judge.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-release-reporting",
+      "capability_id": "release_reporting",
+      "source_path": "packages/capability-release-reporting/capability-contract.mjs",
+      "output_path": "packages/capability-release-reporting/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [
+        {
+          "ref": "release_report_bundle",
+          "standard": "oci_artifact_class",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-software-development",
+      "capability_id": "software_development",
+      "source_path": "packages/capability-software-development/capability-contract.mjs",
+      "output_path": "packages/capability-software-development/capability-contract.v1.json",
+      "events": [],
+      "artifacts": [],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/goal_execute/goal_execute.workflow-source.mjs",
+            "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+            "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+            "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+          ]
+        }
+      ]
+    },
+    {
+      "package_name": "@hatch/capability-wave-dispatch",
+      "capability_id": "wave_dispatch",
+      "source_path": "packages/capability-wave-dispatch/capability-contract.mjs",
+      "output_path": "packages/capability-wave-dispatch/capability-contract.v1.json",
+      "events": [
+        {
+          "ref": "https://recallnet.dev/contracts/cloudevents/wave-ready-lease.v1.json",
+          "standard": "cloudevents",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "ref": "judge_followup_bug_issue/v1",
+          "standard": "platform_contract_artifact",
+          "producer_paths": [
+            "src/in-process-action-owners.mjs",
+            "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+          ]
+        }
+      ],
+      "telemetry": [
+        {
+          "ref": "hatch.workflow.lifecycle",
+          "standard": "otel_runtime",
+          "producer_paths": [
+            "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+          ]
+        }
+      ]
+    }
+  ],
+  "diagnostics": []
+}

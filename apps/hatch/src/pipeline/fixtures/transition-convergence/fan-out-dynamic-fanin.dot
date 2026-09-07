@@ -1,0 +1,22 @@
+digraph fan_out_dynamic_fanin {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	fan [
+		type="fan_out.dynamic"
+		label="Fan Out Dynamic"
+		source_key="items"
+		item_key="item"
+		template="${fan_child_template}"
+		export_keys="alpha,zeta,index"
+		max_concurrency="2"
+		output_key="fan_results"
+	]
+	fanin [type="fan_in.dynamic" label="Fan In Dynamic" output_key="fanin_payload"]
+	done_success [shape=Msquare recovery_sink_type="terminal"]
+	done_fail [shape=Msquare recovery_sink_type="terminal"]
+
+	start -> fan
+	fan -> fanin [condition="outcome=success"]
+	fan -> done_fail [condition="outcome=fail"]
+	fanin -> done_success
+}

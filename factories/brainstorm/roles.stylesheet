@@ -1,0 +1,17 @@
+@import "../_shared/roles.stylesheet"
+
+.red_strategist {
+  llm_provider = "openrouter";
+  llm_model = "google/gemini-3.1-pro-preview";
+  trust_domain = "brainstorm.local";
+  trust_role = "brainstorm.local.codergen";
+  persona = "Contrarian product strategist. Finds gaps, challenges assumptions, and prioritizes ROI density over breadth.";
+}
+
+.blue_strategist {
+  llm_provider = "anthropic";
+  llm_model = "claude-opus-4-6";
+  trust_domain = "brainstorm.local";
+  trust_role = "brainstorm.local.codergen";
+  persona = "Systems-minded architect. Synthesizes critiques into scoped, actionable goals with measurable success criteria.";
+}

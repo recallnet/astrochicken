@@ -1,0 +1,27 @@
+node_modules
+node_modules/
+node_modules
+dist/
+.turbo/
+.hatch/
+.hatch-worktrees/
+.canonical-checkout
+*.hatch-checkpoint-*
+*.hatch-trace-*
+# Factory artifact leaks (should be under .hatch/<factory>/)
+.factory/
+/state.json
+/metadata.json
+/issues/
+.taxi/
+/issue_*_body.md
+/file.txt
+.hook-logs/
+coverage/
+*.lcov
+.tmp-managed-telemetry-*.log
+# Daily Lens artifacts — published to GitHub issues, local files are intermediates
+reports/
+# Agent worktree snapshots (temporary artifacts from coding agent runs)
+.claude/worktrees/
+.claude/scheduled_tasks.lock

@@ -1,0 +1,24 @@
+{
+  "_policy": "release",
+  "_shared_note": "shared.* keys define release-channel invariants for managed factories.",
+  "_factory_note": "factory.* keys are local rollout preferences and notification hooks.",
+  "shared": {
+    "default_channel": "stable",
+    "channels": {
+      "stable": {
+        "required_checks": ["build", "typecheck", "test:guard-gates", "test:wave-claim-gates"]
+      },
+      "canary": {
+        "required_checks": ["build", "typecheck"]
+      },
+      "pinned": {
+        "required_checks": ["build", "typecheck", "test:guard-gates", "test:wave-claim-gates"]
+      }
+    }
+  },
+  "factory": {
+    "preferred_channel": "stable",
+    "freeze_windows": [],
+    "post_merge_notifications": []
+  }
+}

@@ -1,0 +1,14 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  tick [
+    type="tool"
+    label="Tick"
+    governance="reversible"
+    output_key="tick_out"
+    prompt="printf 'ok'"
+  ]
+
+  start -> tick
+  tick -> done [condition="tick_out=ok"]
+}

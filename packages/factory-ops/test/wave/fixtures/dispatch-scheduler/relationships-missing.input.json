@@ -1,0 +1,7 @@
+{
+  "issues": [
+    { "number": 5, "factory_id": "mothership", "state": "OPEN", "labels": ["ready"] }
+  ],
+  "maxConcurrentGlobal": 1,
+  "maxConcurrentPerFactory": { "mothership": 1 }
+}

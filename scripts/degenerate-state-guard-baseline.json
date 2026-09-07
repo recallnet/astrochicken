@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "states": [
+    {
+      "id": "zero_commit_build",
+      "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "node": "builder",
+      "condition": "builder_output_empty_or_zero_commits",
+      "test_file": "scripts/check-degenerate-state-guards.unit.test.ts",
+      "test_pattern": "guard_zero_commit_build",
+      "expected_behavior": "fail_closed_no_force_approval"
+    },
+    {
+      "id": "empty_llm_json",
+      "graph": "factories/mothership/graphs/goal_run.dot",
+      "node": "reviewer",
+      "condition": "empty_or_malformed_json",
+      "test_file": "scripts/check-degenerate-state-guards.unit.test.ts",
+      "test_pattern": "guard_empty_llm_json",
+      "expected_behavior": "fallback_or_defect_not_silent_continue"
+    },
+    {
+      "id": "handler_failure_empty_output",
+      "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "node": "agent.worktree",
+      "condition": "worktree_failure_with_empty_builder_output",
+      "test_file": "scripts/check-degenerate-state-guards.unit.test.ts",
+      "test_pattern": "guard_handler_failure_empty_output",
+      "expected_behavior": "hard_fail_not_silent_continue"
+    }
+  ]
+}

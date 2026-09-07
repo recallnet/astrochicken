@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "milestone_execute",
+  "familyId": "goal_execution",
+  "sourcePath": "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+  "outputPath": "docs/contracts/mothership.milestone_execute.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+    "docs/contracts/workflow-ir/mothership/milestone_execute.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_execution",
+      "correlation_id": "workflow-ir-contract:milestone_execute",
+      "factory_id": "mothership",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "milestone_execute",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "milestone_execute"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_execution",
+        "correlation_id": "workflow-ir-contract:milestone_execute",
+        "factory_id": "mothership",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "milestone_execute",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "milestone_execute"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/mothership/milestone_execute.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+      "docs/contracts/workflow-ir/mothership/milestone_execute.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjptb3RoZXJzaGlwLW1pbGVzdG9uZV9leGVjdXRlIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogIm1pbGVzdG9uZV9leGVjdXRlIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogImZhY3Rvcmllcy9tb3RoZXJzaGlwL3dvcmtmbG93cy9nb2FsLWV4ZWN1dGlvbi9taWxlc3RvbmVfZXhlY3V0ZS53b3JrZmxvdy1zb3VyY2UubWpzIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJydW5fZGV0YWlscyI6IHsKICAgICAgImJ1aWxkZXIiOiB7CiAgICAgICAgImlkIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZGVycy93b3JrZmxvdy1pciIKICAgICAgfSwKICAgICAgIm1ldGFkYXRhIjogewogICAgICAgICJmaW5pc2hlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAxLjAwMFoiLAogICAgICAgICJpbnZvY2F0aW9uX2lkIjogIm1pbGVzdG9uZV9leGVjdXRlIiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "milestone_execute"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "milestone_execute",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:51635fe39b84e34b3042b0f1a6810978c597f0e98ac80c762c5a4dbfe27b3512",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs. Do not edit by hand.\n@import \"../../../../factories/mothership/roles.stylesheet\"\n\ndigraph milestone_execute {\n    label = \"milestone_execute\"\n    workflow_source = \"factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    accumulate [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"software.accumulate_milestone_result\" label=\"Accumulate milestone result\" output_format=\"json\" outputs=\"impl_results,completed_issues,processed_issues,last_review_failed,last_review_notes,last_issue_number,last_branch,branch,worktree_dir,last_review_evidence_path\" action_issue_number=\"${next_issue_number}\" action_completed=\"${completed_issues}\" action_impl_results=\"${impl_results}\" action_issue_title=\"${next_issue_title}\" action_item=\"${impl_result}\" action_processed=\"${processed_issues}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    accumulate_parallel [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"software.accumulate_milestone_batch\" label=\"Accumulate parallel batch results\" output_format=\"json\" outputs=\"impl_results,completed_issues,processed_issues,last_review_failed,last_review_notes,last_issue_number,last_branch,branch,worktree_dir,last_review_evidence_path\" action_impl_results=\"${impl_results}\" action_completed=\"${completed_issues}\" action_processed=\"${processed_issues}\" action_items=\"${parallel_impl_results}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    build_parallel_batch [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"ceremony.build_milestone_batch\" label=\"Build bounded low-complexity batch\" output_format=\"json\" outputs=\"batch_issues,batch_size,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason\" action_pipeline=\"milestone_execute\" action_issues_b64=\"${ordered_candidate_issues_b64}\" action_max_parallel=\"${max_parallel_low}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    classify_next_issue_complexity [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"ceremony.classify_milestone\" label=\"Classify milestone complexity route\" output_format=\"json\" outputs=\"complexity_class,run_parallel_batch,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason\" action_pipeline=\"milestone_execute\" action_complexity_class=\"${complexity_class}\" action_milestone_parallel_low_enabled=\"${milestone_parallel_low_enabled}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    collect_parallel_batch [type=\"fan_in.dynamic\" label=\"Collect parallel issue results\" output_key=\"parallel_impl_results\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.fan_in.dynamic\"]\n    complexity_batch_gate [shape=\"diamond\" label=\"Run low-complexity parallel batch?\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    estimate_next_issue_complexity [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"coding.estimate_issue_complexity\" label=\"Estimate next-issue complexity\" output_format=\"json\" outputs=\"complexity_class,complexity_signals,complexity_reason,complexity_otel_key\" action_issue_title=\"${next_issue_title}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    execute_issue [type=\"pipeline\" label=\"Execute issue in milestone branch\" pipeline=\"factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs\" export_keys=\"impl_result\" inherit_context=\"true\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.pipeline\"]\n    execute_parallel_batch [type=\"fan_out.dynamic\" label=\"Execute low-complexity parallel batch\" source_key=\"batch_issues\" item_key=\"parallel_issue\" template=\"factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs\" max_concurrency=\"3\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.fan_out.dynamic\"]\n    gate [shape=\"diamond\" label=\"Next issue?\"]\n    init_branch [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.empty_milestone_branch_context\" label=\"Init shared agent session for wave\" output_format=\"json\" outputs=\"branch,worktree_dir,agent_session_id,wave_sessions_dir\" action_milestone_title=\"${milestone_title}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    next_issue [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.pick_next_milestone_issue\" label=\"Pick next unblocked issue\" output_format=\"json\" outputs=\"has_next,next_issue_number,next_issue_title,remaining_count,blocked_count,no_next_reason,ordered_candidate_issues,ordered_candidate_issues_b64\" action_repo=\"${gh_repo}\" recovery_owner=\"supervisor\" action_milestone_title=\"${milestone_title}\" action_completed=\"${completed_issues}\" action_processed=\"${processed_issues}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    parallel_batch_gate [shape=\"diamond\" label=\"Parallel batch ready?\"]\n    postmortem [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"software.milestone_postmortem\" label=\"Post-mortem: analyze give-up and file bug if systemic\" output_key=\"__postmortem_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${last_issue_number}\" recovery_owner=\"supervisor\" action_branch=\"${last_branch}\" action_worktree_dir=\"${worktree_dir}\" action_review_evidence_path=\"${last_review_evidence_path}\" action_review_notes=\"${last_review_notes}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    postmortem_gate [shape=\"diamond\" label=\"Issue failed?\"]\n    resolve_max_parallel_low [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve max low-complexity parallel size\" output_key=\"max_parallel_low\" action_value=\"${max_parallel_low}\" action_fallback=\"3\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    resolve_parallel_low_enabled [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_boolean\" label=\"Resolve low-complexity parallel toggle\" output_key=\"milestone_parallel_low_enabled\" action_value=\"${milestone_parallel_low_enabled}\" action_fallback=\"false\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    seed_state [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.seed_milestone_state\" label=\"Seed completed/processed from canonical milestone runs\" output_format=\"json\" outputs=\"completed_issues,processed_issues\" action_repo=\"${gh_repo}\" action_milestone_title=\"${milestone_title}\" action_runs_dir=\"${runs_dir}\" trust_domain=\"mothership.local\" trust_role=\"mothership.local.tool\"]\n    start [shape=\"Mdiamond\"]\n    execute_issue -> accumulate -> postmortem_gate\n    next_issue -> gate\n    start -> seed_state -> init_branch -> resolve_parallel_low_enabled -> resolve_max_parallel_low -> next_issue\n    accumulate_parallel -> postmortem_gate\n    build_parallel_batch -> parallel_batch_gate\n    classify_next_issue_complexity -> complexity_batch_gate\n    collect_parallel_batch -> accumulate_parallel\n    complexity_batch_gate -> build_parallel_batch [condition=\"run_parallel_batch=true\"]\n    complexity_batch_gate -> execute_issue [condition=\"run_parallel_batch!=true\"]\n    estimate_next_issue_complexity -> classify_next_issue_complexity\n    execute_parallel_batch -> collect_parallel_batch\n    gate -> done [condition=\"has_next!=true\"]\n    gate -> estimate_next_issue_complexity [condition=\"has_next=true\"]\n    parallel_batch_gate -> execute_issue [condition=\"batch_size<=0\"]\n    parallel_batch_gate -> execute_parallel_batch [condition=\"batch_size>0\"]\n    postmortem_gate -> next_issue [condition=\"last_review_failed!=true\"]\n    postmortem_gate -> postmortem [condition=\"last_review_failed=true\"]\n    postmortem -> next_issue\n}"
+}

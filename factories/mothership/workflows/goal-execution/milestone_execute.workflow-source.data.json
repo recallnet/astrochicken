@@ -1,0 +1,612 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "milestone_execute",
+  "familyId": "goal_execution",
+  "title": "Milestone execute",
+  "description": "Typed source for the mothership milestone execution workflow.",
+  "sourcePath": "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/milestone_execute.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "milestone_execute",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "accumulate_parallel",
+        "runtimeNodeId": "accumulate_parallel"
+      },
+      {
+        "sourceNodeId": "accumulate",
+        "runtimeNodeId": "accumulate"
+      },
+      {
+        "sourceNodeId": "build_parallel_batch",
+        "runtimeNodeId": "build_parallel_batch"
+      },
+      {
+        "sourceNodeId": "classify_next_issue_complexity",
+        "runtimeNodeId": "classify_next_issue_complexity"
+      },
+      {
+        "sourceNodeId": "collect_parallel_batch",
+        "runtimeNodeId": "collect_parallel_batch"
+      },
+      {
+        "sourceNodeId": "complexity_batch_gate",
+        "runtimeNodeId": "complexity_batch_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "estimate_next_issue_complexity",
+        "runtimeNodeId": "estimate_next_issue_complexity"
+      },
+      {
+        "sourceNodeId": "execute_issue",
+        "runtimeNodeId": "execute_issue"
+      },
+      {
+        "sourceNodeId": "execute_parallel_batch",
+        "runtimeNodeId": "execute_parallel_batch"
+      },
+      {
+        "sourceNodeId": "gate",
+        "runtimeNodeId": "gate"
+      },
+      {
+        "sourceNodeId": "init_branch",
+        "runtimeNodeId": "init_branch"
+      },
+      {
+        "sourceNodeId": "next_issue",
+        "runtimeNodeId": "next_issue"
+      },
+      {
+        "sourceNodeId": "parallel_batch_gate",
+        "runtimeNodeId": "parallel_batch_gate"
+      },
+      {
+        "sourceNodeId": "postmortem_gate",
+        "runtimeNodeId": "postmortem_gate"
+      },
+      {
+        "sourceNodeId": "postmortem",
+        "runtimeNodeId": "postmortem"
+      },
+      {
+        "sourceNodeId": "resolve_max_parallel_low",
+        "runtimeNodeId": "resolve_max_parallel_low"
+      },
+      {
+        "sourceNodeId": "resolve_parallel_low_enabled",
+        "runtimeNodeId": "resolve_parallel_low_enabled"
+      },
+      {
+        "sourceNodeId": "seed_state",
+        "runtimeNodeId": "seed_state"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "accumulate",
+      "kind": "tool_action",
+      "title": "Accumulate milestone result",
+      "actionRuntime": "in_process",
+      "actionId": "software.accumulate_milestone_result",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_issue_number": "${next_issue_number}",
+        "action_completed": "${completed_issues}",
+        "action_impl_results": "${impl_results}",
+        "action_issue_title": "${next_issue_title}",
+        "action_item": "${impl_result}",
+        "action_processed": "${processed_issues}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "impl_results",
+          "completed_issues",
+          "processed_issues",
+          "last_review_failed",
+          "last_review_notes",
+          "last_issue_number",
+          "last_branch",
+          "branch",
+          "worktree_dir",
+          "last_review_evidence_path"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "accumulate_parallel",
+      "kind": "tool_action",
+      "title": "Accumulate parallel batch results",
+      "actionRuntime": "in_process",
+      "actionId": "software.accumulate_milestone_batch",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_impl_results": "${impl_results}",
+        "action_completed": "${completed_issues}",
+        "action_processed": "${processed_issues}",
+        "action_items": "${parallel_impl_results}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "impl_results",
+          "completed_issues",
+          "processed_issues",
+          "last_review_failed",
+          "last_review_notes",
+          "last_issue_number",
+          "last_branch",
+          "branch",
+          "worktree_dir",
+          "last_review_evidence_path"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_parallel_batch",
+      "kind": "tool_action",
+      "title": "Build bounded low-complexity batch",
+      "actionRuntime": "in_process",
+      "actionId": "ceremony.build_milestone_batch",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_issues_b64": "${ordered_candidate_issues_b64}",
+        "action_max_parallel": "${max_parallel_low}",
+        "action_pipeline": "milestone_execute",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "batch_issues",
+          "batch_size",
+          "reason",
+          "hatch_ceremony_pipeline",
+          "hatch_ceremony_skipped",
+          "hatch_ceremony_skip_reason",
+          "hatch_ceremony_reason"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "classify_next_issue_complexity",
+      "kind": "tool_action",
+      "title": "Classify milestone complexity route",
+      "actionRuntime": "in_process",
+      "actionId": "ceremony.classify_milestone",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_complexity_class": "${complexity_class}",
+        "action_milestone_parallel_low_enabled": "${milestone_parallel_low_enabled}",
+        "action_pipeline": "milestone_execute",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "complexity_class",
+          "run_parallel_batch",
+          "reason",
+          "hatch_ceremony_pipeline",
+          "hatch_ceremony_skipped",
+          "hatch_ceremony_skip_reason",
+          "hatch_ceremony_reason"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "collect_parallel_batch",
+      "kind": "dynamic_fan_in",
+      "title": "Collect parallel issue results",
+      "handlerType": "fan_in.dynamic",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.fan_in.dynamic"
+      },
+      "binding": {
+        "outputKey": "parallel_impl_results"
+      }
+    },
+    {
+      "id": "complexity_batch_gate",
+      "kind": "decision",
+      "title": "Run low-complexity parallel batch?"
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      }
+    },
+    {
+      "id": "estimate_next_issue_complexity",
+      "kind": "tool_action",
+      "title": "Estimate next-issue complexity",
+      "actionRuntime": "in_process",
+      "actionId": "coding.estimate_issue_complexity",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_issue_title": "${next_issue_title}",
+        "action_issue_body": "",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "complexity_class",
+          "complexity_signals",
+          "complexity_reason",
+          "complexity_otel_key"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "execute_issue",
+      "kind": "pipeline",
+      "title": "Execute issue in milestone branch",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "export_keys": "impl_result",
+        "inherit_context": "true",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.pipeline"
+      },
+      "composition": {
+        "workflowRef": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "execute_parallel_batch",
+      "kind": "dynamic_fan_out",
+      "title": "Execute low-complexity parallel batch",
+      "handlerType": "fan_out.dynamic",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.fan_out.dynamic"
+      },
+      "composition": {
+        "sourceKey": "batch_issues",
+        "itemKey": "parallel_issue",
+        "maxConcurrency": 3,
+        "templateWorkflowRef": "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "gate",
+      "kind": "decision",
+      "title": "Next issue?"
+    },
+    {
+      "id": "init_branch",
+      "kind": "tool_action",
+      "title": "Init shared agent session for wave",
+      "actionRuntime": "in_process",
+      "actionId": "software.empty_milestone_branch_context",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "branch",
+          "worktree_dir",
+          "agent_session_id",
+          "wave_sessions_dir"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "next_issue",
+      "kind": "tool_action",
+      "title": "Pick next unblocked issue",
+      "actionRuntime": "in_process",
+      "actionId": "software.pick_next_milestone_issue",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_milestone_title": "${milestone_title}",
+        "action_completed": "${completed_issues}",
+        "action_processed": "${processed_issues}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_next",
+          "next_issue_number",
+          "next_issue_title",
+          "remaining_count",
+          "blocked_count",
+          "no_next_reason",
+          "ordered_candidate_issues",
+          "ordered_candidate_issues_b64"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "parallel_batch_gate",
+      "kind": "decision",
+      "title": "Parallel batch ready?"
+    },
+    {
+      "id": "postmortem",
+      "kind": "tool_action",
+      "title": "Post-mortem: analyze give-up and file bug if systemic",
+      "actionRuntime": "in_process",
+      "actionId": "software.milestone_postmortem",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_issue_number": "${last_issue_number}",
+        "action_branch": "${last_branch}",
+        "action_worktree_dir": "${worktree_dir}",
+        "action_review_evidence_path": "${last_review_evidence_path}",
+        "action_review_notes": "${last_review_notes}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__postmortem_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "postmortem_gate",
+      "kind": "decision",
+      "title": "Issue failed?"
+    },
+    {
+      "id": "resolve_max_parallel_low",
+      "kind": "tool_action",
+      "title": "Resolve max low-complexity parallel size",
+      "actionRuntime": "in_process",
+      "actionId": "common.resolve_default",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_value": "${max_parallel_low}",
+        "action_fallback": "3",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "max_parallel_low"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "resolve_parallel_low_enabled",
+      "kind": "tool_action",
+      "title": "Resolve low-complexity parallel toggle",
+      "actionRuntime": "in_process",
+      "actionId": "common.resolve_boolean",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_value": "${milestone_parallel_low_enabled}",
+        "action_fallback": "false",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "milestone_parallel_low_enabled"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "seed_state",
+      "kind": "tool_action",
+      "title": "Seed completed/processed from canonical milestone runs",
+      "actionRuntime": "in_process",
+      "actionId": "software.seed_milestone_state",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_milestone_title": "${milestone_title}",
+        "action_runs_dir": "${runs_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "completed_issues",
+          "processed_issues"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start"
+    }
+  ],
+  "edges": [
+    {
+      "from": "accumulate_parallel",
+      "to": "postmortem_gate"
+    },
+    {
+      "from": "accumulate",
+      "to": "postmortem_gate"
+    },
+    {
+      "from": "build_parallel_batch",
+      "to": "parallel_batch_gate"
+    },
+    {
+      "from": "classify_next_issue_complexity",
+      "to": "complexity_batch_gate"
+    },
+    {
+      "from": "collect_parallel_batch",
+      "to": "accumulate_parallel"
+    },
+    {
+      "from": "complexity_batch_gate",
+      "to": "build_parallel_batch",
+      "condition": "run_parallel_batch=true"
+    },
+    {
+      "from": "complexity_batch_gate",
+      "to": "execute_issue",
+      "condition": "run_parallel_batch!=true"
+    },
+    {
+      "from": "estimate_next_issue_complexity",
+      "to": "classify_next_issue_complexity"
+    },
+    {
+      "from": "execute_issue",
+      "to": "accumulate"
+    },
+    {
+      "from": "execute_parallel_batch",
+      "to": "collect_parallel_batch"
+    },
+    {
+      "from": "gate",
+      "to": "done",
+      "condition": "has_next!=true"
+    },
+    {
+      "from": "gate",
+      "to": "estimate_next_issue_complexity",
+      "condition": "has_next=true"
+    },
+    {
+      "from": "init_branch",
+      "to": "resolve_parallel_low_enabled"
+    },
+    {
+      "from": "next_issue",
+      "to": "gate"
+    },
+    {
+      "from": "parallel_batch_gate",
+      "to": "execute_issue",
+      "condition": "batch_size<=0"
+    },
+    {
+      "from": "parallel_batch_gate",
+      "to": "execute_parallel_batch",
+      "condition": "batch_size>0"
+    },
+    {
+      "from": "postmortem_gate",
+      "to": "next_issue",
+      "condition": "last_review_failed!=true"
+    },
+    {
+      "from": "postmortem_gate",
+      "to": "postmortem",
+      "condition": "last_review_failed=true"
+    },
+    {
+      "from": "postmortem",
+      "to": "next_issue"
+    },
+    {
+      "from": "resolve_max_parallel_low",
+      "to": "next_issue"
+    },
+    {
+      "from": "resolve_parallel_low_enabled",
+      "to": "resolve_max_parallel_low"
+    },
+    {
+      "from": "seed_state",
+      "to": "init_branch"
+    },
+    {
+      "from": "start",
+      "to": "seed_state"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "factory_id": "mothership",
+  "repo": "recallnet/astrochicken",
+  "generated_at": "2026-03-09T20:48:00.000Z",
+  "since_iso": "2026-03-08T20:48:00.000Z",
+  "goals": [
+    {
+      "number": 1488,
+      "title": "Fleet visibility & operator status",
+      "url": "https://github.com/recallnet/astrochicken/issues/1488",
+      "closed_at": "2026-03-09T20:30:00.000Z"
+    },
+    {
+      "number": 1517,
+      "title": "Release report context assembly",
+      "url": "https://github.com/recallnet/astrochicken/issues/1517",
+      "closed_at": "2026-03-09T20:41:00.000Z"
+    }
+  ],
+  "issues": [],
+  "prs": [],
+  "metrics": {
+    "goals_closed": 2,
+    "issues_closed": 7,
+    "commits_landed": 12
+  },
+  "timing": {
+    "avg_wave_minutes": 38
+  },
+  "diff_stats": {
+    "text": "+892 -214"
+  },
+  "errors": []
+}

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "wave_dispatch",
+  "familyId": "wave_dispatch",
+  "sourcePath": "packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+  "outputPath": "docs/contracts/capability-wave-dispatch.wave_dispatch.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+    "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "wave_dispatch",
+      "correlation_id": "workflow-ir-contract:wave_dispatch",
+      "factory_id": "capability-wave-dispatch",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "wave_dispatch",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "wave_dispatch"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "wave_dispatch",
+        "correlation_id": "workflow-ir-contract:wave_dispatch",
+        "factory_id": "capability-wave-dispatch",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "wave_dispatch",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "wave_dispatch"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot",
+      "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LXdhdmUtZGlzcGF0Y2gtd2F2ZV9kaXNwYXRjaCIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJ3YXZlX2Rpc3BhdGNoIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktd2F2ZS1kaXNwYXRjaC93b3JrZmxvd3Mvd2F2ZV9kaXNwYXRjaC93YXZlX2Rpc3BhdGNoLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAid2F2ZV9kaXNwYXRjaCIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "wave_dispatch"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "wave_dispatch",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:036a00ec2413c171681e9d26cd8d9c74b458fc19537a606344b22dc972fae4bf",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs. Do not edit by hand.\ndigraph wave_dispatch {\n    label = \"wave_dispatch\"\n    workflow_source = \"packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    acquire_dispatch_lease [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"factory.acquire_lease\" label=\"Acquire distributed dispatch lease\" output_format=\"json\" outputs=\"lease_acquired,lease_reason,lease_tracking_issue_number,lease_factory_id,lease_name,lease_run_id,lease_holder_id,lease_expires_at,lease_version,lease_comment_id,lease_comment_etag\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_lease_name=\"wave_dispatch\" action_lease_seconds=\"${factory_lease_seconds}\" action_tracking_issue=\"${tracking_issue_number}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    create_ready [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"wave.create_ready_markers\" label=\"Create ready issues\" output_key=\"__create_ready_result\" action_repo=\"${gh_repo}\" action_selected_waves=\"${selected_waves}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    decide [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"wave.dispatch_select\" label=\"Select waves\" output_format=\"json\" outputs=\"selected_waves,selected_count,in_flight_count,ready_count,priorities_text,control_plane_blocked_items,control_plane_blocked_waves\" action_repo=\"${gh_repo}\" action_max_concurrent=\"${max_concurrent_waves}\" action_milestones_b64=\"${milestones_b64}\" action_priorities_issue_b64=\"${priorities_issue_b64}\" action_ready_issues_b64=\"${ready_issues_b64}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    ensure_labels [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"labels.ensure_factory\" label=\"Ensure wave labels\" output_key=\"__ensure_wave_labels_result\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_keys=\"ready,wave_in_progress,priorities,quarantined,blocked_control_plane\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    gate [shape=\"diamond\" label=\"Select any?\"]\n    lease_gate [shape=\"diamond\" label=\"Lease acquired?\"]\n    list_milestones [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"wave.list_milestones_b64\" label=\"List open wave milestones\" output_key=\"milestones_b64\" action_repo=\"${gh_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    list_priorities [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"wave.list_priorities_b64\" label=\"Find priorities issue\" output_key=\"priorities_issue_b64\" action_repo=\"${gh_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    list_ready_issues [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"wave.list_ready_issues_b64\" label=\"List ready wave markers\" output_key=\"ready_issues_b64\" action_repo=\"${gh_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    release_dispatch_lease [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"factory.release_lease\" label=\"Release distributed dispatch lease\" output_format=\"json\" outputs=\"lease_released,lease_release_reason\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_holder_id=\"${lease_holder_id}\" action_lease_name=\"wave_dispatch\" action_reason=\"wave_dispatch_terminal\" action_tracking_issue=\"${lease_tracking_issue_number}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    sanitize_state [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"wave.sanitize_state\" label=\"Normalize wave-ready state\" output_key=\"__sanitize_state_result\" action_repo=\"${gh_repo}\" action_run_id=\"${__run_id}\" action_pipeline=\"wave_dispatch\" action_apply=\"true\" action_stale_run_minutes=\"${stale_run_minutes}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_factory_id [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve factory id\" output_key=\"factory_id\" action_fallback=\"factory_supervisor\" action_value=\"${factory_id}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_factory_lease_seconds [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve distributed lease seconds\" output_key=\"factory_lease_seconds\" action_fallback=\"600\" action_value=\"${factory_lease_seconds}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_gh_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_gh_repo\" label=\"Resolve GitHub repo\" output_key=\"gh_repo\" action_gh_repo=\"${gh_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_stale_run_minutes [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve stale lease threshold\" output_key=\"stale_run_minutes\" action_fallback=\"20\" action_value=\"${stalled_wave_minutes}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_tracking_issue [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"factory.resolve_tracking_issue\" label=\"Resolve factory tracking issue\" output_key=\"tracking_issue_number\" action_repo=\"${gh_repo}\" action_factory_root=\"${factory_root}\" action_tracking_issue=\"${factory_tracking_issue_number}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    start [shape=\"Mdiamond\"]\n    release_dispatch_lease -> done\n    start -> set_gh_repo -> set_factory_id -> set_tracking_issue -> set_factory_lease_seconds -> acquire_dispatch_lease -> lease_gate\n    create_ready -> release_dispatch_lease\n    decide -> gate\n    ensure_labels -> set_stale_run_minutes\n    gate -> create_ready [condition=\"selected_waves!=[]\"]\n    gate -> release_dispatch_lease [condition=\"selected_waves=[]\"]\n    lease_gate -> done [condition=\"lease_acquired!=true\"]\n    lease_gate -> ensure_labels [condition=\"lease_acquired=true\"]\n    list_milestones -> list_ready_issues\n    list_priorities -> decide\n    list_ready_issues -> list_priorities\n    sanitize_state -> list_milestones\n    set_stale_run_minutes -> sanitize_state\n}"
+}

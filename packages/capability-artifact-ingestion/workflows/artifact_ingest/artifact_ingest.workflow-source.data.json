@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "artifact_ingest",
+  "familyId": "artifact_ingestion",
+  "title": "Artifact Ingest",
+  "description": "Typed workflow source owner for packages/capability-artifact-ingestion/graphs/artifact_ingest.dot.",
+  "sourcePath": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "artifact_ingest",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "artifact_ingest",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "ingest",
+        "runtimeNodeId": "ingest"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_dry",
+        "runtimeNodeId": "set_dry"
+      },
+      {
+        "sourceNodeId": "set_max",
+        "runtimeNodeId": "set_max"
+      },
+      {
+        "sourceNodeId": "set_source_repos",
+        "runtimeNodeId": "set_source_repos"
+      },
+      {
+        "sourceNodeId": "set_trusted_factory_ids",
+        "runtimeNodeId": "set_trusted_factory_ids"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "ingest",
+      "kind": "tool_action",
+      "title": "Ingest artifact issues",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "artifact.ingest",
+        "label": "Ingest artifact issues",
+        "output_key": "artifact_ingest_result",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_dry_run": "${dry_run}",
+        "action_max": "${max_artifacts}",
+        "action_source_repos": "${source_repos}",
+        "action_trusted_factory_ids": "${trusted_factory_ids}",
+        "action_trusted_source_repos": "${source_repos}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve control-plane repo",
+        "output_key": "control_plane_repo",
+        "action_fallback": "recallnet/astrochicken",
+        "action_value": "${control_plane_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_dry",
+      "kind": "tool_action",
+      "title": "Resolve dry-run",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_boolean",
+        "label": "Resolve dry-run",
+        "output_key": "dry_run",
+        "action_fallback": "false",
+        "action_value": "${dry_run}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_max",
+      "kind": "tool_action",
+      "title": "Resolve max artifacts",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve max artifacts",
+        "output_key": "max_artifacts",
+        "action_fallback": "20",
+        "action_value": "${max_artifacts}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_source_repos",
+      "kind": "tool_action",
+      "title": "Resolve source repos",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve source repos",
+        "output_key": "source_repos",
+        "action_fallback": "${control_plane_repo}",
+        "action_value": "${source_repos}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_trusted_factory_ids",
+      "kind": "tool_action",
+      "title": "Resolve trusted factory ids",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve trusted factory ids",
+        "output_key": "trusted_factory_ids",
+        "action_value": "${trusted_factory_ids}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_source_repos"
+    },
+    {
+      "from": "set_source_repos",
+      "to": "set_max"
+    },
+    {
+      "from": "set_max",
+      "to": "set_trusted_factory_ids"
+    },
+    {
+      "from": "set_trusted_factory_ids",
+      "to": "set_dry"
+    },
+    {
+      "from": "set_dry",
+      "to": "ingest"
+    },
+    {
+      "from": "ingest",
+      "to": "done"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+	"extends": "@hatch/tsconfig/node.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "dist",
+		"rootDir": "src",
+		"paths": {
+			"@recallnet/factory-telemetry": ["../../packages/factory-telemetry/dist/index.d.ts"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

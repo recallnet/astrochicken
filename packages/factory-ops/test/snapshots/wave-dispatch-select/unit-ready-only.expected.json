@@ -1,0 +1,41 @@
+{
+  "selected_waves": [],
+  "selected_count": 0,
+  "in_flight_count": 0,
+  "ready_count": 1,
+  "priorities_text": "",
+  "max_concurrent": 1,
+  "candidate_waves": [],
+  "evaluations": [
+    {
+      "milestone": "goal-1-wave-1",
+      "status": "skipped",
+      "skip_reason": "already_ready"
+    },
+    {
+      "milestone": "goal-1-wave-2",
+      "status": "skipped",
+      "skip_reason": "prior_wave_open",
+      "prior_wave": "goal-1-wave-1"
+    }
+  ],
+  "milestone_issues": [
+    {
+      "milestone": "goal-1-wave-2",
+      "issues": [
+        {
+          "number": 201,
+          "title": "Add feature"
+        }
+      ]
+    }
+  ],
+  "blocked_by": [
+    {
+      "issue_number": 201,
+      "blocked_by": []
+    }
+  ],
+  "control_plane_blocked_items": [],
+  "control_plane_blocked_waves": []
+}

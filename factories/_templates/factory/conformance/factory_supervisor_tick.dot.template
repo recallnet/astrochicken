@@ -1,0 +1,10 @@
+digraph factory_supervisor_tick_conformance {
+  start [shape=Mdiamond label="Start conformance smoke"]
+  done [shape=Msquare recovery_sink_type="terminal" label="Done"]
+
+  // This graph must remain deterministic and token-free.
+  // It exists only to prove that a newly scaffolded factory can emit a real run
+  // and that operator surfaces can observe it through hatch-ops.
+
+  start -> done
+}

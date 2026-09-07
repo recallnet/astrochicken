@@ -1,0 +1,38 @@
+{
+  "artifact_classes": [
+    {
+      "key": "release_report_bundle",
+      "publisherPaths": [
+        "packages/factory-ops/src/commands/release-emit-narrative-document.ts"
+      ],
+      "sourcePath": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts"
+    }
+  ],
+  "diagnostics": [],
+  "downstream_consumers_attach_without_execution_plane_changes": true,
+  "governance_mode": "downstream_only",
+  "run_classes": [
+    {
+      "cloudEventSurfaceId": "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
+      "key": "hatch_run_lifecycle",
+      "producerPaths": [
+        "apps/hatch/src/pipeline/run-lifecycle.ts"
+      ],
+      "sourcePath": "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts"
+    },
+    {
+      "cloudEventSurfaceId": "https://recallnet.dev/contracts/cloudevents/release-rollout.v1.json",
+      "key": "release_rollout",
+      "producerPaths": [
+        "packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"
+      ],
+      "sourcePath": "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts"
+    }
+  ],
+  "schema_version": "openlineage_registry/v1",
+  "summary": {
+    "diagnostics": 0,
+    "supported_artifact_classes": 1,
+    "supported_run_classes": 2
+  }
+}

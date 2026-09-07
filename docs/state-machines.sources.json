@@ -1,0 +1,60 @@
+{
+  "machines": [
+    {
+      "name": "Goal Lifecycle",
+      "status": "implemented",
+      "graphs": [
+        "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+        "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+      ]
+    },
+    {
+      "name": "Goal Execution Lifecycle",
+      "status": "implemented",
+      "graphs": [
+        "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+        "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs"
+      ]
+    },
+    {
+      "name": "Issue Execution",
+      "status": "implemented",
+      "graphs": [
+        "packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
+        "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs"
+      ]
+    },
+    {
+      "name": "Merge / Judge Path",
+      "status": "partial",
+      "graphs": [
+        "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+        "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+        "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs"
+      ]
+    },
+    {
+      "name": "Artifact Bus",
+      "status": "partial",
+      "graphs": [
+        "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+      ]
+    },
+    {
+      "name": "Governance",
+      "status": "partial",
+      "graphs": [
+        "apps/hatch/src/pipeline/validate.ts",
+        "apps/hatch/src/pipeline/governance.ts"
+      ]
+    },
+    {
+      "name": "Scheduled Jobs (Daily Lens)",
+      "status": "implemented",
+      "graphs": [
+        "packages/factory-ops/src/lib/daemon-schedules.ts",
+        "packages/factory-ops/src/lib/daemon-scheduled-jobs.ts"
+      ]
+    }
+  ]
+}

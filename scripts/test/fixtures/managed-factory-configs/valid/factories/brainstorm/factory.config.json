@@ -1,0 +1,5 @@
+{
+  "factory_id": "brainstorm",
+  "target_repo": "example-org/brainstorm-lab",
+  "control_plane_repo": "recallnet/astrochicken"
+}

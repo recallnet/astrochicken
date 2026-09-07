@@ -1,0 +1,183 @@
+{
+  "capabilityId": "goal_decomposition",
+  "description": "Goal analysis and issue-writing graphs plus skill bundle.",
+  "entrypoints": [
+    {
+      "description": "",
+      "id": "goal_batch",
+      "kind": "graph",
+      "path": "workflows/goal_batch/goal_batch.workflow-source.mjs",
+      "title": "Goal batch graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_factory",
+      "kind": "graph",
+      "path": "workflows/goal_factory/goal_factory.workflow-source.mjs",
+      "title": "Goal factory graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_intake_decompose",
+      "kind": "graph",
+      "path": "workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "title": "Goal intake decompose graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_queue",
+      "kind": "graph",
+      "path": "workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "title": "Goal queue graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_run",
+      "kind": "graph",
+      "path": "workflows/goal_run/goal_run.workflow-source.mjs",
+      "title": "Goal run graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_hard_plan",
+      "kind": "graph",
+      "path": "workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+      "title": "Goal hard plan graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "write_issue_item",
+      "kind": "graph",
+      "path": "workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "title": "Write issue item graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "write_issues",
+      "kind": "graph",
+      "path": "workflows/write_issues/write_issues.workflow-source.mjs",
+      "title": "Write issues graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-goal-decomposition/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Persists the canonical decomposition packet used for downstream execution handoff.",
+        "id": "goal_decomposition_packet",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/goal_run/goal_run.workflow-source.mjs"
+        ],
+        "ref": "goal_decomposition_packet/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Goal decomposition packet artifact"
+      },
+      {
+        "description": "Persists and validates the canonical hard-plan packet during planning flows.",
+        "id": "hard_plan_packet",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs"
+        ],
+        "ref": "hard_plan_packet/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Hard planning packet artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Goal decomposition entrypoints emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/goal_batch/goal_batch.workflow-source.mjs",
+          "workflows/goal_factory/goal_factory.workflow-source.mjs",
+          "workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs",
+          "workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+          "workflows/goal_queue/goal_queue.workflow-source.mjs",
+          "workflows/goal_run/goal_run.workflow-source.mjs",
+          "workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+          "workflows/write_issues/write_issues.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      },
+      {
+        "description": "Emits the canonical fallback defect telemetry signal when decomposition normalization fails closed.",
+        "id": "fallback_defect_signal",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"
+        ],
+        "ref": "hatch.fallback_defect",
+        "standard": "otel_event",
+        "title": "Fallback defect telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-goal-decomposition",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "approved_features",
+    "capability_goal_decomposition_skills",
+    "factory_root",
+    "feature",
+    "gh_repo",
+    "goal_context",
+    "goal_issue",
+    "intent_stack",
+    "issue_number",
+    "review_notes",
+    "scenarios_root",
+    "skip_review_single_goal",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "fan_in.dynamic",
+    "fan_out.dynamic",
+    "pipeline",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".goal_batch_reviewer",
+    ".goal_decomposer",
+    ".issue_quality_judge",
+    ".issue_writer"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [
+    "skills/goal_analyzer/current.md",
+    "skills/goal_analyzer/interface.json",
+    "skills/issue_writer/current.md",
+    "skills/issue_writer/interface.json"
+  ],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "goal_decomposition_packet/v1",
+        "hard_plan_packet/v1",
+        "hatch.fallback_defect"
+      ]
+    }
+  ],
+  "sourcePath": "packages/capability-goal-decomposition/capability-contract.mjs",
+  "title": "Goal Decomposition Capability",
+  "version": "0.1.0"
+}

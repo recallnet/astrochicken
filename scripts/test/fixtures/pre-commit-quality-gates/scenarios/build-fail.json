@@ -1,0 +1,7 @@
+{
+  "stagedPaths": ["apps/hatch/src/cli.ts"],
+  "buildExit": 17,
+  "typecheckExit": 0,
+  "expectedStatus": 17,
+  "expectedNpmCalls": ["build"]
+}

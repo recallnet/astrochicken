@@ -1,0 +1,9 @@
+// Simplest possible pipeline — no LLM needed
+digraph simple {
+    start [shape=Mdiamond]
+    echo [type="tool" label="Echo" governance="reversible" output_key="echo_output" prompt="echo 'Hello from Hatch!'"]
+    verify [type="tool" label="Verify Echo Output" governance="reversible" output_key="__verify_result" prompt="printf '%s\\n' '${echo_output}'"]
+    done [shape=Msquare]
+
+    start -> echo -> verify -> done
+}

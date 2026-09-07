@@ -1,0 +1,27 @@
+digraph fan_out_child_template {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	emit_exports [
+		type="tool"
+		label="Emit Child Exports"
+		outputs="alpha,zeta"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="echo \"{\\\"alpha\\\":\\\"a${__fan_out_index}\\\",\\\"zeta\\\":\\\"z${__fan_out_index}\\\"}\""
+	]
+	emit_index [
+		type="tool"
+		label="Emit Child Index"
+		output_key="index"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="echo ${__fan_out_index}"
+	]
+	done [shape=Msquare]
+
+	start -> emit_exports
+	emit_exports -> emit_index [condition="outcome=success"]
+	emit_index -> done [condition="outcome=success"]
+}

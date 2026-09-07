@@ -1,0 +1,626 @@
+{
+  "schema_version": "otel_taxonomy_report/v1",
+  "summary": {
+    "required_correlation_attributes": 5,
+    "allowed_attribute_keys": 53,
+    "governed_emitter_files": 8,
+    "governed_emitters": 27,
+    "direct_bypass_files": 0,
+    "diagnostics": 0
+  },
+  "contract": {
+    "schema_version": "otel_taxonomy_contract/v1",
+    "required_correlation_attributes": [
+      "factory_id",
+      "run_id",
+      "workflow_id",
+      "capability_id",
+      "owner"
+    ],
+    "naming": {
+      "event_name_pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_]*)+$",
+      "span_name_pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_]*)+$",
+      "metric_name_pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_]*)+$",
+      "attribute_key_pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+    },
+    "allowed_attribute_keys": [
+      "artifact_type",
+      "bug_count",
+      "bug_type",
+      "capability_id",
+      "classification",
+      "control_gate",
+      "control_plane_repo",
+      "dedup_decision",
+      "event_type",
+      "factory_id",
+      "failure_classification",
+      "fallback_node",
+      "fixed_count",
+      "health_state",
+      "host_id",
+      "incident_classification",
+      "incident_crash_type",
+      "incident_fingerprint",
+      "incident_host_id",
+      "incident_instance_id",
+      "incident_kind_id",
+      "incident_severity",
+      "installation_id",
+      "instance_id",
+      "issue_number",
+      "issue_state",
+      "judge.error",
+      "judge.fail_forward",
+      "judge.fallback",
+      "judge.original_disposition",
+      "kind_id",
+      "kind_version",
+      "lifecycle_state",
+      "orphan_count",
+      "owner",
+      "pipeline",
+      "policy_profile",
+      "repo",
+      "run_id",
+      "runtime_version",
+      "schema",
+      "severity",
+      "signature_hash",
+      "source_factory",
+      "source_repo",
+      "status",
+      "suggested_action",
+      "summary",
+      "trace_id",
+      "target_repo",
+      "tick_id",
+      "trigger_reason",
+      "workflow_id"
+    ]
+  },
+  "governed_emitter_inventory": [
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 108,
+      "event_name": "hatch.workflow.start",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 129,
+      "event_name": "hatch.workflow.finish",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 150,
+      "event_name": "hatch.workflow.error",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 171,
+      "event_name": "hatch.workflow.warning",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 192,
+      "event_name": "hatch.workflow.context_update",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 213,
+      "event_name": "hatch.workflow.quality_signal",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 234,
+      "event_name": "hatch.workflow.parallel_fan_out",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+      "line": 255,
+      "event_name": "hatch.workflow.parallel_fan_in",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 98,
+      "event_name": "hatch.reactor.guard_decision",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trace_id",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 125,
+      "event_name": "hatch.reactor.guard_transition",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trace_id",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 152,
+      "event_name": "hatch.reactor.guard_reset",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trace_id",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 196,
+      "event_name": "hatch.reactor.run_start",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 226,
+      "event_name": "hatch.reactor.complete",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 256,
+      "event_name": "hatch.reactor.fail",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 286,
+      "event_name": "hatch.reactor.node_change",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 316,
+      "event_name": "hatch.reactor.merge",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+      "line": 346,
+      "event_name": "hatch.reactor.artifact",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "pipeline",
+        "status",
+        "summary",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/commands/goal-fallback-defect.ts",
+      "line": 236,
+      "event_name": "hatch.fallback_defect",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "classification",
+        "fallback_node",
+        "pipeline",
+        "schema",
+        "severity",
+        "suggested_action",
+        "trigger_reason"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/commands/supervisor-detect-orphan-features.ts",
+      "line": 291,
+      "event_name": "factory.supervisor.fix_orphan_features",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "bug_count",
+        "fixed_count",
+        "orphan_count",
+        "pipeline",
+        "source_repo"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/commands/supervisor-managed-emit-run-summary.ts",
+      "line": 18,
+      "event_name": "factory.managed_supervisor.run_summary",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "control_gate",
+        "control_plane_repo",
+        "failure_classification",
+        "health_state",
+        "instance_id",
+        "kind_id",
+        "lifecycle_state",
+        "target_repo"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/commands/wave-judge-fallback.ts",
+      "line": 23,
+      "event_name": "wave.judge.fail_forward",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "judge.fail_forward",
+        "judge.original_disposition"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/commands/wave-judge-fallback.ts",
+      "line": 48,
+      "event_name": "wave.judge.fallback",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "judge.error",
+        "judge.fallback"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
+      "line": 98,
+      "event_name": "factory.supervisor.incident_dedup",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "bug_type",
+        "dedup_decision",
+        "incident_fingerprint",
+        "issue_number",
+        "issue_state",
+        "pipeline",
+        "repo",
+        "source_factory",
+        "source_repo"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
+      "line": 166,
+      "event_name": "factory.supervisor.telemetry",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "artifact_type",
+        "classification",
+        "pipeline",
+        "signature_hash",
+        "source_repo",
+        "summary"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
+      "line": 729,
+      "event_name": "factory.supervisor.bug",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "bug_type",
+        "incident_classification",
+        "incident_crash_type",
+        "incident_fingerprint",
+        "incident_host_id",
+        "incident_instance_id",
+        "incident_kind_id",
+        "incident_severity",
+        "pipeline",
+        "signature_hash",
+        "source_factory",
+        "source_repo",
+        "summary"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/lib/managed-factory-lifecycle-telemetry.ts",
+      "line": 256,
+      "event_name": "factory.lifecycle.tick",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "host_id",
+        "incident_fingerprint",
+        "installation_id",
+        "instance_id",
+        "kind_id",
+        "kind_version",
+        "policy_profile",
+        "runtime_version",
+        "status",
+        "tick_id"
+      ]
+    },
+    {
+      "file": "packages/factory-ops/src/lib/managed-factory-lifecycle-telemetry.ts",
+      "line": 283,
+      "event_name": "factory.lifecycle.sleep",
+      "correlation_keys": [
+        "capability_id",
+        "factory_id",
+        "owner",
+        "run_id",
+        "workflow_id"
+      ],
+      "attribute_keys": [
+        "event_type",
+        "host_id",
+        "incident_fingerprint",
+        "installation_id",
+        "instance_id",
+        "kind_id",
+        "kind_version",
+        "policy_profile",
+        "runtime_version",
+        "status",
+        "tick_id"
+      ]
+    }
+  ],
+  "direct_bypass_files": [],
+  "diagnostics": []
+}

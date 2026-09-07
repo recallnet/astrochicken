@@ -1,0 +1,74 @@
+{
+  "capabilityId": "brainstorming",
+  "description": "Multi-agent red/blue deliberation graph and skill bundle.",
+  "entrypoints": [
+    {
+      "description": "Runs red/blue brainstorming over backlog and scenario inputs.",
+      "id": "brainstorm",
+      "kind": "graph",
+      "path": "workflows/brainstorm/brainstorm.workflow-source.mjs",
+      "title": "Brainstorm graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-brainstorming/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Brainstorming runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/brainstorm/brainstorm.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-brainstorming",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "brainstorm_issue_body",
+    "brainstorm_issue_number",
+    "capability_brainstorming_skills",
+    "factory_root",
+    "gh_repo",
+    "intent_stack",
+    "open_backlog_summary",
+    "repo",
+    "scenario_holdouts",
+    "shipped_goals_since_last",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "agent.kw",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".blue_strategist",
+    ".red_strategist"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [
+    "skills/blue_strategist/SKILL.md",
+    "skills/red_strategist/SKILL.md"
+  ],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-brainstorming/capability-contract.mjs",
+  "title": "Brainstorming Capability",
+  "version": "0.1.0"
+}

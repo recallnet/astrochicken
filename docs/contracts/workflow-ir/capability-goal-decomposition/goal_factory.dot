@@ -1,0 +1,11 @@
+// Generated from packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs. Do not edit by hand.
+digraph goal_factory {
+    label = "goal_factory"
+    workflow_source = "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs"
+    close_goal [type="tool" governance="irreversible" label="Close goal issue" output_key="__close_goal_result" prompt="gh issue close ${issue_number} --repo ${gh_repo} --reason completed" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    intake_decompose [type="pipeline" label="Intake and decompose goal" export_keys="goal_context,approved_features,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated" inherit_context="true" pipeline="@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs" trust_domain="${trust_domain}" trust_role="${trust_role}.pipeline"]
+    issues [type="pipeline" label="Write issues" export_keys="issue_urls" inherit_context="true" pipeline="@hatch/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs" trust_domain="${trust_domain}" trust_role="${trust_role}.pipeline"]
+    start [shape="Mdiamond"]
+    start -> intake_decompose -> issues -> close_goal -> done
+}

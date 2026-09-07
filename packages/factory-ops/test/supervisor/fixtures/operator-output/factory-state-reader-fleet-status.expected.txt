@@ -1,0 +1,4 @@
+Fleet status generated_at=2026-03-10T18:00:00.000Z
+Fleet totals total=2 healthy=1 disabled=0 blocked=0 upgrading=0 idle=0 unhealthy=1 active_waves=1 active_issues=1 drift_ready=1 drift_blocked=1 drift_lagging=0 drift_unknown=0
+alpha repo=acme/alpha health=healthy release=ready drift=ready channel=stable runtime=v1.0.0 kind=brainstorm active=1w/1i outcomes=merged_prs=1 closed_features=2 closed_bugs=0 merge_commits_main=3
+beta repo=acme/beta health=unhealthy release=blocked drift=blocked channel=stable runtime=v1.0.0 kind=brainstorm active=0w/0i outcomes=merged_prs=1 closed_features=2 closed_bugs=0 merge_commits_main=3 why=manual quarantine

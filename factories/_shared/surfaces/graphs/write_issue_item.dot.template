@@ -1,0 +1,150 @@
+// write_issue_item.dot
+// Child pipeline for write_issues.dot
+// Creates a single GitHub issue from a feature brief using deterministic GitHub mutation helpers.
+
+@import "../roles.stylesheet"
+
+digraph write_issue_item {
+    label = "write_issue_item"
+    workdir = "."
+    typed_action_transport_mode = "enforced"
+    start [shape=Mdiamond]
+    done [shape=Msquare recovery_sink_type="terminal"]
+
+    load_intent_stack [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_intent_stack"
+                       label="Load intent stack"
+                       output_key="intent_stack"
+                       action_factory_root="factories/{{factory_id}}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    draft_issue_spec [class="issue_writer"
+                      benchmark_job_id="goal.write_issue.write"
+                      prompt_version="2026-03-09.r1"
+                      role_version="1.0.0"
+                      skill_id="goal.write_issue"
+                      label="Draft issue spec"
+                      {{write_issue_extra_attrs}}
+                      output_key="issue_spec_raw"
+                      timeout="30m"
+                      output_format="json"
+                      prompt="Use read to load {{issue_writer_skill_path}} and follow its guidance on issue structure.\n\nYou are drafting a single implementation issue spec for GitHub.\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nReviewer notes (if any):\n${review_notes}\n\nDownstream execution constraints:\n- This issue will be executed by one coding agent and reviewed by one semantic reviewer on a shared wave branch.\n- The issue must be implementable as a single implementation issue, not a coordination umbrella or a meta-task.\n- The reviewer will judge whether the implementation satisfies the issue and remains aligned to the parent goal.\n- The issue body must give the builder enough context to start immediately without first rediscovering the codebase.\n- Include specific file paths, functions, tests, and boundaries whenever goal_context supports them.\n- Acceptance criteria must be concrete, observable, and scoped to what this one issue can complete.\n\nBefore drafting, sanity-check the feature itself:\n- If the feature mainly describes scaffolding, fallback continuity, decomposition support, or meta-work instead of a real shipped increment, do not simply polish it into a nicer issue.\n- Rewrite the issue so it directly ships one meaningful slice of the parent goal's promised product surface.\n- If the feature is too broad or mixes multiple deliverables, pick one strong slice that can stand alone while remaining materially aligned to the goal.\n- Use the platform and factory intent to prefer real shipped value over factory ceremony or preparatory work.\n- The finished issue should still make sense if someone later asks: 'If this issue ships cleanly, what real part of the goal is now done?'\n\nReturn JSON only with issue_title, issue_body, and issue_labels.\nDo not call gh directly."]
+
+    fallback_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.fallback_issue_spec_bundle"
+                         label="Fallback issue spec"
+                         outputs="issue_spec,issue_spec_b64"
+                         action_issue_spec="${issue_spec_raw}"
+                         action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    normalize_feature_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.normalize_feature_issue_spec_bundle"
+                                  label="Normalize feature issue spec"
+                                  outputs="issue_spec,issue_spec_b64"
+                                  action_issue_spec_b64="${issue_spec_b64}"
+                                  action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    validate_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.validate_issue_spec_draft"
+                         label="Validate issue spec"
+                         output_format="json"
+                         outputs="ok,error,retry_prompt,issue_spec,issue_spec_b64"
+                         action_issue_spec="${issue_spec_raw}"
+                         action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    issue_spec_gate [shape=diamond label="Issue spec valid?"]
+
+    repair_issue_spec [class="issue_writer"
+                       benchmark_job_id="goal.write_issue.repair"
+                       prompt_version="2026-03-12.r1"
+                       role_version="1.0.0"
+                       skill_id="goal.write_issue"
+                       recovery_owner="supervisor"
+                       label="Repair issue spec"
+                       {{write_issue_extra_attrs}}
+                       output_key="issue_spec_raw"
+                       timeout="30m"
+                       output_format="json"
+                       prompt="Your previous issue spec failed deterministic validation.\n\nOriginal issue spec JSON:\n${issue_spec_raw}\n\nRepair instructions:\n${retry_prompt}\n\nReturn JSON only with issue_title, issue_body, and issue_labels."]
+
+    validate_repaired_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.validate_issue_spec_draft"
+                                  label="Validate repaired issue spec"
+                                  output_format="json"
+                                  outputs="ok,error,retry_prompt,issue_spec,issue_spec_b64"
+                                  action_issue_spec="${issue_spec_raw}"
+                                  action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    repaired_issue_spec_gate [shape=diamond label="Repaired issue spec valid?"]
+
+    create_issue [type="tool" governance="irreversible" recovery_owner="supervisor" action_runtime="in_process" action_id="common.create_issue"
+                  label="Create issue"
+                  outputs="ok,issue_url,created_issue_number,status,stderr"
+                  action_repo="${gh_repo}"
+                  action_issue_spec_b64="${issue_spec_b64}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    link_sub_issue [type="tool" governance="irreversible" recovery_owner="supervisor" action_runtime="in_process" action_id="goal.add_sub_issue"
+                    label="Link sub-issue to goal"
+                    output_key="sub_issue_link_result"
+                    action_repo="${gh_repo}"
+                    action_parent="${issue_number}"
+                    action_child="${created_issue_number}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    judge_issue [class="issue_quality_judge"
+                 benchmark_job_id="goal.write_issue.judge"
+                 prompt_version="2026-03-09.r1"
+                 role_version="1.0.0"
+                 skill_id="goal.write_issue.judge"
+                 label="Judge issue quality"
+                 llm_model="openai/gpt-5.1-codex-mini"
+                 output_format="json"
+                 outputs="pass,decision,review_notes"
+                 reasoning_effort="low"
+                 timeout="30m"
+                 prompt="You are the issue quality judge for ${gh_repo}.\n\nJudge whether the created issue is aligned to the parent goal, grounded in current code reality, and executable as a single implementation issue on a shared wave branch.\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nCreated issue spec JSON:\n${issue_spec}\n\nCreated issue URL:\n${issue_url}\n\nUse read to load the issue content if needed. Evaluate:\n- Is the issue small enough for one builder-reviewer loop, but substantial enough to ship a real increment?\n- Does it depend on unstated exploration to discover basic files, boundaries, or intended behavior?\n- Do acceptance criteria describe what done looks like for this issue alone?\n- Does it stay aligned to the parent goal and avoid creating hidden follow-up work?\n\nReturn JSON with:\n{\n  \"pass\": true,\n  \"decision\": \"approved|revise\",\n  \"review_notes\": \"Actionable feedback. Empty when approved.\"\n}\n\nRules:\n- If pass=true, decision must be 'approved' and review_notes should be empty or a short confirmation.\n- If pass=false, decision must be 'revise' and review_notes must explain exactly what to change.\n- Keep review_notes concrete: cite missing files, boundaries, acceptance criteria, or scope problems.\n\nReturn JSON only."]
+
+    normalize_decision [type="tool" governance="reversible" action_runtime="in_process" action_id="common.normalize_decision"
+                        recovery_owner="supervisor"
+                        label="Normalize decision"
+                        output_key="decision"
+                        action_value="${decision}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    decide [shape=diamond label="Decision?"]
+
+    revise_issue_spec [class="issue_writer"
+                       benchmark_job_id="goal.write_issue.revise"
+                       prompt_version="2026-03-09.r1"
+                       role_version="1.0.0"
+                       skill_id="goal.write_issue"
+                       label="Revise issue spec"
+                       {{revise_issue_extra_attrs}}
+                       output_key="revised_issue_spec_raw"
+                       timeout="30m"
+                       output_format="json"
+                       prompt="Use read to load {{issue_writer_skill_path}} and follow its guidance on issue structure.\n\nYou are revising an existing GitHub issue spec based on judge feedback.\n\nIntent stack JSON:\n${intent_stack}\n\nGoal issue JSON:\n${goal_issue}\n\nGoal context JSON:\n${goal_context}\n\nFeature JSON:\n${feature}\n\nCurrent issue URL:\n${issue_url}\n\nReview notes to address:\n${review_notes}\n\nRead the current issue content, then revise the issue spec to address the review notes.\nKeep the revised issue executable on a shared wave branch by one builder-reviewer loop.\nPreserve alignment to the parent goal, include specific file paths, functions, tests, and boundaries when supported by goal_context, and tighten any vague or over-broad acceptance criteria.\n\nDo not preserve weak framing just because it came from the input feature. If the current issue still reads like scaffolding, continuity work, or meta-work instead of a real shipped increment, rewrite it toward one meaningful slice of the parent goal while staying faithful to platform and factory intent.\n\nReturn JSON only with issue_title, issue_body, and issue_labels.\nDo not call gh directly."]
+
+    fallback_revised_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.fallback_issue_spec_bundle"
+                                 label="Fallback revised issue spec"
+                                 outputs="issue_spec,issue_spec_b64"
+                                 action_issue_spec="${revised_issue_spec_raw}"
+                                 action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    normalize_revised_feature_issue_spec [type="tool" governance="reversible" action_runtime="in_process" action_id="common.normalize_feature_issue_spec_bundle"
+                                          label="Normalize revised issue spec"
+                                          outputs="issue_spec,issue_spec_b64"
+                                          action_issue_spec_b64="${issue_spec_b64}"
+                                          action_feature="${feature}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    update_issue [type="tool" governance="irreversible" recovery_owner="supervisor" action_runtime="in_process" action_id="common.update_issue"
+                  label="Update issue"
+                  outputs="ok,issue_url,status,stderr"
+                  action_repo="${gh_repo}"
+                  action_issue_url="${issue_url}"
+                  action_issue_spec_b64="${issue_spec_b64}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    start -> load_intent_stack -> draft_issue_spec -> fallback_issue_spec -> normalize_feature_issue_spec -> validate_issue_spec -> issue_spec_gate
+    issue_spec_gate -> create_issue [condition="ok=true" label="valid"]
+    issue_spec_gate -> repair_issue_spec [condition="ok!=true" label="repair"]
+    repair_issue_spec -> validate_repaired_issue_spec -> repaired_issue_spec_gate
+    repaired_issue_spec_gate -> create_issue [condition="ok=true" label="valid"]
+    repaired_issue_spec_gate -> done [condition="ok!=true" label="fail_closed"]
+    create_issue -> link_sub_issue -> judge_issue -> normalize_decision -> decide
+    decide -> done [condition="decision=approved"]
+    decide -> revise_issue_spec [condition="decision=revise" label="revise"]
+    decide -> revise_issue_spec [condition="decision!=approved && decision!=revise" label="fallback"]
+    revise_issue_spec -> fallback_revised_issue_spec -> normalize_revised_feature_issue_spec -> update_issue -> done
+}

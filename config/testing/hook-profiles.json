@@ -1,0 +1,17 @@
+{
+  "schema": "hatch.hook-profiles.v1",
+  "profiles": {
+    "fast": {
+      "description": "Targeted local pre-commit proof profile.",
+      "suite_selectors": []
+    },
+    "strict": {
+      "description": "Targeted pre-push proof profile.",
+      "suite_selectors": []
+    },
+    "full": {
+      "description": "Whole-repo pre-merge proof profile.",
+      "suite_selectors": []
+    }
+  }
+}

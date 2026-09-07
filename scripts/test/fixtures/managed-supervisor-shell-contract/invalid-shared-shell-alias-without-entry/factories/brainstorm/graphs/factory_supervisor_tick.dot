@@ -1,0 +1,7 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond label="Start"];
+  run_shared_shell_alias [type="pipeline" label="Call shell alias only" pipeline="packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs"];
+  done [shape=Msquare label="Done"];
+
+  start -> run_shared_shell_alias -> done;
+}

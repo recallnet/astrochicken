@@ -1,0 +1,92 @@
+[
+  {
+    "name": "valid-default",
+    "policyPath": "docs/docs-policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": true,
+    "expectedDiagnostics": []
+  },
+  {
+    "name": "unknown-key",
+    "policyPath": "scripts/test/fixtures/docs-policy/unknown-key.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "schema.unknown_key",
+        "path": "docs_policy/v1.unexpected",
+        "message": "Unknown key 'unexpected' at docs_policy/v1."
+      }
+    ]
+  },
+  {
+    "name": "type-mismatch",
+    "policyPath": "scripts/test/fixtures/docs-policy/type-mismatch.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "schema.type_mismatch",
+        "path": "docs_policy/v1.migration_debt.max_legacy_in_scope_allowlist_entries",
+        "message": "docs_policy/v1.migration_debt.max_legacy_in_scope_allowlist_entries must be an integer."
+      }
+    ]
+  },
+  {
+    "name": "duplicate-owner",
+    "policyPath": "scripts/test/fixtures/docs-policy/duplicate-owner.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "ownership.duplicate_owner_id",
+        "path": "docs_policy/v1.ownership.owners",
+        "message": "Duplicate value 'docs-stewards' at docs_policy/v1.ownership.owners."
+      }
+    ]
+  },
+  {
+    "name": "conflicting-roots",
+    "policyPath": "scripts/test/fixtures/docs-policy/conflicting-roots.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "ownership.conflicting_root_paths",
+        "path": "docs_policy/v1.ownership.canonical_roots",
+        "message": "Ownership roots conflict: 'docs/' and 'docs/state/' overlap."
+      }
+    ]
+  },
+  {
+    "name": "non-canonical-order",
+    "policyPath": "scripts/test/fixtures/docs-policy/non-canonical-order.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "ordering.non_canonical",
+        "path": "docs_policy/v1.in_scope_paths",
+        "message": "docs_policy/v1.in_scope_paths must be lexicographically sorted."
+      }
+    ]
+  },
+  {
+    "name": "multi-diagnostic-order",
+    "policyPath": "scripts/test/fixtures/docs-policy/multi-diagnostic.policy.json",
+    "schemaPath": "docs/docs-policy.schema.json",
+    "expectedOk": false,
+    "expectedDiagnostics": [
+      {
+        "code": "ordering.non_canonical",
+        "path": "docs_policy/v1.in_scope_paths",
+        "message": "docs_policy/v1.in_scope_paths must be lexicographically sorted."
+      },
+      {
+        "code": "schema.unknown_key",
+        "path": "docs_policy/v1.unexpected",
+        "message": "Unknown key 'unexpected' at docs_policy/v1."
+      }
+    ]
+  }
+]

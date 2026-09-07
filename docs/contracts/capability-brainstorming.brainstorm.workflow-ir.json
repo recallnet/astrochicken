@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "brainstorm",
+  "familyId": "brainstorming",
+  "sourcePath": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+  "outputPath": "docs/contracts/capability-brainstorming.brainstorm.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+    "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "brainstorming",
+      "correlation_id": "workflow-ir-contract:brainstorm",
+      "factory_id": "capability-brainstorming",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "brainstorm",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "brainstorm"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "brainstorming",
+        "correlation_id": "workflow-ir-contract:brainstorm",
+        "factory_id": "capability-brainstorming",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "brainstorm",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "brainstorm"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+      "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWJyYWluc3Rvcm1pbmctYnJhaW5zdG9ybSIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJicmFpbnN0b3JtIgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktYnJhaW5zdG9ybWluZy93b3JrZmxvd3MvYnJhaW5zdG9ybS9icmFpbnN0b3JtLndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAiYnJhaW5zdG9ybSIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "brainstorm"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "brainstorm",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:777700be527decbd39f79ac81b6fc7873308b2077f7b0c4da564ec5ecd14bb48",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs. Do not edit by hand.\ndigraph brainstorm {\n    label = \"brainstorm\"\n    workflow_source = \"packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs\"\n    workdir = \".\"\n    blue [type=\"agent.kw\" governance=\"reversible\" class=\"blue_strategist\" benchmark_job_id=\"brainstorm.blue\" prompt_version=\"2026-03-17.r1\" role_version=\"2.0.0\" skill_id=\"brainstorm.blue\" llm_model=\"anthropic/claude-opus-4.6\" label=\"Blue strategist\" output_key=\"blue_output\" prompt=\"Load and follow the blue strategist skill:\\n- ${capability_brainstorming_skills}/blue_strategist/SKILL.md\\n\\nIntent stack JSON:\\n${intent_stack}\\n\\nBrainstorm issue #${brainstorm_issue_number} body:\\n${brainstorm_issue_body}\\n\\nSeed prompt (${seed_prompt_source}):\\n${seed_prompt}\\n\\nShipped goals delta:\\n${shipped_goals_delta}\\n\\nScenario holdouts delta:\\n${scenario_holdouts_delta}\\n\\nIntent stack changed since last brainstorm:\\n${intent_stack_changed}\\n\\nOpen backlog summary:\\n${open_backlog_summary}\\n\\nCurrent round:\\n${round}\\n\\nLatest red output:\\n${red_output}\" llm_provider=\"openrouter\" session_id=\"blue_strategist\"]\n    blue_early_exit_gate [shape=\"diamond\" label=\"Blue early exit: empty-blue guard triggered?\"]\n    blue_gate [shape=\"diamond\" label=\"Blue produced final report?\"]\n    bump_round [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.bump_round\" label=\"Bump round counter\" output_format=\"json\" outputs=\"round,has_next,at_limit\" action_max_rounds=\"10\" action_round=\"${round}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    check_blue [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.check_output\" label=\"Check blue output for final report\" output_format=\"json\" outputs=\"is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output\" action_agent_output=\"${blue_output}\" action_source=\"blue\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    check_red [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.check_output\" label=\"Check red output for final report\" output_format=\"json\" outputs=\"is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output\" action_agent_output=\"${red_output}\" action_source=\"red\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    check_repair [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.check_output\" label=\"Check repair output for final report\" output_format=\"json\" outputs=\"is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output\" action_agent_output=\"${blue_output}\" action_source=\"format_repair\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    check_wrap [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.check_output\" label=\"Check force-wrap output for final report\" output_format=\"json\" outputs=\"is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output\" action_agent_output=\"${blue_output}\" action_source=\"force_wrap\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    close_issue [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"brainstorm.close_issue\" label=\"Close brainstorm issue\" output_key=\"__brainstorm_close_result\" action_repo=\"${target_repo}\" action_factory_id=\"${factory_id}\" action_brainstorm_issue_number=\"${brainstorm_issue_number}\" action_next_cursor=\"${next_cursor}\" action_root_dir=\"${repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    force_wrap [type=\"agent.kw\" governance=\"reversible\" class=\"blue_strategist\" benchmark_job_id=\"brainstorm.force_wrap\" prompt_version=\"2026-03-17.r1\" role_version=\"2.0.0\" skill_id=\"brainstorm.force_wrap\" llm_model=\"anthropic/claude-opus-4.6\" label=\"Force wrap: request final report\" output_key=\"blue_output\" prompt=\"This is the final round of the brainstorm. You must now produce the final report.\\n\\nSynthesize everything discussed into the final report JSON. Output ONLY the JSON object, nothing else:\\n\\n{\\n  \\\"proposal\\\": \\\"concise goal direction (1-3 sentences)\\\",\\n  \\\"success_criteria\\\": [\\\"testable criterion 1\\\", \\\"...\\\"],\\n  \\\"scope_in\\\": [\\\"specific deliverable included\\\", \\\"...\\\"],\\n  \\\"scope_out\\\": [\\\"specific item excluded\\\", \\\"...\\\"]\\n}\\n\\nUse the full conversation history to produce the strongest possible goal. Do not add commentary — output only valid JSON.\\n\\nLatest red output:\\n${red_output}\\n\\nLatest blue output:\\n${blue_output}\\n\\nSeed prompt (${seed_prompt_source}):\\n${seed_prompt}\" llm_provider=\"openrouter\" session_id=\"blue_strategist\"]\n    format_repair [type=\"agent.kw\" governance=\"reversible\" class=\"blue_strategist\" benchmark_job_id=\"brainstorm.format_repair\" prompt_version=\"2026-03-17.r1\" role_version=\"2.0.0\" skill_id=\"brainstorm.format_repair\" llm_model=\"anthropic/claude-opus-4.6\" label=\"Format repair: fix report format\" output_key=\"blue_output\" prompt=\"Your previous output was not valid JSON in the required format. Output ONLY this exact JSON structure, nothing else — no markdown fences, no explanation, no preamble:\\n\\n{\\n  \\\"proposal\\\": \\\"concise goal direction (1-3 sentences)\\\",\\n  \\\"success_criteria\\\": [\\\"testable criterion 1\\\", \\\"...\\\"],\\n  \\\"scope_in\\\": [\\\"specific deliverable included\\\", \\\"...\\\"],\\n  \\\"scope_out\\\": [\\\"specific item excluded\\\", \\\"...\\\"]\\n}\\n\\nFill in the fields based on the brainstorm conversation. Every field is required. success_criteria, scope_in, and scope_out must each have at least one entry.\\n\\nYour previous (invalid) output was:\\n${blue_output}\\n\\nSeed prompt:\\n${seed_prompt}\" llm_provider=\"openrouter\" session_id=\"blue_strategist\"]\n    init_round [type=\"tool\" governance=\"reversible\" label=\"Init round counter\" output_key=\"round\" prompt=\"echo 0\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    load_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.load_context\" label=\"Load brainstorm context\" output_format=\"json\" outputs=\"seed_prompt,seed_prompt_source,shipped_goals_delta,scenario_holdouts_delta,intent_stack_changed,open_backlog_summary,cursor_path,next_cursor,next_cursor_b64\" action_factory_id=\"${factory_id}\" action_brainstorm_issue_body=\"${brainstorm_issue_body}\" action_brainstorm_issue_number=\"${brainstorm_issue_number}\" action_intent_stack=\"${intent_stack}\" action_open_backlog_summary=\"${open_backlog_summary}\" action_root_dir=\"${repo}\" action_scenario_holdouts=\"${scenario_holdouts}\" action_shipped_goals_since_last=\"${shipped_goals_since_last}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    loop_guard_blue [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.loop_guard\" label=\"Loop guard: detect repeated empty blue turns\" output_format=\"json\" outputs=\"empty_blue_count,trigger_force_wrap,suppress_round_comment,guard_reason\" action_source=\"blue\" action_conversational_output=\"${conversational_output}\" action_previous_empty_blue_count=\"${empty_blue_count}\" action_should_force_wrap=\"${should_force_wrap}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    post_blue_comment [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.post_turn_comment\" label=\"Post blue turn comment to issue\" output_key=\"__blue_comment_result\" action_repo=\"${target_repo}\" action_issue_number=\"${brainstorm_issue_number}\" action_run_id=\"${run_id}\" action_agent_output=\"${blue_output}\" action_is_final=\"${is_final}\" action_langfuse_project_url=\"${LANGFUSE_PROJECT_URL}\" action_round=\"${round}\" action_source=\"blue\" action_suppress_round_comment=\"${suppress_round_comment}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    post_red_comment [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.post_turn_comment\" label=\"Post red turn comment to issue\" output_key=\"__red_comment_result\" action_repo=\"${target_repo}\" action_issue_number=\"${brainstorm_issue_number}\" action_run_id=\"${run_id}\" action_agent_output=\"${red_output}\" action_is_final=\"${is_final}\" action_langfuse_project_url=\"${LANGFUSE_PROJECT_URL}\" action_round=\"${round}\" action_source=\"red\" action_suppress_round_comment=\"${suppress_round_comment}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    post_repair_comment [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.post_turn_comment\" label=\"Post repair comment to issue\" output_key=\"__repair_comment_result\" action_repo=\"${target_repo}\" action_issue_number=\"${brainstorm_issue_number}\" action_run_id=\"${run_id}\" action_agent_output=\"${blue_output}\" action_is_final=\"${is_final}\" action_langfuse_project_url=\"${LANGFUSE_PROJECT_URL}\" action_round=\"${round}\" action_source=\"format_repair\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    post_wrap_comment [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"brainstorm.post_turn_comment\" label=\"Post force-wrap comment to issue\" output_key=\"__wrap_comment_result\" action_repo=\"${target_repo}\" action_issue_number=\"${brainstorm_issue_number}\" action_run_id=\"${run_id}\" action_agent_output=\"${blue_output}\" action_is_final=\"${is_final}\" action_langfuse_project_url=\"${LANGFUSE_PROJECT_URL}\" action_round=\"${round}\" action_source=\"force_wrap\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    red [type=\"agent.kw\" governance=\"reversible\" class=\"red_strategist\" benchmark_job_id=\"brainstorm.red\" prompt_version=\"2026-03-17.r1\" role_version=\"2.0.0\" skill_id=\"brainstorm.red\" llm_model=\"anthropic/claude-sonnet-4.6\" label=\"Red strategist\" output_key=\"red_output\" prompt=\"Load and follow the red strategist skill:\\n- ${capability_brainstorming_skills}/red_strategist/SKILL.md\\n\\nIntent stack JSON:\\n${intent_stack}\\n\\nBrainstorm issue #${brainstorm_issue_number} body:\\n${brainstorm_issue_body}\\n\\nSeed prompt (${seed_prompt_source}):\\n${seed_prompt}\\n\\nShipped goals delta:\\n${shipped_goals_delta}\\n\\nScenario holdouts delta:\\n${scenario_holdouts_delta}\\n\\nIntent stack changed since last brainstorm:\\n${intent_stack_changed}\\n\\nOpen backlog summary:\\n${open_backlog_summary}\\n\\nCurrent round:\\n${round}\\n\\nLatest blue output (if any):\\n${blue_output}\" llm_provider=\"openrouter\" session_id=\"red_strategist\"]\n    red_early_exit_gate [shape=\"diamond\" label=\"Red early exit: terminate signal without final report?\"]\n    red_gate [shape=\"diamond\" label=\"Red produced final report?\"]\n    round_gate [shape=\"diamond\" label=\"Continue brainstorm rounds?\"]\n    start [shape=\"Mdiamond\"]\n    wrap_gate [shape=\"diamond\" label=\"Force wrap produced valid report?\"]\n    close_issue -> done\n    force_wrap -> check_wrap -> post_wrap_comment -> wrap_gate\n    red -> check_red -> red_early_exit_gate\n    start -> load_context -> init_round -> red\n    blue_early_exit_gate -> force_wrap [condition=\"trigger_force_wrap=true\"]\n    blue_early_exit_gate -> post_blue_comment [condition=\"trigger_force_wrap!=true\"]\n    blue_gate -> bump_round [condition=\"is_final!=true\"]\n    blue_gate -> close_issue [condition=\"is_final=true\"]\n    blue -> check_blue\n    bump_round -> round_gate\n    check_blue -> loop_guard_blue\n    check_repair -> post_repair_comment\n    format_repair -> check_repair\n    loop_guard_blue -> blue_early_exit_gate\n    post_blue_comment -> blue_gate\n    post_red_comment -> red_gate\n    post_repair_comment -> close_issue\n    red_early_exit_gate -> force_wrap [condition=\"should_force_wrap=true\"]\n    red_early_exit_gate -> post_red_comment [condition=\"should_force_wrap!=true\"]\n    red_gate -> blue [condition=\"is_final!=true\"]\n    red_gate -> close_issue [condition=\"is_final=true\"]\n    round_gate -> force_wrap [condition=\"has_next!=true\"]\n    round_gate -> red [condition=\"has_next=true\"]\n    wrap_gate -> close_issue [condition=\"is_final=true\"]\n    wrap_gate -> format_repair [condition=\"is_final!=true\"]\n}"
+}

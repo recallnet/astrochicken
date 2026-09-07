@@ -1,0 +1,15 @@
+digraph child_terminal_normalization {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	run_child [type="pipeline" label="Run Child" pipeline="${child_template}" export_keys="child_result,child_status,child_index"]
+	normalize [type="tool" label="Normalize Child Result" outputs="child_result,child_status,child_index" output_key="normalized_child_payload" governance="reversible" tool_id="shell" action_id="file.write"]
+	done_failed [shape=Msquare recovery_sink_type="terminal"]
+	done_timeout [shape=Msquare recovery_sink_type="terminal"]
+	done_aborted [shape=Msquare recovery_sink_type="terminal"]
+
+	start -> run_child
+	run_child -> normalize [condition="outcome=fail"]
+	normalize -> done_failed [condition="child_result=child_failed"]
+	normalize -> done_timeout [condition="child_result=child_timeout"]
+	normalize -> done_aborted [condition="child_result=child_aborted"]
+}

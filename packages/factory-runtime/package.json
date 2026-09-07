@@ -1,0 +1,12 @@
+{
+  "name": "@hatch/factory-runtime",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Shared managed-factory runtime graphs",
+  "exports": {
+    "./graphs/*": "./graphs/*"
+  },
+  "files": [
+    "graphs"
+  ]
+}

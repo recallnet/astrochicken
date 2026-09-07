@@ -1,0 +1,9 @@
+digraph strict_identity_valid {
+  start [shape=Mdiamond]
+  trusted_tool [label="Trusted tool" type="tool" governance="reversible" output_key="items" prompt="printf '[]'" trust_domain="mothership.local" trust_role="mothership.local.tool" agent_id="tool.shell" agent_role="tool.operator"]
+  trusted_code [label="Trusted code" type="codergen" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.codergen" agent_id="unknown" agent_role="unknown"]
+  trusted_fan [label="Trusted fan" type="fan_out.dynamic" template="item.dot" source_key="items" item_key="item" trust_domain="mothership.local" trust_role="mothership.local.fan_out.dynamic" agent_id="unknown" agent_role="unknown"]
+  done [shape=Msquare]
+
+  start -> trusted_tool -> trusted_code -> trusted_fan -> done
+}

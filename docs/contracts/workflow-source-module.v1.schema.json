@@ -1,0 +1,428 @@
+{
+  "$id": "https://recallnet.dev/contracts/workflow-source-module.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Canonical schema-backed typed workflow authoring document for migrated workflow families before DOT generation/parity enforcement lands.",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "when": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ref",
+          "when"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "description": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "condition": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "dotAttributes": {
+            "additionalProperties": {},
+            "propertyNames": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "from": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "label": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "to": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "when": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ref",
+          "when"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "familyId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "graphAttributes": {
+      "additionalProperties": {},
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "imports": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "invariants": {
+      "additionalProperties": {},
+      "properties": {
+        "mayNormalize": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "mustPreserve": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "mustPreserve",
+        "mayNormalize"
+      ],
+      "type": "object"
+    },
+    "jsonSchemaOutputPath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "actionId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "binding": {
+            "additionalProperties": {},
+            "properties": {
+              "outputFormat": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "outputKey": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "outputs": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "payload": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "raw": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "composition": {
+            "additionalProperties": {},
+            "properties": {
+              "bindings": {
+                "additionalProperties": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "propertyNames": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "itemKey": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxConcurrency": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "sourceKey": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "templateRuntimeGraphPath": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "templateWorkflowRef": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "workflowRef": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "workflowRuntimeGraphPath": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "dotAttributes": {
+            "additionalProperties": {},
+            "propertyNames": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "handlerType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "start",
+              "terminal",
+              "llm_prompt",
+              "tool_action",
+              "decision",
+              "dynamic_fan_out",
+              "detached_fan_out",
+              "dynamic_fan_in",
+              "pipeline"
+            ],
+            "type": "string"
+          },
+          "policy": {
+            "additionalProperties": {},
+            "properties": {
+              "fallbackRetryTarget": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "governance": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxRetries": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "recoveryOwner": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "retryTarget": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "timeout": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "prompt": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "roleClass": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "toolId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind"
+        ],
+        "type": "object"
+      },
+      "minItems": 2,
+      "type": "array"
+    },
+    "runtimeGraphPath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "workflow_source_module/v1",
+      "type": "string"
+    },
+    "sourceMap": {
+      "additionalProperties": {},
+      "properties": {
+        "debugRules": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "graphName": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "nodeMappings": {
+          "items": {
+            "additionalProperties": {},
+            "properties": {
+              "runtimeNodeId": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sourceNodeId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "sourceNodeId",
+              "runtimeNodeId"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "graphName",
+        "nodeMappings"
+      ],
+      "type": "object"
+    },
+    "sourceOwnership": {
+      "additionalProperties": {},
+      "properties": {
+        "canonicalAuthoringSurface": {
+          "const": "typed_workflow_source",
+          "type": "string"
+        },
+        "runtimeIr": {
+          "enum": [
+            "handwritten_dot_until_phase_9_2",
+            "generated_dot_runtime_ir"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "canonicalAuthoringSurface",
+        "runtimeIr"
+      ],
+      "type": "object"
+    },
+    "sourcePath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "workflowId": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "workflowId",
+    "familyId",
+    "title",
+    "sourcePath",
+    "runtimeGraphPath",
+    "jsonSchemaOutputPath",
+    "sourceMap",
+    "invariants",
+    "nodes",
+    "edges"
+  ],
+  "title": "Typed Workflow Source Module",
+  "type": "object"
+}

@@ -1,0 +1,5 @@
+{
+  "reviewVerdict": "revise",
+  "reviewNotes": "QA_EVIDENCE_REQUIRED: qa.status=fail",
+  "reviewContextGatePass": "true"
+}

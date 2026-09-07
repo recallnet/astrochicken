@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["packages/factory-ops/src/cli/commands/wave.mjs"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": ["test:wave-claim-gates"],
+  "expectedReason": "bucket_wave_claim_only"
+}

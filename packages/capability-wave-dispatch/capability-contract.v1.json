@@ -1,0 +1,88 @@
+{
+  "capabilityId": "wave_dispatch",
+  "description": "Lease, sanitize, select, and ready-marker creation graph.",
+  "entrypoints": [
+    {
+      "description": "Selects wave-ready work under lease and concurrency policy.",
+      "id": "wave_dispatch",
+      "kind": "graph",
+      "path": "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+      "title": "Wave dispatch graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-wave-dispatch/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Escalates judge follow-up failures through the canonical bug issue artifact path when dispatch requeue handling requires it.",
+        "id": "judge_followup_bug_issue",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+        ],
+        "ref": "judge_followup_bug_issue/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Judge follow-up bug issue artifact"
+      }
+    ],
+    "events": [
+      {
+        "description": "Wave dispatch emits and consumes the governed lease lifecycle CloudEvent surface.",
+        "id": "wave_ready_lease_events",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+        ],
+        "ref": "https://recallnet.dev/contracts/cloudevents/wave-ready-lease.v1.json",
+        "standard": "cloudevents",
+        "title": "Wave ready lease CloudEvents"
+      }
+    ],
+    "telemetry": [
+      {
+        "description": "Wave dispatch runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-wave-dispatch",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "factory_id",
+    "factory_root",
+    "gh_repo",
+    "max_concurrent_waves",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "tool"
+  ],
+  "requiredRoles": [],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "https://recallnet.dev/contracts/cloudevents/wave-ready-lease.v1.json",
+        "judge_followup_bug_issue/v1"
+      ]
+    }
+  ],
+  "sourcePath": "packages/capability-wave-dispatch/capability-contract.mjs",
+  "title": "Wave Dispatch Capability",
+  "version": "0.1.0"
+}

@@ -1,0 +1,149 @@
+{
+  "schema_version": "managed_factory_mutation_policy/v1",
+  "policy_version": 1,
+  "metadata": {
+    "required_context_keys": [
+      "target_repo",
+      "destinations",
+      "control_plane_repo",
+      "instance_id"
+    ],
+    "optional_context_keys": [
+      "kind_id",
+      "host_id"
+    ],
+    "summary": "Managed-factory mutation boundaries for home, destination, control-plane, and local filesystem surfaces."
+  },
+  "boundaries": {
+    "target_repo": {
+      "allowed_operations": [
+        { "operation": "issue:create" },
+        { "operation": "issue:close" },
+        { "operation": "issue:label" },
+        { "operation": "pr:create" },
+        { "operation": "git:*" },
+        {
+          "operation": "git:push",
+          "constraints": { "target_branch": "main", "requires_flag": "allow_target_repo_main_push" }
+        }
+      ],
+      "forbidden_operations": [
+        {
+          "operation": "git:push",
+          "constraints": { "target_branch": "main", "requires_flag_absent": "allow_target_repo_main_push" },
+          "reason": "mutation_policy_target_repo_push_main_forbidden"
+        },
+        {
+          "operation": "git:push-force",
+          "reason": "mutation_policy_target_repo_force_push_forbidden"
+        },
+        {
+          "operation": "git:branch-delete",
+          "reason": "mutation_policy_target_repo_branch_delete_forbidden"
+        }
+      ],
+      "default_denied_reason": "mutation_policy_target_repo_operation_not_allowed"
+    },
+    "destination_repo": {
+      "allowed_operations": [
+        {
+          "operation": "issue:create",
+          "constraints": { "labels_scope": "declared_destination_only" }
+        }
+      ],
+      "forbidden_operations": [
+        {
+          "operation": "git:*",
+          "reason": "mutation_policy_destination_git_mutation_forbidden"
+        },
+        {
+          "operation": "pr:*",
+          "reason": "mutation_policy_destination_pr_mutation_forbidden"
+        },
+        {
+          "operation": "issue:label",
+          "reason": "mutation_policy_destination_issue_label_mutation_forbidden"
+        },
+        {
+          "operation": "issue:close",
+          "reason": "mutation_policy_destination_issue_close_forbidden"
+        },
+        {
+          "operation": "issue:reopen",
+          "reason": "mutation_policy_destination_issue_reopen_forbidden"
+        }
+      ],
+      "default_denied_reason": "mutation_policy_destination_operation_not_allowed"
+    },
+    "control_plane_repo": {
+      "allowed_operations": [
+        { "operation": "git:pull" },
+        { "operation": "git:fetch" },
+        { "operation": "issue:create:emit-bug" },
+        {
+          "operation": "issue:comment:owned-incident",
+          "constraints": { "require_owned_incident": true }
+        }
+      ],
+      "forbidden_operations": [
+        {
+          "operation": "git:push",
+          "reason": "mutation_policy_control_plane_git_mutation_forbidden"
+        },
+        {
+          "operation": "git:push-force",
+          "reason": "mutation_policy_control_plane_git_mutation_forbidden"
+        },
+        {
+          "operation": "git:branch-create",
+          "reason": "mutation_policy_control_plane_git_mutation_forbidden"
+        },
+        {
+          "operation": "git:branch-delete",
+          "reason": "mutation_policy_control_plane_git_mutation_forbidden"
+        },
+        {
+          "operation": "git:commit",
+          "reason": "mutation_policy_control_plane_git_mutation_forbidden"
+        },
+        {
+          "operation": "pr:*",
+          "reason": "mutation_policy_control_plane_pr_mutation_forbidden"
+        },
+        {
+          "operation": "issue:label",
+          "reason": "mutation_policy_control_plane_issue_label_mutation_forbidden"
+        },
+        {
+          "operation": "issue:close",
+          "reason": "mutation_policy_control_plane_issue_close_forbidden"
+        },
+        {
+          "operation": "issue:reopen",
+          "reason": "mutation_policy_control_plane_issue_reopen_forbidden"
+        },
+        {
+          "operation": "issue:create",
+          "reason": "mutation_policy_control_plane_issue_create_requires_emit_bug"
+        }
+      ],
+      "default_denied_reason": "mutation_policy_control_plane_operation_not_allowed"
+    },
+    "local_filesystem": {
+      "allowed_operations": [
+        {
+          "operation": "fs:*",
+          "constraints": { "path_scope": "factory_scoped_paths_only" }
+        }
+      ],
+      "forbidden_operations": [
+        {
+          "operation": "fs:*",
+          "constraints": { "path_scope": "outside_factory_scoped_paths" },
+          "reason": "mutation_policy_local_filesystem_path_forbidden"
+        }
+      ],
+      "default_denied_reason": "mutation_policy_local_filesystem_operation_not_allowed"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "dot_lint_exceptions/v1",
+  "trust_domain_role_compat": [],
+  "trust_alias_compat": [
+    {
+      "file": "packages/factory-ops/test/commands/fixtures/trust-participants/legacy-only.input.dot",
+      "node": "run_tool",
+      "alias": "trust_participant"
+    },
+    {
+      "file": "packages/factory-ops/test/commands/fixtures/trust-participants/legacy-only.input.dot",
+      "node": "run_code",
+      "alias": "trust_participant"
+    }
+  ]
+}

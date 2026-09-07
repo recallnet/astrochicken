@@ -1,0 +1,22 @@
+{
+  "$id": "https://recallnet.dev/contracts/backend-selection-config.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Versioned backend selection contract for Hatch backend resolution.",
+  "properties": {
+    "store_root": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "storeRoot": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "type": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "title": "Backend Selection Config",
+  "type": "object"
+}

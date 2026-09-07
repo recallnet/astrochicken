@@ -1,0 +1,22 @@
+{
+  "title": "Daily Lens Narrative",
+  "summary": "Factory delivery held steady while quality gates tightened.",
+  "category": "strategy",
+  "published_on": "2026-03-20",
+  "tags": [
+    "daily-lens",
+    "contract"
+  ],
+  "topics": [
+    "factory-health",
+    "delivery"
+  ],
+  "astro": {
+    "canonical_issue_url": "https://github.com/recallnet/astrochicken/issues/2366",
+    "visibility": "internal-only",
+    "internal_only_sections": [
+      "Operator Notes",
+      "Prompt Critique"
+    ]
+  }
+}

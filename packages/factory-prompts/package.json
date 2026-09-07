@@ -1,0 +1,19 @@
+{
+  "name": "@hatch/factory-prompts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./package.json": "./package.json",
+    "./prompts/*": "./prompts/*"
+  },
+  "scripts": {
+    "build": "node -e \"\"",
+    "test": "node --test --test-reporter=dot test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

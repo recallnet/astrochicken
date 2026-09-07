@@ -1,0 +1,13 @@
+digraph decision_artifact_wrong_goal_harness {
+    start [shape=Mdiamond]
+    enforce [label="Enforce wrong-goal guard" type="codergen" violation="true" output_format="json"]
+    expected_failure [label="Expected failure branch" type="codergen" recovery_owner="supervisor" output_key="harness_result"]
+    wait_for_human [label="Unreachable human gate" shape=hexagon prompt="This branch must remain unreachable"]
+    done [shape=Msquare]
+
+    start -> enforce
+    enforce -> expected_failure [condition="outcome=fail"]
+    enforce -> wait_for_human [condition="outcome=success"]
+    expected_failure -> done
+    wait_for_human -> done
+}

@@ -1,0 +1,110 @@
+{
+  "schema_version": "capability_manifest_registry/v1",
+  "summary": {
+    "registered_capabilities": 10,
+    "diagnostics": 0
+  },
+  "capabilities": [
+    {
+      "package_name": "@hatch/capability-artifact-ingestion",
+      "capability_id": "artifact_ingestion",
+      "manifest_path": "packages/capability-artifact-ingestion/capability-manifest.v1.json",
+      "contract_path": "packages/capability-artifact-ingestion/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 1
+    },
+    {
+      "package_name": "@hatch/capability-brainstorming",
+      "capability_id": "brainstorming",
+      "manifest_path": "packages/capability-brainstorming/capability-manifest.v1.json",
+      "contract_path": "packages/capability-brainstorming/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 2,
+      "producer_path_count": 1
+    },
+    {
+      "package_name": "@hatch/capability-coding",
+      "capability_id": "coding",
+      "manifest_path": "packages/capability-coding/capability-manifest.v1.json",
+      "contract_path": "packages/capability-coding/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 1,
+      "producer_path_count": 2
+    },
+    {
+      "package_name": "@hatch/capability-foreman",
+      "capability_id": "foreman",
+      "manifest_path": "packages/capability-foreman/capability-manifest.v1.json",
+      "contract_path": "packages/capability-foreman/capability-contract.v1.json",
+      "graph_count": 0,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 2
+    },
+    {
+      "package_name": "@hatch/capability-goal-decomposition",
+      "capability_id": "goal_decomposition",
+      "manifest_path": "packages/capability-goal-decomposition/capability-manifest.v1.json",
+      "contract_path": "packages/capability-goal-decomposition/capability-contract.v1.json",
+      "graph_count": 8,
+      "prompt_count": 9,
+      "skill_count": 4,
+      "producer_path_count": 9
+    },
+    {
+      "package_name": "@hatch/capability-merge",
+      "capability_id": "merge",
+      "manifest_path": "packages/capability-merge/capability-manifest.v1.json",
+      "contract_path": "packages/capability-merge/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 7,
+      "skill_count": 1,
+      "producer_path_count": 2
+    },
+    {
+      "package_name": "@hatch/capability-product-judge",
+      "capability_id": "product_judge",
+      "manifest_path": "packages/capability-product-judge/capability-manifest.v1.json",
+      "contract_path": "packages/capability-product-judge/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 2
+    },
+    {
+      "package_name": "@hatch/capability-release-reporting",
+      "capability_id": "release_reporting",
+      "manifest_path": "packages/capability-release-reporting/capability-manifest.v1.json",
+      "contract_path": "packages/capability-release-reporting/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 2
+    },
+    {
+      "package_name": "@hatch/capability-software-development",
+      "capability_id": "software_development",
+      "manifest_path": "packages/capability-software-development/capability-manifest.v1.json",
+      "contract_path": "packages/capability-software-development/capability-contract.v1.json",
+      "graph_count": 4,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 4
+    },
+    {
+      "package_name": "@hatch/capability-wave-dispatch",
+      "capability_id": "wave_dispatch",
+      "manifest_path": "packages/capability-wave-dispatch/capability-manifest.v1.json",
+      "contract_path": "packages/capability-wave-dispatch/capability-contract.v1.json",
+      "graph_count": 1,
+      "prompt_count": 0,
+      "skill_count": 0,
+      "producer_path_count": 2
+    }
+  ],
+  "diagnostics": []
+}

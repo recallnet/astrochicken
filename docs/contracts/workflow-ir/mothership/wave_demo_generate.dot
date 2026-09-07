@@ -1,0 +1,46 @@
+// Generated from factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs. Do not edit by hand.
+@import "../../../../factories/mothership/roles.stylesheet"
+
+digraph wave_demo_generate {
+    label = "wave_demo_generate"
+    workflow_source = "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    classify_demo_strategy [type="tool" governance="reversible" action_runtime="in_process" action_id="software.classify_wave_demo_strategy" label="Classify demo strategy" output_format="json" outputs="demo_strategy,demo_decision,reason_codes,no_demo,telemetry" action_pipeline="wave_demo_generate" action_demo_strategy="${demo_strategy_policy}" action_issue_metadata="${issue_metadata}" action_merged_results="${merged_results}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    demo_decision_gate [shape="diamond" label="Generate demo?"]
+    demo_generation_gate [shape="diamond" label="Demo generation succeeded?"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    generate_terminal_demo [type="tool" governance="irreversible" action_runtime="in_process" action_id="software.generate_wave_terminal_demo" label="Generate terminal demo artifact" output_format="json" outputs="ok,demo_generation_status,demo_generation_error,demo_artifact_path,demo_artifact_bytes,demo_strategy,merged_count" action_repo="${gh_repo}" action_run_id="${__run_id}" action_issue_titles="${issue_titles}" action_merge_stderr="${merge_stderr}" action_merge_stdout="${merge_stdout}" action_merged_results="${merged_results}" action_milestone_title="${milestone_title}" action_ready_issue_number="${ready_issue_number}" action_runs_dir="${runs_dir}" trust_domain="mothership.local" trust_role="mothership.local.tool" fail_open="true"]
+    publish_demo_artifact [type="tool" governance="irreversible" action_runtime="in_process" action_id="software.publish_wave_demo_artifact" label="Publish demo artifact" output_format="json" outputs="ok,artifact_url,demo_artifact_url,demo_publish_status,demo_publish_error" action_repo="${gh_repo}" action_run_id="${__run_id}" action_pipeline="wave_demo_generate" action_demo_artifact_path="${demo_artifact_path}" action_demo_strategy="${demo_strategy_resolved}" action_milestone_title="${milestone_title}" action_ready_issue_number="${ready_issue_number}" trust_domain="mothership.local" trust_role="mothership.local.tool" fail_open="true"]
+    resolve_demo_policy [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_factory_config" label="Resolve demo policy" output_key="demo_strategy_policy" action_factory_root="${factory_root}" action_fallback="${demo_strategy_policy}" action_key="demo_strategy" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_artifact_url_empty [type="tool" governance="reversible" label="Set artifact URL: empty" output_key="artifact_url" prompt="printf ''" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_error_empty [type="tool" governance="reversible" label="Set demo error: empty" output_key="demo_error" prompt="printf ''" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_error_from_generation [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Set demo error from generation result" output_key="demo_error" action_fallback="demo_generation_failed" action_value="${demo_generation_error}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_error_from_publish [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Set demo error from publish result" output_key="demo_error" action_value="${demo_publish_error}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_error_unsupported [type="tool" governance="reversible" label="Set demo error: unsupported strategy" output_key="demo_error" prompt="printf 'unsupported_demo_strategy'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_status_from_generation [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Set demo status from generation result" output_key="demo_status" action_fallback="failed" action_value="${demo_generation_status}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_status_from_publish [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Set demo status from publish result" output_key="demo_status" action_fallback="failed" action_value="${demo_publish_status}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_status_skipped [type="tool" governance="reversible" label="Set demo status: skipped" output_key="demo_status" prompt="printf 'skipped'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_status_skipped_unsupported [type="tool" governance="reversible" label="Set demo status: skipped (unsupported strategy)" output_key="demo_status" prompt="printf 'skipped'" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    set_demo_strategy_resolved [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve effective demo strategy" output_key="demo_strategy_resolved" action_fallback="${demo_strategy_policy}" action_value="${demo_strategy}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start [shape="Mdiamond"]
+    strategy_support_gate [shape="diamond" label="Strategy supported?"]
+    set_artifact_url_empty -> done
+    start -> resolve_demo_policy -> classify_demo_strategy -> set_demo_strategy_resolved -> demo_decision_gate
+    demo_decision_gate -> set_demo_status_skipped [condition="demo_decision!=generate"]
+    demo_decision_gate -> strategy_support_gate [condition="demo_decision=generate"]
+    demo_generation_gate -> publish_demo_artifact [condition="demo_generation_status=generated"]
+    demo_generation_gate -> set_demo_status_from_generation [condition="demo_generation_status!=generated"]
+    generate_terminal_demo -> demo_generation_gate
+    publish_demo_artifact -> set_demo_status_from_publish
+    set_demo_error_empty -> set_artifact_url_empty
+    set_demo_error_from_generation -> set_artifact_url_empty
+    set_demo_error_from_publish -> done
+    set_demo_error_unsupported -> set_demo_status_skipped_unsupported
+    set_demo_status_from_generation -> set_demo_error_from_generation
+    set_demo_status_from_publish -> set_demo_error_from_publish
+    set_demo_status_skipped_unsupported -> set_artifact_url_empty
+    set_demo_status_skipped -> set_demo_error_empty
+    strategy_support_gate -> generate_terminal_demo [condition="demo_strategy_resolved=terminal"]
+    strategy_support_gate -> set_demo_error_unsupported [condition="demo_strategy_resolved!=terminal"]
+}

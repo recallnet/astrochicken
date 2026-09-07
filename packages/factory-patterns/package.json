@@ -1,0 +1,14 @@
+{
+	"name": "@recallnet/factory-patterns",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Reusable Hatch graph patterns and role contracts",
+	"exports": {
+		"./workflows/*": "./workflows/*",
+		"./skills/*": "./skills/*"
+	},
+	"files": [
+		"workflows",
+		"skills"
+	]
+}

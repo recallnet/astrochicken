@@ -1,0 +1,11 @@
+digraph child_terminal_case_aborted {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	abortish [type="tool" label="Abort Child" output_key="abort_signal" governance="reversible" tool_id="shell" action_id="file.write" prompt="aborted"]
+	done [shape=Msquare]
+	done_alt [shape=Msquare]
+
+	start -> abortish
+	abortish -> done [condition="outcome=success"]
+	abortish -> done_alt [condition="outcome=success && route=alternate"]
+}

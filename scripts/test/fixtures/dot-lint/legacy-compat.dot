@@ -1,0 +1,6 @@
+digraph legacy_compat {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  legacy_tool [type="tool" governance="reversible" prompt=":" trust_participant="example.local/example.local.tool"]
+  start -> legacy_tool -> done
+}

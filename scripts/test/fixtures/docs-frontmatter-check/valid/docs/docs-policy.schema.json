@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://recallnet.dev/schemas/hatch/docs-policy.schema.json",
+  "title": "Hatch canonical docs policy",
+  "type": "object",
+  "required": [
+    "docs_policy/v1"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "docs_policy/v1": {
+      "type": "object",
+      "required": [
+        "freshness",
+        "in_scope_paths",
+        "migration_debt",
+        "ownership",
+        "required_doc_types",
+        "root_docs_allowlist",
+        "root_level_exceptions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "in_scope_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_doc_types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "doc_type",
+              "path"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "doc_type": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "freshness": {
+          "type": "object",
+          "required": [
+            "default_review_policy",
+            "review_policies",
+            "path_defaults"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "default_review_policy": {
+              "type": "string"
+            },
+            "review_policies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "mode"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "codebound",
+                      "generated",
+                      "historical",
+                      "periodic"
+                    ]
+                  },
+                  "max_age_days": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            },
+            "path_defaults": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "path",
+                  "review_policy"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "review_policy": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ownership": {
+          "type": "object",
+          "required": [
+            "canonical_roots",
+            "owners",
+            "root_doc_owner_id"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "owners": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "display_name",
+                  "id"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "display_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "canonical_roots": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "owner_id",
+                  "path"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "owner_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "root_doc_owner_id": {
+              "type": "string"
+            }
+          }
+        },
+        "root_docs_allowlist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "root_level_exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "frontmatter_exclude_globs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for in-scope docs that should be excluded from typed frontmatter validation (e.g., Marp slide decks)."
+        },
+        "orphan_exclude_globs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for in-scope docs that should be excluded from orphan detection (e.g., eval workspace artifacts)"
+        },
+        "migration_debt": {
+          "type": "object",
+          "required": [
+            "allow_missing_required_doc_types",
+            "allow_unowned_in_scope_paths",
+            "legacy_in_scope_allowlist",
+            "max_legacy_in_scope_allowlist_entries"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "allow_unowned_in_scope_paths": {
+              "type": "boolean"
+            },
+            "allow_missing_required_doc_types": {
+              "type": "boolean"
+            },
+            "legacy_in_scope_allowlist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "max_legacy_in_scope_allowlist_entries": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}

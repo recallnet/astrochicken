@@ -1,0 +1,91 @@
+{
+  "docs_hierarchy/v1": {
+    "sections": [
+      {
+        "id": "architecture",
+        "title": "Architecture",
+        "description": "System design and subsystem reference.",
+        "path": "docs/architecture/",
+        "required": true
+      },
+      {
+        "id": "reference",
+        "title": "Reference",
+        "description": "Per-command and per-graph reference docs.",
+        "path": "docs/reference/",
+        "subsections": [
+          {
+            "id": "factory-ops",
+            "title": "Factory Ops",
+            "path": "docs/reference/factory-ops/"
+          },
+          {
+            "id": "graphs",
+            "title": "Graphs",
+            "path": "docs/reference/graphs/"
+          },
+          {
+            "id": "gates",
+            "title": "Gates",
+            "path": "docs/reference/gates/"
+          },
+          {
+            "id": "contracts",
+            "title": "Contracts",
+            "path": "docs/contracts/"
+          }
+        ]
+      },
+      {
+        "id": "operations",
+        "title": "Operations",
+        "description": "Runbooks and operational procedures.",
+        "path": "docs/runbooks/",
+        "subsections": [
+          {
+            "id": "factory-operator-guide",
+            "title": "Factory Operator Guide",
+            "path": "docs/runbooks/factory-operator-guide.md"
+          }
+        ]
+      },
+      {
+        "id": "governance",
+        "title": "Governance",
+        "description": "Docs policy, quality gates, and templates.",
+        "path": "docs/governance/"
+      },
+      {
+        "id": "policies",
+        "title": "Policies",
+        "description": "Deterministic policy contracts and precedence guides.",
+        "path": "docs/policies/"
+      },
+      {
+        "id": "agent-runbooks",
+        "title": "Agent Runbooks",
+        "description": "Operator and agent runbooks used in active workflows.",
+        "path": "docs/agent-runbooks/"
+      },
+      {
+        "id": "examples",
+        "title": "Examples",
+        "description": "Reference examples and external factory samples.",
+        "path": "docs/examples/"
+      },
+      {
+        "id": "skills",
+        "title": "Skills",
+        "description": "Skill documentation and guidance assets.",
+        "path": "docs/skills/"
+      },
+      {
+        "id": "core",
+        "title": "Core Docs",
+        "description": "Top-level docs in transition to the explicit hierarchy.",
+        "path": "docs/",
+        "direct_files_only": true
+      }
+    ]
+  }
+}

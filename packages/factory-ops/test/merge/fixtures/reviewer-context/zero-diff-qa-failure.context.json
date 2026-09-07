@@ -1,0 +1,68 @@
+{
+  "schema_version": "reviewer_context/v1",
+  "packet_type": "reviewer_context_packet",
+  "packet_id": "reviewer_context_packet_fixture_zero_diff",
+  "created_at": "2026-03-10T00:00:00.000Z",
+  "packet_state": "open",
+  "issue_number": "645",
+  "issue_excerpt": "QA failure with zero diff",
+  "branch": "wave/goal-323-wave-1",
+  "snapshot_sha": "deadbeef",
+  "issue_commit_subjects": [],
+  "diff_summary": {
+    "scope_mode": "snapshot_scoped",
+    "commits_ahead": "1",
+    "issue_commits": "0",
+    "changed_files_count": "2",
+    "issue_changed_files_count": "0",
+    "summary": "QA failure without issue diff"
+  },
+  "changed_files": [],
+  "evidence_artifact_path": "./fixtures/reviewer-context/zero-diff-qa-failure.evidence.json",
+  "evidence_artifact_sha256": "",
+  "policy_refs": [
+    {
+      "id": "global_policy",
+      "precedence": 0,
+      "path": "./fixtures/reviewer-context/policy-global.json",
+      "sha256": "",
+      "loaded": true
+    },
+    {
+      "id": "repo_policy",
+      "precedence": 1,
+      "path": "./fixtures/reviewer-context/policy-repo.json",
+      "sha256": "",
+      "loaded": true
+    }
+  ],
+  "policy_sources": [
+    {
+      "id": "global_policy",
+      "order": 0,
+      "path": "./fixtures/reviewer-context/policy-global.json",
+      "sha256": "",
+      "loaded": true,
+      "format": "json",
+      "key_count": "1"
+    },
+    {
+      "id": "repo_policy",
+      "order": 1,
+      "path": "./fixtures/reviewer-context/policy-repo.json",
+      "sha256": "",
+      "loaded": true,
+      "format": "json",
+      "key_count": "1"
+    }
+  ],
+  "effective_policy": {
+    "schema_version": "review_policy/v1",
+    "merge_order": ["global_policy", "repo_policy"],
+    "values": {
+      "review": {
+        "qa_required": true
+      }
+    }
+  }
+}

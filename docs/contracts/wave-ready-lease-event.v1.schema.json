@@ -1,0 +1,49 @@
+{
+  "$id": "https://recallnet.dev/contracts/wave-ready-lease-event.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Canonical wave ready lease payload persisted in GitHub issue comments.",
+  "properties": {
+    "action": {
+      "enum": [
+        "claim",
+        "release"
+      ],
+      "type": "string"
+    },
+    "at": {
+      "type": "string"
+    },
+    "milestone_title": {
+      "type": "string"
+    },
+    "pipeline": {
+      "type": "string"
+    },
+    "ready_issue_number": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "wave_ready_lease_event/v1",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "action",
+    "milestone_title",
+    "ready_issue_number",
+    "run_id",
+    "pipeline",
+    "reason",
+    "at"
+  ],
+  "title": "Wave Ready Lease Event Payload",
+  "type": "object"
+}

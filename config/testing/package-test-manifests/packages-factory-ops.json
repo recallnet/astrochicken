@@ -1,0 +1,79 @@
+{
+  "schema": "hatch.package-test-manifest.v1",
+  "package_name": "@hatch/factory-ops",
+  "package_path": "packages/factory-ops",
+  "default_suite": "default",
+  "suites": [
+    {
+      "name": "default",
+      "runner": "node:test",
+      "working_directory": ".",
+      "entrypoints": [
+        "packages/factory-ops/test/commands",
+        "packages/factory-ops/test/packets",
+        "packages/factory-ops/test/merge",
+        "packages/factory-ops/test/wave",
+        "packages/factory-ops/test/scenarios",
+        "packages/factory-ops/test/supervisor",
+        "packages/factory-ops/test/leases",
+        "packages/factory-ops/test/shared"
+      ],
+      "command": "node --test --test-reporter=dot $(find packages/factory-ops/test -mindepth 2 -type f \\( -name '*.test.mjs' -o -name '*.test.ts' \\) | sort)"
+    },
+    {
+      "name": "wave-claim-gates",
+      "runner": "node:test+c8",
+      "working_directory": ".",
+      "entrypoints": [
+        "packages/factory-ops/test/commands/wave-claim-lifecycle.unit.test.ts",
+        "packages/factory-ops/test/commands/wave-throughput-invariants.unit.test.ts",
+        "packages/factory-ops/test/leases/factory-distributed-lease.test.ts",
+        "packages/factory-ops/test/leases/factory-lease-marker.test.ts",
+        "packages/factory-ops/test/supervisor/daemon-lease.unit.test.ts",
+        "packages/factory-ops/test/supervisor/factory-host-lifecycle-lease-guard.unit.test.ts",
+        "packages/factory-ops/test/supervisor/factory-lease-supervisor-contract.test.ts",
+        "packages/factory-ops/test/wave-claim-circuit-gate.unit.test.ts",
+        "packages/factory-ops/test/wave-claim-contention-gate.unit.test.ts",
+        "packages/factory-ops/test/wave-claim-diagnostics.unit.test.ts",
+        "packages/factory-ops/test/wave-claim-orphan-sweep-gate.unit.test.ts",
+        "packages/factory-ops/test/wave-claim-reclaim-gate.unit.test.ts",
+        "packages/factory-ops/test/wave-claim.unit.test.ts",
+        "packages/factory-ops/test/wave-ready-claim-ops.unit.test.ts",
+        "packages/factory-ops/test/wave-ready-lease.unit.test.ts",
+        "packages/factory-ops/test/wave/wave-demo-classify.unit.test.ts",
+        "packages/factory-ops/test/commands/wave-demo-publish.unit.test.ts",
+        "packages/factory-ops/test/commands/wave-demo-terminal.unit.test.ts"
+      ],
+      "command": "node scripts/run-c8-with-temp-dir.mjs --all --include \"packages/factory-ops/src/commands/factory-distributed-lease.ts\" --include \"packages/factory-ops/src/commands/factory-host-lifecycle.ts\" --include \"packages/factory-ops/src/commands/factory-lease-marker.ts\" --include \"packages/factory-ops/src/commands/lease-holder.ts\" --include \"packages/factory-ops/src/commands/lease-http-client.ts\" --include \"packages/factory-ops/src/commands/wave-claim.ts\" --include \"packages/factory-ops/src/commands/wave-claim-diagnostics.ts\" --include \"packages/factory-ops/src/commands/wave-sanitize-state.ts\" --include \"packages/factory-ops/src/commands/wave-throughput-invariants.ts\" --include \"packages/factory-ops/src/lib/daemon-lease.ts\" --include \"packages/factory-ops/src/lib/daemon.ts\" --include \"packages/factory-ops/src/lib/wave-claim-lifecycle.ts\" --include \"packages/factory-ops/src/lib/wave-ready-claim-ops.ts\" --include \"packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts\" --include \"packages/factory-ops/src/lib/wave-ready-lease.ts\" --include \"packages/factory-ops/src/commands/wave-demo-classify.ts\" --include \"packages/factory-ops/src/commands/wave-demo-publish.ts\" --include \"packages/factory-ops/src/commands/wave-demo-terminal.ts\" --src packages/factory-ops/src --reporter=text-summary --reporter=lcov --check-coverage --statements 55 --lines 55 --functions 53 --branches 59 node --max-old-space-size=8192 --test --test-reporter=dot packages/factory-ops/test/commands/wave-claim-lifecycle.unit.test.ts packages/factory-ops/test/commands/wave-throughput-invariants.unit.test.ts packages/factory-ops/test/leases/factory-distributed-lease.test.ts packages/factory-ops/test/leases/factory-lease-marker.test.ts packages/factory-ops/test/supervisor/daemon-lease.unit.test.ts packages/factory-ops/test/supervisor/factory-host-lifecycle-lease-guard.unit.test.ts packages/factory-ops/test/supervisor/factory-lease-supervisor-contract.test.ts packages/factory-ops/test/wave-claim-circuit-gate.unit.test.ts packages/factory-ops/test/wave-claim-contention-gate.unit.test.ts packages/factory-ops/test/wave-claim-diagnostics.unit.test.ts packages/factory-ops/test/wave-claim-orphan-sweep-gate.unit.test.ts packages/factory-ops/test/wave-claim-reclaim-gate.unit.test.ts packages/factory-ops/test/wave-claim.unit.test.ts packages/factory-ops/test/wave-ready-claim-ops.unit.test.ts packages/factory-ops/test/wave-ready-lease.unit.test.ts packages/factory-ops/test/wave/wave-demo-classify.unit.test.ts packages/factory-ops/test/commands/wave-demo-publish.unit.test.ts packages/factory-ops/test/commands/wave-demo-terminal.unit.test.ts",
+      "coverage_policy": {
+        "src": [
+          "packages/factory-ops/src/commands/factory-distributed-lease.ts",
+          "packages/factory-ops/src/commands/factory-host-lifecycle.ts",
+          "packages/factory-ops/src/commands/factory-lease-marker.ts",
+          "packages/factory-ops/src/commands/lease-holder.ts",
+          "packages/factory-ops/src/commands/lease-http-client.ts",
+          "packages/factory-ops/src/commands/wave-claim.ts",
+          "packages/factory-ops/src/commands/wave-claim-diagnostics.ts",
+          "packages/factory-ops/src/commands/wave-sanitize-state.ts",
+          "packages/factory-ops/src/commands/wave-throughput-invariants.ts",
+          "packages/factory-ops/src/lib/daemon-lease.ts",
+          "packages/factory-ops/src/lib/daemon.ts",
+          "packages/factory-ops/src/lib/wave-claim-lifecycle.ts",
+          "packages/factory-ops/src/lib/wave-ready-claim-ops.ts",
+          "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts",
+          "packages/factory-ops/src/lib/wave-ready-lease.ts",
+          "packages/factory-ops/src/commands/wave-demo-classify.ts",
+          "packages/factory-ops/src/commands/wave-demo-publish.ts",
+          "packages/factory-ops/src/commands/wave-demo-terminal.ts"
+        ],
+        "exclude": [],
+        "thresholds": {
+          "statements": 55,
+          "lines": 55,
+          "functions": 53,
+          "branches": 59
+        }
+      }
+    }
+  ]
+}

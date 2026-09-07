@@ -1,0 +1,257 @@
+---
+doc_type: "reference"
+owner: "platform-architecture"
+review_policy: "periodic-7"
+reviewed: "2026-03-21"
+status: "active"
+summary: "Governed generated workflow IR registry for typed-source-authored runtime DOT families."
+tags: [contracts, dot, generated, parity, workflows]
+written: "2026-03-21"
+---
+
+# Workflow IR Registry
+
+- Registered generated workflow IR documents: 39
+- Diagnostics: 0
+
+## Generated Runtime IR
+
+- `artifact_ingest`
+  - source: `packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.png`
+  - IR document: `docs/contracts/capability-artifact-ingestion.artifact_ingest.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest`
+- `brainstorm`
+  - source: `packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-brainstorming/brainstorm.png`
+  - IR document: `docs/contracts/capability-brainstorming.brainstorm.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-brainstorming-brainstorm`
+- `daily_lens_publish`
+  - source: `factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/daily_lens_publish.dot`
+  - runtime png: `factories/mothership/graphs/daily_lens_publish.png`
+  - IR document: `docs/contracts/mothership.daily_lens_publish.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-daily_lens_publish`
+- `daily_release_report`
+  - source: `factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/daily_release_report.dot`
+  - runtime png: `factories/mothership/graphs/daily_release_report.png`
+  - IR document: `docs/contracts/mothership.daily_release_report.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-daily_release_report`
+- `domain_brainstorm`
+  - source: `factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot`
+  - runtime png: `docs/contracts/workflow-ir/brainstorm/domain_brainstorm.png`
+  - IR document: `docs/contracts/brainstorm.domain_brainstorm.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:brainstorm-domain_brainstorm`
+- `echo`
+  - source: `packages/factory-patterns/workflows/echo/echo.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-patterns/echo.dot`
+  - runtime png: `docs/contracts/workflow-ir/factory-patterns/echo.png`
+  - IR document: `docs/contracts/factory-patterns.echo.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:factory-patterns-echo`
+- `factory_dispatch_reactor`
+  - source: `factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/factory_dispatch_reactor.dot`
+  - runtime png: `factories/mothership/graphs/factory_dispatch_reactor.png`
+  - IR document: `docs/contracts/mothership.factory_dispatch_reactor.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-factory_dispatch_reactor`
+- `factory_supervisor_tick`
+  - source: `factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot`
+  - runtime png: `docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.png`
+  - IR document: `docs/contracts/brainstorm.factory_supervisor_tick.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:brainstorm-factory_supervisor_tick`
+- `factory_supervisor_tick`
+  - source: `factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/factory_supervisor_tick.png`
+  - IR document: `docs/contracts/mothership.factory_supervisor_tick.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-factory_supervisor_tick`
+- `goal_batch`
+  - source: `packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_batch.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_batch`
+- `goal_execute`
+  - source: `factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/goal_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/goal_execute.png`
+  - IR document: `docs/contracts/mothership.goal_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-goal_execute`
+- `goal_execute`
+  - source: `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-software-development/goal_execute.png`
+  - IR document: `docs/contracts/capability-software-development.goal_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_execute`
+- `goal_execution_handoff`
+  - source: `packages/capability-software-development/workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.png`
+  - IR document: `docs/contracts/capability-software-development.goal_execution_handoff.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_execution_handoff`
+- `goal_factory`
+  - source: `packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_factory.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory`
+- `goal_hard_plan`
+  - source: `packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_hard_plan.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_hard_plan`
+- `goal_intake_decompose`
+  - source: `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_intake_decompose.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_intake_decompose`
+- `goal_intake_to_execution_handoff`
+  - source: `packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.png`
+  - IR document: `docs/contracts/capability-software-development.goal_intake_to_execution_handoff.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_intake_to_execution_handoff`
+- `goal_issue_execute`
+  - source: `factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/goal_issue_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/goal_issue_execute.png`
+  - IR document: `docs/contracts/mothership.goal_issue_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-goal_issue_execute`
+- `goal_issue_execute`
+  - source: `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.png`
+  - IR document: `docs/contracts/capability-software-development.goal_issue_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-software-development-goal_issue_execute`
+- `goal_queue`
+  - source: `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_queue.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_queue`
+- `goal_run`
+  - source: `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.goal_run.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run`
+- `issue_execute_item`
+  - source: `packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-coding/issue_execute_item.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-coding/issue_execute_item.png`
+  - IR document: `docs/contracts/capability-coding.issue_execute_item.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-coding-issue_execute_item`
+- `managed_software_delivery_domain`
+  - source: `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot`
+  - runtime png: `docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.png`
+  - IR document: `docs/contracts/factory-runtime.managed_software_delivery_domain.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_software_delivery_domain`
+- `managed_supervisor`
+  - source: `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot`
+  - runtime png: `docs/contracts/workflow-ir/factory-runtime/managed_supervisor.png`
+  - IR document: `docs/contracts/factory-runtime.managed_supervisor.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed_supervisor`
+- `managed-supervisor-shell`
+  - source: `packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot`
+  - runtime png: `docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.png`
+  - IR document: `docs/contracts/factory-runtime.managed-supervisor-shell.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell`
+- `merge_item`
+  - source: `packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-merge/merge_item.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-merge/merge_item.png`
+  - IR document: `docs/contracts/capability-merge.merge_item.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item`
+- `milestone_execute`
+  - source: `factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/milestone_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/milestone_execute.png`
+  - IR document: `docs/contracts/mothership.milestone_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute`
+- `milestone_execute_parallel_item`
+  - source: `factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.png`
+  - IR document: `docs/contracts/mothership.milestone_execute_parallel_item.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-milestone_execute_parallel_item`
+- `product_judge`
+  - source: `packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-product-judge/product_judge.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-product-judge/product_judge.png`
+  - IR document: `docs/contracts/capability-product-judge.product_judge.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-product-judge-product_judge`
+- `release_report_flow`
+  - source: `packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.png`
+  - IR document: `docs/contracts/capability-release-reporting.release_report_flow.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow`
+- `wave_demo_generate`
+  - source: `factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_demo_generate.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/wave_demo_generate.png`
+  - IR document: `docs/contracts/mothership.wave_demo_generate.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-wave_demo_generate`
+- `wave_dispatch`
+  - source: `factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_dispatch.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/wave_dispatch.png`
+  - IR document: `docs/contracts/mothership.wave_dispatch.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-wave_dispatch`
+- `wave_dispatch`
+  - source: `packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.png`
+  - IR document: `docs/contracts/capability-wave-dispatch.wave_dispatch.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-wave-dispatch-wave_dispatch`
+- `wave_execute`
+  - source: `factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/wave_execute.png`
+  - IR document: `docs/contracts/mothership.wave_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-wave_execute`
+- `wave_issue_execute`
+  - source: `factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_issue_execute.dot`
+  - runtime png: `docs/contracts/workflow-ir/mothership/wave_issue_execute.png`
+  - IR document: `docs/contracts/mothership.wave_issue_execute.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-wave_issue_execute`
+- `write_issue_item`
+  - source: `packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.write_issue_item.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item`
+- `write_issues`
+  - source: `packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.dot`
+  - runtime png: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.png`
+  - IR document: `docs/contracts/capability-goal-decomposition.write_issues.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issues`
+- `write_scenario_item`
+  - source: `factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/write_scenario_item.dot`
+  - runtime png: `factories/mothership/graphs/write_scenario_item.png`
+  - IR document: `docs/contracts/mothership.write_scenario_item.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenario_item`
+- `write_scenarios`
+  - source: `factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/write_scenarios.dot`
+  - runtime png: `factories/mothership/graphs/write_scenarios.png`
+  - IR document: `docs/contracts/mothership.write_scenarios.workflow-ir.json`
+  - artifact ref: `ghcr.io/recallnet/factory/workflow-ir:mothership-write_scenarios`
+
+## Diagnostics
+
+- none
+

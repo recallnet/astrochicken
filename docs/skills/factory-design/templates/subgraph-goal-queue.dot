@@ -1,0 +1,95 @@
+// subgraph-goal-queue.dot
+// Template: goal intake + queue gating for reusable factory subgraphs.
+// Telemetry emitted by this template:
+// - ready_goal_count: number of goals currently eligible for intake
+// - goal_queue_decision: deterministic decision token for this tick
+// Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (health/blocked/capacity intake outline)
+
+digraph subgraph_goal_queue {
+    label = "subgraph_goal_queue"
+    workdir = "."
+    model_stylesheet = "\
+        * { llm_model: role-model-default; llm_provider: role-provider-default; }\
+    "
+
+    start [shape=Mdiamond]
+    done [shape=Msquare recovery_sink_type="terminal"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (shared intake setup)
+    set_gh_repo [type="tool" governance="reversible"
+                 label="Resolve target repository"
+                 output_key="gh_repo"
+                 prompt="hatch-ops common resolve-gh-repo --default 'owner/repo'"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (intake preflight telemetry)
+    tick_status [type="tool" governance="reversible"
+                 label="Snapshot factory tick status"
+                 output_key="tick_status"
+                 prompt="hatch-ops factory tick-status --repo '${gh_repo}' --json"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (healthy? gate)
+    check_health [type="tool" governance="reversible"
+                  label="Evaluate supervisor health"
+                  output_key="health_state"
+                  prompt="hatch-ops factory health --repo '${gh_repo}' --tick-status '${tick_status}' --json"]
+
+    health_gate [shape=diamond label="healthy?"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (blocked? gate)
+    check_blocked [type="tool" governance="reversible"
+                   label="Evaluate blocked goal backlog"
+                   output_key="blocked_state"
+                   prompt="hatch-ops goal blocked-status --repo '${gh_repo}' --json"]
+
+    blocked_gate [shape=diamond label="blocked?"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (ready goal listing + count)
+    list_ready_goals [type="tool" governance="reversible" recovery_owner="supervisor"
+                      label="List ready goals"
+                      output_key="ready_goals"
+                      prompt="hatch-ops goal list-ready --repo '${gh_repo}' --json"]
+
+    count_ready_goals [type="tool" governance="reversible"
+                       label="Count ready goals"
+                       output_key="ready_goal_count"
+                       prompt="hatch-ops goal count-ready --ready-goals '${ready_goals}' --json"]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (capacity? gate)
+    check_capacity [type="tool" governance="reversible"
+                    label="Evaluate goal-run capacity"
+                    output_format="json"
+                    outputs="capacity_available,max_goal_runs_per_tick"
+                    prompt="hatch-ops goal intake-capacity --repo '${gh_repo}' --ready-goal-count '${ready_goal_count}' --json"]
+
+    capacity_gate [shape=diamond label="capacity?"]
+
+    // LLM-driven intake policy node with per-node model override placeholder.
+    // model_stylesheet placeholder enables generated factories to swap per-node model policy.
+    intake_policy [type="stack.manager_loop" governance="irreversible"
+                   label="Goal intake policy review"
+                   output_key="goal_queue_decision"
+                   model_stylesheet="intake_policy { llm_model: role-model-overrides; llm_provider: role-provider-overrides; }"
+                   prompt="Return deterministic goal_queue_decision using tick_status, blocked_state, ready_goal_count, and max_goal_runs_per_tick."]
+
+    // Source: packages/capability-goal-decomposition/graphs/goal_queue.dot (subgraph handoff)
+    run_goal_queue [type="pipeline"
+                    label="Run goal queue execution subgraph"
+                    pipeline="graphs/goal_run.dot"
+                    inherit_context="true"
+                    export_keys="goal_queue_result"]
+
+    start -> set_gh_repo -> tick_status -> check_health -> health_gate
+    health_gate -> done [condition="health_state!=healthy"]
+    health_gate -> check_blocked [condition="health_state=healthy"]
+
+    check_blocked -> blocked_gate
+    blocked_gate -> done [condition="blocked_state=blocked"]
+    blocked_gate -> list_ready_goals [condition="blocked_state!=blocked"]
+
+    list_ready_goals -> count_ready_goals -> check_capacity -> capacity_gate
+    capacity_gate -> done [condition="capacity_available!=true"]
+    capacity_gate -> intake_policy [condition="capacity_available=true"]
+
+    intake_policy -> run_goal_queue [input_key="goal_queue_decision"]
+    run_goal_queue -> done
+}

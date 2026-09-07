@@ -1,0 +1,87 @@
+{
+  "schema_version": "skill_context_pack/v1",
+  "skill_name": "hatch_factory_architect",
+  "description": "Deterministic context sources required before proposing Hatch factory architecture changes.",
+  "required_files": [
+    "AGENTS.md",
+    "docs/skills/factory-design/SKILL.md",
+    "apps/hatch/src/cli.ts",
+    "apps/hatch/src/pipeline/handler/register.ts",
+    "factories/mothership/graphs/*.dot",
+    "packages/factory-ops/src/**/*.mjs"
+  ],
+  "entries": [
+    {
+      "key": "agents_contract",
+      "path": "AGENTS.md",
+      "required": true,
+      "reason": "First-principles policy, gates, and operator protocol"
+    },
+    {
+      "key": "factory_design_skill",
+      "path": "docs/skills/factory-design/SKILL.md",
+      "required": true,
+      "reason": "Factory design role contracts and graph patterns"
+    },
+    {
+      "key": "factory_design_templates",
+      "glob": "docs/skills/factory-design/templates/**",
+      "required": true,
+      "reason": "Template artifacts for runbook, role contracts, state conventions, and graph skeletons"
+    },
+    {
+      "key": "hatch_cli_entrypoint",
+      "path": "apps/hatch/src/cli.ts",
+      "required": true,
+      "reason": "Hatch command surface and runtime entrypoint"
+    },
+    {
+      "key": "hatch_pipeline_typescript",
+      "glob": "apps/hatch/src/pipeline/**/*.ts",
+      "required": true,
+      "reason": "Pipeline parser/engine/handlers contracts"
+    },
+    {
+      "key": "hatch_dispatch_typescript",
+      "glob": "apps/hatch/src/dispatch/**/*.ts",
+      "required": true,
+      "reason": "Dispatch loop/registry/store behavior"
+    },
+    {
+      "key": "mothership_graphs",
+      "glob": "factories/mothership/graphs/*.dot",
+      "required": true,
+      "reason": "Current factory orchestration topology"
+    },
+    {
+      "key": "mothership_ops_commands",
+      "glob": "packages/factory-ops/src/**/*.mjs",
+      "required": true,
+      "reason": "Deterministic ops CLI commands and remediation logic"
+    },
+    {
+      "key": "mothership_factory_config",
+      "path": "factories/mothership/factory.config.json",
+      "required": true,
+      "reason": "Factory runtime limits and defaults"
+    },
+    {
+      "key": "factory_supervisor_tick_doc",
+      "path": "docs/factory-supervisor-tick.md",
+      "required": true,
+      "reason": "Supervisor stage map and diagnostic references"
+    },
+    {
+      "key": "factory_native_subagent_contract",
+      "path": "docs/reference/factory-native-subagent-contract.md",
+      "required": true,
+      "reason": "Canonical architect subagent contract and scaffold adoption policy"
+    },
+    {
+      "key": "factories_readme",
+      "path": "factories/README.md",
+      "required": true,
+      "reason": "Factory structure and scaffold expectations"
+    }
+  ]
+}

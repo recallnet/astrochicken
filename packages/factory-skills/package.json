@@ -1,0 +1,19 @@
+{
+  "name": "@hatch/factory-skills",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./package.json": "./package.json",
+    "./skills/*": "./skills/*"
+  },
+  "scripts": {
+    "build": "node -e \"\"",
+    "test": "node --test --test-reporter=dot test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

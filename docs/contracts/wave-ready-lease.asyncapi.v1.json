@@ -1,0 +1,211 @@
+{
+  "asyncapi": "2.6.0",
+  "channels": {
+    "factory.wave.ready-lease": {
+      "address": "factory.wave.ready-lease",
+      "description": "CloudEvents carried in GitHub comments to claim and release ready-wave leases.",
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/WaveReadyLeaseCloudEvent"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "WaveReadyLeaseCloudEvent": {
+        "contentType": "application/json",
+        "name": "WaveReadyLeaseCloudEvent",
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "data": {
+              "additionalProperties": false,
+              "properties": {
+                "action": {
+                  "enum": [
+                    "claim",
+                    "release"
+                  ],
+                  "type": "string"
+                },
+                "at": {
+                  "type": "string"
+                },
+                "milestone_title": {
+                  "type": "string"
+                },
+                "pipeline": {
+                  "type": "string"
+                },
+                "ready_issue_number": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "run_id": {
+                  "type": "string"
+                },
+                "schema_version": {
+                  "const": "wave_ready_lease_event/v1",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema_version",
+                "action",
+                "milestone_title",
+                "ready_issue_number",
+                "run_id",
+                "pipeline",
+                "reason",
+                "at"
+              ],
+              "type": "object"
+            },
+            "datacontenttype": {
+              "const": "application/json",
+              "type": "string"
+            },
+            "dataschema": {
+              "const": "https://recallnet.dev/contracts/wave-ready-lease-event.v1.schema.json",
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "openlineage": {
+              "additionalProperties": false,
+              "properties": {
+                "eventType": {
+                  "enum": [
+                    "START",
+                    "COMPLETE",
+                    "FAIL",
+                    "RUN",
+                    "INPUT",
+                    "OUTPUT"
+                  ],
+                  "type": "string"
+                },
+                "inputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "job": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "namespace": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "namespace",
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "outputs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "namespace",
+                      "name"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "run": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "runId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "runId"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "eventType"
+              ],
+              "type": "object"
+            },
+            "source": {
+              "const": "/factory/wave-ready-lease",
+              "type": "string"
+            },
+            "specversion": {
+              "const": "1.0",
+              "type": "string"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            },
+            "traceparent": {
+              "type": "string"
+            },
+            "tracestate": {
+              "type": "string"
+            },
+            "type": {
+              "const": "dev.recallnet.factory.wave.ready-lease",
+              "type": "string"
+            }
+          },
+          "required": [
+            "specversion",
+            "id",
+            "type",
+            "source",
+            "time",
+            "datacontenttype",
+            "dataschema",
+            "data"
+          ],
+          "type": "object"
+        },
+        "summary": "CloudEvent envelope carrying versioned wave ready lease payloads.",
+        "title": "Wave Ready Lease CloudEvent"
+      }
+    }
+  },
+  "info": {
+    "description": "Governed CloudEvents feed for wave ready lease claim and release comments.",
+    "title": "Wave Ready Lease Feed",
+    "version": "wave_ready_lease_asyncapi/v1"
+  }
+}

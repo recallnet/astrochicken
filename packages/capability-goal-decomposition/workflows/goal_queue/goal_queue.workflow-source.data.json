@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_queue",
+  "familyId": "goal_decomposition",
+  "title": "Goal Queue",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/goal_queue.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_queue",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "goal_queue",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "auto_ready_artifacts",
+        "runtimeNodeId": "auto_ready_artifacts"
+      },
+      {
+        "sourceNodeId": "count_goals",
+        "runtimeNodeId": "count_goals"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "evaluate_goal_review_skip",
+        "runtimeNodeId": "evaluate_goal_review_skip"
+      },
+      {
+        "sourceNodeId": "fan_in",
+        "runtimeNodeId": "fan_in"
+      },
+      {
+        "sourceNodeId": "fan_out",
+        "runtimeNodeId": "fan_out"
+      },
+      {
+        "sourceNodeId": "gate",
+        "runtimeNodeId": "gate"
+      },
+      {
+        "sourceNodeId": "keep_all",
+        "runtimeNodeId": "keep_all"
+      },
+      {
+        "sourceNodeId": "list_goals",
+        "runtimeNodeId": "list_goals"
+      },
+      {
+        "sourceNodeId": "normalize_labels",
+        "runtimeNodeId": "normalize_labels"
+      },
+      {
+        "sourceNodeId": "resolve_skip_review_single_goal",
+        "runtimeNodeId": "resolve_skip_review_single_goal"
+      },
+      {
+        "sourceNodeId": "sanitize_goal_duplicates",
+        "runtimeNodeId": "sanitize_goal_duplicates"
+      },
+      {
+        "sourceNodeId": "sanitize_governance_overlap",
+        "runtimeNodeId": "sanitize_governance_overlap"
+      },
+      {
+        "sourceNodeId": "skip_review_gate",
+        "runtimeNodeId": "skip_review_gate"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "auto_ready_artifacts",
+      "kind": "tool_action",
+      "title": "Auto-ready artifact goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.auto_ready_artifacts",
+        "label": "Auto-ready artifact goals",
+        "output_key": "__auto_ready_artifacts_result",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "count_goals",
+      "kind": "tool_action",
+      "title": "Count goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_json_items",
+        "label": "Count goals",
+        "output_key": "goal_count",
+        "action_raw_b64": "${goal_issues_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "evaluate_goal_review_skip",
+      "kind": "tool_action",
+      "title": "Evaluate single-goal review bypass",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "ceremony.goal_review_skip",
+        "label": "Evaluate single-goal review bypass",
+        "output_format": "json",
+        "outputs": "skip,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason",
+        "action_pipeline": "goal_queue",
+        "action_goal_count": "${goal_count}",
+        "action_skip_review_single_goal": "${skip_review_single_goal}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "fan_in",
+      "kind": "dynamic_fan_in",
+      "title": "Collect goal runs",
+      "dotAttributes": {
+        "type": "fan_in.dynamic",
+        "label": "Collect goal runs",
+        "output_key": "goal_runs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_in.dynamic"
+      }
+    },
+    {
+      "id": "fan_out",
+      "kind": "dynamic_fan_out",
+      "title": "Run goal",
+      "dotAttributes": {
+        "type": "fan_out.dynamic",
+        "label": "Run goal",
+        "item_key": "issue_number",
+        "max_concurrency": "2",
+        "source_key": "kept_goals",
+        "template": "@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_out.dynamic"
+      }
+    },
+    {
+      "id": "gate",
+      "kind": "decision",
+      "title": "Any goals?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Any goals?"
+      }
+    },
+    {
+      "id": "keep_all",
+      "kind": "tool_action",
+      "title": "Keep all goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.filter_kept_goals",
+        "label": "Keep all goals",
+        "output_key": "kept_goals",
+        "action_decisions_b64": "W10=",
+        "action_issues_b64": "${goal_issues_b64}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "list_goals",
+      "kind": "tool_action",
+      "title": "List open goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.list_ready",
+        "label": "List open goals",
+        "output_key": "goal_issues",
+        "action_repo": "${gh_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "normalize_labels",
+      "kind": "tool_action",
+      "title": "Normalize issue labels",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "labels.normalize_issue_state",
+        "label": "Normalize issue labels",
+        "output_key": "__normalize_labels_result",
+        "action_repo": "${gh_repo}",
+        "action_state": "open",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_skip_review_single_goal",
+      "kind": "tool_action",
+      "title": "Resolve single-goal review toggle",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_boolean",
+        "label": "Resolve single-goal review toggle",
+        "output_key": "skip_review_single_goal",
+        "action_fallback": "false",
+        "action_value": "${skip_review_single_goal}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "sanitize_goal_duplicates",
+      "kind": "tool_action",
+      "title": "Normalize goal duplicates",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.sanitize_duplicates",
+        "label": "Normalize goal duplicates",
+        "output_key": "__sanitize_goal_duplicates_result",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_queue",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "sanitize_governance_overlap",
+      "kind": "tool_action",
+      "title": "Normalize governance overlap",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "governance.sanitize_overlap",
+        "label": "Normalize governance overlap",
+        "output_key": "__sanitize_governance_overlap_result",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "goal_queue",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "skip_review_gate",
+      "kind": "decision",
+      "title": "Skip review ceremony?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Skip review ceremony?"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "keep_all",
+      "to": "fan_out"
+    },
+    {
+      "from": "fan_out",
+      "to": "fan_in"
+    },
+    {
+      "from": "fan_in",
+      "to": "done"
+    },
+    {
+      "from": "start",
+      "to": "normalize_labels"
+    },
+    {
+      "from": "normalize_labels",
+      "to": "sanitize_governance_overlap"
+    },
+    {
+      "from": "sanitize_governance_overlap",
+      "to": "auto_ready_artifacts"
+    },
+    {
+      "from": "auto_ready_artifacts",
+      "to": "sanitize_goal_duplicates"
+    },
+    {
+      "from": "sanitize_goal_duplicates",
+      "to": "list_goals"
+    },
+    {
+      "from": "list_goals",
+      "to": "count_goals"
+    },
+    {
+      "from": "count_goals",
+      "to": "resolve_skip_review_single_goal"
+    },
+    {
+      "from": "resolve_skip_review_single_goal",
+      "to": "gate"
+    },
+    {
+      "from": "evaluate_goal_review_skip",
+      "to": "skip_review_gate"
+    },
+    {
+      "from": "gate",
+      "to": "done",
+      "condition": "goal_count=0",
+      "dotAttributes": {
+        "condition": "goal_count=0"
+      }
+    },
+    {
+      "from": "gate",
+      "to": "evaluate_goal_review_skip",
+      "condition": "goal_count!=0",
+      "dotAttributes": {
+        "condition": "goal_count!=0"
+      }
+    },
+    {
+      "from": "skip_review_gate",
+      "to": "keep_all",
+      "condition": "skip!=true",
+      "label": "full",
+      "dotAttributes": {
+        "condition": "skip!=true",
+        "label": "full"
+      }
+    },
+    {
+      "from": "skip_review_gate",
+      "to": "keep_all",
+      "condition": "skip=true",
+      "label": "skip",
+      "dotAttributes": {
+        "condition": "skip=true",
+        "label": "skip"
+      }
+    }
+  ]
+}

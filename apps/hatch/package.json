@@ -1,0 +1,69 @@
+{
+	"name": "hatch",
+	"version": "0.1.0",
+	"description": "AI pipeline runner — DOT graphs for multi-step AI workflows",
+	"type": "module",
+	"bin": {
+		"hatch": "dist/cli.js"
+	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./factory/context-resolver": {
+			"types": "./dist/factory/context-resolver.d.ts",
+			"import": "./dist/factory/context-resolver.js"
+		},
+		"./factory/conformance-harness": {
+			"types": "./dist/factory/conformance-harness.d.ts",
+			"import": "./dist/factory/conformance-harness.js"
+		},
+		"./factory/conformance-cli": {
+			"types": "./dist/factory/conformance-cli.d.ts",
+			"import": "./dist/factory/conformance-cli.js"
+		},
+		"./factory/config-schema": {
+			"types": "./dist/factory/config-schema.d.ts",
+			"import": "./dist/factory/config-schema.js"
+		}
+	},
+	"scripts": {
+		"prebuild": "pnpm --filter @recallnet/factory-telemetry --silent build",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "node ../../scripts/run-package-test-manifest.mjs --repo-root ../.. --manifest config/testing/package-test-manifests/apps-hatch.json --suite default",
+		"test:guard-gates": "node ../../scripts/run-package-test-manifest.mjs --repo-root ../.. --manifest config/testing/package-test-manifests/apps-hatch.json --suite guard-gates",
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "pnpm build"
+	},
+	"dependencies": {
+		"@hatch/capability-artifact-ingestion": "workspace:*",
+		"@hatch/capability-brainstorming": "workspace:*",
+		"@hatch/capability-goal-decomposition": "workspace:*",
+		"@hatch/capability-software-development": "workspace:*",
+		"@hatch/factory-core": "workspace:*",
+		"@hatch/capability-release-reporting": "workspace:*",
+		"@mariozechner/pi-ai": "^0.56.2",
+		"@mariozechner/pi-coding-agent": "^0.56.2",
+		"@recallnet/factory-telemetry": "workspace:*",
+		"langfuse": "^3.38.6",
+		"pg": "^8.16.3",
+		"pi-messenger": "^0.13.0",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@hatch/tsconfig": "workspace:*",
+		"@types/node": "^22.0.0",
+		"@types/pg": "^8.15.6",
+		"@vitest/coverage-v8": "^3.2.4",
+		"typescript": "^5.7.3",
+		"vitest": "^3.2.4"
+	},
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"license": "MIT"
+}

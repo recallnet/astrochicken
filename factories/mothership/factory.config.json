@@ -1,0 +1,110 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "mothership",
+  "factory_root": "factories/mothership",
+  "kind_id": "mothership",
+  "instance_id": "mothership",
+  "target_repo": "recallnet/astrochicken",
+  "control_plane_repo": "recallnet/astrochicken",
+  "destinations": {
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": ["managed-factory-bug", "kind:mothership"]
+    }
+  },
+  "tracking_issue": 407,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+    "latency_slo_seconds": 15
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md"
+  },
+  "conformance": {
+    "entrypoint": "factories/mothership/scripts/run-conformance.sh",
+    "fixtures": "factories/mothership/conformance/data",
+    "smoke_graph": "factories/mothership/conformance/factory_supervisor_tick.dot",
+    "runs_dir": ".hatch/mothership/runs"
+  },
+  "scenarios": {
+    "root": "factories/mothership/scenarios"
+  },
+  "pipeline": {
+    "supervisor_tick": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    "maintenance_interval_seconds": 300
+  },
+  "runs_dir": ".hatch/mothership/runs",
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "slack_webhook_url": "${MOTHERSHIP_SLACK_WEBHOOK_URL}",
+  "schedules": {
+    "jobs": [
+      {
+        "id": "daily-lens",
+        "type": "graph",
+        "graph": "factories/mothership/graphs/daily_lens_publish.dot",
+        "cron": "30 9 * * *",
+        "time_zone": "America/Denver",
+        "catch_up": true,
+        "report_window_hours": 24,
+        "repo": "recallnet/astrochicken",
+        "output_dir": "reports/lens",
+        "notify_slack": true,
+        "issue_labels": ["daily-lens"]
+      },
+      {
+        "id": "daily-release-report",
+        "type": "graph",
+        "graph": "factories/mothership/graphs/daily_release_report.dot",
+        "cron": "30 14 * * *",
+        "time_zone": "America/Denver",
+        "catch_up": false,
+        "repo": "recallnet/astrochicken",
+        "notify_slack": true,
+        "issue_labels": ["daily-release-report"]
+      }
+    ]
+  },
+  "capabilities": {
+    "goal_decomposition": {
+      "timeouts": {
+        "issue_draft": "30m",
+        "issue_repair": "30m",
+        "issue_judge": "30m",
+        "issue_revise": "30m"
+      }
+    },
+    "demo": {
+      "policy": "auto"
+    }
+  },
+  "policyPack": {
+    "version": "v1",
+    "overrides": {}
+  },
+  "trust": {
+    "domain": "mothership.local",
+    "roles": [
+      "mothership.local.codergen",
+      "mothership.local.tool",
+      "mothership.local.agent.worktree",
+      "mothership.local.stack.manager_loop",
+      "mothership.local.pipeline",
+      "mothership.local.fan_out.dynamic",
+      "mothership.local.fan_in.dynamic"
+    ]
+  },
+  "trust_domain": "mothership.local",
+  "trust_roles": [
+    "mothership.local.codergen",
+    "mothership.local.tool",
+    "mothership.local.agent.worktree",
+    "mothership.local.stack.manager_loop",
+    "mothership.local.pipeline",
+    "mothership.local.fan_out.dynamic",
+    "mothership.local.fan_in.dynamic"
+  ],
+  "max_concurrent_waves": 1,
+  "max_goal_runs_per_tick": 1
+}

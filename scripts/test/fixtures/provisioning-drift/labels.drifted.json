@@ -1,0 +1,28 @@
+{
+  "example/brainstorm-home": [
+    {
+      "name": "hatch:intake",
+      "description": "Managed factory intake item",
+      "color": "1D76DB"
+    }
+  ],
+  "example/mothership-home": [
+    {
+      "name": "managed-factory-bug",
+      "description": "Factory label: managed-factory-bug",
+      "color": "5319e7"
+    },
+    {
+      "name": "kind:mothership",
+      "description": "Managed factory kind label: mothership",
+      "color": "5319E7"
+    }
+  ],
+  "example/example-trading-home": [
+    {
+      "name": "managed-factory-bug",
+      "description": "Factory label: managed-factory-bug",
+      "color": "5319e7"
+    }
+  ]
+}

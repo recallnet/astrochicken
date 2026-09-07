@@ -1,0 +1,5 @@
+digraph clean {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  start -> done
+}

@@ -1,0 +1,28 @@
+{
+  "delivery_decision": "slack_and_issue",
+  "headline": "Fleet-wide factory health in one command",
+  "before_state": "Factory health understanding required stitching together raw metrics and merge output across separate surfaces.",
+  "after_state": "A single release brief now carries deterministic significance context and comprehension framing for shipped changes.",
+  "summary": "Release reporting now clusters shipped goals, merge throughput, and wave timing into a single understanding brief instead of a noisy merge-by-merge stream.",
+  "conceptual_shift": "Release reporting moved from per-merge narration to a significance-gated comprehension brief.",
+  "why_it_matters": "The team gets fewer interruptions and a cleaner mental model of what changed in the factory.",
+  "proof_points": [
+    "Goal #1517 delivered release report context assembly with deterministic worthiness scoring."
+  ],
+  "structural_changes": [
+    "release-worthiness now emits deterministic significance fields consumed by release narration."
+  ],
+  "behavioral_shifts": [
+    "Narration now expects comprehension framing whenever worthiness marks the window as significant."
+  ],
+  "implicit_decisions": [
+    "The significance threshold is currently heuristic and should be monitored for calibration drift."
+  ],
+  "entry_points": [
+    "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+    "packages/factory-ops/src/commands/release-build-report-context.mjs"
+  ],
+  "watch_items": [
+    "If the threshold is too strict, large goals may still need explicit escalation."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "hatch.shared-surface-ownership.v1",
+  "scan_roots": [
+    {
+      "path": "apps",
+      "extensions": [".ts", ".js", ".mjs"]
+    },
+    {
+      "path": "packages",
+      "extensions": [".ts", ".js", ".mjs"]
+    },
+    {
+      "path": "scripts",
+      "extensions": [".mjs"],
+      "ignore_prefixes": ["scripts/test/fixtures/"]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "github_transport",
+      "description": "Direct GitHub CLI transport belongs in the shared GitHub adapter package.",
+      "owner_prefixes": [
+        "packages/github-adapter/src/"
+      ],
+      "detectors": [
+        {
+          "id": "direct_gh_spawn",
+          "message": "Route GitHub CLI transport through @hatch/github-adapter instead of spawning `gh` directly.",
+          "regex": "\\b(?:spawnSync|spawn|execFileSync|execSync)\\s*\\(\\s*['\\\"]gh['\\\"]"
+        }
+      ]
+    }
+  ]
+}

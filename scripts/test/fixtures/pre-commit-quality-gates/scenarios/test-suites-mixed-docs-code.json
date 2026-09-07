@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["docs/guide.md", "apps/hatch/src/cli.ts"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": ["test:guard-gates"],
+  "expectedReason": "bucket_guard_only"
+}

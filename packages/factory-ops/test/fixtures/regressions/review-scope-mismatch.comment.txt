@@ -1,0 +1,5 @@
+Scope mismatch for #560: the implementation changes files outside the issue scope.
+
+The issue asked for wiring remediation into the supervisor tick graph, but the
+changes also modify the wave dispatch path and add unrelated test fixtures.
+This constitutes a scope violation that should be flagged during review.

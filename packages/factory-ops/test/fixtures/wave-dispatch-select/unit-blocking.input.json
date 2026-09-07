@@ -1,0 +1,31 @@
+{
+  "input": {
+    "milestones": [
+      { "title": "goal-3-wave-1" },
+      { "title": "goal-3-wave-2" }
+    ],
+    "readyIssues": [],
+    "prioritiesText": "",
+    "maxConcurrent": 2
+  },
+  "milestoneIssues": {
+    "goal-3-wave-1": [
+      { "number": 401, "title": "Task A" },
+      { "number": 402, "title": "Task B" }
+    ],
+    "goal-3-wave-2": [
+      { "number": 501, "title": "Task C" }
+    ]
+  },
+  "blockedBy": {
+    "401": [
+      { "number": 402, "state": "OPEN", "milestone": { "title": "goal-3-wave-1" } }
+    ],
+    "402": [
+      { "number": 401, "state": "OPEN", "milestone": { "title": "goal-3-wave-1" } }
+    ],
+    "501": [
+      { "number": 999, "state": "OPEN", "milestone": { "title": "goal-3-wave-0" } }
+    ]
+  }
+}

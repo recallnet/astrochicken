@@ -1,0 +1,74 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "brainstorm",
+  "factory_root": "factories/brainstorm",
+  "kind_id": "brainstorm",
+  "instance_id": "brainstorm",
+  "target_repo": "example-org/example-notes",
+  "control_plane_repo": "recallnet/astrochicken",
+  "workspace_mode": "api_only",
+  "service_registry_path": "factory-registry.json",
+  "installation_manifest_path": ".hatch/hosts/brainstorm/installation.json",
+  "destinations": {
+    "goal_issues": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "goal",
+        "source:brainstorm"
+      ]
+    },
+    "platform_incidents": {
+      "repo": "recallnet/astrochicken",
+      "labels": [
+        "managed-factory-bug",
+        "kind:brainstorm"
+      ]
+    }
+  },
+  "tracking_issue": 2015,
+  "provider": "openrouter",
+  "model": "openai/gpt-5.3-codex",
+  "dispatch": {
+    "graph": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
+  },
+  "skills": {
+    "supervisor": "packages/factory-skills/skills/runtime/brainstorm_supervisor_review/SKILL.md"
+  },
+  "scenarios": {
+    "root": "factories/brainstorm/scenarios/brainstorm"
+  },
+  "pipeline": {
+    "supervisor_tick": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
+  },
+  "runs_dir": ".hatch/brainstorm/runs",
+  "canonical_checkout_path": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+  "policyPack": {
+    "version": "v1",
+    "overrides": {}
+  },
+  "trust": {
+    "domain": "brainstorm.local",
+    "roles": [
+      "brainstorm.local.codergen",
+      "brainstorm.local.tool",
+      "brainstorm.local.agent.worktree",
+      "brainstorm.local.stack.manager_loop",
+      "brainstorm.local.pipeline",
+      "brainstorm.local.fan_out.dynamic",
+      "brainstorm.local.fan_in.dynamic"
+    ]
+  },
+  "trust_domain": "brainstorm.local",
+  "trust_role": "brainstorm.local.tool",
+  "trust_roles": [
+    "brainstorm.local.codergen",
+    "brainstorm.local.tool",
+    "brainstorm.local.agent.worktree",
+    "brainstorm.local.stack.manager_loop",
+    "brainstorm.local.pipeline",
+    "brainstorm.local.fan_out.dynamic",
+    "brainstorm.local.fan_in.dynamic"
+  ],
+  "max_concurrent_brainstorms": 1,
+  "max_brainstorms_per_tick": 1
+}

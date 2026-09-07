@@ -1,0 +1,7 @@
+{
+  "stagedPaths": ["apps/hatch/src/cli.ts"],
+  "skipTests": "1",
+  "expectedStatus": 0,
+  "expectedNpmCalls": [],
+  "expectedReason": "skip_tests_override"
+}

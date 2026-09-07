@@ -1,0 +1,854 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "merge_item",
+  "familyId": "merge",
+  "title": "Merge Item",
+  "description": "Typed workflow source owner for packages/capability-merge/graphs/merge_item.dot.",
+  "sourcePath": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "merge_item",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "merge_item",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "attempt_merge",
+        "runtimeNodeId": "attempt_merge"
+      },
+      {
+        "sourceNodeId": "build_conflict_packet",
+        "runtimeNodeId": "build_conflict_packet"
+      },
+      {
+        "sourceNodeId": "cleanup_failed_merge",
+        "runtimeNodeId": "cleanup_failed_merge"
+      },
+      {
+        "sourceNodeId": "cleanup_merge_worktree",
+        "runtimeNodeId": "cleanup_merge_worktree"
+      },
+      {
+        "sourceNodeId": "close_issue",
+        "runtimeNodeId": "close_issue"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "encode_integration_command",
+        "runtimeNodeId": "encode_integration_command"
+      },
+      {
+        "sourceNodeId": "encode_merge_notes",
+        "runtimeNodeId": "encode_merge_notes"
+      },
+      {
+        "sourceNodeId": "extract_merge",
+        "runtimeNodeId": "extract_merge"
+      },
+      {
+        "sourceNodeId": "finalize_gate",
+        "runtimeNodeId": "finalize_gate"
+      },
+      {
+        "sourceNodeId": "finalize_merge_commit",
+        "runtimeNodeId": "finalize_merge_commit"
+      },
+      {
+        "sourceNodeId": "integration",
+        "runtimeNodeId": "integration"
+      },
+      {
+        "sourceNodeId": "load_merge_resolve_conflict_retry_task_prompt",
+        "runtimeNodeId": "load_merge_resolve_conflict_retry_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolve_conflict_task_prompt",
+        "runtimeNodeId": "load_merge_resolve_conflict_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolver_system_prompt",
+        "runtimeNodeId": "load_merge_resolver_system_prompt"
+      },
+      {
+        "sourceNodeId": "merge_gate",
+        "runtimeNodeId": "merge_gate"
+      },
+      {
+        "sourceNodeId": "rebase_gate",
+        "runtimeNodeId": "rebase_gate"
+      },
+      {
+        "sourceNodeId": "rebase_on_main",
+        "runtimeNodeId": "rebase_on_main"
+      },
+      {
+        "sourceNodeId": "report",
+        "runtimeNodeId": "report"
+      },
+      {
+        "sourceNodeId": "resolution_gate",
+        "runtimeNodeId": "resolution_gate"
+      },
+      {
+        "sourceNodeId": "resolve_conflict",
+        "runtimeNodeId": "resolve_conflict"
+      },
+      {
+        "sourceNodeId": "retry_resolve_conflict",
+        "runtimeNodeId": "retry_resolve_conflict"
+      },
+      {
+        "sourceNodeId": "route_error_to_resolver",
+        "runtimeNodeId": "route_error_to_resolver"
+      },
+      {
+        "sourceNodeId": "set_resolution_source_deterministic",
+        "runtimeNodeId": "set_resolution_source_deterministic"
+      },
+      {
+        "sourceNodeId": "set_resolution_source_llm",
+        "runtimeNodeId": "set_resolution_source_llm"
+      },
+      {
+        "sourceNodeId": "set_status_already",
+        "runtimeNodeId": "set_status_already"
+      },
+      {
+        "sourceNodeId": "set_status_failed",
+        "runtimeNodeId": "set_status_failed"
+      },
+      {
+        "sourceNodeId": "set_status_merged",
+        "runtimeNodeId": "set_status_merged"
+      },
+      {
+        "sourceNodeId": "setup_merge_worktree",
+        "runtimeNodeId": "setup_merge_worktree"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "verify_resolution",
+        "runtimeNodeId": "verify_resolution"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "attempt_merge",
+      "kind": "tool_action",
+      "title": "Attempt deterministic merge",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.attempt_deterministic",
+        "label": "Attempt deterministic merge",
+        "output_format": "json",
+        "outputs": "merge_status,merge_stdout,merge_stderr,merge_worktree_dir,merge_branch_head_sha,merged_head_sha",
+        "action_repo": "${repo}",
+        "action_branch": "${branch}",
+        "action_branch_head_sha": "${merge_branch_head_sha}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "build_conflict_packet",
+      "kind": "tool_action",
+      "title": "Build conflict packet",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.build_conflict_packet",
+        "label": "Build conflict packet",
+        "output_format": "json",
+        "outputs": "conflict_packet_path,conflict_packet_id,conflict_packet_schema_version,conflict_packet_storage_class",
+        "action_repo": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "merge_item",
+        "action_node_id": "build_conflict_packet",
+        "action_branch": "${branch}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_merge_candidates": "${merge_candidates}",
+        "action_merge_stderr": "${merge_stderr}",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "cleanup_failed_merge",
+      "kind": "llm_prompt",
+      "title": "Cleanup failed merge state",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "label": "Cleanup failed merge state",
+        "output_key": "__cleanup_failed_merge_result",
+        "prompt": "# hatch:no-inline-script-ok\ngit -C \"${merge_worktree_dir}\" merge --abort >/dev/null 2>&1 || true\ngit -C \"${merge_worktree_dir}\" rebase --abort >/dev/null 2>&1 || true",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "cleanup_merge_worktree",
+      "kind": "tool_action",
+      "title": "Cleanup merge worktree",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.cleanup_worktree",
+        "label": "Cleanup merge worktree",
+        "output_key": "__cleanup_merge_worktree_result",
+        "action_repo": "${repo}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "close_issue",
+      "kind": "llm_prompt",
+      "title": "Close merged issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "label": "Close merged issue",
+        "output_key": "__close_issue_result",
+        "prompt": "# hatch:no-inline-script-ok\nif [ '${final_merge_status}' = 'merged' ] || [ '${final_merge_status}' = 'already_merged' ]; then gh issue close ${issue_number} --repo ${gh_repo} --reason completed || true; fi",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "encode_integration_command",
+      "kind": "tool_action",
+      "title": "Encode integration command",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode integration command",
+        "output_key": "integration_command_b64",
+        "action_value": "${integration_command}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "encode_merge_notes",
+      "kind": "tool_action",
+      "title": "Encode merge notes",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.encode_base64",
+        "label": "Encode merge notes",
+        "output_key": "merge_notes_b64",
+        "action_value": "${merge_stderr} ${resolution_notes}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "extract_merge",
+      "kind": "tool_action",
+      "title": "Extract merge",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.extract_item",
+        "label": "Extract merge",
+        "output_format": "json",
+        "outputs": "issue_number,branch,worktree_dir",
+        "action_merge_item": "${merge_item}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "finalize_gate",
+      "kind": "decision",
+      "title": "Finalize status",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Finalize status"
+      }
+    },
+    {
+      "id": "finalize_merge_commit",
+      "kind": "tool_action",
+      "title": "Finalize merge commit if pending",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.finalize_commit",
+        "label": "Finalize merge commit if pending",
+        "output_format": "json",
+        "outputs": "finalize_status,finalize_reason",
+        "action_repo": "${repo}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "integration",
+      "kind": "tool_action",
+      "title": "Integration checks (non-blocking)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.run_integration",
+        "label": "Integration checks (non-blocking)",
+        "output_key": "integration_result",
+        "output_format": "json",
+        "outputs": "integration_command,integration_exit_code,integration_stdout,integration_stderr,integration_duration_ms,integration_legacy_text",
+        "action_repo": "${repo}",
+        "action_integration_command_b64": "${integration_command_b64}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_merge_resolve_conflict_retry_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load retry resolve-conflict task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load retry resolve-conflict task prompt",
+        "output_key": "merge_resolve_conflict_retry_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_resolve_conflict.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_merge_resolve_conflict_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load resolve-conflict task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load resolve-conflict task prompt",
+        "output_key": "merge_resolve_conflict_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_merge_resolver_system_prompt",
+      "kind": "llm_prompt",
+      "title": "Load merge resolver system prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load merge resolver system prompt",
+        "output_key": "merge_resolver_system_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "merge_gate",
+      "kind": "decision",
+      "title": "Merge status",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Merge status"
+      }
+    },
+    {
+      "id": "rebase_gate",
+      "kind": "decision",
+      "title": "Rebase status",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Rebase status"
+      }
+    },
+    {
+      "id": "rebase_on_main",
+      "kind": "tool_action",
+      "title": "Rebase branch on main",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.rebase_on_main",
+        "label": "Rebase branch on main",
+        "output_format": "json",
+        "outputs": "rebase_status,rebase_stdout,rebase_stderr,merge_worktree_dir,merge_branch_head_sha",
+        "action_repo": "${repo}",
+        "action_branch": "${branch}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "report",
+      "kind": "tool_action",
+      "title": "Report merge",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.build_report",
+        "label": "Report merge",
+        "output_key": "merge_result",
+        "output_format": "json",
+        "outputs": "issue_number,branch,merge_status,notes,path_taken,hatch.merge.resolver",
+        "action_issue_number": "${issue_number}",
+        "action_branch": "${branch}",
+        "action_integration_result": "${integration_result}",
+        "action_merge_resolver": "${resolution_source}",
+        "action_merge_status": "${final_merge_status}",
+        "action_notes_b64": "${merge_notes_b64}",
+        "action_path_taken": "merge",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "resolution_gate",
+      "kind": "decision",
+      "title": "Conflict resolved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Conflict resolved?"
+      }
+    },
+    {
+      "id": "resolve_conflict",
+      "kind": "llm_prompt",
+      "title": "Resolve merge conflict",
+      "dotAttributes": {
+        "class": "merge_resolver",
+        "benchmark_job_id": "goal.execute.merge.resolve_conflict",
+        "llm_path_id": "capability.merge_item.resolve_conflict",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge",
+        "label": "Resolve merge conflict",
+        "reasoning_effort": "low",
+        "timeout": "45m",
+        "prompt": "${merge_resolver_system_prompt}\n\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\n\n${merge_resolve_conflict_task_prompt}\n\nConflict packet: ${conflict_packet_path}",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_source": "merge_resolve_conflict_task_prompt",
+        "recovery_owner": "supervisor",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      }
+    },
+    {
+      "id": "retry_resolve_conflict",
+      "kind": "llm_prompt",
+      "title": "Retry: resolve merge conflict",
+      "dotAttributes": {
+        "class": "merge_resolver",
+        "benchmark_job_id": "goal.execute.merge.retry_resolve_conflict",
+        "llm_path_id": "capability.merge_item.retry_resolve_conflict",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "goal.execute.merge",
+        "label": "Retry: resolve merge conflict",
+        "reasoning_effort": "low",
+        "timeout": "60m",
+        "prompt": "${merge_resolver_system_prompt}\n\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\n\n${merge_resolve_conflict_retry_task_prompt}\n\nConflict packet: ${conflict_packet_path}",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_source": "merge_resolve_conflict_retry_task_prompt",
+        "recovery_owner": "supervisor",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_retry_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      }
+    },
+    {
+      "id": "route_error_to_resolver",
+      "kind": "llm_prompt",
+      "title": "Route error to resolver",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Route error to resolver",
+        "prompt": ":",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_resolution_source_deterministic",
+      "kind": "llm_prompt",
+      "title": "Set merge resolver: deterministic",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set merge resolver: deterministic",
+        "output_key": "resolution_source",
+        "prompt": "printf 'deterministic'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_resolution_source_llm",
+      "kind": "llm_prompt",
+      "title": "Set merge resolver: llm",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set merge resolver: llm",
+        "output_key": "resolution_source",
+        "prompt": "printf 'llm'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_status_already",
+      "kind": "llm_prompt",
+      "title": "Set already-merged status",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set already-merged status",
+        "output_key": "final_merge_status",
+        "prompt": "printf 'already_merged'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_status_failed",
+      "kind": "llm_prompt",
+      "title": "Set failed status",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failed status",
+        "output_key": "final_merge_status",
+        "prompt": "printf 'failed'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_status_merged",
+      "kind": "llm_prompt",
+      "title": "Set merged status",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set merged status",
+        "output_key": "final_merge_status",
+        "prompt": "printf 'merged'",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "setup_merge_worktree",
+      "kind": "tool_action",
+      "title": "Setup merge worktree",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.setup_worktree",
+        "label": "Setup merge worktree",
+        "output_format": "json",
+        "outputs": "setup,reason,merge_worktree_dir,merge_base_ref,merge_branch_head_sha",
+        "action_repo": "${repo}",
+        "action_issue_number": "${issue_number}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "merge-item",
+        "action_branch": "${branch}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "verify_resolution",
+      "kind": "tool_action",
+      "title": "Verify conflict resolved",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "merge.verify_resolution",
+        "label": "Verify conflict resolved",
+        "output_format": "json",
+        "outputs": "resolution_status,resolution_notes",
+        "action_repo": "${repo}",
+        "action_branch": "${branch}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "encode_integration_command",
+      "to": "integration"
+    },
+    {
+      "from": "integration",
+      "to": "close_issue"
+    },
+    {
+      "from": "close_issue",
+      "to": "encode_merge_notes"
+    },
+    {
+      "from": "encode_merge_notes",
+      "to": "report"
+    },
+    {
+      "from": "report",
+      "to": "cleanup_merge_worktree"
+    },
+    {
+      "from": "cleanup_merge_worktree",
+      "to": "done"
+    },
+    {
+      "from": "set_resolution_source_llm",
+      "to": "build_conflict_packet"
+    },
+    {
+      "from": "build_conflict_packet",
+      "to": "resolve_conflict"
+    },
+    {
+      "from": "resolve_conflict",
+      "to": "finalize_merge_commit"
+    },
+    {
+      "from": "finalize_merge_commit",
+      "to": "finalize_gate"
+    },
+    {
+      "from": "set_status_merged",
+      "to": "encode_integration_command"
+    },
+    {
+      "from": "start",
+      "to": "load_merge_resolver_system_prompt"
+    },
+    {
+      "from": "load_merge_resolver_system_prompt",
+      "to": "load_merge_resolve_conflict_task_prompt"
+    },
+    {
+      "from": "load_merge_resolve_conflict_task_prompt",
+      "to": "load_merge_resolve_conflict_retry_task_prompt"
+    },
+    {
+      "from": "load_merge_resolve_conflict_retry_task_prompt",
+      "to": "extract_merge"
+    },
+    {
+      "from": "extract_merge",
+      "to": "setup_merge_worktree"
+    },
+    {
+      "from": "setup_merge_worktree",
+      "to": "rebase_on_main"
+    },
+    {
+      "from": "rebase_on_main",
+      "to": "rebase_gate"
+    },
+    {
+      "from": "verify_resolution",
+      "to": "resolution_gate"
+    },
+    {
+      "from": "attempt_merge",
+      "to": "merge_gate"
+    },
+    {
+      "from": "cleanup_failed_merge",
+      "to": "encode_integration_command"
+    },
+    {
+      "from": "finalize_gate",
+      "to": "retry_resolve_conflict",
+      "condition": "finalize_status!=ok",
+      "dotAttributes": {
+        "condition": "finalize_status!=ok"
+      }
+    },
+    {
+      "from": "finalize_gate",
+      "to": "verify_resolution",
+      "condition": "finalize_status=ok",
+      "dotAttributes": {
+        "condition": "finalize_status=ok"
+      }
+    },
+    {
+      "from": "merge_gate",
+      "to": "route_error_to_resolver",
+      "condition": "merge_status=error",
+      "dotAttributes": {
+        "condition": "merge_status=error"
+      }
+    },
+    {
+      "from": "merge_gate",
+      "to": "set_resolution_source_llm",
+      "condition": "merge_status=conflict",
+      "dotAttributes": {
+        "condition": "merge_status=conflict"
+      }
+    },
+    {
+      "from": "merge_gate",
+      "to": "set_status_already",
+      "condition": "merge_status=already_merged",
+      "dotAttributes": {
+        "condition": "merge_status=already_merged"
+      }
+    },
+    {
+      "from": "merge_gate",
+      "to": "set_status_merged",
+      "condition": "merge_status=merged",
+      "dotAttributes": {
+        "condition": "merge_status=merged"
+      }
+    },
+    {
+      "from": "rebase_gate",
+      "to": "set_resolution_source_deterministic",
+      "condition": "rebase_status=ready",
+      "dotAttributes": {
+        "condition": "rebase_status=ready"
+      }
+    },
+    {
+      "from": "rebase_gate",
+      "to": "set_resolution_source_llm",
+      "condition": "rebase_status!=ready",
+      "dotAttributes": {
+        "condition": "rebase_status!=ready"
+      }
+    },
+    {
+      "from": "resolution_gate",
+      "to": "set_status_failed",
+      "condition": "resolution_status!=resolved",
+      "dotAttributes": {
+        "condition": "resolution_status!=resolved"
+      }
+    },
+    {
+      "from": "resolution_gate",
+      "to": "set_status_merged",
+      "condition": "resolution_status=resolved",
+      "dotAttributes": {
+        "condition": "resolution_status=resolved"
+      }
+    },
+    {
+      "from": "retry_resolve_conflict",
+      "to": "verify_resolution"
+    },
+    {
+      "from": "route_error_to_resolver",
+      "to": "set_resolution_source_llm"
+    },
+    {
+      "from": "set_resolution_source_deterministic",
+      "to": "attempt_merge"
+    },
+    {
+      "from": "set_status_already",
+      "to": "encode_integration_command"
+    },
+    {
+      "from": "set_status_failed",
+      "to": "cleanup_failed_merge"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Guardrail: default push target is main only.
+#
+# Allowed by default:
+#   - refs/heads/main
+#   - deletions (local sha all-zero)
+#
+# Always blocked:
+#   - refs/heads/wave/*
+#
+# Escape hatch (explicit):
+#   ALLOW_NON_MAIN_PUSH=true git push ...
+#   ALLOW_PUSH_BRANCH=<branch> git push ...
+
+remote_name="${1:-}"
+remote_url="${2:-}"
+
+zero="0000000000000000000000000000000000000000"
+blocked=0
+pushing_to_main=0
+declare -a main_push_updates=()
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [[ -z "${local_ref:-}" ]] && continue
+
+  if [[ "${local_sha}" == "$zero" ]]; then
+    continue
+  fi
+
+  branch=""
+  if [[ "$local_ref" == refs/heads/* ]]; then
+    branch="${local_ref#refs/heads/}"
+  fi
+
+  if [[ -z "$branch" ]]; then
+    if [[ "${ALLOW_NON_MAIN_PUSH:-}" == "true" ]]; then
+      continue
+    fi
+    echo "[pre-push] blocked non-branch ref push: $local_ref" >&2
+    blocked=1
+    continue
+  fi
+
+  if [[ "$branch" == wave/* ]]; then
+    echo "[pre-push] blocked wave branch push: $branch" >&2
+    blocked=1
+    continue
+  fi
+
+  if [[ "$branch" == "main" ]]; then
+    pushing_to_main=1
+    main_push_updates+=("${remote_sha}:${local_sha}")
+    continue
+  fi
+
+  if [[ "${ALLOW_NON_MAIN_PUSH:-}" == "true" ]]; then
+    continue
+  fi
+  if [[ -n "${ALLOW_PUSH_BRANCH:-}" && "${ALLOW_PUSH_BRANCH}" == "$branch" ]]; then
+    continue
+  fi
+
+  echo "[pre-push] blocked branch push: $branch (default allows only main)" >&2
+  echo "[pre-push] override with ALLOW_NON_MAIN_PUSH=true or ALLOW_PUSH_BRANCH=$branch" >&2
+  blocked=1
+done
+
+if [[ "$blocked" -ne 0 ]]; then
+  echo "[pre-push] push rejected by policy" >&2
+  exit 1
+fi
+
+if [[ "${pushing_to_main:-0}" -eq 1 ]]; then
+  # Fast profile stays lighter than pre-commit, but it must still include the
+  # repo-wide Phase 1 gate-readiness audit to prevent scope/routing drift.
+  push_file_list=$(mktemp)
+  cleanup() {
+    rm -f "$push_file_list"
+  }
+  trap cleanup EXIT
+
+  : > "$push_file_list"
+  for update in "${main_push_updates[@]}"; do
+    remote_sha="${update%%:*}"
+    local_sha="${update##*:}"
+
+    if [[ "$remote_sha" == "$zero" ]]; then
+      git diff-tree --no-commit-id --name-only --diff-filter=ACMRD -M -r -z "$local_sha" >> "$push_file_list"
+      continue
+    fi
+
+    git diff --name-only --diff-filter=ACMRD -M -z "$remote_sha" "$local_sha" >> "$push_file_list"
+  done
+
+  LOG_DIR="$(git rev-parse --show-toplevel)/.hook-logs"
+  mkdir -p "$LOG_DIR"
+  LOG_FILE="$LOG_DIR/pre-push.log"
+
+bootstrap_missing() {
+    [ ! -e node_modules/acorn/package.json ] ||
+    [ ! -e node_modules/ajv/package.json ] ||
+    [ ! -e node_modules/zod/package.json ] ||
+    [ ! -e node_modules/@hatch/factory-ops/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/@hatch/factory-core/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/clipanion/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/hatch/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/pg/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/@hatch/github-adapter/package.json ] ||
+    [ ! -e packages/factory-ops/node_modules/@recallnet/factory-telemetry/package.json ] ||
+    [ ! -e packages/github-adapter/node_modules/@hatch/factory-core/package.json ] ||
+    [ ! -e packages/github-adapter/node_modules/zod/package.json ]
+  }
+
+  if [ -f package.json ] && bootstrap_missing; then
+    if [ -e node_modules/.pnpm ] && [ -f scripts/postinstall-bootstrap.mjs ]; then
+      node scripts/postinstall-bootstrap.mjs >/dev/null 2>&1 || true
+    fi
+  fi
+
+  if [ -f package.json ] && bootstrap_missing; then
+    echo "[pre-push] bootstrap_missing reason=workspace_dependencies_unavailable remedy=\"pnpm install --frozen-lockfile\"" | tee "$LOG_FILE" >&2
+    exit 1
+  fi
+
+  if node scripts/run-gates.mjs --profile fast --telemetry-prefix pre-push --staged-file-list "$push_file_list" >"$LOG_FILE" 2>&1; then
+    echo "[pre-push] ok (log: .hook-logs/pre-push.log)"
+  else
+    rc=$?
+    grep -E '(first_failure|gate_failed|test_suite_failed|ERROR|FAIL|failed)' "$LOG_FILE" 2>/dev/null || true
+    echo "[pre-push] failed (full log: .hook-logs/pre-push.log)"
+    exit $rc
+  fi
+fi
+
+exit 0

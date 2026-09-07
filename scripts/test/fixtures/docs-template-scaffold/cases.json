@@ -1,0 +1,22 @@
+[
+  {
+    "templateId": "architecture",
+    "title": "Architecture Template",
+    "expectedPath": "scripts/test/fixtures/docs-template-scaffold/expected/architecture.md"
+  },
+  {
+    "templateId": "roadmap",
+    "title": "Roadmap Template",
+    "expectedPath": "scripts/test/fixtures/docs-template-scaffold/expected/roadmap.md"
+  },
+  {
+    "templateId": "state_machines",
+    "title": "State Machines Template",
+    "expectedPath": "scripts/test/fixtures/docs-template-scaffold/expected/state_machines.md"
+  },
+  {
+    "templateId": "vision",
+    "title": "Vision Template",
+    "expectedPath": "scripts/test/fixtures/docs-template-scaffold/expected/vision.md"
+  }
+]

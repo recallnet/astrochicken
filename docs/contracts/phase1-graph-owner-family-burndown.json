@@ -1,0 +1,74 @@
+{
+  "schema_version": "phase1_graph_owner_family_burndown/v1",
+  "phase": "1.1",
+  "scope_source": "docs/contracts/phase1-burndown-inventory.json",
+  "scope_surface": "graph_transport",
+  "target_count": 13,
+  "families": [
+    {
+      "owner_family": "family.common_wrapper_binding",
+      "status": "completed",
+      "files": [
+        "factories/brainstorm/graphs/factory_supervisor_tick.dot",
+        "factories/example-web/graphs/factory_supervisor_tick.dot",
+        "factories/example-web/graphs/daily_release_report.dot",
+        "factories/mothership/graphs/daily_release_report.dot"
+      ]
+    },
+    {
+      "owner_family": "family.common_binding_and_brainstorm_domain",
+      "status": "completed",
+      "files": [
+        "factories/brainstorm/graphs/domain_brainstorm.dot",
+        "packages/capability-brainstorming/graphs/brainstorm.dot"
+      ]
+    },
+    {
+      "owner_family": "family.daily_lens",
+      "status": "completed",
+      "files": [
+        "factories/mothership/graphs/daily_lens_publish.dot"
+      ]
+    },
+    {
+      "owner_family": "family.goal_run",
+      "status": "completed",
+      "files": [
+        "packages/capability-goal-decomposition/graphs/goal_run.dot"
+      ]
+    },
+    {
+      "owner_family": "family.goal_queue_and_execution",
+      "status": "completed",
+      "files": [
+        "factories/mothership/graphs/factory_supervisor_tick.dot",
+        "factories/example-web/graphs/domain_example_web.dot"
+      ]
+    },
+    {
+      "owner_family": "family.supervisor_core_and_factory_control_plane",
+      "status": "completed",
+      "files": [
+        "factories/mothership/graphs/factory_supervisor_tick.dot",
+        "factories/example-web/graphs/domain_example_web.dot",
+        "packages/factory-runtime/graphs/managed_supervisor.dot"
+      ]
+    },
+    {
+      "owner_family": "family.scenario_registry",
+      "status": "completed",
+      "files": [
+        "factories/mothership/graphs/write_scenario_item.dot",
+        "factories/mothership/graphs/write_scenarios.dot"
+      ]
+    },
+    {
+      "owner_family": "family.wave_issue_legacy_bridge",
+      "status": "completed",
+      "files": [
+        "factories/mothership/graphs/wave_issue_execute.dot"
+      ]
+    }
+  ],
+  "remaining_graph_transport_backlog": 0
+}

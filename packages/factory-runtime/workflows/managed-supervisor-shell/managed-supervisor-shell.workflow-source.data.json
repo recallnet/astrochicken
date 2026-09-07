@@ -1,0 +1,852 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "managed-supervisor-shell",
+  "familyId": "runtime",
+  "title": "Managed Supervisor Shell",
+  "description": "Typed workflow source owner for packages/factory-runtime/graphs/managed-supervisor-shell.dot.",
+  "sourcePath": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "managed_supervisor"
+  },
+  "sourceMap": {
+    "graphName": "managed-supervisor-shell",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "action_item_gate",
+        "runtimeNodeId": "action_item_gate"
+      },
+      {
+        "sourceNodeId": "check_control_state",
+        "runtimeNodeId": "check_control_state"
+      },
+      {
+        "sourceNodeId": "classify_active",
+        "runtimeNodeId": "classify_active"
+      },
+      {
+        "sourceNodeId": "classify_blocked_platform",
+        "runtimeNodeId": "classify_blocked_platform"
+      },
+      {
+        "sourceNodeId": "classify_degraded",
+        "runtimeNodeId": "classify_degraded"
+      },
+      {
+        "sourceNodeId": "classify_domain_failure",
+        "runtimeNodeId": "classify_domain_failure"
+      },
+      {
+        "sourceNodeId": "classify_idle",
+        "runtimeNodeId": "classify_idle"
+      },
+      {
+        "sourceNodeId": "classify_manifest_failure",
+        "runtimeNodeId": "classify_manifest_failure"
+      },
+      {
+        "sourceNodeId": "classify_paused",
+        "runtimeNodeId": "classify_paused"
+      },
+      {
+        "sourceNodeId": "classify_paused_failure",
+        "runtimeNodeId": "classify_paused_failure"
+      },
+      {
+        "sourceNodeId": "control_state_gate",
+        "runtimeNodeId": "control_state_gate"
+      },
+      {
+        "sourceNodeId": "domain_failure_gate",
+        "runtimeNodeId": "domain_failure_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_run_summary",
+        "runtimeNodeId": "emit_run_summary"
+      },
+      {
+        "sourceNodeId": "evaluate_action_items",
+        "runtimeNodeId": "evaluate_action_items"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate",
+        "runtimeNodeId": "evaluate_open_bug_gate"
+      },
+      {
+        "sourceNodeId": "evaluate_upstream_blockers",
+        "runtimeNodeId": "evaluate_upstream_blockers"
+      },
+      {
+        "sourceNodeId": "intake_gate",
+        "runtimeNodeId": "intake_gate"
+      },
+      {
+        "sourceNodeId": "load_context",
+        "runtimeNodeId": "load_context"
+      },
+      {
+        "sourceNodeId": "manifest_gate",
+        "runtimeNodeId": "manifest_gate"
+      },
+      {
+        "sourceNodeId": "open_bug_gate",
+        "runtimeNodeId": "open_bug_gate"
+      },
+      {
+        "sourceNodeId": "persist_lifecycle_state",
+        "runtimeNodeId": "persist_lifecycle_state"
+      },
+      {
+        "sourceNodeId": "run_domain_graph",
+        "runtimeNodeId": "run_domain_graph"
+      },
+      {
+        "sourceNodeId": "select_intake",
+        "runtimeNodeId": "select_intake"
+      },
+      {
+        "sourceNodeId": "set_empty_domain_result",
+        "runtimeNodeId": "set_empty_domain_result"
+      },
+      {
+        "sourceNodeId": "set_failure_classification_infrastructure",
+        "runtimeNodeId": "set_failure_classification_infrastructure"
+      },
+      {
+        "sourceNodeId": "set_failure_classification_none_manifest",
+        "runtimeNodeId": "set_failure_classification_none_manifest"
+      },
+      {
+        "sourceNodeId": "set_failure_reason_empty_manifest",
+        "runtimeNodeId": "set_failure_reason_empty_manifest"
+      },
+      {
+        "sourceNodeId": "set_failure_reason_upstream",
+        "runtimeNodeId": "set_failure_reason_upstream"
+      },
+      {
+        "sourceNodeId": "snapshot_state",
+        "runtimeNodeId": "snapshot_state"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "upstream_gate",
+        "runtimeNodeId": "upstream_gate"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "action_item_gate",
+      "kind": "decision",
+      "title": "Action items unresolved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Action items unresolved?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "check_control_state",
+      "kind": "llm_prompt",
+      "title": "Check control state",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Check control state",
+        "output_format": "json",
+        "outputs": "control_gate,control_state_action,control_state_reason,should_run,parse_error,state_path",
+        "prompt": "hatch-ops supervisor managed-control-gate --factory-id '${factory_id}' --root-dir '${repo}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_active",
+      "kind": "llm_prompt",
+      "title": "Lifecycle -> active",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Lifecycle -> active",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "prompt": "hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'true' --has-domain-failure 'false'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_blocked_platform",
+      "kind": "llm_prompt",
+      "title": "Lifecycle -> blocked_platform",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Lifecycle -> blocked_platform",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "prompt": "hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'true' --has-action-items '${has_action_items}' --has-selected-work 'false' --has-domain-failure 'false'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_degraded",
+      "kind": "llm_prompt",
+      "title": "Lifecycle -> degraded",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Lifecycle -> degraded",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "prompt": "hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'true' --has-domain-failure 'true'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_domain_failure",
+      "kind": "llm_prompt",
+      "title": "Classify domain failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Classify domain failure",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "prompt": "hatch-ops supervisor managed-failure-classifier --domain-error '${__composite_reason}' --parse-error '${parse_error}' --gate '${control_gate}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_idle",
+      "kind": "llm_prompt",
+      "title": "Lifecycle -> idle",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Lifecycle -> idle",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "prompt": "hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'false' --has-domain-failure 'false'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_manifest_failure",
+      "kind": "llm_prompt",
+      "title": "Classify manifest failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Classify manifest failure",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "prompt": "hatch-ops supervisor managed-failure-classifier --domain-error '${manifest_error}' --parse-error '' --gate 'manifest'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_paused",
+      "kind": "llm_prompt",
+      "title": "Lifecycle -> paused/draining",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Lifecycle -> paused/draining",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "prompt": "hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'false' --has-domain-failure 'false'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_paused_failure",
+      "kind": "llm_prompt",
+      "title": "Classify paused/draining as local control-state owner",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Classify paused/draining as local control-state owner",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "prompt": "hatch-ops supervisor managed-failure-classifier --domain-error '${control_state_action}:${control_state_reason}' --parse-error '' --gate 'control_state'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "control_state_gate",
+      "kind": "decision",
+      "title": "Control state allows tick?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Control state allows tick?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "domain_failure_gate",
+      "kind": "decision",
+      "title": "Domain failure observed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Domain failure observed?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "emit_run_summary",
+      "kind": "llm_prompt",
+      "title": "Emit telemetry run summary",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Emit telemetry run summary",
+        "output_key": "managed_run_summary",
+        "prompt": "hatch-ops supervisor managed-emit-run-summary --factory-id '${factory_id}' --instance-id '${instance_id}' --kind-id '${kind_id}' --home-repo '${target_repo}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --trust-domain '${trust_domain}' --trust-role '${trust_role}' --lifecycle-state '${lifecycle_state}' --health-state '${health_state}' --failure-classification '${failure_classification}' --failure-reason '${failure_reason}' --control-gate '${control_gate}' --control-state-action '${control_state_action}' --control-state-reason '${control_state_reason}' --has-open-upstream-bugs '${has_open_upstream_bugs}' --open-upstream-bug-count '${open_upstream_bug_count}' --open-upstream-bug-numbers '${open_upstream_bug_numbers}' --has-action-items '${has_action_items}' --action-item-count '${action_item_count}' --unresolved-actions '${action_item_count}' --queue-depth '${action_item_count}' --oldest-work-age-seconds '0' --latest-incidents '[]' --has-issue '${has_issue}' --selected-issue-number '${selected_issue_number}' --domain-result '${domain_result}' --manifest-ok '${manifest_ok}' --manifest-error '${manifest_error}' --parse-error '${parse_error}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_action_items",
+      "kind": "llm_prompt",
+      "title": "Evaluate unresolved action items",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Evaluate unresolved action items",
+        "output_format": "json",
+        "outputs": "has_action_items,action_item_count",
+        "prompt": "hatch-ops supervisor managed-action-item-gate --snapshot \"${state_snapshot}\"",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate",
+      "kind": "llm_prompt",
+      "title": "Evaluate open bug gate",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Evaluate open bug gate",
+        "output_format": "json",
+        "outputs": "has_open_bugs,open_bug_count,parse_error",
+        "prompt": "hatch-ops supervisor open-bug-gate --repo '${target_repo}' --factory-id '${factory_id}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_upstream_blockers",
+      "kind": "llm_prompt",
+      "title": "Evaluate upstream managed blockers",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Evaluate upstream managed blockers",
+        "output_format": "json",
+        "outputs": "has_open_upstream_bugs,open_upstream_bug_count,open_upstream_bug_numbers,parse_error",
+        "prompt": "hatch-ops supervisor upstream-bug-gate --repo '${control_plane_repo}' --label 'managed-factory-bug' --label 'kind:${kind_id}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "intake_gate",
+      "kind": "decision",
+      "title": "Intake work selected?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Intake work selected?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "load_context",
+      "kind": "llm_prompt",
+      "title": "Load managed kind + instance context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load managed kind + instance context",
+        "output_format": "json",
+        "outputs": "manifest_ok,manifest_error,factory_id,factory_root,kind_path,instance_path,kind_id,instance_id,target_repo,control_plane_repo,domain_graph,shared_supervisor_shell,destinations_json,intake_json,kind_context_json,trust_domain,trust_role",
+        "prompt": "hatch-ops supervisor managed-load-context --factory-id '${factory_id}' --factory-root '${factory_root}' --kind-path '${kind_path}' --instance-path '${instance_path}' --kind-id '${kind_id}' --instance-id '${instance_id}' --home-repo '${target_repo}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --destinations-json '${destinations_json}' --trust-domain '${trust_domain}' --trust-role '${trust_role}' --root-dir '${repo}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "manifest_gate",
+      "kind": "decision",
+      "title": "Manifests valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Manifests valid?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "open_bug_gate",
+      "kind": "decision",
+      "title": "Open bugs? (self-heal route)",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Open bugs? (self-heal route)",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "persist_lifecycle_state",
+      "kind": "llm_prompt",
+      "title": "Persist lifecycle state snapshot",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Persist lifecycle state snapshot",
+        "output_format": "json",
+        "outputs": "ok,state_path,state_version,mirror_path,mirror_version,mirror_updated_at,mirror_error,lifecycle_state,lifecycle_reason,lifecycle_failure_classification,lifecycle_failure_reason,lifecycle_updated_at,blockers,unresolved_actions,queue_depth,oldest_work_age_seconds,latest_incidents,error,message",
+        "prompt": "hatch-ops supervisor managed-persist-state --factory-id '${factory_id}' --instance-id '${instance_id}' --root-dir '${repo}' --lifecycle-state '${lifecycle_state}' --lifecycle-reason '${failure_reason}' --failure-classification '${failure_classification}' --failure-reason '${failure_reason}' --has-open-upstream-bugs '${has_open_upstream_bugs}' --open-upstream-bug-count '${open_upstream_bug_count}' --open-upstream-bug-numbers '${open_upstream_bug_numbers}' --has-action-items '${has_action_items}' --action-item-count '${action_item_count}' --unresolved-actions '${action_item_count}' --queue-depth '${action_item_count}' --oldest-work-age-seconds '0' --latest-incidents '[]' --actor 'managed_supervisor'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "run_domain_graph",
+      "kind": "pipeline",
+      "title": "Run kind domain graph",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Run kind domain graph",
+        "export_keys": "domain_result",
+        "fail_open": "true",
+        "inherit_context": "true",
+        "pipeline": "${domain_graph}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "select_intake",
+      "kind": "llm_prompt",
+      "title": "Select next intake unit",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Select next intake unit",
+        "output_format": "json",
+        "outputs": "has_issue,selected_issue_number,selected_issue_title,selected_issue_body,intake_json,parse_error",
+        "prompt": "hatch-ops supervisor managed-intake-selector --repo '${target_repo}' --intake-json '${intake_json}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_empty_domain_result",
+      "kind": "llm_prompt",
+      "title": "Set empty domain result",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set empty domain result",
+        "output_key": "domain_result",
+        "prompt": "printf '{}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_classification_infrastructure",
+      "kind": "llm_prompt",
+      "title": "Set failure classification: infrastructure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure classification: infrastructure",
+        "output_key": "failure_classification",
+        "prompt": "printf 'infrastructure'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_classification_none_manifest",
+      "kind": "llm_prompt",
+      "title": "Set failure classification: none (manifest path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure classification: none (manifest path)",
+        "output_key": "failure_classification",
+        "prompt": "printf 'none'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_reason_empty_manifest",
+      "kind": "llm_prompt",
+      "title": "Set empty failure reason (manifest path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set empty failure reason (manifest path)",
+        "output_key": "failure_reason",
+        "prompt": "printf ''",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_reason_upstream",
+      "kind": "llm_prompt",
+      "title": "Set failure reason: upstream blocker gate",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure reason: upstream blocker gate",
+        "output_key": "failure_reason",
+        "prompt": "printf 'open_upstream_bugs=%s issue_numbers=%s parse_error=%s' '${open_upstream_bug_count}' '${open_upstream_bug_numbers}' '${parse_error}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "snapshot_state",
+      "kind": "llm_prompt",
+      "title": "Load durable snapshot",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load durable snapshot",
+        "output_key": "state_snapshot",
+        "prompt": "hatch-ops supervisor state-snapshot --repo '${target_repo}' --factory-id '${factory_id}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --runs-dir '${runs_dir}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "upstream_gate",
+      "kind": "decision",
+      "title": "Open upstream blockers?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Open upstream blockers?",
+        "recovery_owner": "supervisor"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "classify_degraded",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "classify_idle",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "persist_lifecycle_state",
+      "to": "emit_run_summary"
+    },
+    {
+      "from": "emit_run_summary",
+      "to": "done"
+    },
+    {
+      "from": "run_domain_graph",
+      "to": "classify_domain_failure"
+    },
+    {
+      "from": "classify_domain_failure",
+      "to": "domain_failure_gate"
+    },
+    {
+      "from": "set_empty_domain_result",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "start",
+      "to": "load_context"
+    },
+    {
+      "from": "load_context",
+      "to": "manifest_gate"
+    },
+    {
+      "from": "action_item_gate",
+      "to": "run_domain_graph",
+      "condition": "has_action_items=true",
+      "dotAttributes": {
+        "condition": "has_action_items=true"
+      }
+    },
+    {
+      "from": "action_item_gate",
+      "to": "select_intake",
+      "condition": "has_action_items!=true",
+      "dotAttributes": {
+        "condition": "has_action_items!=true"
+      }
+    },
+    {
+      "from": "check_control_state",
+      "to": "control_state_gate"
+    },
+    {
+      "from": "classify_active",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "classify_blocked_platform",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "classify_manifest_failure",
+      "to": "classify_degraded",
+      "condition": "failure_classification!=none",
+      "dotAttributes": {
+        "condition": "failure_classification!=none"
+      }
+    },
+    {
+      "from": "classify_manifest_failure",
+      "to": "set_failure_classification_none_manifest",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "classify_paused_failure",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "classify_paused",
+      "to": "classify_paused_failure"
+    },
+    {
+      "from": "control_state_gate",
+      "to": "classify_paused",
+      "condition": "should_run!=true",
+      "dotAttributes": {
+        "condition": "should_run!=true"
+      }
+    },
+    {
+      "from": "control_state_gate",
+      "to": "evaluate_upstream_blockers",
+      "condition": "should_run=true",
+      "dotAttributes": {
+        "condition": "should_run=true"
+      }
+    },
+    {
+      "from": "domain_failure_gate",
+      "to": "classify_active",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "domain_failure_gate",
+      "to": "classify_degraded",
+      "condition": "failure_classification!=none",
+      "dotAttributes": {
+        "condition": "failure_classification!=none"
+      }
+    },
+    {
+      "from": "evaluate_action_items",
+      "to": "action_item_gate"
+    },
+    {
+      "from": "evaluate_open_bug_gate",
+      "to": "open_bug_gate"
+    },
+    {
+      "from": "evaluate_upstream_blockers",
+      "to": "upstream_gate"
+    },
+    {
+      "from": "intake_gate",
+      "to": "evaluate_open_bug_gate",
+      "condition": "has_issue!=true",
+      "dotAttributes": {
+        "condition": "has_issue!=true"
+      }
+    },
+    {
+      "from": "intake_gate",
+      "to": "run_domain_graph",
+      "condition": "has_issue=true",
+      "dotAttributes": {
+        "condition": "has_issue=true"
+      }
+    },
+    {
+      "from": "manifest_gate",
+      "to": "classify_manifest_failure",
+      "condition": "manifest_ok!=true",
+      "dotAttributes": {
+        "condition": "manifest_ok!=true"
+      }
+    },
+    {
+      "from": "manifest_gate",
+      "to": "snapshot_state",
+      "condition": "manifest_ok=true",
+      "dotAttributes": {
+        "condition": "manifest_ok=true"
+      }
+    },
+    {
+      "from": "open_bug_gate",
+      "to": "classify_idle",
+      "condition": "has_open_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs!=true"
+      }
+    },
+    {
+      "from": "open_bug_gate",
+      "to": "run_domain_graph",
+      "condition": "has_open_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs=true"
+      }
+    },
+    {
+      "from": "select_intake",
+      "to": "intake_gate"
+    },
+    {
+      "from": "set_failure_classification_infrastructure",
+      "to": "set_failure_reason_upstream"
+    },
+    {
+      "from": "set_failure_classification_none_manifest",
+      "to": "set_failure_reason_empty_manifest",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "set_failure_reason_empty_manifest",
+      "to": "classify_idle",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "set_failure_reason_upstream",
+      "to": "classify_blocked_platform"
+    },
+    {
+      "from": "snapshot_state",
+      "to": "check_control_state"
+    },
+    {
+      "from": "upstream_gate",
+      "to": "evaluate_action_items",
+      "condition": "has_open_upstream_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_upstream_bugs!=true"
+      }
+    },
+    {
+      "from": "upstream_gate",
+      "to": "set_failure_classification_infrastructure",
+      "condition": "has_open_upstream_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_upstream_bugs=true"
+      }
+    }
+  ]
+}

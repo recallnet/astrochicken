@@ -1,0 +1,30 @@
+{
+  "threshold": 5,
+  "minLines": 10,
+  "minTokens": 100,
+  "reporters": ["console", "json"],
+  "output": "./reports/jscpd",
+  "gitignore": true,
+  "noSymlinks": true,
+  "path": ["apps", "packages", "scripts", "factories"],
+  "pattern": "**/*.{js,jsx,ts,tsx,mjs,cjs}",
+  "ignore": [
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "packages/**/test/**",
+    "scripts/test/fixtures/**",
+    "scripts/fixtures/**",
+    "packages/**/test/fixtures/**",
+    "**/scripts/test/fixtures/**",
+    "**/scripts/fixtures/**",
+    "**/packages/**/test/fixtures/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.turbo/**",
+    "**/coverage/**",
+    "**/reports/**",
+    "**/.git/**"
+  ]
+}

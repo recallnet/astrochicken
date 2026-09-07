@@ -1,0 +1,15 @@
+digraph conditional_over_unconditional {
+	start [shape=Mdiamond]
+	gate_source [type="tool" governance="reversible" label="Gate Source" output_key="gate_source_out" prompt="echo ok" recovery_owner="supervisor"]
+	gate [shape=diamond label="Conditional over unconditional?"]
+	target_conditional [type="tool" governance="reversible" label="Conditional Target" output_key="gate_pick" prompt="echo target_conditional" recovery_owner="supervisor"]
+	fallback_advance [type="tool" governance="reversible" label="Fallback Target" output_key="gate_pick" prompt="echo fallback_advance" recovery_owner="supervisor"]
+	done [shape=Msquare]
+
+	start -> gate_source
+	gate_source -> gate
+	gate -> target_conditional [condition="route=yes"]
+	gate -> fallback_advance
+	target_conditional -> done
+	fallback_advance -> done
+}

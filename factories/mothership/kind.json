@@ -1,0 +1,10 @@
+{
+  "kind_id": "mothership",
+  "schema_version": 1,
+  "managed": true,
+  "execution_mode": "code",
+  "shared_supervisor_shell": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "domain_graph": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "supported_destinations": ["platform_incidents"],
+  "required_labels": ["managed-factory-bug", "kind:mothership"]
+}

@@ -1,0 +1,82 @@
+{
+  "artifactDefaults": {
+    "canonicalCheckoutPath": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+    "runsDir": ".hatch/mothership/runs",
+    "scheduledGraphs": [
+      "factories/mothership/graphs/daily_lens_publish.dot",
+      "factories/mothership/graphs/daily_release_report.dot"
+    ],
+    "trustDomain": "mothership.local",
+    "trustRoles": [
+      "mothership.local.agent.worktree",
+      "mothership.local.codergen",
+      "mothership.local.fan_in.dynamic",
+      "mothership.local.fan_out.dynamic",
+      "mothership.local.pipeline",
+      "mothership.local.stack.manager_loop",
+      "mothership.local.tool"
+    ]
+  },
+  "bootstrap": {
+    "conformanceReadmePath": null,
+    "createEvolveDocPath": null,
+    "initCommand": "hatch factory init --id mothership --repo recallnet/astrochicken --control-plane recallnet/astrochicken",
+    "intentPath": "factories/mothership/INTENT.md",
+    "readmePath": "factories/mothership/README.md"
+  },
+  "compositionModel": "control_plane",
+  "configPath": "factories/mothership/factory.config.json",
+  "dispatchGraphPath": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+  "factoryId": "mothership",
+  "graphBindings": [
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_queue",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_run",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": null,
+      "id": "wave_execute",
+      "owner": "shared",
+      "path": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+      "role": "domain_policy"
+    }
+  ],
+  "manifestPath": "factories/mothership/inventory/factory-composition-manifest.v1.json",
+  "policy": {
+    "configPath": "factories/mothership/factory.config.json",
+    "overrideKeys": [],
+    "policyFiles": [
+      "block-wait-retry-policy.json",
+      "escalation-policy.json",
+      "metadata.json",
+      "model-policy.json",
+      "release-policy.json",
+      "reviewer-policy.json",
+      "supervisor-policy.json"
+    ],
+    "policyPackDir": "factories/mothership/policy-pack/v1",
+    "policyPackVersion": "v1"
+  },
+  "privateExecutionGluePaths": [],
+  "registryPath": "factory-registry.json",
+  "schemaVersion": "factory_composition_manifest/v1",
+  "supervisorGraphPath": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "telemetryDefaults": {
+    "benchmarkTelemetryExemptions": [],
+    "benchmarkTelemetryWarnOnly": false,
+    "conformanceEntrypoint": "factories/mothership/scripts/run-conformance.sh",
+    "conformanceRunsDir": ".hatch/mothership/runs",
+    "dispatchLatencySloSeconds": 15,
+    "maintenanceIntervalSeconds": 300
+  }
+}

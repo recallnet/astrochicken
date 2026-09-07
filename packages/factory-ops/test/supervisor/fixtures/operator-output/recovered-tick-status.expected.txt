@@ -1,0 +1,15 @@
+Factory: (unresolved)
+Factory ID: mothership
+Home Repo: recallnet/astrochicken
+Target Repo: recallnet/astrochicken
+Factory Mode: standalone
+Control Plane: (unresolved)
+Runs Dir: <runs-dir>
+
+CURRENT TICK  >>>  tick-1
+  Stage: fan_out_wave_execute  
+  Elapsed: <elapsed>
+  ⚠ No progress: no progress
+  Goals: 3
+  Active: wave-1  node=execute_issue_in_wave #1625 [goal-1564-wave-2]
+    └─ issue-1  node=build #1625 [goal-1564-wave-2]

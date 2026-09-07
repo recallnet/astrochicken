@@ -1,0 +1,17 @@
+{
+  "schema": "hatch.shared.env-contract.v1",
+  "variables": [
+    {
+      "name": "HATCH_FACTORY_GITHUB_TOKEN",
+      "required": false,
+      "secret": true,
+      "description": "Optional GitHub auth token override for factories that opt into isolated GitHub auth."
+    },
+    {
+      "name": "HATCH_MODEL",
+      "required": false,
+      "secret": false,
+      "description": "Optional override for the factory model slug."
+    }
+  ]
+}

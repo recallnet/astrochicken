@@ -1,0 +1,11 @@
+{
+  "schema_version": "dot_lint_exceptions/v1",
+  "trust_domain_role_compat": [],
+  "trust_alias_compat": [
+    {
+      "file": "scripts/test/fixtures/dot-lint/legacy-compat.dot",
+      "node": "legacy_tool",
+      "alias": "trust_participant"
+    }
+  ]
+}

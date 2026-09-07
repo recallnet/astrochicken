@@ -1,0 +1,211 @@
+{
+  "capabilityId": "software_development",
+  "description": "Goal intake/decomposition to execution, review, merge, and reporting handoff contracts.",
+  "entrypoints": [
+    {
+      "description": "",
+      "id": "goal_intake_to_execution_handoff",
+      "kind": "graph",
+      "path": "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+      "title": "Goal intake to execution handoff",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_execution_handoff",
+      "kind": "graph",
+      "path": "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+      "title": "Goal execution handoff",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_execute",
+      "kind": "graph",
+      "path": "workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "title": "Goal execute graph",
+      "transport": "sync"
+    },
+    {
+      "description": "",
+      "id": "goal_issue_execute",
+      "kind": "graph",
+      "path": "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "title": "Goal issue execute graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {
+    "workflows/goal_execute/goal_execute.workflow-source.mjs": [
+      "goal_merge_status",
+      "goal_terminal_path",
+      "impl_results",
+      "merge_candidates",
+      "merged_results"
+    ],
+    "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs": [
+      "capability_coding_skills",
+      "capability_merge_skills",
+      "control_plane_repo",
+      "factory_id",
+      "gh_repo",
+      "goal_issue_number",
+      "integration_command",
+      "release_reporting_factory_id",
+      "release_reporting_repo",
+      "repo",
+      "review_qa_command",
+      "stale_run_minutes",
+      "target_repo"
+    ],
+    "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs": [
+      "approved_features",
+      "capability_goal_decomposition_skills",
+      "control_plane_repo",
+      "executable_goal_count",
+      "executable_goals",
+      "executable_goals_capped",
+      "factory_id",
+      "goal_context",
+      "goal_issue",
+      "goal_issue_number",
+      "issue_urls",
+      "repo",
+      "scenario_paths",
+      "skipped_active",
+      "target_repo",
+      "triage_results"
+    ],
+    "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs": [
+      "impl_result"
+    ]
+  },
+  "nonGoals": [
+    "Direct GitHub transport, mutation boundaries, and external-system adapters remain shared package and CLI ownership (for example packages/github-adapter and packages/factory-runtime-guard).",
+    "Factory-supervisor tick cadence, detached-run spawning, lease lifecycle, and bug-fast policy remain managed-supervisor shell/runtime responsibilities.",
+    "This package adds no new Hatch runtime handlers; it composes existing tool, pipeline, agent.worktree, and codergen handlers.",
+    "This package does not provide example-trading rebuild behavior or any wave-compatibility abstraction layer.",
+    "This package does not require factories to execute mothership-local goal_execute or goal_issue_execute graphs."
+  ],
+  "outputPath": "packages/capability-software-development/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Software-development entrypoints emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/goal_execute/goal_execute.workflow-source.mjs",
+          "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+          "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+          "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [
+    {
+      "entrypoint": "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+      "scope": "Goal decomposition handoff, executable-goal list materialization, and deterministic context export for downstream execution.",
+      "stage": "goal_intake_handoff"
+    },
+    {
+      "entrypoint": "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs",
+      "scope": "Execution/review/merge/release context normalization and capability skill-path resolution.",
+      "stage": "goal_execution_handoff"
+    },
+    {
+      "entrypoint": "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "scope": "Goal-issue worktree setup, coder session orchestration, evidence generation, and deterministic commit handoff.",
+      "stage": "coding_worktree_execution"
+    },
+    {
+      "entrypoint": "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "scope": "Reviewer context contracts, reviewer verdict routing, and bounded revise/retry messaging.",
+      "stage": "judge_review"
+    },
+    {
+      "entrypoint": "workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "scope": "Merge candidate split, judge contract gates, rebase/merge/push ceremony, and post-merge closure/report payloads.",
+      "stage": "merge_preparation_and_execution"
+    },
+    {
+      "entrypoint": "workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "scope": "Issue postmortem routing, review/merge failure handling, recovery packets, and deterministic terminal status.",
+      "stage": "failure_routing"
+    }
+  ],
+  "packageName": "@hatch/capability-software-development",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "capability_coding_skills",
+    "capability_goal_decomposition_skills",
+    "capability_merge_skills",
+    "control_plane_repo",
+    "factory_id",
+    "factory_root",
+    "gh_repo",
+    "goal_issue_number",
+    "integration_command",
+    "issue_number",
+    "judge_scenario_selector",
+    "repo",
+    "review_qa_command",
+    "scenarios_root",
+    "target_repo",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "agent.worktree",
+    "codergen",
+    "pipeline",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".coder",
+    ".merge_resolver",
+    ".post_merge_judge",
+    ".reviewer"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {
+    "workflows/goal_execute/goal_execute.workflow-source.mjs": {
+      "entrypointRoles": [
+        ".merge_resolver",
+        ".post_merge_judge"
+      ],
+      "sessionBehavior": "Runs the shared goal and sub-issue execution loop and delegates per-issue coding and review sessions to workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs."
+    },
+    "workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs": {
+      "entrypointRoles": [],
+      "sessionBehavior": "Deterministic handoff normalization only. This entrypoint starts no new LLM session and assumes downstream execution, review, merge, and reporting graphs manage their own role/session policy."
+    },
+    "workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs": {
+      "entrypointRoles": [],
+      "sessionBehavior": "Delegates decomposition session semantics to packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs. Consumers must treat exported context and artifacts as canonical handoff state."
+    },
+    "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs": {
+      "entrypointRoles": [
+        ".coder",
+        ".reviewer"
+      ],
+      "sessionBehavior": "Owns per-issue build and review retry sessions within a shared goal branch and returns deterministic impl_result payloads to the parent goal_execute loop."
+    }
+  },
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-software-development/capability-contract.mjs",
+  "title": "Software Development Capability",
+  "version": "0.1.0"
+}

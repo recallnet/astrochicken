@@ -1,0 +1,105 @@
+{
+  "schema_version": "runtime-release-manifest/v1",
+  "description": "Canonical version manifest for AstroChicken external runtime packages. External factory operators use this to coordinate upgrades.",
+  "contract_notes": "externalSurface.packages is the authoritative package ownership/version/bin contract. externalSurface.stableEntryPoints is the authoritative documented CLI quickstart contract.",
+  "hatch": "0.1.0",
+  "@hatch/factory-ops": "0.1.0",
+  "@recallnet/factory-telemetry": "1.0.0",
+  "supported_node": ">=20",
+  "supported_entrypoints": {
+    "cli": [
+      "hatch run <file.dot>",
+      "hatch validate <file.dot>",
+      "hatch factory conformance",
+      "hatch-ops factory status",
+      "hatch-ops factory tick-status",
+      "hatch-ops factory recovery-sweep"
+    ],
+    "js_api": [
+      "hatch#./factory/context-resolver",
+      "hatch#./factory/conformance-harness",
+      "hatch#./factory/conformance-cli",
+      "hatch#./factory/config-schema"
+    ]
+  },
+  "externalSurface": {
+    "packages": [
+      {
+        "name": "hatch",
+        "version": "0.1.0",
+        "ownership": "required",
+        "packageRepo": "apps/hatch",
+        "binEntrypoints": [
+          {
+            "name": "hatch",
+            "packageBinPath": "dist/cli.js",
+            "sourcePath": "src/cli.ts"
+          }
+        ]
+      },
+      {
+        "name": "@hatch/factory-ops",
+        "version": "0.1.0",
+        "ownership": "required",
+        "packageRepo": "packages/factory-ops",
+        "binEntrypoints": [
+          {
+            "name": "hatch-ops",
+            "packageBinPath": "src/cli.ts",
+            "sourcePath": "src/cli.ts"
+          },
+          {
+            "name": "hatch-host",
+            "packageBinPath": "src/host-runtime.ts",
+            "sourcePath": "src/host-runtime.ts"
+          }
+        ]
+      },
+      {
+        "name": "@recallnet/factory-telemetry",
+        "version": "1.0.0",
+        "ownership": "internal",
+        "packageRepo": "packages/factory-telemetry",
+        "binEntrypoints": []
+      }
+    ],
+    "stableEntryPoints": {
+      "hatch run <file.dot>": {
+        "packageName": "hatch",
+        "binEntrypoint": "hatch",
+        "smokeCheck": "hatch run --help",
+        "persona": "external-adopter"
+      },
+      "hatch validate <file.dot>": {
+        "packageName": "hatch",
+        "binEntrypoint": "hatch",
+        "smokeCheck": "hatch validate --help",
+        "persona": "external-adopter"
+      },
+      "hatch factory conformance": {
+        "packageName": "hatch",
+        "binEntrypoint": "hatch",
+        "smokeCheck": "hatch factory conformance --help",
+        "persona": "external-adopter"
+      },
+      "hatch-ops factory status": {
+        "packageName": "@hatch/factory-ops",
+        "binEntrypoint": "hatch-ops",
+        "smokeCheck": "hatch-ops factory status --help",
+        "persona": "internal-operator"
+      },
+      "hatch-ops factory tick-status": {
+        "packageName": "@hatch/factory-ops",
+        "binEntrypoint": "hatch-ops",
+        "smokeCheck": "hatch-ops factory tick-status --help",
+        "persona": "internal-operator"
+      },
+      "hatch-ops factory recovery-sweep": {
+        "packageName": "@hatch/factory-ops",
+        "binEntrypoint": "hatch-ops",
+        "smokeCheck": "hatch-ops factory recovery-sweep --help",
+        "persona": "internal-operator"
+      }
+    }
+  }
+}

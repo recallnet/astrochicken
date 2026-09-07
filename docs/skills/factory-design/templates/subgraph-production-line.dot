@@ -1,0 +1,234 @@
+// Template: production-line subgraph for one scoped work item.
+// Derived from:
+// - packages/capability-goal-decomposition/graphs/goal_run.dot
+// - factories/mothership/graphs/wave_execute.dot
+// - factories/mothership/graphs/issue_execute_item.dot
+// - hatch-ops command families
+
+digraph production_line_template {
+    label = "production_line_template"
+    workdir = "."
+    model_stylesheet = "\
+        * { llm_model: {{model.default}}; llm_provider: {{model.provider}}; }\
+    "
+
+    start [shape=Mdiamond]
+    done [shape=Msquare recovery_sink_type="terminal"]
+    recovery_wait [type="wait.human" recovery_owner="supervisor" recovery_sink_type="wait" label="Supervisor packet recovery"]
+
+    // Template recovery contract:
+    // - deterministic retry/repair happens first
+    // - non-healable failure paths build a named packet
+    // - packetized failure paths converge on recovery_wait with durable packet refs
+
+    // ------------------------------
+    // Deterministic routing + setup
+    // ------------------------------
+
+    // Reference: issue_execute_item.dot:extract_issue
+    extract_issue [type="tool" governance="reversible"
+                   label="Extract issue context"
+                   output_format="json"
+                   outputs="issue_number,issue_title"
+                   prompt="hatch-ops goal-issue run --op extract --item-b64 '{{inputs.issue_item_b64}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: issue_execute_item.dot:init_review
+    init_review_attempt [type="tool" governance="reversible"
+                         label="Initialize review attempt counter"
+                         output_key="review_attempt"
+                         prompt="hatch-ops goal-issue run --op init-review-attempt" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    resolve_retry_budget [type="tool" governance="reversible"
+                          label="Resolve review retry budget"
+                          output_key="max_review_cycles"
+                          prompt="hatch-ops common run --op resolve-default --value '{{retry.max_review_cycles}}' --fallback '3'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: issue_execute_item.dot:write_review_evidence
+    write_review_evidence [type="tool" governance="irreversible"
+                           label="Write review evidence artifact"
+                           output_format="json"
+                           outputs="review_evidence_path"
+                           prompt="hatch-ops goal-issue run --op write-review-evidence --worktree-dir '{{inputs.worktree_dir}}' --repo '{{local_repo_path}}' --issue '${issue_number}' --branch '{{inputs.branch}}' --review-qa-command '{{commands.review_qa}}' --integration-command '{{commands.integration}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: issue_execute_item.dot:build_review_context + validate_review_context
+    build_review_context [type="tool" governance="reversible"
+                          label="Build reviewer context contract"
+                          output_format="json"
+                          outputs="review_context_path,review_context_sha256,review_context_valid,review_context_error"
+                          prompt="hatch-ops goal-issue run --op build-review-context --worktree-dir '{{inputs.worktree_dir}}' --issue '${issue_number}' --branch '{{inputs.branch}}' --review-evidence-path '${review_evidence_path}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    validate_review_context [type="tool" governance="reversible"
+                             label="Validate reviewer context completeness"
+                             output_format="json"
+                             outputs="review_context_gate_pass,review_context_gate_code,review_context_error"
+                             prompt="hatch-ops goal-issue run --op validate-review-context --review-context-path '${review_context_path}' --review-context-sha256 '${review_context_sha256}' --review-context-valid '${review_context_valid}' --review-context-error '${review_context_error}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    review_context_gate [shape=diamond label="Review context valid?"]
+
+    // ------------------------------
+    // Role nodes (LLM-driven)
+    // ------------------------------
+
+    // Role: Coder
+    // Reference: issue_execute_item.dot:build (agent.worktree)
+    coder [type="agent.worktree" governance="irreversible" recovery_owner="supervisor"
+           label="Implement issue"
+           llm_model="{{model.coder}}"
+           llm_provider="{{model.provider}}"
+           repo="{{local_repo_path}}"
+           branch="{{inputs.branch}}"
+           base="main"
+           timeout="{{timeouts.coder}}"
+           max_retries="{{retry.coder_max_attempts}}"
+           prompt="Implement issue #${issue_number} (${issue_title}) using {{roles.coder_prompt_path}}. Run scoped checks and commit with issue reference." trust_domain="factory.local" trust_role="factory.local.agent.worktree"]
+
+    // Role: Reviewer
+    // Reference: issue_execute_item.dot:review
+    reviewer [label="Review implementation"
+              output_key="review_result"
+              output_format="json"
+              outputs="review_verdict,review_notes,review_reason_codes"
+              reviewer="true"
+              llm_model="{{model.reviewer}}"
+              llm_provider="{{model.provider}}"
+              prompt="Load {{roles.reviewer_prompt_path}}. Review only issue #${issue_number} scope using ${review_evidence_path} and ${review_context_path}. Return JSON verdict + reason codes." trust_domain="factory.local" trust_role="factory.local.codergen"]
+
+    // Deterministic route resolution inspired by issue_execute_item.dot:resolve_review_route
+    resolve_review_route [type="tool" governance="irreversible" recovery_owner="supervisor"
+                          label="Resolve deterministic review route"
+                          output_format="json"
+                          outputs="review_verdict,review_route_reason"
+                          prompt="hatch-ops goal-issue run --op resolve-review-route --review-verdict '${review_verdict}' --review-context-gate-pass '${review_context_gate_pass}' --review-context-gate-code '${review_context_gate_code}' --review-context-error '${review_context_error}' --review-context-path '${review_context_path}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    build_review_recovery_packet [type="tool" governance="irreversible" recovery_owner="supervisor"
+                                  label="Build review recovery packet"
+                                  output_format="json"
+                                  outputs="review_recovery_packet_path,review_recovery_packet_id,review_recovery_packet_schema_version,review_recovery_packet_type"
+                                  prompt="hatch-ops supervisor run --op build-recovery-packet --packet-type '{{packets.review_failure.packet_type}}' --factory-id '{{factory.id}}' --run-id '${__run_id}' --pipeline '{{pipeline.id}}' --node-id 'build_review_recovery_packet' --issue '${issue_number}' --branch '{{inputs.branch}}' --worktree-dir '{{inputs.worktree_dir}}' --review-context-path '${review_context_path}' --review-evidence-path '${review_evidence_path}' --review-context-gate-code '${review_context_gate_code}' --review-context-error '${review_context_error}' --target-repo '{{target_repo}}' --control-plane-repo '{{control_plane_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    review_gate [shape=diamond label="Review approved?"]
+
+    increment_review_attempt [type="tool" governance="reversible"
+                              label="Increment review attempt"
+                              output_key="review_attempt"
+                              prompt="hatch-ops goal-issue run --op next-review-attempt --attempt '${review_attempt}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    review_retry_gate [shape=diamond label="Retry review loop?" context_keys="max_review_cycles"]
+
+    // ------------------------------
+    // Judge contract + merge path
+    // ------------------------------
+
+    encode_merge_context [type="tool" governance="reversible"
+                          label="Encode merge candidate context"
+                          output_key="merge_candidates_b64"
+                          prompt="hatch-ops common run --op encode-base64 --raw '${review_result}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: wave_execute.dot:build_judge_evidence
+    build_judge_evidence [type="tool" governance="irreversible"
+                          label="Build judge evidence contract"
+                          output_format="json"
+                          outputs="judge_evidence_path,judge_evidence_sha256,judge_evidence_valid,judge_evidence_error"
+                          prompt="hatch-ops judge run --op build-evidence-contract --judge-kind '{{judge.kind}}' --worktree-dir '{{inputs.worktree_dir}}' --subject-id '${issue_number}' --require-qa-markers 'true' --judge-context-b64 '${merge_candidates_b64}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Reference: wave_execute.dot:build_judge_context / validate_judge_context
+    build_judge_context [type="tool" governance="irreversible"
+                         label="Build judge context contract"
+                         output_format="json"
+                         outputs="judge_context_path,judge_context_sha256,judge_context_valid,judge_context_error"
+                         prompt="hatch-ops judge run --op build-context-contract --judge-kind '{{judge.kind}}' --subject-id '${issue_number}' --objective-id '{{judge.objective_id}}' --judge-rubric '{{judge.rubric}}' --scenario-selector '{{judge.scenario_selector}}' --scenario-context '{{judge.scenario_context}}' --scope 'judge' --scenario-registry-root '{{judge.scenario_registry_root}}' --judge-context-b64 '${merge_candidates_b64}' --judge-evidence-path '${judge_evidence_path}' --judge-evidence-sha256 '${judge_evidence_sha256}' --gh-repo '{{target_repo}}' --worktree-dir '{{inputs.worktree_dir}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    validate_judge_context [type="tool" governance="irreversible"
+                            label="Validate judge context completeness"
+                            output_format="json"
+                            outputs="judge_context_gate_pass,judge_context_gate_code,judge_context_error"
+                            prompt="hatch-ops judge run --op validate-context-contract --judge-kind '{{judge.kind}}' --objective-id '{{judge.objective_id}}' --judge-rubric '{{judge.rubric}}' --scenario-selector '{{judge.scenario_selector}}' --scenario-context '{{judge.scenario_context}}' --scope 'judge' --scenario-registry-root '{{judge.scenario_registry_root}}' --judge-context-b64 '${merge_candidates_b64}' --judge-context-path '${judge_context_path}' --judge-context-sha256 '${judge_context_sha256}' --judge-context-valid '${judge_context_valid}' --judge-context-error '${judge_context_error}' --judge-evidence-path '${judge_evidence_path}' --judge-evidence-sha256 '${judge_evidence_sha256}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    // Required telemetry hook for review-note signature: judge_context_scenarios_missing.
+    // This node should emit a metric/event whenever judge_context_gate_code signals missing scenarios.
+    emit_judge_context_metrics [type="tool" governance="reversible"
+                                label="Emit judge context metrics"
+                                output_format="json"
+                                outputs="judge_context_metric_code,judge_context_metric_value"
+                                prompt="hatch-ops common run --op resolve-default --value '${judge_context_gate_code}' --fallback 'judge_context_scenarios_missing'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    build_judge_context_recovery_packet [type="tool" governance="irreversible" recovery_owner="supervisor"
+                                         label="Build judge-context recovery packet"
+                                         output_format="json"
+                                         outputs="judge_context_recovery_packet_path,judge_context_recovery_packet_id,judge_context_recovery_packet_schema_version,judge_context_recovery_packet_type"
+                                         prompt="hatch-ops judge build-recovery-packet --repo '{{local_repo_path}}' --packet-type '{{packets.judge_context_failure.packet_type}}' --judge-kind '{{judge.kind}}' --gate-code '${judge_context_gate_code}' --error-text '${judge_context_error}' --judge-context-path '${judge_context_path}' --judge-evidence-path '${judge_evidence_path}' --factory-id '{{factory.id}}' --run-id '${__run_id}' --pipeline '{{pipeline.id}}' --node-id 'build_judge_context_recovery_packet' --target-repo '{{target_repo}}' --control-plane-repo '{{control_plane_repo}}' --branch '{{inputs.branch}}' --worktree-dir '{{inputs.worktree_dir}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    judge_context_gate [shape=diamond label="Judge context complete?"]
+
+    // Role: Judge
+    judge [label="Judge final scope"
+           output_key="judge_result"
+           output_format="json"
+           outputs="judge_pass,judge_notes"
+           judge="true"
+           scenarios="{{judge.scenarios}}"
+           llm_model="{{model.judge}}"
+           llm_provider="{{model.provider}}"
+           prompt="Use {{roles.judge_prompt_path}} and ${judge_context_path}. Return JSON with judge_pass and judge_notes only." trust_domain="factory.local" trust_role="factory.local.codergen"]
+
+    judge_gate [shape=diamond label="Judge passed?"]
+
+    // Role: Merger (deterministic CLI + policy)
+    // Reference: wave_execute.dot:merge_shared_branch + push_main_branch
+    merge_to_main [type="tool" governance="irreversible"
+                   label="Merge approved change"
+                   output_key="merge_status"
+                   prompt="hatch-ops merge run --op attempt --repo '{{local_repo_path}}' --branch '{{inputs.branch}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    merge_gate [shape=diamond label="Merge completed?"]
+
+    build_merge_recovery_packet [type="tool" governance="irreversible" recovery_owner="supervisor"
+                                 label="Build merge recovery packet"
+                                 output_format="json"
+                                 outputs="merge_recovery_packet_path,merge_recovery_packet_id,merge_recovery_packet_schema_version,merge_recovery_packet_type"
+                                 prompt="hatch-ops merge run --op build-conflict-packet --repo '{{local_repo_path}}' --branch '{{inputs.branch}}' --issue '${issue_number}' --merge-stderr '${merge_status}' --worktree-dir '{{inputs.worktree_dir}}' --factory-id '{{factory.id}}' --run-id '${__run_id}' --pipeline '{{pipeline.id}}' --node-id 'build_merge_recovery_packet' --target-repo '{{target_repo}}' --control-plane-repo '{{control_plane_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    report_success [type="tool" governance="reversible"
+                    label="Report success"
+                    output_key="__production_line_result"
+                    prompt="hatch-ops common run --op resolve-default --value 'success' --fallback 'success'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    build_judge_failure_packet [type="tool" governance="irreversible" recovery_owner="supervisor"
+                                label="Build judge-failure packet"
+                                output_format="json"
+                                outputs="judge_failure_packet_path,judge_failure_packet_id,judge_failure_packet_schema_version,judge_failure_packet_type"
+                                prompt="hatch-ops supervisor run --op build-recovery-packet --packet-type '{{packets.judge_failure.packet_type}}' --factory-id '{{factory.id}}' --run-id '${__run_id}' --pipeline '{{pipeline.id}}' --node-id 'build_judge_failure_packet' --issue '${issue_number}' --branch '{{inputs.branch}}' --worktree-dir '{{inputs.worktree_dir}}' --judge-context-path '${judge_context_path}' --judge-evidence-path '${judge_evidence_path}' --target-repo '{{target_repo}}' --control-plane-repo '{{control_plane_repo}}'" trust_domain="factory.local" trust_role="factory.local.tool"]
+
+    start -> extract_issue -> init_review_attempt -> resolve_retry_budget -> coder
+    coder -> write_review_evidence -> build_review_context -> validate_review_context -> review_context_gate
+
+    review_context_gate -> reviewer [condition="review_context_gate_pass=true"]
+    review_context_gate -> build_review_recovery_packet [condition="review_context_gate_pass!=true"]
+
+    reviewer -> resolve_review_route -> review_gate
+
+    review_gate -> increment_review_attempt [condition="review_verdict!=approve"]
+    increment_review_attempt -> review_retry_gate
+    review_retry_gate -> coder [condition="review_attempt<max_review_cycles"]
+    review_retry_gate -> build_review_recovery_packet [condition="review_attempt>=max_review_cycles"]
+
+    review_gate -> encode_merge_context [condition="review_verdict=approve"]
+    encode_merge_context -> build_judge_evidence -> build_judge_context -> validate_judge_context -> emit_judge_context_metrics -> judge_context_gate
+
+    judge_context_gate -> build_judge_context_recovery_packet [condition="judge_context_gate_pass!=true"]
+    judge_context_gate -> judge [condition="judge_context_gate_pass=true"]
+
+    judge -> judge_gate
+    judge_gate -> merge_to_main [condition="judge_pass=true"]
+    judge_gate -> build_judge_failure_packet [condition="judge_pass!=true"]
+
+    merge_to_main -> merge_gate
+    merge_gate -> report_success [condition="merge_status=merged"]
+    merge_gate -> build_merge_recovery_packet [condition="merge_status!=merged"]
+
+    report_success -> done
+    build_review_recovery_packet -> recovery_wait
+    build_judge_context_recovery_packet -> recovery_wait
+    build_judge_failure_packet -> recovery_wait
+    build_merge_recovery_packet -> recovery_wait
+}

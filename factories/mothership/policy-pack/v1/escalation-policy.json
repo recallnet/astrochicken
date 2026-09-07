@@ -1,0 +1,19 @@
+{
+  "_policy": "escalation",
+  "_shared_note": "shared.* keys encode control-plane escalation rails required by managed-factory support.",
+  "_factory_note": "factory.* keys hold local contact and retry preferences.",
+  "shared": {
+    "control_plane_repo": "recallnet/astrochicken",
+    "issue_labels": {
+      "platform_defect": "platform:defect",
+      "needs_human": "needs-human"
+    }
+  },
+  "factory": {
+    "max_auto_repair_attempts": 2,
+    "contacts": {
+      "oncall": "factory-owner",
+      "slack_channel": "#factory-ops"
+    }
+  }
+}

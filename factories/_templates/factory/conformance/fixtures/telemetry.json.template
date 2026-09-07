@@ -1,0 +1,15 @@
+{
+  "schema": "hatch.factory.conformance.telemetry_fixture.v1",
+  "factory_id": "{{factory_id}}",
+  "target_repo": "{{target_repo}}",
+  "control_plane_repo": "{{control_plane_repo}}",
+  "harness": {
+    "result_event": "factory_conformance",
+    "required_summary_fields": ["result", "failed_phase"]
+  },
+  "benchmark_identity": {
+    "required_node_attributes": ["benchmark_job_id", "prompt_version", "role_version", "skill_id"],
+    "job_id_registry": "docs/contracts/benchmark-job-registry.json",
+    "note": "Every LLM node (class in known set) must carry these four attributes. benchmark_job_id must be registered in the job_id_registry."
+  }
+}

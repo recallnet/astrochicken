@@ -1,0 +1,1397 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "managed_software_delivery_domain",
+  "familyId": "runtime",
+  "title": "Managed Software Delivery Domain",
+  "description": "Typed workflow source owner for packages/factory-runtime/graphs/managed_software_delivery_domain.dot.",
+  "sourcePath": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "managed_software_delivery_domain",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "managed_software_delivery_domain",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "action_item_gate",
+        "runtimeNodeId": "action_item_gate"
+      },
+      {
+        "sourceNodeId": "artifact_ingest",
+        "runtimeNodeId": "artifact_ingest"
+      },
+      {
+        "sourceNodeId": "auto_ready_artifact_goals",
+        "runtimeNodeId": "auto_ready_artifact_goals"
+      },
+      {
+        "sourceNodeId": "bug_fast_gate",
+        "runtimeNodeId": "bug_fast_gate"
+      },
+      {
+        "sourceNodeId": "bug_fast_resolution_gate",
+        "runtimeNodeId": "bug_fast_resolution_gate"
+      },
+      {
+        "sourceNodeId": "count_ready_goals",
+        "runtimeNodeId": "count_ready_goals"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "ensure_goal_execution_path",
+        "runtimeNodeId": "ensure_goal_execution_path"
+      },
+      {
+        "sourceNodeId": "evaluate_action_item_gate",
+        "runtimeNodeId": "evaluate_action_item_gate"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate_after_fast",
+        "runtimeNodeId": "evaluate_open_bug_gate_after_fast"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate_fast",
+        "runtimeNodeId": "evaluate_open_bug_gate_fast"
+      },
+      {
+        "sourceNodeId": "fan_in_goal_run",
+        "runtimeNodeId": "fan_in_goal_run"
+      },
+      {
+        "sourceNodeId": "fan_out_goal_run",
+        "runtimeNodeId": "fan_out_goal_run"
+      },
+      {
+        "sourceNodeId": "fast_route_telemetry_clear",
+        "runtimeNodeId": "fast_route_telemetry_clear"
+      },
+      {
+        "sourceNodeId": "fast_route_telemetry_open",
+        "runtimeNodeId": "fast_route_telemetry_open"
+      },
+      {
+        "sourceNodeId": "goal_decompose_backpressure",
+        "runtimeNodeId": "goal_decompose_backpressure"
+      },
+      {
+        "sourceNodeId": "goal_decompose_gate",
+        "runtimeNodeId": "goal_decompose_gate"
+      },
+      {
+        "sourceNodeId": "goal_execute_gate",
+        "runtimeNodeId": "goal_execute_gate"
+      },
+      {
+        "sourceNodeId": "goal_gate",
+        "runtimeNodeId": "goal_gate"
+      },
+      {
+        "sourceNodeId": "keep_all_goals",
+        "runtimeNodeId": "keep_all_goals"
+      },
+      {
+        "sourceNodeId": "limit_kept_goals",
+        "runtimeNodeId": "limit_kept_goals"
+      },
+      {
+        "sourceNodeId": "list_executable_goals",
+        "runtimeNodeId": "list_executable_goals"
+      },
+      {
+        "sourceNodeId": "list_ready_goals",
+        "runtimeNodeId": "list_ready_goals"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "load_supervisor_bug_fast_task_prompt",
+        "runtimeNodeId": "load_supervisor_bug_fast_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_supervisor_review_task_prompt",
+        "runtimeNodeId": "load_supervisor_review_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_supervisor_skill",
+        "runtimeNodeId": "load_supervisor_skill"
+      },
+      {
+        "sourceNodeId": "load_supervisor_system_prompt",
+        "runtimeNodeId": "load_supervisor_system_prompt"
+      },
+      {
+        "sourceNodeId": "release_manifest",
+        "runtimeNodeId": "release_manifest"
+      },
+      {
+        "sourceNodeId": "resolve_absolute_runs_dir",
+        "runtimeNodeId": "resolve_absolute_runs_dir"
+      },
+      {
+        "sourceNodeId": "sanitize_goal_duplicates",
+        "runtimeNodeId": "sanitize_goal_duplicates"
+      },
+      {
+        "sourceNodeId": "set_capability_goal_decomposition_skills",
+        "runtimeNodeId": "set_capability_goal_decomposition_skills"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_date",
+        "runtimeNodeId": "set_date"
+      },
+      {
+        "sourceNodeId": "set_domain_result",
+        "runtimeNodeId": "set_domain_result"
+      },
+      {
+        "sourceNodeId": "set_factory_root",
+        "runtimeNodeId": "set_factory_root"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_judge_scenario_selector",
+        "runtimeNodeId": "set_judge_scenario_selector"
+      },
+      {
+        "sourceNodeId": "set_max_artifacts",
+        "runtimeNodeId": "set_max_artifacts"
+      },
+      {
+        "sourceNodeId": "set_max_concurrent_waves_pre",
+        "runtimeNodeId": "set_max_concurrent_waves_pre"
+      },
+      {
+        "sourceNodeId": "set_max_goal_runs_per_tick",
+        "runtimeNodeId": "set_max_goal_runs_per_tick"
+      },
+      {
+        "sourceNodeId": "set_release_sha",
+        "runtimeNodeId": "set_release_sha"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_run_id",
+        "runtimeNodeId": "set_run_id"
+      },
+      {
+        "sourceNodeId": "set_source_repos",
+        "runtimeNodeId": "set_source_repos"
+      },
+      {
+        "sourceNodeId": "spawn_goal_execute",
+        "runtimeNodeId": "spawn_goal_execute"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "supervisor_review",
+        "runtimeNodeId": "supervisor_review"
+      },
+      {
+        "sourceNodeId": "supervisor_review_bug_fast",
+        "runtimeNodeId": "supervisor_review_bug_fast"
+      },
+      {
+        "sourceNodeId": "sweep_completed_goals",
+        "runtimeNodeId": "sweep_completed_goals"
+      },
+      {
+        "sourceNodeId": "sweep_empty_milestones",
+        "runtimeNodeId": "sweep_empty_milestones"
+      },
+      {
+        "sourceNodeId": "sync_release_manifest",
+        "runtimeNodeId": "sync_release_manifest"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "action_item_gate",
+      "kind": "decision",
+      "title": "Action items to process?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Action items to process?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "artifact_ingest",
+      "kind": "pipeline",
+      "title": "Ingest artifacts",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Ingest artifacts",
+        "recovery_owner": "supervisor",
+        "pipeline": "@hatch/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+        "export_keys": "artifact_ingest_result",
+        "inherit_context": "true",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "auto_ready_artifact_goals",
+      "kind": "tool_action",
+      "title": "Auto-ready artifact goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.auto_ready_artifacts",
+        "label": "Auto-ready artifact goals",
+        "output_key": "__auto_ready_artifact_goals_result",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "bug_fast_gate",
+      "kind": "decision",
+      "title": "Open bugs? (fast route)",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Open bugs? (fast route)",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "bug_fast_resolution_gate",
+      "kind": "decision",
+      "title": "Bugs resolved by fast route?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Bugs resolved by fast route?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "count_ready_goals",
+      "kind": "tool_action",
+      "title": "Count ready goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.count_json_items",
+        "label": "Count ready goals",
+        "output_key": "goal_count",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "ensure_goal_execution_path",
+      "kind": "tool_action",
+      "title": "Ensure goal execution-path packets",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.ensure_execution_paths",
+        "label": "Ensure goal execution-path packets",
+        "output_format": "json",
+        "outputs": "goal_execution_path_count,goal_execution_path_records,goal_execution_paths",
+        "action_repo_root": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "recovery_owner": "supervisor",
+        "action_goal_issues": "${kept_goals_limited}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_action_item_gate",
+      "kind": "tool_action",
+      "title": "Check if supervisor review has work",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.action_item_gate",
+        "label": "Check if supervisor review has work",
+        "output_format": "json",
+        "outputs": "has_action_items,action_item_count",
+        "action_repo": "${target_repo}",
+        "action_factory_id": "${factory_id}",
+        "recovery_owner": "supervisor",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate_after_fast",
+      "kind": "tool_action",
+      "title": "Evaluate open bug gate after fast route",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.open_bug_gate",
+        "label": "Evaluate open bug gate after fast route",
+        "output_format": "json",
+        "outputs": "has_open_bugs,open_bug_count,parse_error",
+        "action_repo": "${target_repo}",
+        "action_label_filters": "[\"managed-factory-bug\",\"factory:${factory_id}\"]",
+        "action_factory_id": "${factory_id}",
+        "recovery_owner": "supervisor",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate_fast",
+      "kind": "tool_action",
+      "title": "Evaluate open bug gate",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.open_bug_gate",
+        "label": "Evaluate open bug gate",
+        "output_format": "json",
+        "outputs": "has_open_bugs,open_bug_count,parse_error",
+        "action_repo": "${target_repo}",
+        "action_label_filters": "[\"managed-factory-bug\",\"factory:${factory_id}\"]",
+        "action_factory_id": "${factory_id}",
+        "recovery_owner": "supervisor",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "fan_in_goal_run",
+      "kind": "dynamic_fan_in",
+      "title": "Collect goal runs",
+      "dotAttributes": {
+        "type": "fan_in.dynamic",
+        "label": "Collect goal runs",
+        "output_key": "goal_runs",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "fan_out_goal_run",
+      "kind": "dynamic_fan_out",
+      "title": "Run goals in parallel",
+      "dotAttributes": {
+        "type": "fan_out.dynamic",
+        "label": "Run goals in parallel",
+        "recovery_owner": "supervisor",
+        "source_key": "kept_goals_limited",
+        "item_key": "issue_number",
+        "template": "@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+        "max_concurrency": "0",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "fast_route_telemetry_clear",
+      "kind": "tool_action",
+      "title": "Record fast-route clear branch",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Record fast-route clear branch",
+        "output_key": "fast_route_branch_marker",
+        "recovery_owner": "supervisor",
+        "action_fallback": "fast-route-clear",
+        "action_value": "fast-route-clear",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "fast_route_telemetry_open",
+      "kind": "tool_action",
+      "title": "Record fast-route open-bug branch",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Record fast-route open-bug branch",
+        "output_key": "fast_route_branch_marker",
+        "recovery_owner": "supervisor",
+        "action_fallback": "fast-route-open",
+        "action_value": "fast-route-open",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "goal_decompose_backpressure",
+      "kind": "tool_action",
+      "title": "Check goal decomposition backpressure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.decompose_backpressure",
+        "label": "Check goal decomposition backpressure",
+        "output_format": "json",
+        "outputs": "decompose_allowed,decompose_skip_reason,open_wave_marker_count,max_concurrent_waves",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "action_max_concurrent_waves": "${max_concurrent_waves_pre}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "goal_decompose_gate",
+      "kind": "decision",
+      "title": "Decompose goals this tick?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Decompose goals this tick?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "goal_execute_gate",
+      "kind": "decision",
+      "title": "Executable goals this tick?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Executable goals this tick?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "goal_gate",
+      "kind": "decision",
+      "title": "Any ready goals?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Any ready goals?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "keep_all_goals",
+      "kind": "tool_action",
+      "title": "Keep all ready goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.filter_kept_goals",
+        "label": "Keep all ready goals",
+        "output_key": "kept_goals",
+        "recovery_owner": "supervisor",
+        "action_decisions": "[]",
+        "action_issues": "${goal_issues}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "limit_kept_goals",
+      "kind": "tool_action",
+      "title": "Limit goal runs per tick to avoid execution starvation",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.limit_kept",
+        "label": "Limit goal runs per tick to avoid execution starvation",
+        "output_key": "kept_goals_limited",
+        "recovery_owner": "supervisor",
+        "action_kept_goals": "${kept_goals}",
+        "action_max_goals_per_tick": "${max_goal_runs_per_tick}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "list_executable_goals",
+      "kind": "tool_action",
+      "title": "List executable goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "software.list_executable_goals",
+        "label": "List executable goals",
+        "output_format": "json",
+        "outputs": "executable_goals,count,capped",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "recovery_owner": "supervisor",
+        "action_max_concurrent": "${max_concurrent_waves_pre}",
+        "action_runs_dir": "${absolute_runs_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "list_ready_goals",
+      "kind": "tool_action",
+      "title": "List ready goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.list_ready",
+        "label": "List ready goals",
+        "output_key": "goal_issues",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_intent_stack",
+        "label": "Load intent stack",
+        "output_key": "intent_stack",
+        "recovery_owner": "supervisor",
+        "action_config_path": "${factory_root}/factory.config.json",
+        "action_factory_root": "${factory_root}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_supervisor_bug_fast_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load supervisor bug fast task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load supervisor bug fast task prompt",
+        "output_key": "supervisor_bug_fast_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/supervisor/bug_fast.md",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_supervisor_review_task_prompt",
+      "kind": "llm_prompt",
+      "title": "Load supervisor review task prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load supervisor review task prompt",
+        "output_key": "supervisor_review_task_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/supervisor/review.md",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_supervisor_skill",
+      "kind": "llm_prompt",
+      "title": "Load shared supervisor skill",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load shared supervisor skill",
+        "output_key": "supervisor_skill_content",
+        "prompt": "cat packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_supervisor_system_prompt",
+      "kind": "llm_prompt",
+      "title": "Load supervisor system prompt",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Load supervisor system prompt",
+        "output_key": "supervisor_system_prompt",
+        "prompt": "cat packages/factory-prompts/prompts/supervisor/system.md",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "release_manifest",
+      "kind": "tool_action",
+      "title": "Emit release manifest",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "artifact.release_manifest",
+        "label": "Emit release manifest",
+        "output_key": "__release_manifest_result",
+        "action_run_id": "${__run_id}",
+        "recovery_owner": "supervisor",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_release_sha": "${release_sha}",
+        "action_source_repos": "${source_repos}",
+        "action_states": "closed",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "resolve_absolute_runs_dir",
+      "kind": "tool_action",
+      "title": "Resolve absolute runs dir",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve absolute runs dir",
+        "output_key": "absolute_runs_dir",
+        "recovery_owner": "supervisor",
+        "action_fallback": "${repo}/.hatch/${factory_id}/runs",
+        "action_value": "${runs_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "sanitize_goal_duplicates",
+      "kind": "tool_action",
+      "title": "Normalize goal duplicates",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.sanitize_duplicates",
+        "label": "Normalize goal duplicates",
+        "output_key": "__sanitize_goal_duplicates_result",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "factory_supervisor_tick",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_capability_goal_decomposition_skills",
+      "kind": "tool_action",
+      "title": "set capability_goal_decomposition_skills",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_capability_goal_decomposition_skills_path",
+        "label": "set capability_goal_decomposition_skills",
+        "output_key": "capability_goal_decomposition_skills",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve control-plane repo",
+        "output_key": "control_plane_repo",
+        "recovery_owner": "supervisor",
+        "action_fallback": "${target_repo}",
+        "action_value": "${control_plane_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_date",
+      "kind": "llm_prompt",
+      "title": "Set current date",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set current date",
+        "output_key": "date",
+        "prompt": "date -u '+%Y-%m-%dT%H:%M:%SZ'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_domain_result",
+      "kind": "tool_action",
+      "title": "Build domain_result payload",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Build domain_result payload",
+        "output_key": "domain_result",
+        "recovery_owner": "supervisor",
+        "action_fallback": "{}",
+        "action_value": "{\"has_issue\":\"${has_issue}\",\"selected_issue_number\":\"${selected_issue_number}\",\"fast_route_branch_marker\":\"${fast_route_branch_marker}\",\"goal_count\":\"${goal_count}\",\"executable_goal_count\":\"${count}\",\"action_item_count\":\"${action_item_count}\",\"parse_error\":\"${parse_error}\"}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_factory_root",
+      "kind": "tool_action",
+      "title": "Resolve factory root",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve factory root",
+        "output_key": "factory_root",
+        "recovery_owner": "supervisor",
+        "action_fallback": "factories/${factory_id}",
+        "action_value": "${factory_root}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Resolve target repo context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve target repo context",
+        "output_key": "gh_repo",
+        "recovery_owner": "supervisor",
+        "action_fallback": "${target_repo}",
+        "action_value": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_judge_scenario_selector",
+      "kind": "tool_action",
+      "title": "set judge_scenario_selector",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "set judge_scenario_selector",
+        "output_key": "judge_scenario_selector",
+        "recovery_owner": "supervisor",
+        "action_fallback": "post-merge",
+        "action_value": "post-merge",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_max_artifacts",
+      "kind": "tool_action",
+      "title": "Resolve max artifacts",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_factory_config",
+        "label": "Resolve max artifacts",
+        "output_key": "__set_max_artifacts_result",
+        "recovery_owner": "supervisor",
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "20",
+        "action_key": "max_artifacts",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_max_concurrent_waves_pre",
+      "kind": "tool_action",
+      "title": "Resolve max concurrent waves (pre-goal gate)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_factory_config",
+        "label": "Resolve max concurrent waves (pre-goal gate)",
+        "output_key": "max_concurrent_waves_pre",
+        "recovery_owner": "supervisor",
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "3",
+        "action_key": "max_concurrent_waves",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_max_goal_runs_per_tick",
+      "kind": "tool_action",
+      "title": "Resolve max goal runs per tick",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_factory_config",
+        "label": "Resolve max goal runs per tick",
+        "output_key": "max_goal_runs_per_tick",
+        "recovery_owner": "supervisor",
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "2",
+        "action_key": "max_goal_runs_per_tick",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_release_sha",
+      "kind": "llm_prompt",
+      "title": "Resolve release SHA from main branch",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Resolve release SHA from main branch",
+        "output_key": "release_sha",
+        "prompt": "git rev-parse main",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Resolve target work dir",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve target work dir",
+        "output_key": "repo",
+        "recovery_owner": "supervisor",
+        "action_fallback": ".",
+        "action_value": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_run_id",
+      "kind": "tool_action",
+      "title": "Resolve run id",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve run id",
+        "output_key": "__run_id",
+        "recovery_owner": "supervisor",
+        "action_value": "${__run_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_source_repos",
+      "kind": "tool_action",
+      "title": "Resolve source repos",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_factory_config",
+        "label": "Resolve source repos",
+        "output_key": "source_repos",
+        "recovery_owner": "supervisor",
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${target_repo}",
+        "action_key": "source_repos",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "spawn_goal_execute",
+      "kind": "detached_fan_out",
+      "title": "Run executable goals",
+      "dotAttributes": {
+        "type": "fan_out.detached",
+        "label": "Run executable goals",
+        "recovery_owner": "supervisor",
+        "source_key": "executable_goals",
+        "item_key": "goal_issue_number",
+        "template": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+        "max_concurrency": "0",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "supervisor_review",
+      "kind": "llm_prompt",
+      "title": "Supervisor LLM review",
+      "dotAttributes": {
+        "class": "supervisor",
+        "benchmark_job_id": "supervisor.tick.review",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "supervisor.review",
+        "label": "Supervisor LLM review",
+        "timeout": "60m",
+        "prompt": "${supervisor_system_prompt}\n\nFactory target: ${target_repo}\nDate: ${date}\n\nFactory context:\n- factory_id=${factory_id}\n- target_repo=${target_repo}\n- control_plane_repo=${control_plane_repo}\n- gh_repo=${gh_repo}\n\nSupervisor template (shared):\n${supervisor_skill_content}\n\nState snapshot:\n${state_snapshot}\n\n${supervisor_review_task_prompt}",
+        "recovery_owner": "supervisor",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,supervisor_skill_content,state_snapshot",
+        "prompt_source": "supervisor_review_task_prompt",
+        "session_id": "supervisor-${factory_id}",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_review_task_prompt",
+        "workdir": "."
+      }
+    },
+    {
+      "id": "supervisor_review_bug_fast",
+      "kind": "llm_prompt",
+      "title": "Supervisor bug fast-route",
+      "dotAttributes": {
+        "class": "supervisor",
+        "benchmark_job_id": "supervisor.tick.bug_review_fast",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "supervisor.review_bug_fast",
+        "label": "Supervisor bug fast-route",
+        "timeout": "60m",
+        "prompt": "${supervisor_system_prompt}\n\nFactory target: ${target_repo}\nDate: ${date}\n\nFactory context:\n- factory_id=${factory_id}\n- target_repo=${target_repo}\n- control_plane_repo=${control_plane_repo}\n- gh_repo=${gh_repo}\n\nIntent stack JSON:\n${intent_stack}\n\nSupervisor template (shared):\n${supervisor_skill_content}\n\nState snapshot:\n${state_snapshot}\n\n${supervisor_bug_fast_task_prompt}",
+        "recovery_owner": "supervisor",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,intent_stack,supervisor_skill_content,state_snapshot",
+        "prompt_source": "supervisor_bug_fast_task_prompt",
+        "session_id": "supervisor-${factory_id}",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_bug_fast_task_prompt",
+        "workdir": "."
+      }
+    },
+    {
+      "id": "sweep_completed_goals",
+      "kind": "tool_action",
+      "title": "Close goals with all waves done",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.sweep_completed",
+        "label": "Close goals with all waves done",
+        "output_key": "__sweep_completed_goals_result",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "sweep_empty_milestones",
+      "kind": "tool_action",
+      "title": "Close empty wave milestones",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "milestone.sweep_empty",
+        "label": "Close empty wave milestones",
+        "output_key": "__sweep_empty_milestones_result",
+        "action_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "sync_release_manifest",
+      "kind": "tool_action",
+      "title": "Sync manifest to canonical location",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "factory.publish_control_plane_manifest",
+        "label": "Sync manifest to canonical location",
+        "output_key": "__sync_release_manifest_result",
+        "recovery_owner": "supervisor",
+        "action_manifest_path": ".hatch/runs/${__run_id}/artifacts/release-manifest.json",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "artifact_ingest",
+      "to": "auto_ready_artifact_goals"
+    },
+    {
+      "from": "auto_ready_artifact_goals",
+      "to": "sanitize_goal_duplicates"
+    },
+    {
+      "from": "sanitize_goal_duplicates",
+      "to": "sweep_completed_goals"
+    },
+    {
+      "from": "sweep_completed_goals",
+      "to": "sweep_empty_milestones"
+    },
+    {
+      "from": "sweep_empty_milestones",
+      "to": "list_ready_goals"
+    },
+    {
+      "from": "list_ready_goals",
+      "to": "count_ready_goals"
+    },
+    {
+      "from": "count_ready_goals",
+      "to": "goal_gate"
+    },
+    {
+      "from": "evaluate_action_item_gate",
+      "to": "action_item_gate"
+    },
+    {
+      "from": "set_domain_result",
+      "to": "done"
+    },
+    {
+      "from": "set_release_sha",
+      "to": "release_manifest"
+    },
+    {
+      "from": "release_manifest",
+      "to": "sync_release_manifest"
+    },
+    {
+      "from": "sync_release_manifest",
+      "to": "list_executable_goals"
+    },
+    {
+      "from": "list_executable_goals",
+      "to": "goal_execute_gate"
+    },
+    {
+      "from": "start",
+      "to": "set_factory_root"
+    },
+    {
+      "from": "set_factory_root",
+      "to": "set_gh_repo"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "set_repo"
+    },
+    {
+      "from": "set_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_date"
+    },
+    {
+      "from": "set_date",
+      "to": "set_run_id"
+    },
+    {
+      "from": "set_run_id",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "load_supervisor_skill"
+    },
+    {
+      "from": "load_supervisor_skill",
+      "to": "load_supervisor_system_prompt"
+    },
+    {
+      "from": "load_supervisor_system_prompt",
+      "to": "load_supervisor_bug_fast_task_prompt"
+    },
+    {
+      "from": "load_supervisor_bug_fast_task_prompt",
+      "to": "load_supervisor_review_task_prompt"
+    },
+    {
+      "from": "load_supervisor_review_task_prompt",
+      "to": "set_source_repos"
+    },
+    {
+      "from": "set_source_repos",
+      "to": "set_max_artifacts"
+    },
+    {
+      "from": "set_max_artifacts",
+      "to": "set_max_concurrent_waves_pre"
+    },
+    {
+      "from": "set_max_concurrent_waves_pre",
+      "to": "set_max_goal_runs_per_tick"
+    },
+    {
+      "from": "set_max_goal_runs_per_tick",
+      "to": "resolve_absolute_runs_dir"
+    },
+    {
+      "from": "resolve_absolute_runs_dir",
+      "to": "set_capability_goal_decomposition_skills"
+    },
+    {
+      "from": "set_capability_goal_decomposition_skills",
+      "to": "set_judge_scenario_selector"
+    },
+    {
+      "from": "set_judge_scenario_selector",
+      "to": "evaluate_open_bug_gate_fast"
+    },
+    {
+      "from": "evaluate_open_bug_gate_fast",
+      "to": "bug_fast_gate"
+    },
+    {
+      "from": "action_item_gate",
+      "to": "set_domain_result",
+      "condition": "has_action_items!=true",
+      "dotAttributes": {
+        "condition": "has_action_items!=true"
+      }
+    },
+    {
+      "from": "action_item_gate",
+      "to": "supervisor_review",
+      "condition": "has_action_items=true",
+      "dotAttributes": {
+        "condition": "has_action_items=true"
+      }
+    },
+    {
+      "from": "bug_fast_gate",
+      "to": "fast_route_telemetry_clear",
+      "condition": "has_open_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs!=true"
+      }
+    },
+    {
+      "from": "bug_fast_gate",
+      "to": "fast_route_telemetry_open",
+      "condition": "has_open_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs=true"
+      }
+    },
+    {
+      "from": "bug_fast_resolution_gate",
+      "to": "artifact_ingest",
+      "condition": "has_open_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs!=true"
+      }
+    },
+    {
+      "from": "bug_fast_resolution_gate",
+      "to": "set_domain_result",
+      "condition": "has_open_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs=true"
+      }
+    },
+    {
+      "from": "ensure_goal_execution_path",
+      "to": "fan_out_goal_run"
+    },
+    {
+      "from": "evaluate_open_bug_gate_after_fast",
+      "to": "bug_fast_resolution_gate"
+    },
+    {
+      "from": "fan_in_goal_run",
+      "to": "set_release_sha"
+    },
+    {
+      "from": "fan_out_goal_run",
+      "to": "fan_in_goal_run"
+    },
+    {
+      "from": "fast_route_telemetry_clear",
+      "to": "artifact_ingest"
+    },
+    {
+      "from": "fast_route_telemetry_open",
+      "to": "supervisor_review_bug_fast"
+    },
+    {
+      "from": "goal_decompose_backpressure",
+      "to": "goal_decompose_gate",
+      "dotAttributes": {
+        "input_key": "goal_issues"
+      }
+    },
+    {
+      "from": "goal_decompose_gate",
+      "to": "keep_all_goals",
+      "condition": "decompose_allowed=true",
+      "dotAttributes": {
+        "condition": "decompose_allowed=true"
+      }
+    },
+    {
+      "from": "goal_decompose_gate",
+      "to": "set_release_sha",
+      "condition": "decompose_allowed!=true",
+      "dotAttributes": {
+        "condition": "decompose_allowed!=true"
+      }
+    },
+    {
+      "from": "goal_execute_gate",
+      "to": "evaluate_action_item_gate",
+      "condition": "count=0",
+      "dotAttributes": {
+        "condition": "count=0"
+      }
+    },
+    {
+      "from": "goal_execute_gate",
+      "to": "spawn_goal_execute",
+      "condition": "count!=0",
+      "dotAttributes": {
+        "condition": "count!=0"
+      }
+    },
+    {
+      "from": "goal_gate",
+      "to": "goal_decompose_backpressure",
+      "condition": "goal_count!=0",
+      "dotAttributes": {
+        "condition": "goal_count!=0"
+      }
+    },
+    {
+      "from": "goal_gate",
+      "to": "set_release_sha",
+      "condition": "goal_count=0",
+      "dotAttributes": {
+        "condition": "goal_count=0"
+      }
+    },
+    {
+      "from": "keep_all_goals",
+      "to": "limit_kept_goals"
+    },
+    {
+      "from": "limit_kept_goals",
+      "to": "ensure_goal_execution_path"
+    },
+    {
+      "from": "spawn_goal_execute",
+      "to": "evaluate_action_item_gate"
+    },
+    {
+      "from": "supervisor_review_bug_fast",
+      "to": "evaluate_open_bug_gate_after_fast"
+    },
+    {
+      "from": "supervisor_review",
+      "to": "set_domain_result"
+    }
+  ]
+}

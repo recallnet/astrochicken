@@ -1,0 +1,5 @@
+digraph managed_supervisor_shell {
+  blocker_gate [label="Blocker gate"];
+  domain_graph_invocation [label="Domain graph invocation"];
+  telemetry_emission [label="Telemetry emit"];
+}

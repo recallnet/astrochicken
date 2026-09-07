@@ -1,0 +1,7 @@
+digraph tool_prompt_declarative_valid {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  valid_tool_prompt [type="tool" label="Valid tool prompt" output_key="out_valid" governance="reversible" prompt="node ops/cli.mjs wave report --repo '${context.repo}'"]
+  start -> valid_tool_prompt
+  valid_tool_prompt -> done [condition="out_valid=ok"]
+}

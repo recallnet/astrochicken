@@ -1,0 +1,16 @@
+[
+  {
+    "name": "fail-deterministic",
+    "fixturePath": "scripts/test/fixtures/docs-graph-check/fail",
+    "expectedExitCode": 1,
+    "expectedReportPath": "scripts/test/fixtures/docs-graph-check/fail/expected-report.json",
+    "expectedSummary": "[docs-graph] result=fail diagnostics=4 docs=4 edges=1 orphans=1"
+  },
+  {
+    "name": "pass-deterministic",
+    "fixturePath": "scripts/test/fixtures/docs-graph-check/pass",
+    "expectedExitCode": 0,
+    "expectedReportPath": "scripts/test/fixtures/docs-graph-check/pass/expected-report.json",
+    "expectedSummary": "[docs-graph] result=ok diagnostics=0 docs=3 edges=4 orphans=0"
+  }
+]

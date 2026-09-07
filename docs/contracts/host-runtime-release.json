@@ -1,0 +1,490 @@
+{
+  "$id": "https://recallnet.dev/contracts/host-runtime-release.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Versioned host-runtime release artifact contract consumed by hatch-host and managed factory kinds.",
+  "properties": {
+    "artifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string"
+        },
+        "asset_path": {
+          "type": "string"
+        },
+        "checksum_sha256": {
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "url": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "channel": {
+      "enum": [
+        "stable",
+        "canary",
+        "pinned"
+      ],
+      "type": "string"
+    },
+    "compatibility": {
+      "additionalProperties": false,
+      "properties": {
+        "max_factory_ops_version": {
+          "type": "string"
+        },
+        "min_factory_ops_version": {
+          "type": "string"
+        },
+        "supported_kinds": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "supported_platforms": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "supported_kinds",
+        "supported_platforms"
+      ],
+      "type": "object"
+    },
+    "metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "release_id": {
+          "type": "string"
+        },
+        "release_sha": {
+          "type": "string"
+        },
+        "release_tag": {
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "timestamp"
+      ],
+      "type": "object"
+    },
+    "provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "build_timestamp": {
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+          "type": "string"
+        },
+        "git_sha": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "git_sha",
+        "build_timestamp"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "host_runtime_release/v1",
+      "type": "string"
+    },
+    "trust": {
+      "additionalProperties": false,
+      "properties": {
+        "attestations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "dsse_envelope": {
+                "additionalProperties": false,
+                "properties": {
+                  "payload": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "payload_type": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "schema_version": {
+                    "const": "dsse_envelope/v1",
+                    "type": "string"
+                  },
+                  "signatures": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "keyid": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "sig": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "keyid",
+                        "sig"
+                      ],
+                      "type": "object"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "payload_type",
+                  "payload",
+                  "signatures"
+                ],
+                "type": "object"
+              },
+              "predicate": {
+                "additionalProperties": false,
+                "properties": {
+                  "build_definition": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "build_type": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "external_parameters": {
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "type": "object"
+                      },
+                      "internal_parameters": {
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "type": "object"
+                      },
+                      "resolved_dependencies": {
+                        "items": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "digest": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "propertyNames": {
+                                "type": "string"
+                              },
+                              "type": "object"
+                            },
+                            "uri": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "uri",
+                            "digest"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "build_type",
+                      "external_parameters",
+                      "internal_parameters",
+                      "resolved_dependencies"
+                    ],
+                    "type": "object"
+                  },
+                  "run_details": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "builder": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id"
+                        ],
+                        "type": "object"
+                      },
+                      "metadata": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "finished_on": {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "invocation_id": {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "started_on": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "invocation_id",
+                          "started_on",
+                          "finished_on"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "builder",
+                      "metadata"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "build_definition",
+                  "run_details"
+                ],
+                "type": "object"
+              },
+              "predicate_type": {
+                "const": "https://slsa.dev/provenance/v1",
+                "type": "string"
+              },
+              "schema_version": {
+                "const": "artifact_attestation/v1",
+                "type": "string"
+              },
+              "stack": {
+                "const": "cosign",
+                "type": "string"
+              }
+            },
+            "required": [
+              "schema_version",
+              "stack",
+              "predicate_type",
+              "predicate",
+              "dsse_envelope"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "policy": {
+          "additionalProperties": false,
+          "properties": {
+            "attestation_stack": {
+              "const": "in_toto_dsse",
+              "type": "string"
+            },
+            "provenance_profile": {
+              "const": "slsa_provenance/v1",
+              "type": "string"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "required": {
+              "type": "boolean"
+            },
+            "schema_version": {
+              "const": "artifact_trust_policy/v1",
+              "type": "string"
+            },
+            "signing_stack": {
+              "const": "cosign",
+              "type": "string"
+            },
+            "verification_boundaries": {
+              "items": {
+                "enum": [
+                  "release",
+                  "promotion"
+                ],
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "schema_version",
+            "required",
+            "signing_stack",
+            "attestation_stack",
+            "provenance_profile",
+            "verification_boundaries",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "schema_version": {
+          "const": "artifact_trust_bundle/v1",
+          "type": "string"
+        },
+        "signature": {
+          "additionalProperties": false,
+          "properties": {
+            "key_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "payload_digest": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "payload_ref": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "payload_type": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "schema_version": {
+              "const": "artifact_signature/v1",
+              "type": "string"
+            },
+            "signature": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "signature_algorithm": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "stack": {
+              "const": "cosign",
+              "type": "string"
+            }
+          },
+          "required": [
+            "schema_version",
+            "stack",
+            "key_id",
+            "signature",
+            "signature_algorithm",
+            "payload_ref",
+            "payload_type",
+            "payload_digest"
+          ],
+          "type": "object"
+        },
+        "verifications": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "boundary": {
+                "enum": [
+                  "release",
+                  "promotion"
+                ],
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "schema_version": {
+                "const": "artifact_verification/v1",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "verified",
+                  "failed"
+                ],
+                "type": "string"
+              },
+              "verified_at": {
+                "type": "string"
+              },
+              "verifier": {
+                "const": "cosign",
+                "type": "string"
+              }
+            },
+            "required": [
+              "schema_version",
+              "boundary",
+              "verifier",
+              "status",
+              "verified_at",
+              "reason"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "policy",
+        "signature",
+        "attestations",
+        "verifications"
+      ],
+      "type": "object"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "version",
+    "channel",
+    "provenance",
+    "compatibility",
+    "artifactRef",
+    "trust",
+    "metadata"
+  ],
+  "title": "Host Runtime Release Manifest",
+  "type": "object"
+}

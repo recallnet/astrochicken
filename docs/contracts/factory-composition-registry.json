@@ -1,0 +1,50 @@
+{
+  "diagnostics": [],
+  "factories": [
+    {
+      "composition_model": "thin_composition",
+      "factory_id": "example-scanner",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/example-scanner/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 7
+    },
+    {
+      "composition_model": "thin_composition",
+      "factory_id": "brainstorm",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/brainstorm/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 1
+    },
+    {
+      "composition_model": "control_plane",
+      "factory_id": "mothership",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/mothership/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 3
+    },
+    {
+      "composition_model": "thin_composition",
+      "factory_id": "example-web",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/example-web/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 6
+    },
+    {
+      "composition_model": "thin_composition",
+      "factory_id": "example-trading",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/example-trading/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 8
+    }
+  ],
+  "schema_version": "factory_composition_registry/v1",
+  "summary": {
+    "diagnostics": 0,
+    "registered_factories": 5
+  }
+}

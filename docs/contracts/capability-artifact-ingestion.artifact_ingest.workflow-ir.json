@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "artifact_ingest",
+  "familyId": "artifact_ingestion",
+  "sourcePath": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+  "outputPath": "docs/contracts/capability-artifact-ingestion.artifact_ingest.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+    "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "artifact_ingestion",
+      "correlation_id": "workflow-ir-contract:artifact_ingest",
+      "factory_id": "capability-artifact-ingestion",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "artifact_ingest",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "artifact_ingest"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "artifact_ingestion",
+        "correlation_id": "workflow-ir-contract:artifact_ingest",
+        "factory_id": "capability-artifact-ingestion",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "artifact_ingest",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "artifact_ingest"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot",
+      "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWFydGlmYWN0LWluZ2VzdGlvbi1hcnRpZmFjdF9pbmdlc3QiCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAiYXJ0aWZhY3RfaW5nZXN0IgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktYXJ0aWZhY3QtaW5nZXN0aW9uL3dvcmtmbG93cy9hcnRpZmFjdF9pbmdlc3QvYXJ0aWZhY3RfaW5nZXN0LndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAiYXJ0aWZhY3RfaW5nZXN0IiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "artifact_ingest"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "artifact_ingest",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:82d41b807370f8560564c93c6687aa99967ed50cf0de066d36aee17753f66cfb",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-artifact-ingestion-artifact_ingest",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs. Do not edit by hand.\ndigraph artifact_ingest {\n    label = \"artifact_ingest\"\n    workflow_source = \"packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    ingest [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"artifact.ingest\" label=\"Ingest artifact issues\" output_key=\"artifact_ingest_result\" action_control_plane_repo=\"${control_plane_repo}\" action_dry_run=\"${dry_run}\" action_max=\"${max_artifacts}\" action_source_repos=\"${source_repos}\" action_trusted_factory_ids=\"${trusted_factory_ids}\" action_trusted_source_repos=\"${source_repos}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_control_plane_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve control-plane repo\" output_key=\"control_plane_repo\" action_fallback=\"recallnet/astrochicken\" action_value=\"${control_plane_repo}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_dry [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_boolean\" label=\"Resolve dry-run\" output_key=\"dry_run\" action_fallback=\"false\" action_value=\"${dry_run}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_max [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve max artifacts\" output_key=\"max_artifacts\" action_fallback=\"20\" action_value=\"${max_artifacts}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_source_repos [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve source repos\" output_key=\"source_repos\" action_fallback=\"${control_plane_repo}\" action_value=\"${source_repos}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_trusted_factory_ids [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Resolve trusted factory ids\" output_key=\"trusted_factory_ids\" action_value=\"${trusted_factory_ids}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\"]\n    start -> set_control_plane_repo -> set_source_repos -> set_max -> set_trusted_factory_ids -> set_dry -> ingest -> done\n}"
+}

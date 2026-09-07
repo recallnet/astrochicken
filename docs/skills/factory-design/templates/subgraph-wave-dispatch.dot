@@ -1,0 +1,113 @@
+// subgraph-wave-dispatch.dot
+// Template: wave dispatch gate stack for reusable factory subgraphs.
+// Telemetry emitted by this template:
+// - wave_slots: enumerated dispatch slots available this tick
+// - dispatch_result: outcome payload from dispatching a selected ready wave
+// Source: factories/mothership/graphs/wave_dispatch.dot (dispatch selection + create-ready structure)
+
+digraph subgraph_wave_dispatch {
+    label = "subgraph_wave_dispatch"
+    workdir = "."
+    model_stylesheet = "\
+        * { llm_model: role-model-default; llm_provider: role-provider-default; }\
+    "
+
+    start [shape=Mdiamond]
+    done [shape=Msquare recovery_sink_type="terminal"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (shared dispatch setup)
+    set_gh_repo [type="tool" governance="reversible"
+                 label="Resolve target repository"
+                 output_key="gh_repo"
+                 prompt="hatch-ops common resolve-gh-repo --default 'owner/repo'"]
+
+    set_max_concurrent_waves [type="tool" governance="reversible"
+                              label="Resolve max concurrent waves"
+                              output_key="max_concurrent_waves"
+                              prompt="hatch-ops common resolve-default --value '' --fallback '3'"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (pre-dispatch telemetry)
+    tick_status [type="tool" governance="reversible"
+                 label="Snapshot factory tick status"
+                 output_key="tick_status"
+                 prompt="hatch-ops factory tick-status --repo '${gh_repo}' --json"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (health gate)
+    check_health [type="tool" governance="reversible"
+                  label="Evaluate dispatch health"
+                  output_key="health_state"
+                  prompt="hatch-ops factory health --repo '${gh_repo}' --tick-status '${tick_status}' --json"]
+
+    health_gate [shape=diamond label="healthy?"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (blocked gate)
+    check_blocked [type="tool" governance="reversible"
+                   label="Evaluate dispatch blockers"
+                   output_key="blocked_state"
+                   prompt="hatch-ops wave blocked-status --repo '${gh_repo}' --json"]
+
+    blocked_gate [shape=diamond label="blocked?"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (slot enumeration)
+    enumerate_wave_slots [type="tool" governance="reversible" recovery_owner="supervisor"
+                          label="Enumerate wave slots"
+                          output_key="wave_slots"
+                          prompt="hatch-ops wave slot-enumerate --repo '${gh_repo}' --max-concurrent '${max_concurrent_waves}' --json"]
+
+    capacity_gate [shape=diamond label="capacity?"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (ready marker discovery + selection)
+    list_ready_waves [type="tool" governance="reversible"
+                      label="List ready waves"
+                      output_key="ready_waves"
+                      prompt="hatch-ops wave list-ready --repo '${gh_repo}' --wave-slots '${wave_slots}' --json"]
+
+    select_wave [type="tool" governance="reversible"
+                 label="Select wave to dispatch"
+                 output_format="json"
+                 outputs="selected_wave,dispatch_reason"
+                 prompt="hatch-ops wave dispatch-select --repo '${gh_repo}' --ready-waves '${ready_waves}' --wave-slots '${wave_slots}' --json"]
+
+    selected_gate [shape=diamond label="selected?"]
+
+    // LLM-driven dispatch policy node with per-node model override placeholder.
+    // model_stylesheet placeholder enables generated factories to swap per-node model policy.
+    dispatch_policy [type="stack.manager_loop" governance="irreversible"
+                     label="Dispatch policy review"
+                     output_key="dispatch_policy_notes"
+                     model_stylesheet="dispatch_policy { llm_model: role-model-overrides; llm_provider: role-provider-overrides; }"
+                     prompt="Review selected_wave, dispatch_reason, and wave_slots, then return deterministic dispatch policy notes."]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (create-ready/dispatch mutation)
+    dispatch_wave [type="tool" governance="irreversible"
+                   label="Dispatch selected wave"
+                   output_key="dispatch_result"
+                   prompt="hatch-ops wave dispatch --repo '${gh_repo}' --wave '${selected_wave}' --policy-notes '${dispatch_policy_notes}' --json"]
+
+    // Source: factories/mothership/graphs/wave_dispatch.dot (post-dispatch execution handoff)
+    run_wave_execute [type="pipeline"
+                      label="Run wave execution subgraph"
+                      pipeline="graphs/wave_execute.dot"
+                      inherit_context="true"
+                      export_keys="wave_execute_result"]
+
+    start -> set_gh_repo -> set_max_concurrent_waves -> tick_status -> check_health -> health_gate
+    health_gate -> done [condition="health_state!=healthy"]
+    health_gate -> check_blocked [condition="health_state=healthy"]
+
+    check_blocked -> blocked_gate
+    blocked_gate -> done [condition="blocked_state=blocked"]
+    blocked_gate -> enumerate_wave_slots [condition="blocked_state!=blocked"]
+
+    enumerate_wave_slots -> capacity_gate
+    capacity_gate -> done [condition="wave_slots=[]"]
+    capacity_gate -> list_ready_waves [condition="wave_slots!=[]"]
+
+    list_ready_waves -> select_wave -> selected_gate
+    selected_gate -> done [condition="selected_wave="]
+    selected_gate -> dispatch_policy [condition="selected_wave!="]
+
+    dispatch_policy -> dispatch_wave
+    dispatch_wave -> run_wave_execute [input_key="dispatch_result"]
+    run_wave_execute -> done
+}

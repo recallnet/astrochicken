@@ -1,0 +1,51 @@
+{
+  "schema_version": "goal_decomposition_timeout_inventory/v1",
+  "factory_root": "factories/mothership",
+  "factory_config_path": "factories/mothership/factory.config.json",
+  "entries": [
+    {
+      "stage": "issue_draft",
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "draft_issue_spec",
+      "timeout": "30m",
+      "timeout_ms": 1800000,
+      "source": "override",
+      "source_key_path": "capabilities.goal_decomposition.timeouts.issue_draft",
+      "default_timeout": "30m",
+      "override_timeout": "30m"
+    },
+    {
+      "stage": "issue_judge",
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "judge_issue",
+      "timeout": "30m",
+      "timeout_ms": 1800000,
+      "source": "override",
+      "source_key_path": "capabilities.goal_decomposition.timeouts.issue_judge",
+      "default_timeout": "30m",
+      "override_timeout": "30m"
+    },
+    {
+      "stage": "issue_repair",
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "repair_issue_spec",
+      "timeout": "30m",
+      "timeout_ms": 1800000,
+      "source": "override",
+      "source_key_path": "capabilities.goal_decomposition.timeouts.issue_repair",
+      "default_timeout": "30m",
+      "override_timeout": "30m"
+    },
+    {
+      "stage": "issue_revise",
+      "graph_path": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+      "node_id": "revise_issue_spec",
+      "timeout": "30m",
+      "timeout_ms": 1800000,
+      "source": "override",
+      "source_key_path": "capabilities.goal_decomposition.timeouts.issue_revise",
+      "default_timeout": "30m",
+      "override_timeout": "30m"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+digraph wrong_goal_drift_harness {
+  label="Wrong-goal drift adversarial harness"
+  intent_ref="intent.default"
+
+  start [shape=Mdiamond]
+  local_optimize [type="codergen" label="Optimize local score" output_key="local_plan" output_format="json"]
+  judge_alignment [type="codergen" label="Judge intent alignment" judge="true" objective_id="goal.intent_alignment.guardrail" output_key="judge_result" output_format="json" outputs="pass,decision,review_notes"]
+  escalate_misalignment [type="codergen" recovery_owner="supervisor" label="Escalate detected drift" escalation="true" output_format="json"]
+  block_wrong_goal [type="codergen" label="Block wrong-goal action" violation="true" decision_record="true" output_format="json"]
+  done [shape=Msquare]
+
+  start -> local_optimize -> judge_alignment
+  judge_alignment -> done [condition="pass=true"]
+  judge_alignment -> escalate_misalignment [condition="pass!=true"]
+  escalate_misalignment -> block_wrong_goal -> done
+}

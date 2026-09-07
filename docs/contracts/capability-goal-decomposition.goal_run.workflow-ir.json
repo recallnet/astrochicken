@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "goal_run",
+  "familyId": "goal_decomposition",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+  "outputPath": "docs/contracts/capability-goal-decomposition.goal_run.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_decomposition",
+      "correlation_id": "workflow-ir-contract:goal_run",
+      "factory_id": "capability-goal-decomposition",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "goal_run",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "goal_run"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_decomposition",
+        "correlation_id": "workflow-ir-contract:goal_run",
+        "factory_id": "capability-goal-decomposition",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "goal_run",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "goal_run"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi1nb2FsX3J1biIKICAgICAgfSwKICAgICAgImludGVybmFsX3BhcmFtZXRlcnMiOiB7CiAgICAgICAgImNvbXBpbGVyX3ZlcnNpb24iOiAid29ya2Zsb3dfaXJfY29tcGlsZXIvdjEiLAogICAgICAgICJ3b3JrZmxvd19pZCI6ICJnb2FsX3J1biIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9jYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi93b3JrZmxvd3MvZ29hbF9ydW4vZ29hbF9ydW4ud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJnb2FsX3J1biIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "goal_run"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "goal_run",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:cdf5c0b9fd36e98d534f35442ed28c11b359fed767cf95bf27702d0fedc584ac",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_run",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs. Do not edit by hand.\ndigraph goal_run {\n    label = \"goal_run\"\n    workflow_source = \"packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs\"\n    admission_check [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.inspect_run_admission\" label=\"Goal decomposition/planning admission check\" output_format=\"json\" outputs=\"goal_admission_allowed,goal_admission_decision,goal_admission_reason,goal_admission_error_code,decomposition_packet_present,planning_locked,planning_lock_bypassed,prerequisite_open_blockers,hard_goal,hard_goal_state,hard_goal_state_reason,hard_plan_packet_present,hard_plan_packet_id,hard_plan_packet_path,hard_plan_artifact_count,ready_label_present,awaiting_human_label_present\" action_repo_root=\"${repo}\" action_goal_issue_number=\"${issue_number}\" action_goal_execution_path=\"${goal_execution_path}\" action_goal_routing_state=\"${goal_routing_state}\" action_factory_id=\"${factory_id}\" action_hard_goal=\"${hard_goal}\" action_hard_goal_state=\"${hard_goal_state}\" action_hard_goal_state_reason=\"${hard_goal_state_reason}\" action_ready_label_present=\"${ready_label_present}\" action_awaiting_human_label_present=\"${awaiting_human_label_present}\" action_hard_plan_packet_present=\"${hard_plan_packet_present}\" action_hard_plan_packet_id=\"${hard_plan_packet_id}\" action_hard_plan_packet_path=\"${hard_plan_packet_path}\" action_hard_plan_comment_marker=\"${hard_plan_comment_marker}\" action_hard_plan_comment_id=\"${hard_plan_comment_id}\" action_hard_plan_comment_url=\"${hard_plan_comment_url}\" action_hard_plan_artifact_count=\"${hard_plan_artifact_count}\" action_hard_plan_artifact_refs=\"${hard_plan_artifact_refs}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    admission_gate [shape=\"diamond\" label=\"Goal admission allowed?\"]\n    append_rationale_feature [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.append_rationale_feature\" label=\"Append required rationale-doc feature\" output_format=\"json\" outputs=\"approved_features,understanding_risk,rationale_required,rationale_feature_added\" action_goal_issue_number=\"${issue_number}\" action_approved_features=\"${approved_features}\" action_execution_path=\"${goal_execution_path}\" action_goal_issue=\"${goal_issue}\" action_rationale_required=\"${rationale_required}\" action_understanding_risk=\"${understanding_risk}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    apply_feature_blockers [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.apply_feature_blockers\" label=\"Apply human and control-plane blockers\" output_format=\"json\" outputs=\"blocker_result\" action_repo=\"${gh_repo}\" action_goal_issue_number=\"${issue_number}\" action_feature_issue_map=\"${resolved_feature_issue_map}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    approved_hard_plan_resume [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.inspect_json\" label=\"Mark approved hard-plan resume path\" output_format=\"json\" outputs=\"approved,decompose_attempt_number,decompose_parse_status,decompose_parse_source\" action_raw=\"{\\\"approved\\\":\\\"true\\\",\\\"decompose_attempt_number\\\":\\\"0\\\",\\\"decompose_parse_status\\\":\\\"approved_hard_plan_resume\\\",\\\"decompose_parse_source\\\":\\\"goal_run.materialize_hard_plan\\\"}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    check_already_decomposed [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.check_already_decomposed\" label=\"Check if goal already has sub-issues\" output_key=\"has_sub_issues\" action_repo=\"${gh_repo}\" action_repo_root=\"${repo}\" action_issue_number=\"${issue_number}\" action_factory_id=\"${factory_id}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    check_decompose_retries [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.count_decompose_attempts\" label=\"Count previous decompose attempts\" output_key=\"decompose_retry_count\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    clear_direct_execution_reason [type=\"tool\" governance=\"reversible\" label=\"Clear direct execution failure reason\" output_key=\"__composite_reason\" prompt=\"printf ''\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    compute_close [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.compute_close_condition\" label=\"Compute close condition\" output_key=\"should_close\" action_issue_count=\"${issue_count}\" action_approved_feature_count=\"${approved_feature_count}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    count_approved_features [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.count_json_items\" label=\"Count approved features\" output_key=\"approved_feature_count\" action_raw=\"${approved_features}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    count_issues [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.count_json_items\" label=\"Count created issues\" output_key=\"issue_count\" action_raw=\"${issue_urls}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    current_decompose_attempt [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.increment_counter\" label=\"Compute current decompose attempt\" output_key=\"decompose_attempt_number\" action_value=\"${decompose_retry_count}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    decide_close [shape=\"diamond\" label=\"Close goal?\"]\n    decompose_retry_gate [shape=\"diamond\" label=\"Decompose retry budget?\"]\n    decomposition_feature_gate [shape=\"diamond\" label=\"Approved features created?\"]\n    decomposition_issue_gate [shape=\"diamond\" label=\"Issues created?\"]\n    direct_execution_result_gate [shape=\"diamond\" label=\"Direct execution failed?\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    duplicate_decompose_guard [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.guard_duplicate_decompose\" label=\"Fail closed duplicate decomposition attempt\" output_key=\"__goal_duplicate_decompose_guard_result\" output_format=\"json\" action_repo=\"${gh_repo}\" action_repo_root=\"${repo}\" action_issue_number=\"${issue_number}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_run\" action_node_id=\"duplicate_decompose_guard\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    easy_execution_gate [shape=\"diamond\" label=\"Direct easy execution?\"]\n    encode_approved_features_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode approved features packet payload\" output_key=\"approved_features_b64\" action_value=\"${approved_features}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_goal_context_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode goal context packet payload\" output_key=\"goal_context_b64\" action_value=\"${goal_context}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_goal_issue_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode goal issue packet payload\" output_key=\"goal_issue_b64\" action_value=\"${goal_issue}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_issue_urls_b64 [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode issue urls packet payload\" output_key=\"issue_urls_b64\" action_value=\"${issue_urls}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    execute_easy_goal [type=\"pipeline\" label=\"Execute easy goal directly\" fail_open=\"true\" inherit_context=\"true\" pipeline=\"factories/mothership/graphs/goal_execute.dot\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    exhaust_decompose_retries [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.exhaust_decompose_retries\" label=\"Exhaust decompose retries\" output_key=\"__exhaust_retries_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" action_decompose_retry_count=\"${decompose_retry_count}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    fail_duplicate_admission [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.build_admission_failure\" label=\"Fail duplicate decomposition/planning admission\" output_key=\"__goal_admission_failure_result\" output_format=\"json\" action_goal_issue_number=\"${issue_number}\" action_decomposition_packet_present=\"${decomposition_packet_present}\" action_goal_admission_decision=\"${goal_admission_decision}\" action_goal_admission_error_code=\"${goal_admission_error_code}\" action_goal_admission_reason=\"${goal_admission_reason}\" action_planning_locked=\"${planning_locked}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    hard_plan [type=\"pipeline\" label=\"Run hard-path planning hold\" export_keys=\"goal_issue,goal_context,approved_features,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source,planning_state,planning_artifact_path,goal_execution_path_packet_id,goal_execution_path_packet_path,ready_label_removed,ready_removed_comment_posted\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    hard_planning_gate [shape=\"diamond\" label=\"Hard planning approved?\"]\n    hard_planning_hold_done [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.inspect_json\" label=\"Emit hard planning hold outcome\" output_format=\"json\" outputs=\"planning_state,planning_artifact_path,planning_review_required,goal_admission_reason\" action_raw=\"{\\\"planning_state\\\":\\\"${planning_state}\\\",\\\"planning_artifact_path\\\":\\\"${planning_artifact_path}\\\",\\\"planning_review_required\\\":\\\"true\\\",\\\"goal_admission_reason\\\":\\\"${goal_admission_reason}\\\"}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    intake_decompose [type=\"pipeline\" label=\"Intake and decompose goal\" export_keys=\"goal_issue,goal_context,approved_features,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated,review_notes,approved,decompose_attempts,decompose_parse_status,decompose_parse_error,decompose_proposed_excerpt,decompose_parse_source\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    issues [type=\"pipeline\" label=\"Write issues\" export_keys=\"issue_urls\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    keep_open [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.post_retry_comment\" label=\"Leave goal open for retry\" output_key=\"__keep_open_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" action_approved_feature_count=\"${approved_feature_count}\" action_decompose_approved=\"${approved}\" action_decompose_attempts=\"${decompose_attempt_number}\" action_decompose_parse_source=\"${decompose_parse_source}\" action_decompose_parse_status=\"${decompose_parse_status}\" action_issue_count=\"${issue_count}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    keep_open_direct [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.post_retry_comment\" label=\"Leave direct easy goal open for retry\" output_key=\"__keep_open_direct_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" action_approved_feature_count=\"0\" action_decompose_approved=\"false\" action_decompose_attempts=\"0\" action_decompose_parse_source=\"${__composite_reason}\" action_decompose_parse_status=\"direct_execution_failed\" action_issue_count=\"0\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    label_issues [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.label_created_issues\" label=\"Add triaged label to created issues\" output_format=\"json\" outputs=\"label_result\" action_repo=\"${gh_repo}\" action_issue_urls=\"${issue_urls}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    mark_decompose_attempt [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.post_decompose_attempt\" label=\"Mark decompose attempt\" output_key=\"__mark_attempt_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" action_decompose_attempt_number=\"${decompose_attempt_number}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    mark_dispatched [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.mark_dispatched\" label=\"Mark goal dispatched\" output_key=\"__mark_dispatched_result\" action_repo=\"${gh_repo}\" action_issue_number=\"${issue_number}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    materialize_hard_plan [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.materialize_approved_plan\" label=\"Materialize approved hard plan into issues\" output_format=\"json\" outputs=\"goal_issue_number,goal_issue,goal_context,approved_features,plan_packet_id,planning_artifact_path,decomposition_packet_id,decomposition_packet_path,materialization_state,already_completed,issue_urls,created_issue_numbers,feature_issue_map,blocked_by_edges,traceability_chain,materialization_packet_path,materialization_packet_id,planning_state,goal_execution_path_packet_id,goal_execution_path_packet_path,awaiting_human_label_removed\" action_repo=\"${gh_repo}\" action_repo_root=\"${repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_control_plane_repo=\"${control_plane_repo}\" action_goal_number=\"${issue_number}\" action_plan_packet_id=\"${hard_plan_packet_id}\" action_planning_artifact_path=\"${hard_plan_packet_path}\" action_target_repo=\"${target_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    normalize_issue_index [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"triage.normalize_issue_urls\" label=\"Normalize issue index from URLs\" output_format=\"json\" outputs=\"normalized_issues\" action_issue_urls=\"${issue_urls}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    persist_decomposition_packet [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.persist_decomposition_packet\" label=\"Persist goal decomposition packet\" outputs=\"goal_decomposition_packet_path,goal_decomposition_packet_id,goal_decomposition_packet_type,goal_decomposition_packet_schema_version,goal_decomposition_packet_storage_class\" action_repo_root=\"${repo}\" action_goal_issue_number=\"${issue_number}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"goal_run\" action_node_id=\"persist_decomposition_packet\" action_approved_features_b64=\"${approved_features_b64}\" action_control_plane_repo=\"${control_plane_repo}\" action_goal_context_b64=\"${goal_context_b64}\" action_goal_issue_b64=\"${goal_issue_b64}\" action_issue_urls_b64=\"${issue_urls_b64}\" action_target_repo=\"${target_repo}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    resolve_deps [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"triage.resolve_feature_dependencies\" label=\"Resolve feature dependencies to issue numbers\" output_format=\"json\" outputs=\"resolved_feature_issue_map\" action_repo=\"${gh_repo}\" action_feature_issue_map=\"${feature_issue_map}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    resolve_execution_path [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"software.resolve_goal_execution_path\" label=\"Resolve canonical goal execution-path metadata\" output_format=\"json\" outputs=\"goal_issue_number,goal_execution_path,goal_routing_state,goal_execution_path_version,classification_version,goal_execution_path_packet_id,goal_execution_path_packet_path,goal_execution_path_source,understanding_risk,rationale_required\" action_repo=\"${repo}\" action_goal_issue_number=\"${issue_number}\" action_goal_execution_paths=\"${goal_execution_paths}\" action_factory_id=\"${factory_id}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    resolve_hard_goal_state [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"goal.inspect_hard_state\" label=\"Resolve hard-goal planning/re-entry state\" output_format=\"json\" outputs=\"hard_goal,hard_goal_state,hard_goal_state_reason,hard_plan_packet_present,hard_plan_packet_id,hard_plan_packet_path,hard_plan_comment_marker,hard_plan_comment_id,hard_plan_comment_url,hard_plan_artifact_count,hard_plan_artifact_refs,ready_label_present,awaiting_human_label_present\" action_repo=\"${gh_repo}\" action_repo_root=\"${repo}\" action_goal_issue_number=\"${issue_number}\" action_goal_execution_path=\"${goal_execution_path}\" action_goal_routing_state=\"${goal_routing_state}\" action_factory_id=\"${factory_id}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_empty_issue_urls [type=\"tool\" governance=\"reversible\" label=\"Set empty issue urls for direct goal path\" output_key=\"__set_empty_issue_urls_result\" prompt=\"printf '[]'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    set_goal_execution_mode_direct [type=\"tool\" governance=\"reversible\" label=\"Mark direct easy execution mode\" output_key=\"__set_goal_execution_mode_direct_result\" prompt=\"printf 'direct'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    start [shape=\"Mdiamond\"]\n    zip_feature_map [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"triage.zip_features_to_issues\" label=\"Zip features to created issues\" output_format=\"json\" outputs=\"feature_issue_map\" action_approved_features=\"${approved_features}\" action_normalized_issues=\"${normalized_issues}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    encode_goal_issue_b64 -> encode_goal_context_b64 -> encode_approved_features_b64 -> encode_issue_urls_b64 -> persist_decomposition_packet -> normalize_issue_index -> zip_feature_map -> resolve_deps -> label_issues -> apply_feature_blockers -> compute_close -> decide_close\n    keep_open -> done\n    mark_dispatched -> done\n    start -> resolve_execution_path -> resolve_hard_goal_state -> admission_check -> admission_gate\n    admission_gate -> easy_execution_gate [condition=\"goal_admission_allowed=true\"]\n    admission_gate -> fail_duplicate_admission [condition=\"goal_admission_allowed!=true\"]\n    append_rationale_feature -> issues\n    approved_hard_plan_resume -> encode_goal_issue_b64\n    check_already_decomposed -> check_decompose_retries [condition=\"has_sub_issues!=true\"]\n    check_already_decomposed -> done [condition=\"has_sub_issues=true\"]\n    check_decompose_retries -> duplicate_decompose_guard\n    clear_direct_execution_reason -> execute_easy_goal\n    count_approved_features -> count_issues\n    count_issues -> decomposition_feature_gate\n    current_decompose_attempt -> decompose_retry_gate\n    decide_close -> keep_open [condition=\"should_close!=true\"]\n    decide_close -> mark_dispatched [condition=\"should_close=true\"]\n    decompose_retry_gate -> exhaust_decompose_retries [condition=\"decompose_retry_count>=3\"]\n    decompose_retry_gate -> mark_decompose_attempt [condition=\"decompose_retry_count<3\"]\n    decomposition_feature_gate -> decomposition_issue_gate [condition=\"approved_feature_count!=0\"]\n    decomposition_feature_gate -> keep_open [condition=\"approved_feature_count=0\"]\n    decomposition_issue_gate -> encode_goal_issue_b64 [condition=\"issue_count!=0\"]\n    decomposition_issue_gate -> keep_open [condition=\"issue_count=0\"]\n    direct_execution_result_gate -> keep_open_direct [condition=\"__composite_reason=child_failed\"]\n    direct_execution_result_gate -> mark_dispatched [condition=\"__composite_reason!=child_failed\"]\n    duplicate_decompose_guard -> current_decompose_attempt\n    easy_execution_gate -> check_already_decomposed [condition=\"goal_execution_path=medium\"]\n    easy_execution_gate -> hard_planning_gate [condition=\"goal_execution_path=hard\"]\n    easy_execution_gate -> set_goal_execution_mode_direct [condition=\"goal_execution_path=easy\"]\n    execute_easy_goal -> set_empty_issue_urls\n    exhaust_decompose_retries -> done\n    fail_duplicate_admission -> done\n    hard_plan -> hard_planning_hold_done\n    hard_planning_gate -> hard_plan [condition=\"planning_state!=approved\"]\n    hard_planning_gate -> materialize_hard_plan [condition=\"planning_state=approved\"]\n    hard_planning_hold_done -> done\n    intake_decompose -> append_rationale_feature\n    issues -> count_approved_features\n    keep_open_direct -> done\n    mark_decompose_attempt -> intake_decompose\n    materialize_hard_plan -> approved_hard_plan_resume\n    set_empty_issue_urls -> direct_execution_result_gate\n    set_goal_execution_mode_direct -> clear_direct_execution_reason\n}"
+}

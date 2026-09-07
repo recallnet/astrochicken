@@ -1,0 +1,8 @@
+digraph legacy_fixture {
+  start [shape=Mdiamond]
+  run_tool [label="Legacy tool node" type="tool" governance="reversible" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+  run_code [label="Codegen node" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.codergen"]
+  done [shape=Msquare]
+
+  start -> run_tool -> run_code -> done
+}

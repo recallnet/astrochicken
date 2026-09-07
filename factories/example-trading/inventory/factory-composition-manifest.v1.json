@@ -1,0 +1,108 @@
+{
+  "artifactDefaults": {
+    "canonicalCheckoutPath": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+    "runsDir": ".hatch/example-trading/runs",
+    "scheduledGraphs": [
+      "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+    ],
+    "trustDomain": "example-trading.local",
+    "trustRoles": [
+      "example-trading.local.agent.worktree",
+      "example-trading.local.codergen",
+      "example-trading.local.fan_in.dynamic",
+      "example-trading.local.fan_out.dynamic",
+      "example-trading.local.pipeline",
+      "example-trading.local.stack.manager_loop",
+      "example-trading.local.tool"
+    ]
+  },
+  "bootstrap": {
+    "conformanceReadmePath": null,
+    "createEvolveDocPath": null,
+    "initCommand": "hatch factory init --id example-trading --repo example-org/example-trading --control-plane recallnet/astrochicken",
+    "intentPath": "factories/example-trading/INTENT.md",
+    "readmePath": "factories/example-trading/README.md"
+  },
+  "compositionModel": "thin_composition",
+  "configPath": "factories/example-trading/factory.config.json",
+  "dispatchGraphPath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "factoryId": "example-trading",
+  "graphBindings": [
+    {
+      "capabilityPackage": "@hatch/capability-software-development",
+      "id": "goal_execute",
+      "owner": "shared",
+      "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_intake_decompose",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-software-development",
+      "id": "goal_issue_execute",
+      "owner": "shared",
+      "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_queue",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_run",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/factory-runtime",
+      "id": "managed_software_delivery_domain",
+      "owner": "shared",
+      "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/factory-runtime",
+      "id": "factory_supervisor_tick",
+      "owner": "shared",
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "role": "dispatch"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-release-reporting",
+      "id": "daily_release_report",
+      "owner": "shared",
+      "path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "role": "schedule"
+    }
+  ],
+  "manifestPath": "factories/example-trading/inventory/factory-composition-manifest.v1.json",
+  "policy": {
+    "configPath": "factories/example-trading/factory.config.json",
+    "overrideKeys": [],
+    "policyFiles": [],
+    "policyPackDir": null,
+    "policyPackVersion": null
+  },
+  "privateExecutionGluePaths": [],
+  "registryPath": "factory-registry.json",
+  "schemaVersion": "factory_composition_manifest/v1",
+  "supervisorGraphPath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "telemetryDefaults": {
+    "benchmarkTelemetryExemptions": [],
+    "benchmarkTelemetryWarnOnly": false,
+    "conformanceEntrypoint": null,
+    "conformanceRunsDir": null,
+    "dispatchLatencySloSeconds": null,
+    "maintenanceIntervalSeconds": null
+  }
+}

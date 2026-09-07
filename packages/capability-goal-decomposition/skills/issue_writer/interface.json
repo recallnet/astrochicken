@@ -1,0 +1,23 @@
+{
+  "name": "issue_writer",
+  "version": "0.1.0",
+  "description": "Writes detailed GitHub issue specs for goal-decomposition features.",
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "issue_title": { "type": "string" },
+      "issue_body": { "type": "string" },
+      "issue_labels": { "type": "string" }
+    }
+  },
+  "tools": {
+    "allowed": ["read"],
+    "forbidden": ["bash", "write", "edit", "deploy", "push"]
+  },
+  "safety": {
+    "may_modify_tests": false,
+    "may_create_files": false,
+    "may_delete_files": false,
+    "may_run_destructive_commands": false
+  }
+}

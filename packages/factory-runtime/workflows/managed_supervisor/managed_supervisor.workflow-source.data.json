@@ -1,0 +1,1032 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "managed_supervisor",
+  "familyId": "runtime",
+  "title": "Managed Supervisor",
+  "description": "Typed workflow source owner for packages/factory-runtime/graphs/managed_supervisor.dot.",
+  "sourcePath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "managed_supervisor",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "managed_supervisor",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "action_item_gate",
+        "runtimeNodeId": "action_item_gate"
+      },
+      {
+        "sourceNodeId": "check_control_state",
+        "runtimeNodeId": "check_control_state"
+      },
+      {
+        "sourceNodeId": "classify_active",
+        "runtimeNodeId": "classify_active"
+      },
+      {
+        "sourceNodeId": "classify_blocked_platform",
+        "runtimeNodeId": "classify_blocked_platform"
+      },
+      {
+        "sourceNodeId": "classify_degraded",
+        "runtimeNodeId": "classify_degraded"
+      },
+      {
+        "sourceNodeId": "classify_domain_failure",
+        "runtimeNodeId": "classify_domain_failure"
+      },
+      {
+        "sourceNodeId": "classify_idle",
+        "runtimeNodeId": "classify_idle"
+      },
+      {
+        "sourceNodeId": "classify_manifest_failure",
+        "runtimeNodeId": "classify_manifest_failure"
+      },
+      {
+        "sourceNodeId": "classify_paused",
+        "runtimeNodeId": "classify_paused"
+      },
+      {
+        "sourceNodeId": "classify_paused_failure",
+        "runtimeNodeId": "classify_paused_failure"
+      },
+      {
+        "sourceNodeId": "close_stale_merge_followups_on_idle",
+        "runtimeNodeId": "close_stale_merge_followups_on_idle"
+      },
+      {
+        "sourceNodeId": "control_state_gate",
+        "runtimeNodeId": "control_state_gate"
+      },
+      {
+        "sourceNodeId": "domain_failure_gate",
+        "runtimeNodeId": "domain_failure_gate"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_run_summary",
+        "runtimeNodeId": "emit_run_summary"
+      },
+      {
+        "sourceNodeId": "evaluate_action_items",
+        "runtimeNodeId": "evaluate_action_items"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate",
+        "runtimeNodeId": "evaluate_open_bug_gate"
+      },
+      {
+        "sourceNodeId": "evaluate_upstream_blockers",
+        "runtimeNodeId": "evaluate_upstream_blockers"
+      },
+      {
+        "sourceNodeId": "intake_gate",
+        "runtimeNodeId": "intake_gate"
+      },
+      {
+        "sourceNodeId": "load_context",
+        "runtimeNodeId": "load_context"
+      },
+      {
+        "sourceNodeId": "manifest_gate",
+        "runtimeNodeId": "manifest_gate"
+      },
+      {
+        "sourceNodeId": "open_bug_gate",
+        "runtimeNodeId": "open_bug_gate"
+      },
+      {
+        "sourceNodeId": "persist_lifecycle_state",
+        "runtimeNodeId": "persist_lifecycle_state"
+      },
+      {
+        "sourceNodeId": "run_domain_graph",
+        "runtimeNodeId": "run_domain_graph"
+      },
+      {
+        "sourceNodeId": "select_intake",
+        "runtimeNodeId": "select_intake"
+      },
+      {
+        "sourceNodeId": "set_empty_domain_result",
+        "runtimeNodeId": "set_empty_domain_result"
+      },
+      {
+        "sourceNodeId": "set_failure_classification_infrastructure",
+        "runtimeNodeId": "set_failure_classification_infrastructure"
+      },
+      {
+        "sourceNodeId": "set_failure_classification_none_manifest",
+        "runtimeNodeId": "set_failure_classification_none_manifest"
+      },
+      {
+        "sourceNodeId": "set_failure_reason_empty_manifest",
+        "runtimeNodeId": "set_failure_reason_empty_manifest"
+      },
+      {
+        "sourceNodeId": "set_failure_reason_upstream",
+        "runtimeNodeId": "set_failure_reason_upstream"
+      },
+      {
+        "sourceNodeId": "snapshot_state",
+        "runtimeNodeId": "snapshot_state"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "sweep_completed_goals_on_idle",
+        "runtimeNodeId": "sweep_completed_goals_on_idle"
+      },
+      {
+        "sourceNodeId": "upstream_gate",
+        "runtimeNodeId": "upstream_gate"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "action_item_gate",
+      "kind": "decision",
+      "title": "Action items unresolved?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Action items unresolved?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "check_control_state",
+      "kind": "tool_action",
+      "title": "Check control state",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_control_state_gate",
+        "label": "Check control state",
+        "output_format": "json",
+        "outputs": "control_gate,control_state_action,control_state_reason,should_run,parse_error,state_path",
+        "action_factory_id": "${factory_id}",
+        "action_root_dir": "${repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_active",
+      "kind": "tool_action",
+      "title": "Lifecycle -> active",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_health_classifier",
+        "label": "Lifecycle -> active",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "action_control_gate": "${control_gate}",
+        "action_has_action_items": "false",
+        "action_has_domain_failure": "false",
+        "action_has_open_upstream_bugs": "false",
+        "action_has_selected_work": "true",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_blocked_platform",
+      "kind": "tool_action",
+      "title": "Lifecycle -> blocked_platform",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_health_classifier",
+        "label": "Lifecycle -> blocked_platform",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "action_control_gate": "${control_gate}",
+        "action_has_action_items": "${has_action_items}",
+        "action_has_domain_failure": "false",
+        "action_has_open_upstream_bugs": "true",
+        "action_has_selected_work": "false",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_degraded",
+      "kind": "tool_action",
+      "title": "Lifecycle -> degraded",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_health_classifier",
+        "label": "Lifecycle -> degraded",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "action_control_gate": "${control_gate}",
+        "action_has_action_items": "false",
+        "action_has_domain_failure": "true",
+        "action_has_open_upstream_bugs": "false",
+        "action_has_selected_work": "true",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_domain_failure",
+      "kind": "tool_action",
+      "title": "Classify domain failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_failure_classifier",
+        "label": "Classify domain failure",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "action_domain_error": "${__composite_reason}",
+        "action_gate": "${control_gate}",
+        "action_parse_error": "${parse_error}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_idle",
+      "kind": "tool_action",
+      "title": "Lifecycle -> idle",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_health_classifier",
+        "label": "Lifecycle -> idle",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "action_control_gate": "${control_gate}",
+        "action_has_action_items": "false",
+        "action_has_domain_failure": "false",
+        "action_has_open_upstream_bugs": "false",
+        "action_has_selected_work": "false",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_manifest_failure",
+      "kind": "tool_action",
+      "title": "Classify manifest failure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_failure_classifier",
+        "label": "Classify manifest failure",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "action_domain_error": "${manifest_error}",
+        "action_gate": "manifest",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_paused",
+      "kind": "tool_action",
+      "title": "Lifecycle -> paused/draining",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_health_classifier",
+        "label": "Lifecycle -> paused/draining",
+        "output_format": "json",
+        "outputs": "lifecycle_state,health_state",
+        "action_control_gate": "${control_gate}",
+        "action_has_action_items": "false",
+        "action_has_domain_failure": "false",
+        "action_has_open_upstream_bugs": "false",
+        "action_has_selected_work": "false",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "classify_paused_failure",
+      "kind": "tool_action",
+      "title": "Classify paused/draining as local control-state owner",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_failure_classifier",
+        "label": "Classify paused/draining as local control-state owner",
+        "output_format": "json",
+        "outputs": "failure_classification,failure_reason",
+        "action_domain_error": "${control_state_action}:${control_state_reason}",
+        "action_gate": "control_state",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "close_stale_merge_followups_on_idle",
+      "kind": "tool_action",
+      "title": "Close stale merge follow-ups (idle path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.close_stale_merge_followups",
+        "label": "Close stale merge follow-ups (idle path)",
+        "output_key": "__close_stale_merge_followups_on_idle_result",
+        "action_repo": "${target_repo}",
+        "action_stale_hours": "24",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "control_state_gate",
+      "kind": "decision",
+      "title": "Control state allows tick?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Control state allows tick?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "domain_failure_gate",
+      "kind": "decision",
+      "title": "Domain failure observed?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Domain failure observed?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "emit_run_summary",
+      "kind": "tool_action",
+      "title": "Emit structured managed run summary",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_emit_run_summary",
+        "label": "Emit structured managed run summary",
+        "output_key": "managed_run_summary",
+        "action_factory_id": "${factory_id}",
+        "action_action_item_count": "${action_item_count}",
+        "action_control_gate": "${control_gate}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_control_state_action": "${control_state_action}",
+        "action_control_state_reason": "${control_state_reason}",
+        "action_domain_result": "${domain_result}",
+        "action_failure_classification": "${failure_classification}",
+        "action_failure_reason": "${failure_reason}",
+        "action_has_action_items": "${has_action_items}",
+        "action_has_issue": "${has_issue}",
+        "action_has_open_upstream_bugs": "${has_open_upstream_bugs}",
+        "action_health_state": "${health_state}",
+        "action_target_repo_compat": "${target_repo}",
+        "action_instance_id": "${instance_id}",
+        "action_kind_id": "${kind_id}",
+        "action_latest_incidents": "[]",
+        "action_lifecycle_state": "${lifecycle_state}",
+        "action_manifest_error": "${manifest_error}",
+        "action_manifest_ok": "${manifest_ok}",
+        "action_oldest_work_age_seconds": "0",
+        "action_open_upstream_bug_count": "${open_upstream_bug_count}",
+        "action_open_upstream_bug_numbers": "${open_upstream_bug_numbers}",
+        "action_parse_error": "${parse_error}",
+        "action_queue_depth": "${action_item_count}",
+        "action_selected_issue_number": "${selected_issue_number}",
+        "action_target_repo": "${target_repo}",
+        "action_trust_domain": "${trust_domain}",
+        "action_trust_role": "${trust_role}",
+        "action_unresolved_actions": "${action_item_count}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_action_items",
+      "kind": "tool_action",
+      "title": "Evaluate unresolved action items",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_action_item_gate",
+        "label": "Evaluate unresolved action items",
+        "output_format": "json",
+        "outputs": "has_action_items,action_item_count",
+        "action_snapshot": "${state_snapshot}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate",
+      "kind": "tool_action",
+      "title": "Evaluate open bug gate",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.open_bug_gate",
+        "label": "Evaluate open bug gate",
+        "output_format": "json",
+        "outputs": "has_open_bugs,open_bug_count,parse_error",
+        "action_repo": "${target_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_target_repo": "${target_repo}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "evaluate_upstream_blockers",
+      "kind": "tool_action",
+      "title": "Evaluate upstream managed blockers",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.upstream_bug_gate",
+        "label": "Evaluate upstream managed blockers",
+        "output_format": "json",
+        "outputs": "has_open_upstream_bugs,open_upstream_bug_count,open_upstream_bug_numbers,parse_error",
+        "action_repo": "${control_plane_repo}",
+        "action_label_filters": "[\"managed-factory-bug\",\"kind:${kind_id}\"]",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "intake_gate",
+      "kind": "decision",
+      "title": "Intake work selected?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Intake work selected?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "load_context",
+      "kind": "tool_action",
+      "title": "Load managed kind + instance context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_load_context",
+        "label": "Load managed kind + instance context",
+        "output_format": "json",
+        "outputs": "manifest_ok,manifest_error,factory_id,factory_root,kind_path,instance_path,kind_id,instance_id,target_repo,control_plane_repo,domain_graph,shared_supervisor_shell,destinations_json,intake_json,kind_context_json,trust_domain,trust_role",
+        "action_factory_id": "${factory_id}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_destinations_json": "${destinations_json}",
+        "action_factory_root": "${factory_root}",
+        "action_target_repo_compat": "${target_repo}",
+        "action_instance_id": "${instance_id}",
+        "action_instance_path": "${instance_path}",
+        "action_kind_id": "${kind_id}",
+        "action_kind_path": "${kind_path}",
+        "action_root_dir": "${repo}",
+        "action_target_repo": "${target_repo}",
+        "action_trust_domain": "${trust_domain}",
+        "action_trust_role": "${trust_role}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "manifest_gate",
+      "kind": "decision",
+      "title": "Manifests valid?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Manifests valid?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "open_bug_gate",
+      "kind": "decision",
+      "title": "Open bugs? (self-heal route)",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Open bugs? (self-heal route)",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "persist_lifecycle_state",
+      "kind": "tool_action",
+      "title": "Persist lifecycle state snapshot",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_persist_state",
+        "label": "Persist lifecycle state snapshot",
+        "output_format": "json",
+        "outputs": "ok,state_path,state_version,mirror_path,mirror_version,mirror_updated_at,mirror_error,lifecycle_state,lifecycle_reason,lifecycle_failure_classification,lifecycle_failure_reason,lifecycle_updated_at,blockers,unresolved_actions,queue_depth,oldest_work_age_seconds,latest_incidents,error,message",
+        "action_factory_id": "${factory_id}",
+        "action_action_item_count": "${action_item_count}",
+        "action_actor": "managed_supervisor",
+        "action_failure_classification": "${failure_classification}",
+        "action_failure_reason": "${failure_reason}",
+        "action_has_action_items": "${has_action_items}",
+        "action_has_open_upstream_bugs": "${has_open_upstream_bugs}",
+        "action_instance_id": "${instance_id}",
+        "action_latest_incidents": "[]",
+        "action_lifecycle_reason": "${failure_reason}",
+        "action_lifecycle_state": "${lifecycle_state}",
+        "action_oldest_work_age_seconds": "0",
+        "action_open_upstream_bug_count": "${open_upstream_bug_count}",
+        "action_open_upstream_bug_numbers": "${open_upstream_bug_numbers}",
+        "action_queue_depth": "${action_item_count}",
+        "action_root_dir": "${repo}",
+        "action_unresolved_actions": "${action_item_count}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "run_domain_graph",
+      "kind": "pipeline",
+      "title": "Run kind domain graph",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Run kind domain graph",
+        "export_keys": "domain_result",
+        "fail_open": "true",
+        "inherit_context": "true",
+        "pipeline": "${domain_graph}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "select_intake",
+      "kind": "tool_action",
+      "title": "Select next intake unit",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.managed_intake_selector",
+        "label": "Select next intake unit",
+        "output_format": "json",
+        "outputs": "has_issue,selected_issue_number,selected_issue_title,selected_issue_body,intake_json,parse_error",
+        "action_repo": "${target_repo}",
+        "action_intake_json": "${intake_json}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_empty_domain_result",
+      "kind": "llm_prompt",
+      "title": "Set empty domain result",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set empty domain result",
+        "output_key": "domain_result",
+        "prompt": "printf '{}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_classification_infrastructure",
+      "kind": "llm_prompt",
+      "title": "Set failure classification: infrastructure",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure classification: infrastructure",
+        "output_key": "failure_classification",
+        "prompt": "printf 'infrastructure'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_classification_none_manifest",
+      "kind": "llm_prompt",
+      "title": "Set failure classification: none (manifest path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure classification: none (manifest path)",
+        "output_key": "failure_classification",
+        "prompt": "printf 'none'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_reason_empty_manifest",
+      "kind": "llm_prompt",
+      "title": "Set empty failure reason (manifest path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set empty failure reason (manifest path)",
+        "output_key": "failure_reason",
+        "prompt": "printf ''",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "set_failure_reason_upstream",
+      "kind": "llm_prompt",
+      "title": "Set failure reason: upstream blocker gate",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Set failure reason: upstream blocker gate",
+        "output_key": "failure_reason",
+        "prompt": "printf 'open_upstream_bugs=%s issue_numbers=%s parse_error=%s' '${open_upstream_bug_count}' '${open_upstream_bug_numbers}' '${parse_error}'",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "snapshot_state",
+      "kind": "tool_action",
+      "title": "Load durable snapshot",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "supervisor.state_snapshot",
+        "label": "Load durable snapshot",
+        "output_key": "state_snapshot",
+        "action_repo": "${target_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_runs_dir": "${runs_dir}",
+        "action_target_repo": "${target_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "sweep_completed_goals_on_idle",
+      "kind": "tool_action",
+      "title": "Sweep completed goals (idle path)",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "goal.sweep_completed",
+        "label": "Sweep completed goals (idle path)",
+        "output_key": "__sweep_completed_goals_on_idle_result",
+        "action_repo": "${target_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo_root": "${repo}",
+        "action_runs_dir": "${runs_dir}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "upstream_gate",
+      "kind": "decision",
+      "title": "Open upstream blockers?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Open upstream blockers?",
+        "recovery_owner": "supervisor"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "classify_degraded",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "classify_idle",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "persist_lifecycle_state",
+      "to": "emit_run_summary"
+    },
+    {
+      "from": "emit_run_summary",
+      "to": "done"
+    },
+    {
+      "from": "run_domain_graph",
+      "to": "classify_domain_failure"
+    },
+    {
+      "from": "classify_domain_failure",
+      "to": "domain_failure_gate"
+    },
+    {
+      "from": "set_empty_domain_result",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "start",
+      "to": "load_context"
+    },
+    {
+      "from": "load_context",
+      "to": "manifest_gate"
+    },
+    {
+      "from": "action_item_gate",
+      "to": "run_domain_graph",
+      "condition": "has_action_items=true",
+      "dotAttributes": {
+        "condition": "has_action_items=true"
+      }
+    },
+    {
+      "from": "action_item_gate",
+      "to": "select_intake",
+      "condition": "has_action_items!=true",
+      "dotAttributes": {
+        "condition": "has_action_items!=true"
+      }
+    },
+    {
+      "from": "check_control_state",
+      "to": "control_state_gate"
+    },
+    {
+      "from": "classify_active",
+      "to": "persist_lifecycle_state"
+    },
+    {
+      "from": "classify_blocked_platform",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "classify_manifest_failure",
+      "to": "classify_degraded",
+      "condition": "failure_classification!=none",
+      "dotAttributes": {
+        "condition": "failure_classification!=none"
+      }
+    },
+    {
+      "from": "classify_manifest_failure",
+      "to": "set_failure_classification_none_manifest",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "classify_paused_failure",
+      "to": "set_empty_domain_result"
+    },
+    {
+      "from": "classify_paused",
+      "to": "classify_paused_failure"
+    },
+    {
+      "from": "control_state_gate",
+      "to": "classify_paused",
+      "condition": "should_run!=true",
+      "dotAttributes": {
+        "condition": "should_run!=true"
+      }
+    },
+    {
+      "from": "control_state_gate",
+      "to": "evaluate_upstream_blockers",
+      "condition": "should_run=true",
+      "dotAttributes": {
+        "condition": "should_run=true"
+      }
+    },
+    {
+      "from": "domain_failure_gate",
+      "to": "classify_active",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "domain_failure_gate",
+      "to": "classify_degraded",
+      "condition": "failure_classification!=none",
+      "dotAttributes": {
+        "condition": "failure_classification!=none"
+      }
+    },
+    {
+      "from": "evaluate_action_items",
+      "to": "action_item_gate"
+    },
+    {
+      "from": "evaluate_open_bug_gate",
+      "to": "open_bug_gate"
+    },
+    {
+      "from": "evaluate_upstream_blockers",
+      "to": "upstream_gate"
+    },
+    {
+      "from": "intake_gate",
+      "to": "evaluate_open_bug_gate",
+      "condition": "has_issue!=true",
+      "dotAttributes": {
+        "condition": "has_issue!=true"
+      }
+    },
+    {
+      "from": "intake_gate",
+      "to": "run_domain_graph",
+      "condition": "has_issue=true",
+      "dotAttributes": {
+        "condition": "has_issue=true"
+      }
+    },
+    {
+      "from": "manifest_gate",
+      "to": "classify_manifest_failure",
+      "condition": "manifest_ok!=true",
+      "dotAttributes": {
+        "condition": "manifest_ok!=true"
+      }
+    },
+    {
+      "from": "manifest_gate",
+      "to": "snapshot_state",
+      "condition": "manifest_ok=true",
+      "dotAttributes": {
+        "condition": "manifest_ok=true"
+      }
+    },
+    {
+      "from": "open_bug_gate",
+      "to": "sweep_completed_goals_on_idle",
+      "condition": "has_open_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs!=true"
+      }
+    },
+    {
+      "from": "open_bug_gate",
+      "to": "run_domain_graph",
+      "condition": "has_open_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_bugs=true"
+      }
+    },
+    {
+      "from": "select_intake",
+      "to": "intake_gate"
+    },
+    {
+      "from": "set_failure_classification_infrastructure",
+      "to": "set_failure_reason_upstream"
+    },
+    {
+      "from": "set_failure_classification_none_manifest",
+      "to": "set_failure_reason_empty_manifest",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "set_failure_reason_empty_manifest",
+      "to": "classify_idle",
+      "condition": "failure_classification=none",
+      "dotAttributes": {
+        "condition": "failure_classification=none"
+      }
+    },
+    {
+      "from": "set_failure_reason_upstream",
+      "to": "classify_blocked_platform"
+    },
+    {
+      "from": "snapshot_state",
+      "to": "check_control_state"
+    },
+    {
+      "from": "upstream_gate",
+      "to": "evaluate_action_items",
+      "condition": "has_open_upstream_bugs!=true",
+      "dotAttributes": {
+        "condition": "has_open_upstream_bugs!=true"
+      }
+    },
+    {
+      "from": "upstream_gate",
+      "to": "set_failure_classification_infrastructure",
+      "condition": "has_open_upstream_bugs=true",
+      "dotAttributes": {
+        "condition": "has_open_upstream_bugs=true"
+      }
+    },
+    {
+      "from": "sweep_completed_goals_on_idle",
+      "to": "close_stale_merge_followups_on_idle"
+    },
+    {
+      "from": "close_stale_merge_followups_on_idle",
+      "to": "classify_idle"
+    }
+  ]
+}

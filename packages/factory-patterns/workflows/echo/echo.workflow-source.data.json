@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "echo",
+  "familyId": "patterns",
+  "title": "Echo",
+  "description": "Typed workflow source owner for packages/factory-patterns/graphs/echo.dot.",
+  "sourcePath": "packages/factory-patterns/workflows/echo/echo.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-patterns/echo.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "echo"
+  },
+  "sourceMap": {
+    "graphName": "echo",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "echo",
+        "runtimeNodeId": "echo"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "echo",
+      "kind": "llm_prompt",
+      "title": "Echo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Echo",
+        "output_key": "echo_output",
+        "prompt": "printf package-resolution-ok",
+        "trust_domain": "hatch.factory_patterns",
+        "trust_role": "hatch.factory_patterns.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "echo"
+    },
+    {
+      "from": "echo",
+      "to": "done"
+    }
+  ]
+}

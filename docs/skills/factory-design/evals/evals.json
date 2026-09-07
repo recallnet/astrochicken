@@ -1,0 +1,54 @@
+{
+  "skill_name": "factory-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a TypeScript monorepo at github.com/acme/platform with apps/api and apps/web. I want to set up a coding factory that takes goal issues, breaks them into features, builds them with worktree agents, reviews the code, and merges to main. The factory should live inside the repo under factories/platform/. Max 2 concurrent waves, 3 issues per wave. Use OpenRouter with gpt-5.3-codex. Generate the full factory structure: config, supervisor tick graph, goal run graph, work execute graph, work item execute graph, and role contract stubs.",
+      "expected_output": "Complete factory scaffold with valid DOT graphs, config JSON, directory structure, and role contracts covering supervisor, decomposer, coder, reviewer, and merger roles",
+      "files": [],
+      "assertions": [
+        { "id": "has_factory_config", "text": "Includes a factory.config.json with max_concurrent_waves=2 and max_issues_per_wave=3" },
+        { "id": "has_supervisor_tick_dot", "text": "Includes a supervisor_tick.dot graph with start/done nodes and diamond gates" },
+        { "id": "has_goal_run_dot", "text": "Includes a goal_run.dot graph for goal decomposition pipeline" },
+        { "id": "has_work_execute_dot", "text": "Includes a work_execute.dot or wave_execute.dot for batch execution" },
+        { "id": "has_work_item_execute_dot", "text": "Includes a work_item_execute.dot for single work item pipeline" },
+        { "id": "dot_has_model_stylesheet", "text": "DOT graphs reference openrouter and gpt-5.3-codex in model_stylesheet" },
+        { "id": "has_role_contracts", "text": "Includes role contract stubs for at least supervisor, coder, reviewer, and merger" },
+        { "id": "correct_directory_structure", "text": "Output follows factory layout: graphs/, skills/, ops/ directories" },
+        { "id": "dot_uses_handler_types", "text": "DOT graphs use correct Taxi handler types (tool, codergen, agent.worktree, fan_out.dynamic)" },
+        { "id": "review_retry_loop", "text": "Work item execute graph includes a build-review-retry loop with bounded retries" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm building a research factory for my ML paper survey repo at github.com/lab/survey-2026. Instead of coding, the production line should be: question intake -> literature search -> paper analysis -> synthesis -> peer review -> publish to docs/. No git worktrees needed - the agents just write markdown files. The factory infra should live in a separate repo (github.com/lab/factory-infra) and file its own bugs there. Generate the factory with custom roles for Searcher, Analyzer, Synthesizer, and Peer Reviewer.",
+      "expected_output": "Research factory with custom roles replacing coder/reviewer, separate infra topology, markdown-output production line, valid DOT graphs adapted for research workflow",
+      "files": [],
+      "assertions": [
+        { "id": "separate_infra_topology", "text": "Config or docs show separate factory_repo vs target_repo topology" },
+        { "id": "custom_roles_present", "text": "Includes custom role contracts for Searcher, Analyzer, Synthesizer, and Peer Reviewer" },
+        { "id": "no_worktree_handler", "text": "DOT graphs do NOT use agent.worktree handler type" },
+        { "id": "research_pipeline_stages", "text": "Pipeline covers: intake -> search -> analysis -> synthesis -> peer review -> publish" },
+        { "id": "has_supervisor_dot", "text": "Includes a supervisor tick graph adapted for research workflow" },
+        { "id": "has_factory_config", "text": "Includes a factory.config.json with reasonable defaults" },
+        { "id": "markdown_output_path", "text": "Pipeline publishes to docs/ directory as specified" },
+        { "id": "infra_bug_routing", "text": "Factory bugs are routed to the infra repo, not the survey repo" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I already have a coding factory at factories/backend/ that works great. Now I need a second factory at factories/frontend/ for our React app repo. Both should share the same supervisor tick pattern and code review skill, but the frontend factory needs a different builder role (uses Vite + Playwright instead of Jest) and a visual regression judge. Show me how to structure this so the shared pieces are reusable and the divergent pieces are factory-specific.",
+      "expected_output": "Multi-factory structure with shared graphs/skills in a common location, factory-specific overrides for builder and judge roles, clear separation of shared vs divergent pieces",
+      "files": [],
+      "assertions": [
+        { "id": "shared_location", "text": "Identifies a shared location for reusable graphs and skills" },
+        { "id": "separate_factory_dirs", "text": "Shows separate factories/backend/ and factories/frontend/ directories" },
+        { "id": "shared_supervisor_tick", "text": "Supervisor tick graph is shared or templated between both factories" },
+        { "id": "shared_code_review", "text": "Code review skill is in the shared location, referenced by both" },
+        { "id": "frontend_builder_role", "text": "Frontend factory has a custom builder role mentioning Vite and Playwright" },
+        { "id": "visual_regression_judge", "text": "Frontend factory includes a visual regression judge role" },
+        { "id": "override_mechanism", "text": "Explains how factory-specific overrides work" }
+      ]
+    }
+  ]
+}

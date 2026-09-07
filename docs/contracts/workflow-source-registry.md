@@ -1,0 +1,267 @@
+---
+doc_type: "reference"
+owner: "platform-architecture"
+review_policy: "periodic-7"
+reviewed: "2026-03-21"
+status: "active"
+summary: "Governed registry for typed workflow source modules and migrated handwritten DOT ownership markers."
+tags: [contracts, dot, hatch, source, workflows]
+written: "2026-03-21"
+---
+
+# Workflow Source Registry
+
+- Canonical source-module layout: `factories/<factory>/workflows/<family>/<workflow>.workflow-source.mjs`
+- Runtime graph ownership marker: graph attr `workflow_source="<source-module>"`
+- Phase 9.2 runtime IR policy: migrated families treat checked-in DOT as generated runtime IR derived from typed source.
+- `docs/contracts/governed-execution-dot-exemptions.json` is debt inventory only; any nonzero entry count means governed DOT elimination is incomplete.
+
+- Registered workflow sources: 39
+- Explicit governed DOT exemptions: 0
+- Diagnostics: 0
+
+## Registered Workflow Sources
+
+- `domain_brainstorm`
+  - family: `dispatch_control`
+  - source: `factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/brainstorm/domain_brainstorm.dot`
+  - nodes: `16`
+  - edges: `17`
+- `factory_supervisor_tick`
+  - family: `dispatch_control`
+  - source: `factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot`
+  - nodes: `16`
+  - edges: `14`
+- `daily_lens_publish`
+  - family: `daily_reporting`
+  - source: `factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/daily_lens_publish.dot`
+  - nodes: `17`
+  - edges: `16`
+- `daily_release_report`
+  - family: `daily_reporting`
+  - source: `factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/daily_release_report.dot`
+  - nodes: `9`
+  - edges: `8`
+- `factory_dispatch_reactor`
+  - family: `dispatch_control`
+  - source: `factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/factory_dispatch_reactor.dot`
+  - nodes: `14`
+  - edges: `14`
+- `factory_supervisor_tick`
+  - family: `dispatch_control`
+  - source: `factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot`
+  - nodes: `53`
+  - edges: `59`
+- `goal_execute`
+  - family: `goal_execution`
+  - source: `factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/goal_execute.dot`
+  - nodes: `106`
+  - edges: `128`
+- `goal_issue_execute`
+  - family: `goal_execution`
+  - source: `factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/goal_issue_execute.dot`
+  - nodes: `54`
+  - edges: `66`
+- `milestone_execute_parallel_item`
+  - family: `goal_execution`
+  - source: `factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/milestone_execute_parallel_item.dot`
+  - nodes: `5`
+  - edges: `4`
+- `milestone_execute`
+  - family: `goal_execution`
+  - source: `factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/milestone_execute.dot`
+  - nodes: `20`
+  - edges: `23`
+- `write_scenario_item`
+  - family: `scenario_writing`
+  - source: `factories/mothership/workflows/scenario-writing/write_scenario_item.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/write_scenario_item.dot`
+  - nodes: `11`
+  - edges: `12`
+- `write_scenarios`
+  - family: `scenario_writing`
+  - source: `factories/mothership/workflows/scenario-writing/write_scenarios.workflow-source.mjs`
+  - runtime graph: `factories/mothership/graphs/write_scenarios.dot`
+  - nodes: `13`
+  - edges: `15`
+- `wave_demo_generate`
+  - family: `wave_execution`
+  - source: `factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_demo_generate.dot`
+  - nodes: `19`
+  - edges: `21`
+- `wave_dispatch`
+  - family: `wave_execution`
+  - source: `factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_dispatch.dot`
+  - nodes: `18`
+  - edges: `19`
+- `wave_execute`
+  - family: `wave_execution`
+  - source: `factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_execute.dot`
+  - nodes: `110`
+  - edges: `129`
+- `wave_issue_execute`
+  - family: `wave_execution`
+  - source: `factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/mothership/wave_issue_execute.dot`
+  - nodes: `51`
+  - edges: `61`
+- `artifact_ingest`
+  - family: `artifact_ingestion`
+  - source: `packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot`
+  - nodes: `8`
+  - edges: `7`
+- `brainstorm`
+  - family: `brainstorming`
+  - source: `packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot`
+  - nodes: `25`
+  - edges: `30`
+- `issue_execute_item`
+  - family: `coding`
+  - source: `packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-coding/issue_execute_item.dot`
+  - nodes: `28`
+  - edges: `30`
+- `goal_batch`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_batch.dot`
+  - nodes: `20`
+  - edges: `23`
+- `goal_factory`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot`
+  - nodes: `5`
+  - edges: `4`
+- `goal_hard_plan`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_hard_plan/goal_hard_plan.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot`
+  - nodes: `11`
+  - edges: `10`
+- `goal_intake_decompose`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot`
+  - nodes: `34`
+  - edges: `37`
+- `goal_queue`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot`
+  - nodes: `15`
+  - edges: `16`
+- `goal_run`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot`
+  - nodes: `47`
+  - edges: `56`
+- `write_issue_item`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot`
+  - nodes: `21`
+  - edges: `25`
+- `write_issues`
+  - family: `goal_decomposition`
+  - source: `packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.dot`
+  - nodes: `5`
+  - edges: `4`
+- `merge_item`
+  - family: `merge`
+  - source: `packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-merge/merge_item.dot`
+  - nodes: `31`
+  - edges: `36`
+- `product_judge`
+  - family: `product_judge`
+  - source: `packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-product-judge/product_judge.dot`
+  - nodes: `14`
+  - edges: `17`
+- `release_report_flow`
+  - family: `release_reporting`
+  - source: `packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot`
+  - nodes: `15`
+  - edges: `16`
+- `goal_execute`
+  - family: `software_development`
+  - source: `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_execute.dot`
+  - nodes: `102`
+  - edges: `124`
+- `goal_execution_handoff`
+  - family: `software_development`
+  - source: `packages/capability-software-development/workflows/goal_execution_handoff/goal_execution_handoff.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot`
+  - nodes: `14`
+  - edges: `13`
+- `goal_intake_to_execution_handoff`
+  - family: `software_development`
+  - source: `packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot`
+  - nodes: `14`
+  - edges: `13`
+- `goal_issue_execute`
+  - family: `software_development`
+  - source: `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot`
+  - nodes: `54`
+  - edges: `65`
+- `wave_dispatch`
+  - family: `wave_dispatch`
+  - source: `packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot`
+  - nodes: `18`
+  - edges: `19`
+- `echo`
+  - family: `patterns`
+  - source: `packages/factory-patterns/workflows/echo/echo.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-patterns/echo.dot`
+  - nodes: `3`
+  - edges: `2`
+- `managed_software_delivery_domain`
+  - family: `runtime`
+  - source: `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot`
+  - nodes: `52`
+  - edges: `57`
+- `managed_supervisor`
+  - family: `runtime`
+  - source: `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot`
+  - nodes: `34`
+  - edges: `41`
+- `managed-supervisor-shell`
+  - family: `runtime`
+  - source: `packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs`
+  - runtime graph: `docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot`
+  - nodes: `32`
+  - edges: `39`
+
+## Explicit DOT Exemptions
+
+- none
+
+## Diagnostics
+
+- none
+

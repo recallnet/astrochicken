@@ -1,0 +1,64 @@
+{
+  "docs_policy/v1": {
+    "in_scope_paths": [
+      "docs/**"
+    ],
+    "required_doc_types": [
+      {
+        "doc_type": "architecture",
+        "path": "docs/architecture.md"
+      }
+    ],
+    "ownership": {
+      "owners": [
+        {
+          "id": "docs",
+          "display_name": "Docs"
+        }
+      ],
+      "canonical_roots": [
+        {
+          "path": "docs/",
+          "owner_id": "docs"
+        }
+      ],
+      "root_doc_owner_id": "docs"
+    },
+    "root_docs_allowlist": [],
+    "root_level_exceptions": [],
+    "migration_debt": {
+      "allow_unowned_in_scope_paths": true,
+      "allow_missing_required_doc_types": false,
+      "legacy_in_scope_allowlist": [],
+      "max_legacy_in_scope_allowlist_entries": 5
+    },
+    "freshness": {
+      "default_review_policy": "periodic-7",
+      "review_policies": [
+        {
+          "id": "codebound",
+          "mode": "codebound"
+        },
+        {
+          "id": "generated",
+          "mode": "generated"
+        },
+        {
+          "id": "historical",
+          "mode": "historical"
+        },
+        {
+          "id": "periodic-7",
+          "mode": "periodic",
+          "max_age_days": 7
+        }
+      ],
+      "path_defaults": [
+        {
+          "path": "docs/**",
+          "review_policy": "periodic-7"
+        }
+      ]
+    }
+  }
+}

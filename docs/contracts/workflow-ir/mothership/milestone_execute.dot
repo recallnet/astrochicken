@@ -1,0 +1,47 @@
+// Generated from factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs. Do not edit by hand.
+@import "../../../../factories/mothership/roles.stylesheet"
+
+digraph milestone_execute {
+    label = "milestone_execute"
+    workflow_source = "factories/mothership/workflows/goal-execution/milestone_execute.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    accumulate [type="tool" governance="irreversible" action_runtime="in_process" action_id="software.accumulate_milestone_result" label="Accumulate milestone result" output_format="json" outputs="impl_results,completed_issues,processed_issues,last_review_failed,last_review_notes,last_issue_number,last_branch,branch,worktree_dir,last_review_evidence_path" action_issue_number="${next_issue_number}" action_completed="${completed_issues}" action_impl_results="${impl_results}" action_issue_title="${next_issue_title}" action_item="${impl_result}" action_processed="${processed_issues}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    accumulate_parallel [type="tool" governance="irreversible" action_runtime="in_process" action_id="software.accumulate_milestone_batch" label="Accumulate parallel batch results" output_format="json" outputs="impl_results,completed_issues,processed_issues,last_review_failed,last_review_notes,last_issue_number,last_branch,branch,worktree_dir,last_review_evidence_path" action_impl_results="${impl_results}" action_completed="${completed_issues}" action_processed="${processed_issues}" action_items="${parallel_impl_results}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    build_parallel_batch [type="tool" governance="reversible" action_runtime="in_process" action_id="ceremony.build_milestone_batch" label="Build bounded low-complexity batch" output_format="json" outputs="batch_issues,batch_size,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason" action_pipeline="milestone_execute" action_issues_b64="${ordered_candidate_issues_b64}" action_max_parallel="${max_parallel_low}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    classify_next_issue_complexity [type="tool" governance="reversible" action_runtime="in_process" action_id="ceremony.classify_milestone" label="Classify milestone complexity route" output_format="json" outputs="complexity_class,run_parallel_batch,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason" action_pipeline="milestone_execute" action_complexity_class="${complexity_class}" action_milestone_parallel_low_enabled="${milestone_parallel_low_enabled}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    collect_parallel_batch [type="fan_in.dynamic" label="Collect parallel issue results" output_key="parallel_impl_results" trust_domain="mothership.local" trust_role="mothership.local.fan_in.dynamic"]
+    complexity_batch_gate [shape="diamond" label="Run low-complexity parallel batch?"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    estimate_next_issue_complexity [type="tool" governance="reversible" action_runtime="in_process" action_id="coding.estimate_issue_complexity" label="Estimate next-issue complexity" output_format="json" outputs="complexity_class,complexity_signals,complexity_reason,complexity_otel_key" action_issue_title="${next_issue_title}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    execute_issue [type="pipeline" label="Execute issue in milestone branch" pipeline="factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs" export_keys="impl_result" inherit_context="true" trust_domain="mothership.local" trust_role="mothership.local.pipeline"]
+    execute_parallel_batch [type="fan_out.dynamic" label="Execute low-complexity parallel batch" source_key="batch_issues" item_key="parallel_issue" template="factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs" max_concurrency="3" trust_domain="mothership.local" trust_role="mothership.local.fan_out.dynamic"]
+    gate [shape="diamond" label="Next issue?"]
+    init_branch [type="tool" governance="reversible" action_runtime="in_process" action_id="software.empty_milestone_branch_context" label="Init shared agent session for wave" output_format="json" outputs="branch,worktree_dir,agent_session_id,wave_sessions_dir" action_milestone_title="${milestone_title}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    next_issue [type="tool" governance="reversible" action_runtime="in_process" action_id="software.pick_next_milestone_issue" label="Pick next unblocked issue" output_format="json" outputs="has_next,next_issue_number,next_issue_title,remaining_count,blocked_count,no_next_reason,ordered_candidate_issues,ordered_candidate_issues_b64" action_repo="${gh_repo}" recovery_owner="supervisor" action_milestone_title="${milestone_title}" action_completed="${completed_issues}" action_processed="${processed_issues}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    parallel_batch_gate [shape="diamond" label="Parallel batch ready?"]
+    postmortem [type="tool" governance="irreversible" action_runtime="in_process" action_id="software.milestone_postmortem" label="Post-mortem: analyze give-up and file bug if systemic" output_key="__postmortem_result" action_repo="${gh_repo}" action_issue_number="${last_issue_number}" recovery_owner="supervisor" action_branch="${last_branch}" action_worktree_dir="${worktree_dir}" action_review_evidence_path="${last_review_evidence_path}" action_review_notes="${last_review_notes}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    postmortem_gate [shape="diamond" label="Issue failed?"]
+    resolve_max_parallel_low [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve max low-complexity parallel size" output_key="max_parallel_low" action_value="${max_parallel_low}" action_fallback="3" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    resolve_parallel_low_enabled [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_boolean" label="Resolve low-complexity parallel toggle" output_key="milestone_parallel_low_enabled" action_value="${milestone_parallel_low_enabled}" action_fallback="false" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    seed_state [type="tool" governance="reversible" action_runtime="in_process" action_id="software.seed_milestone_state" label="Seed completed/processed from canonical milestone runs" output_format="json" outputs="completed_issues,processed_issues" action_repo="${gh_repo}" action_milestone_title="${milestone_title}" action_runs_dir="${runs_dir}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start [shape="Mdiamond"]
+    execute_issue -> accumulate -> postmortem_gate
+    next_issue -> gate
+    start -> seed_state -> init_branch -> resolve_parallel_low_enabled -> resolve_max_parallel_low -> next_issue
+    accumulate_parallel -> postmortem_gate
+    build_parallel_batch -> parallel_batch_gate
+    classify_next_issue_complexity -> complexity_batch_gate
+    collect_parallel_batch -> accumulate_parallel
+    complexity_batch_gate -> build_parallel_batch [condition="run_parallel_batch=true"]
+    complexity_batch_gate -> execute_issue [condition="run_parallel_batch!=true"]
+    estimate_next_issue_complexity -> classify_next_issue_complexity
+    execute_parallel_batch -> collect_parallel_batch
+    gate -> done [condition="has_next!=true"]
+    gate -> estimate_next_issue_complexity [condition="has_next=true"]
+    parallel_batch_gate -> execute_issue [condition="batch_size<=0"]
+    parallel_batch_gate -> execute_parallel_batch [condition="batch_size>0"]
+    postmortem_gate -> next_issue [condition="last_review_failed!=true"]
+    postmortem_gate -> postmortem [condition="last_review_failed=true"]
+    postmortem -> next_issue
+}

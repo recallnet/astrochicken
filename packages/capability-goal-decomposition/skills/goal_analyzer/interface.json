@@ -1,0 +1,46 @@
+{
+  "name": "goal_analyzer",
+  "version": "0.1.0",
+  "description": "Analyzes goal issues and produces a goal context bundle with overlaps, gaps, risks, and active-label taxonomy alignment (goal/feature/bug/triaged/ready/wave-in-progress).",
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "issue": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "number" },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "labels": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "existing_issues": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "number": { "type": "number" },
+            "title": { "type": "string" },
+            "labels": { "type": "array", "items": { "type": "string" } },
+            "summary": { "type": "string" }
+          }
+        }
+      },
+      "feature_inventory": { "type": "string" },
+      "overlaps": { "type": "array", "items": { "type": "string" } },
+      "gaps": { "type": "array", "items": { "type": "string" } },
+      "risks": { "type": "array", "items": { "type": "string" } },
+      "assumptions": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+  "tools": {
+    "allowed": ["read"],
+    "forbidden": ["bash", "write", "edit", "deploy", "push"]
+  },
+  "safety": {
+    "may_modify_tests": false,
+    "may_create_files": false,
+    "may_delete_files": false,
+    "may_run_destructive_commands": false
+  }
+}

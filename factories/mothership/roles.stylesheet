@@ -1,0 +1,99 @@
+@import "../_shared/roles.stylesheet"
+
+.reviewer {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.judge {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.issue_quality_judge {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.post_merge_judge {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.coder {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.agent.worktree";
+}
+
+.supervisor {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.stack.manager_loop";
+}
+
+.merge_resolver {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.stack.manager_loop";
+}
+
+.issue_writer {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.1-codex-mini";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.issue_writer";
+}
+
+.triage_planner {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.triage_planner";
+}
+
+.knowledge_worker {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.goal_decomposer {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.goal_batch_reviewer {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.scenario_author {
+  llm_provider = "openrouter";
+  llm_model = "anthropic/claude-sonnet-4.6";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}
+
+.release_narrator {
+  llm_provider = "openrouter";
+  llm_model = "google/gemini-3.1-pro-preview";
+  trust_domain = "mothership.local";
+  trust_role = "mothership.local.codergen";
+}

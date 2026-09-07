@@ -1,0 +1,5 @@
+{
+  "schema_version": "governed_execution_dot_exemptions/v1",
+  "policy": "Handwritten DOT is banned as canonical governed execution input. DOT without workflow_source is allowed only when explicitly declared as an exempt template.",
+  "exemptions": []
+}

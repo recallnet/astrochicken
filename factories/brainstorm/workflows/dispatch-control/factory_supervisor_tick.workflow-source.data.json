@@ -1,0 +1,475 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "factory_supervisor_tick",
+  "familyId": "dispatch_control",
+  "title": "Factory supervisor tick",
+  "description": "Typed source for the brainstorm factory supervisor tick workflow.",
+  "sourcePath": "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [],
+  "graphAttributes": {},
+  "sourceMap": {
+    "graphName": "factory_supervisor_tick",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "run_managed_supervisor_shell",
+        "runtimeNodeId": "run_managed_supervisor_shell"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_destinations_json",
+        "runtimeNodeId": "set_destinations_json"
+      },
+      {
+        "sourceNodeId": "set_factory_id",
+        "runtimeNodeId": "set_factory_id"
+      },
+      {
+        "sourceNodeId": "set_factory_root",
+        "runtimeNodeId": "set_factory_root"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_instance_id",
+        "runtimeNodeId": "set_instance_id"
+      },
+      {
+        "sourceNodeId": "set_instance_path",
+        "runtimeNodeId": "set_instance_path"
+      },
+      {
+        "sourceNodeId": "set_kind_id",
+        "runtimeNodeId": "set_kind_id"
+      },
+      {
+        "sourceNodeId": "set_kind_path",
+        "runtimeNodeId": "set_kind_path"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_target_repo",
+        "runtimeNodeId": "set_target_repo"
+      },
+      {
+        "sourceNodeId": "set_trust_domain",
+        "runtimeNodeId": "set_trust_domain"
+      },
+      {
+        "sourceNodeId": "set_trust_role",
+        "runtimeNodeId": "set_trust_role"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "recovery_sink_type": "terminal"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "run_managed_supervisor_shell",
+      "kind": "pipeline",
+      "title": "Run shared managed supervisor shell",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "context_keys": "control_plane_repo,destinations_json,factory_id,factory_root,instance_id,instance_path,kind_id,kind_path,repo,runs_dir,target_repo,trust_domain,trust_role",
+        "export_keys": "managed_run_summary,lifecycle_state,health_state,failure_classification,failure_reason,domain_result",
+        "fail_open": "true",
+        "inherit_context": "true",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      },
+      "composition": {
+        "workflowRef": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${target_repo}",
+        "action_key": "control_plane_repo",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "control_plane_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_destinations_json",
+      "kind": "tool_action",
+      "title": "Set destinations payload",
+      "prompt": "printf '{\"goal_issues\":{\"repo\":\"%s\",\"labels\":[\"goal\",\"source:brainstorm\"]},\"platform_incidents\":{\"repo\":\"%s\",\"labels\":[\"managed-factory-bug\",\"kind:brainstorm\"]}}' '${control_plane_repo}' '${control_plane_repo}'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "destinations_json"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_factory_id",
+      "kind": "tool_action",
+      "title": "Resolve factory id",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "brainstorm",
+        "action_key": "factory_id",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "factory_id"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_factory_root",
+      "kind": "tool_action",
+      "title": "Resolve factory root",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "factories/brainstorm",
+        "action_fallback": "factories/brainstorm",
+        "action_key": "factory_root",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "factory_root"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve home repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "recallnet/astrochicken",
+        "action_key": "target_repo",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "target_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_instance_id",
+      "kind": "tool_action",
+      "title": "Set managed instance id",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "brainstorm",
+        "action_key": "factory_id",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "instance_id"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_instance_path",
+      "kind": "tool_action",
+      "title": "Set managed instance manifest path",
+      "prompt": "printf 'factories/brainstorm/instance.template.json'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "instance_path"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_kind_id",
+      "kind": "tool_action",
+      "title": "Set managed kind id",
+      "prompt": "printf 'brainstorm'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "kind_id"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_kind_path",
+      "kind": "tool_action",
+      "title": "Set managed kind manifest path",
+      "prompt": "printf 'factories/brainstorm/kind.json'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "kind_path"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Resolve repository root",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": ".",
+        "action_key": "work_dir",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_target_repo",
+      "kind": "tool_action",
+      "title": "Resolve target repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "${target_repo}",
+        "action_key": "target_repo",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "target_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_trust_domain",
+      "kind": "tool_action",
+      "title": "Resolve trust domain",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "brainstorm.local",
+        "action_key": "trust_domain",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "trust_domain"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_trust_role",
+      "kind": "tool_action",
+      "title": "Resolve trust role",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "brainstorm.local.tool",
+        "action_key": "trust_role",
+        "action_runtime": "in_process",
+        "trust_domain": "brainstorm.local",
+        "trust_role": "brainstorm.local.tool"
+      },
+      "binding": {
+        "outputKey": "trust_role"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "run_managed_supervisor_shell",
+      "to": "done"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_repo"
+    },
+    {
+      "from": "set_destinations_json",
+      "to": "run_managed_supervisor_shell"
+    },
+    {
+      "from": "set_factory_id",
+      "to": "set_target_repo"
+    },
+    {
+      "from": "set_factory_root",
+      "to": "set_factory_id"
+    },
+    {
+      "from": "set_instance_id",
+      "to": "set_destinations_json"
+    },
+    {
+      "from": "set_instance_path",
+      "to": "set_kind_id"
+    },
+    {
+      "from": "set_kind_id",
+      "to": "set_instance_id"
+    },
+    {
+      "from": "set_kind_path",
+      "to": "set_instance_path"
+    },
+    {
+      "from": "set_repo",
+      "to": "set_trust_domain"
+    },
+    {
+      "from": "set_target_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_trust_domain",
+      "to": "set_trust_role"
+    },
+    {
+      "from": "set_trust_role",
+      "to": "set_kind_path"
+    },
+    {
+      "from": "start",
+      "to": "set_factory_root"
+    }
+  ]
+}

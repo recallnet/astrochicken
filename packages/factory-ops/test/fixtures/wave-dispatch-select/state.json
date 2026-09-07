@@ -1,0 +1,7 @@
+{
+  "context": {
+    "milestones": "[{\"title\":\"goal-1-wave-1\",\"number\":1},{\"title\":\"goal-2-wave-1\",\"number\":2}]",
+    "ready_issues": "[{\"number\":301,\"title\":\"Wave Ready: goal-1-wave-1\",\"labels\":[{\"name\":\"ready\"}],\"milestone\":{\"title\":\"goal-1-wave-1\"}}]",
+    "priorities_issue": "[{\"number\":401,\"body\":\"goal-2-wave-1\"}]"
+  }
+}

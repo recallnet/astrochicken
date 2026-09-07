@@ -1,0 +1,27 @@
+{
+  "date": "2026-03-20",
+  "repo": "recallnet/astrochicken",
+  "factory_id": "mothership",
+  "findings": [
+    {
+      "title": "Shared ownership drift detected",
+      "inference": "Repeated local helpers are reintroducing shared-surface drift.",
+      "action": "Route boundary checks through shared package owners.",
+      "trend_key": "shared-surface-drift",
+      "evidence_links": [
+        "https://github.com/recallnet/astrochicken/issues/2366"
+      ]
+    }
+  ],
+  "shaping_insights": [
+    {
+      "id": "insight-1",
+      "category": "strategy",
+      "categories": [
+        "strategy"
+      ],
+      "recommendation": "Route recurring transport fixes through shared adapter ownership.",
+      "evidence": "Repeated local helper creation signals shared-surface drift."
+    }
+  ]
+}

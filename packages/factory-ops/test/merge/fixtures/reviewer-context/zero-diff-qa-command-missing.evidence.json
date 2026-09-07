@@ -1,0 +1,22 @@
+{
+  "issue_number": "645",
+  "issue_title": "QA evidence diff completeness gate for zero-diff failures",
+  "issue_body_excerpt": "QA command missing with zero diff.",
+  "branch": "wave/goal-323-wave-1",
+  "worktree_dir": "/tmp/wave-645",
+  "commits_ahead": "1",
+  "issue_commits": "0",
+  "changed_files": [
+    "README.md",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs"
+  ],
+  "issue_changed_files": [],
+  "snapshot_sha": "deadbeef",
+  "summary": "QA command missing with zero issue diff",
+  "review_qa_command": "npm run test -- --grep zero-diff",
+  "integration_command": "npm run test -- --grep zero-diff",
+  "qa": {
+    "status": "pass",
+    "command": ""
+  }
+}

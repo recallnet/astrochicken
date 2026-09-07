@@ -1,0 +1,376 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "goal_intake_to_execution_handoff",
+  "familyId": "software_development",
+  "title": "Goal Intake To Execution Handoff",
+  "description": "Typed workflow source owner for packages/capability-software-development/graphs/goal_intake_to_execution_handoff.dot.",
+  "sourcePath": "packages/capability-software-development/workflows/goal_intake_to_execution_handoff/goal_intake_to_execution_handoff.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-software-development/goal_intake_to_execution_handoff.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "goal_intake_to_execution_handoff",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "goal_intake_to_execution_handoff",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "list_executable_goals",
+        "runtimeNodeId": "list_executable_goals"
+      },
+      {
+        "sourceNodeId": "resolve_goal_issue_number",
+        "runtimeNodeId": "resolve_goal_issue_number"
+      },
+      {
+        "sourceNodeId": "run_goal_decomposition",
+        "runtimeNodeId": "run_goal_decomposition"
+      },
+      {
+        "sourceNodeId": "set_capability_goal_decomposition_skills",
+        "runtimeNodeId": "set_capability_goal_decomposition_skills"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_executable_goal_count",
+        "runtimeNodeId": "set_executable_goal_count"
+      },
+      {
+        "sourceNodeId": "set_executable_goals_capped",
+        "runtimeNodeId": "set_executable_goals_capped"
+      },
+      {
+        "sourceNodeId": "set_factory_id",
+        "runtimeNodeId": "set_factory_id"
+      },
+      {
+        "sourceNodeId": "set_max_concurrent_goals",
+        "runtimeNodeId": "set_max_concurrent_goals"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_runs_dir",
+        "runtimeNodeId": "set_runs_dir"
+      },
+      {
+        "sourceNodeId": "set_target_repo",
+        "runtimeNodeId": "set_target_repo"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "list_executable_goals",
+      "kind": "tool_action",
+      "title": "List executable goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "software.list_executable_goals",
+        "label": "List executable goals",
+        "output_format": "json",
+        "outputs": "executable_goals,count,capped,skipped_active",
+        "action_repo": "${gh_repo}",
+        "action_repo_root": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "action_max_concurrent": "${max_concurrent_goals}",
+        "action_runs_dir": "${runs_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "resolve_goal_issue_number",
+      "kind": "tool_action",
+      "title": "Resolve handoff goal issue number",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve handoff goal issue number",
+        "output_key": "goal_issue_number",
+        "action_fallback": "${issue_number}",
+        "action_value": "${goal_issue_number}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "run_goal_decomposition",
+      "kind": "pipeline",
+      "title": "Run goal intake/decomposition",
+      "dotAttributes": {
+        "type": "pipeline",
+        "label": "Run goal intake/decomposition",
+        "export_keys": "goal_issue,goal_context,approved_features,issue_urls,triage_results,scenario_paths",
+        "inherit_context": "true",
+        "pipeline": "@hatch/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.pipeline"
+      }
+    },
+    {
+      "id": "set_capability_goal_decomposition_skills",
+      "kind": "tool_action",
+      "title": "Resolve goal-decomposition skills path",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_capability_goal_decomposition_skills_path",
+        "label": "Resolve goal-decomposition skills path",
+        "output_key": "capability_goal_decomposition_skills",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve control-plane repo",
+        "output_key": "control_plane_repo",
+        "action_fallback": "${target_repo}",
+        "action_value": "${control_plane_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_executable_goal_count",
+      "kind": "tool_action",
+      "title": "Set executable goal count",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Set executable goal count",
+        "output_key": "executable_goal_count",
+        "action_fallback": "0",
+        "action_value": "${count}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_executable_goals_capped",
+      "kind": "tool_action",
+      "title": "Set executable-goals capped flag",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Set executable-goals capped flag",
+        "output_key": "executable_goals_capped",
+        "action_fallback": "false",
+        "action_value": "${capped}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_factory_id",
+      "kind": "tool_action",
+      "title": "Resolve factory id",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve factory id",
+        "output_key": "factory_id",
+        "action_fallback": "software-development",
+        "action_value": "${factory_id}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_max_concurrent_goals",
+      "kind": "tool_action",
+      "title": "Resolve max concurrent goals",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve max concurrent goals",
+        "output_key": "max_concurrent_goals",
+        "action_fallback": "3",
+        "action_value": "${max_concurrent_goals}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Resolve repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve repo",
+        "output_key": "repo",
+        "action_fallback": ".",
+        "action_value": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_runs_dir",
+      "kind": "tool_action",
+      "title": "Resolve runs dir",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve runs dir",
+        "output_key": "runs_dir",
+        "action_fallback": ".hatch/runs",
+        "action_value": "${runs_dir}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "set_target_repo",
+      "kind": "tool_action",
+      "title": "Resolve target repo",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.resolve_default",
+        "label": "Resolve target repo",
+        "output_key": "target_repo",
+        "action_fallback": "${gh_repo}",
+        "action_value": "${target_repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "set_repo"
+    },
+    {
+      "from": "set_repo",
+      "to": "set_factory_id"
+    },
+    {
+      "from": "set_factory_id",
+      "to": "set_target_repo"
+    },
+    {
+      "from": "set_target_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_capability_goal_decomposition_skills"
+    },
+    {
+      "from": "set_capability_goal_decomposition_skills",
+      "to": "run_goal_decomposition"
+    },
+    {
+      "from": "run_goal_decomposition",
+      "to": "resolve_goal_issue_number"
+    },
+    {
+      "from": "resolve_goal_issue_number",
+      "to": "set_max_concurrent_goals"
+    },
+    {
+      "from": "set_max_concurrent_goals",
+      "to": "set_runs_dir"
+    },
+    {
+      "from": "set_runs_dir",
+      "to": "list_executable_goals"
+    },
+    {
+      "from": "list_executable_goals",
+      "to": "set_executable_goal_count"
+    },
+    {
+      "from": "set_executable_goal_count",
+      "to": "set_executable_goals_capped"
+    },
+    {
+      "from": "set_executable_goals_capped",
+      "to": "done"
+    }
+  ]
+}

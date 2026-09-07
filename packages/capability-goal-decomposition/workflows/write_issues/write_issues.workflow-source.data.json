@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "write_issues",
+  "familyId": "goal_decomposition",
+  "title": "Write Issues",
+  "description": "Typed workflow source owner for packages/capability-goal-decomposition/graphs/write_issues.dot.",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issues.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "write_issues",
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "write_issues",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "fan_in",
+        "runtimeNodeId": "fan_in"
+      },
+      {
+        "sourceNodeId": "fan_out",
+        "runtimeNodeId": "fan_out"
+      },
+      {
+        "sourceNodeId": "sanitize_issue_urls",
+        "runtimeNodeId": "sanitize_issue_urls"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "fan_in",
+      "kind": "dynamic_fan_in",
+      "title": "Collect issue URLs",
+      "dotAttributes": {
+        "type": "fan_in.dynamic",
+        "label": "Collect issue URLs",
+        "output_key": "issue_urls",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_in.dynamic"
+      }
+    },
+    {
+      "id": "fan_out",
+      "kind": "dynamic_fan_out",
+      "title": "Issue fan-out",
+      "dotAttributes": {
+        "type": "fan_out.dynamic",
+        "label": "Issue fan-out",
+        "output_key": "issue_url",
+        "export_keys": "issue_url",
+        "item_key": "feature",
+        "max_concurrency": "1",
+        "source_key": "approved_features",
+        "template": "@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.fan_out.dynamic"
+      }
+    },
+    {
+      "id": "sanitize_issue_urls",
+      "kind": "tool_action",
+      "title": "Normalize issue URLs",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "common.normalize_issue_urls",
+        "label": "Normalize issue URLs",
+        "output_key": "issue_urls",
+        "action_value": "${issue_urls}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}.tool"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "fan_out"
+    },
+    {
+      "from": "fan_out",
+      "to": "fan_in"
+    },
+    {
+      "from": "fan_in",
+      "to": "sanitize_issue_urls"
+    },
+    {
+      "from": "sanitize_issue_urls",
+      "to": "done"
+    }
+  ]
+}

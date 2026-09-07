@@ -1,0 +1,20 @@
+{
+	"name": "@hatch/capability-wave-dispatch",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch wave dispatch capability: lease, sanitize, select, ready-marker creation",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"graphs",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"workflows"
+	]
+}

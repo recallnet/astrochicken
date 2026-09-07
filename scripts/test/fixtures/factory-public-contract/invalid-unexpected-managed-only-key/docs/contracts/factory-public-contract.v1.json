@@ -1,0 +1,41 @@
+{
+  "schema": "factory-public-contract.v1",
+  "version": "v1",
+  "drift_gate": {
+    "onboarding_docs": [
+      "docs/runbooks/external-factory-operator-onboarding.md"
+    ],
+    "required_onboarding_links": [
+      "../reference/factory-public-contract.md",
+      "../contracts/factory-public-contract.v1.json",
+      "../reference/factory-mode-applicability.md"
+    ],
+    "allowed_template_managed_only": [
+      "instance_id",
+      "canonical_checkout_path"
+    ]
+  },
+  "sections": [
+    {
+      "name": "config",
+      "required": [
+        "schema",
+        "factory_id",
+        "control_plane_repo",
+        "dispatch.graph",
+        "pipeline.supervisor_tick",
+        "skills.supervisor",
+        "scenarios.root",
+        "runs_dir",
+        "trust.domain",
+        "trust.roles"
+      ],
+      "managed_only": [
+        "managed",
+        "instance_id",
+        "upstream_repo",
+        "canonical_checkout_path"
+      ]
+    }
+  ]
+}

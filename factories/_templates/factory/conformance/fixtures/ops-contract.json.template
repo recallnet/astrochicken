@@ -1,0 +1,13 @@
+{
+  "schema": "hatch.factory.conformance.fixture.v1",
+  "factory_id": "{{factory_id}}",
+  "runs_dir": "{{runs_dir}}",
+  "required_ops_commands": [
+    "hatch-ops factory status --factory-root factories/{{factory_id}} --json",
+    "hatch-ops factory tick-status --factory-root factories/{{factory_id}} --json"
+  ],
+  "telemetry": {
+    "harness": "shared",
+    "version": "v1"
+  }
+}

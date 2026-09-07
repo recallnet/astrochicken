@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "daily_release_report",
+  "familyId": "daily_reporting",
+  "sourcePath": "factories/example-web/workflows/daily-reporting/daily_release_report.workflow-source.mjs",
+  "runtimeGraphPath": "factories/example-web/graphs/daily_release_report.dot",
+  "outputPath": "docs/contracts/example-web.daily_release_report.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:example-web-daily_release_report",
+  "generatedFiles": [
+    "factories/example-web/graphs/daily_release_report.dot",
+    "factories/example-web/graphs/daily_release_report.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "daily_reporting",
+      "correlation_id": "workflow-ir-contract:daily_release_report",
+      "factory_id": "example-web",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "daily_release_report",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "daily_release_report"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:example-web-daily_release_report",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "daily_reporting",
+        "correlation_id": "workflow-ir-contract:daily_release_report",
+        "factory_id": "example-web",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "daily_release_report",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "daily_release_report"
+    },
+    "files": [
+      {
+        "path": "factories/example-web/graphs/daily_release_report.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "factories/example-web/graphs/daily_release_report.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:example-web-daily_release_report",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "factories/example-web/graphs/daily_release_report.dot",
+      "factories/example-web/graphs/daily_release_report.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpzaGFwaW5nLWRhaWx5X3JlbGVhc2VfcmVwb3J0IgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogImRhaWx5X3JlbGVhc2VfcmVwb3J0IgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogImZhY3Rvcmllcy9zaGFwaW5nL3dvcmtmbG93cy9kYWlseS1yZXBvcnRpbmcvZGFpbHlfcmVsZWFzZV9yZXBvcnQud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJkYWlseV9yZWxlYXNlX3JlcG9ydCIsCiAgICAgICAgInN0YXJ0ZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMC4wMDBaIgogICAgICB9CiAgICB9CiAgfSwKICAicHJlZGljYXRlVHlwZSI6ICJodHRwczovL3Nsc2EuZGV2L3Byb3ZlbmFuY2UvdjEiCn0=",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:example-web-daily_release_report"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "daily_release_report"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "factories/example-web/workflows/daily-reporting/daily_release_report.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "daily_release_report",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:0fdc530e48f21efcf4d4997b4436d45500fa5bfa214ebff11814a3f886fa8082",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:example-web-daily_release_report",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from factories/example-web/workflows/daily-reporting/daily_release_report.workflow-source.mjs. Do not edit by hand.\n@import \"../roles.stylesheet\"\n\ndigraph daily_release_report {\n    label = \"daily_release_report\"\n    workflow_source = \"factories/example-web/workflows/daily-reporting/daily_release_report.workflow-source.mjs\"\n    workdir = \".\"\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    run_release_report_flow [type=\"pipeline\" label=\"Run release reporting flow\" recovery_owner=\"supervisor\" pipeline=\"@hatch/capability-release-reporting/graphs/release_report_flow.dot\" fail_open=\"true\" inherit_context=\"true\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.pipeline\"]\n    set_factory_id [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind factory id\" output_key=\"factory_id\" recovery_owner=\"supervisor\" action_fallback=\"example-web\" action_value=\"${factory_id}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    set_release_reporting_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Set release-reporting repo\" output_key=\"release_reporting_repo\" recovery_owner=\"supervisor\" action_fallback=\"${gh_repo}\" action_value=\"${gh_repo}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    set_repo [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind report repo\" output_key=\"gh_repo\" recovery_owner=\"supervisor\" action_value=\"${repo}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    set_repo_path [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind repo path\" output_key=\"repo_path\" recovery_owner=\"supervisor\" action_fallback=\".\" action_value=\"${repo_path}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    set_trust_domain [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind trust domain\" output_key=\"trust_domain\" recovery_owner=\"supervisor\" action_fallback=\"example-web.local\" action_value=\"${trust_domain}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    set_trust_role [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_default\" label=\"Bind trust role\" output_key=\"trust_role\" recovery_owner=\"supervisor\" action_fallback=\"example-web.local.tool\" action_value=\"${trust_role}\" trust_domain=\"example-web.local\" trust_role=\"example-web.local.tool\"]\n    start [shape=\"Mdiamond\"]\n    start -> set_repo -> set_factory_id -> set_repo_path -> set_trust_domain -> set_trust_role -> set_release_reporting_repo -> run_release_report_flow -> done\n}"
+}

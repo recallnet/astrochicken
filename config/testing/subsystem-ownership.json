@@ -1,0 +1,330 @@
+{
+  "schema": "hatch.subsystem-ownership.v1",
+  "scan_roots": [
+    {
+      "path": "apps/hatch/src",
+      "extensions": [
+        ".ts"
+      ]
+    },
+    {
+      "path": "packages/factory-ops/src",
+      "extensions": [
+        ".mjs"
+      ]
+    },
+    {
+      "path": "packages/factory-ops/test",
+      "extensions": [
+        ".mjs"
+      ]
+    },
+    {
+      "path": "packages/factory-telemetry/src",
+      "extensions": [
+        ".ts"
+      ]
+    },
+    {
+      "path": "scripts",
+      "extensions": [
+        ".mjs",
+        ".js",
+        ".ts"
+      ],
+      "ignore_prefixes": [
+        "scripts/fixtures/",
+        "scripts/test/fixtures/",
+        "scripts/test/golden/"
+      ]
+    }
+  ],
+  "owners": [
+    {
+      "id": "hatch.runtime",
+      "package": "hatch",
+      "subsystem": "runtime",
+      "description": "CLI, pipeline, dispatch, and server runtime seams."
+    },
+    {
+      "id": "hatch.factory",
+      "package": "hatch",
+      "subsystem": "factory",
+      "description": "Factory config, conformance, scaffold, and runtime factory contracts."
+    },
+    {
+      "id": "hatch.complexity",
+      "package": "hatch",
+      "subsystem": "complexity",
+      "description": "Complexity estimation and telemetry surfaces."
+    },
+    {
+      "id": "hatch.intent",
+      "package": "hatch",
+      "subsystem": "intent",
+      "description": "Intent loader and schema behavior."
+    },
+    {
+      "id": "factory_ops.supervisor",
+      "package": "@hatch/factory-ops",
+      "subsystem": "supervisor",
+      "description": "Supervisor orchestration, status, and control-plane lifecycle flows."
+    },
+    {
+      "id": "factory_ops.wave",
+      "package": "@hatch/factory-ops",
+      "subsystem": "wave",
+      "description": "Wave planning, readiness, execution, and review flows."
+    },
+    {
+      "id": "factory_ops.merge",
+      "package": "@hatch/factory-ops",
+      "subsystem": "merge",
+      "description": "Merge worktree and merge-result handling."
+    },
+    {
+      "id": "factory_ops.scenarios",
+      "package": "@hatch/factory-ops",
+      "subsystem": "scenarios",
+      "description": "Scenario scope, authoring, and validation flows."
+    },
+    {
+      "id": "factory_ops.leases",
+      "package": "@hatch/factory-ops",
+      "subsystem": "leases",
+      "description": "Lease acquisition, release, and distributed ownership state."
+    },
+    {
+      "id": "factory_ops.packets",
+      "package": "@hatch/factory-ops",
+      "subsystem": "packets",
+      "description": "Durable packet contracts and takeover flows."
+    },
+    {
+      "id": "factory_ops.domain_ops",
+      "package": "@hatch/factory-ops",
+      "subsystem": "domain_ops",
+      "description": "Goal, triage, research, release, artifact, and other factory command surfaces not yet topology-migrated."
+    },
+    {
+      "id": "factory_telemetry.telemetry",
+      "package": "@recallnet/factory-telemetry",
+      "subsystem": "telemetry",
+      "description": "Shared Langfuse and runtime telemetry primitives."
+    },
+    {
+      "id": "repo.docs_governance",
+      "package": "repo",
+      "subsystem": "docs",
+      "description": "Docs validation and index generation contracts."
+    },
+    {
+      "id": "repo.testing_infra",
+      "package": "repo",
+      "subsystem": "testing_infra",
+      "description": "Shared testing, hook, and quality-gate infrastructure."
+    }
+  ],
+  "path_rules": [
+    {
+      "path_prefix": "apps/hatch/src/factory/",
+      "owner_id": "hatch.factory"
+    },
+    {
+      "path_prefix": "apps/hatch/src/complexity/",
+      "owner_id": "hatch.complexity"
+    },
+    {
+      "path_prefix": "apps/hatch/src/intent/",
+      "owner_id": "hatch.intent"
+    },
+    {
+      "path_prefix": "apps/hatch/src/",
+      "owner_id": "hatch.runtime"
+    },
+    {
+      "path_prefix": "factories/_templates/factory/conformance/fixtures/",
+      "owner_id": "hatch.factory"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/supervisor-",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/factory-",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/control-plane-",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/factory-",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/control-plane-",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/daemon",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/supervisor/",
+      "owner_id": "factory_ops.supervisor"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/fixtures/wave-",
+      "owner_id": "factory_ops.wave"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/fixtures/milestone-",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/fixtures/regressions/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/regressions/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/wave/",
+      "owner_id": "factory_ops.wave"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/merge/",
+      "owner_id": "factory_ops.merge"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/scenarios/",
+      "owner_id": "factory_ops.scenarios"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/leases/",
+      "owner_id": "factory_ops.leases"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/packets/",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/commands/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/test/shared/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "scripts/fixtures/",
+      "owner_id": "repo.testing_infra"
+    },
+    {
+      "path_prefix": "scripts/test/fixtures/",
+      "owner_id": "repo.testing_infra"
+    },
+    {
+      "path_prefix": "scripts/test/golden/",
+      "owner_id": "repo.testing_infra"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/wave-",
+      "owner_id": "factory_ops.wave"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/wave-",
+      "owner_id": "factory_ops.wave"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/merge-",
+      "owner_id": "factory_ops.merge"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/merge-",
+      "owner_id": "factory_ops.merge"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/scenario-",
+      "owner_id": "factory_ops.scenarios"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/write-scenario",
+      "owner_id": "factory_ops.scenarios"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/lease-",
+      "owner_id": "factory_ops.leases"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/factory-distributed-lease",
+      "owner_id": "factory_ops.leases"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/factory-lease-marker",
+      "owner_id": "factory_ops.leases"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/incident-packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/remediation-packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/goal-decomposition-packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/goal-decomposition-packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/judge-recovery-packet",
+      "owner_id": "factory_ops.packets"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/cli.mjs",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/cli/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/lib/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-ops/src/commands/",
+      "owner_id": "factory_ops.domain_ops"
+    },
+    {
+      "path_prefix": "packages/factory-telemetry/src/",
+      "owner_id": "factory_telemetry.telemetry"
+    },
+    {
+      "path_prefix": "scripts/docs",
+      "owner_id": "repo.docs_governance"
+    },
+    {
+      "path_prefix": "scripts/live-doc-assets",
+      "owner_id": "repo.docs_governance"
+    },
+    {
+      "path_prefix": "scripts/lib/docs-",
+      "owner_id": "repo.docs_governance"
+    },
+    {
+      "path_prefix": "scripts/",
+      "owner_id": "repo.testing_infra"
+    }
+  ]
+}

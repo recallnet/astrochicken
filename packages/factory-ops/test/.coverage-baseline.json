@@ -1,0 +1,611 @@
+{
+  "schema": "export_coverage_baseline/v1",
+  "generated": "2026-03-31T16:14:21.917Z",
+  "description": "Known uncovered exports. Debt can only decrease, never increase.",
+  "gaps": [
+    {
+      "source": "artifact-emit-issue.mjs",
+      "export": "emitArtifactIssue"
+    },
+    {
+      "source": "artifact-ingest.mjs",
+      "export": "ingestArtifactIssues"
+    },
+    {
+      "source": "artifact-linkage.mjs",
+      "export": "checkResumeGate"
+    },
+    {
+      "source": "artifact-linkage.mjs",
+      "export": "checkResumeGateFromArtifactLink"
+    },
+    {
+      "source": "dispatch-scheduler.mjs",
+      "export": "READY_LABEL"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "buildDeterministicFactoryLeaseToken"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "createFactoryLeaseGhClient"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "decideFactoryLeaseAcquisition"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "decideFactoryLeaseHeartbeat"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "decideFactoryLeaseRelease"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "describeFactoryLease"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "FACTORY_LEASE_BLOCK_END"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "FACTORY_LEASE_BLOCK_START"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "normalizeFactoryLease"
+    },
+    {
+      "source": "factory-lease-marker.mjs",
+      "export": "parseFactoryLeaseSnapshot"
+    },
+    {
+      "source": "factory-status.mjs",
+      "export": "readState"
+    },
+    {
+      "source": "factory-watch.mjs",
+      "export": "factoryWatch"
+    },
+    {
+      "source": "goal-queue-ops.mjs",
+      "export": "applyGoalDecisions"
+    },
+    {
+      "source": "goal-queue-ops.mjs",
+      "export": "countDecomposeAttemptsFromGitHub"
+    },
+    {
+      "source": "graph-trust-contract.mjs",
+      "export": "DEFAULT_LOCAL_INTENTS_GRAPHS_DIR"
+    },
+    {
+      "source": "graph-trust-contract.mjs",
+      "export": "isStrictTrustContractEnabled"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "buildDeterministicLeaseHolderId"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "DEFAULT_CLOCK_SKEW_TOLERANCE_MS"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "DEFAULT_LEASE_SECONDS"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "DEFAULT_RECLAIM_GRACE_MS"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "FACTORY_DISTRIBUTED_LEASE_SCHEMA_VERSION"
+    },
+    {
+      "source": "lease-holder.mjs",
+      "export": "normalizeLeaseSeconds"
+    },
+    {
+      "source": "lease-http-acquire.mjs",
+      "export": "acquireFactoryDistributedLease"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "CONFLICT_BACKOFF_MS"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "createFactoryDistributedLeaseGhClient"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "DEFAULT_MAX_ATTEMPTS"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "evaluateLeaseSnapshot"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "matchingIdempotency"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "parseEpochMs"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "parseIssueNumber"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "resolveFactoryConfigLeaseDefaults"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "sameOwner"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "sleepMs"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "toInt"
+    },
+    {
+      "source": "lease-http-client.mjs",
+      "export": "toIso"
+    },
+    {
+      "source": "lease-http-release.mjs",
+      "export": "releaseFactoryDistributedLease"
+    },
+    {
+      "source": "lease-http-release.mjs",
+      "export": "resolveFactoryTrackingIssueNumber"
+    },
+    {
+      "source": "merge-assert-main-clean.mjs",
+      "export": "assertMainClean"
+    },
+    {
+      "source": "observability-trace.mjs",
+      "export": "extractGoalNumberFromTitle"
+    },
+    {
+      "source": "observability-trace.mjs",
+      "export": "traceArtifactLifecycle"
+    },
+    {
+      "source": "release-rollout-controller-state.mjs",
+      "export": "publishManifestAssetAndRecord"
+    },
+    {
+      "source": "retry-profile.mjs",
+      "export": "renderRetryCompareMarkdown"
+    },
+    {
+      "source": "retry-profile.mjs",
+      "export": "renderRetryProfileMarkdown"
+    },
+    {
+      "source": "supervisor-close-merge-followups.mjs",
+      "export": "closeStaleMergeFollowups"
+    },
+    {
+      "source": "supervisor-close-non-goals.mjs",
+      "export": "closeStaleNonGoalIssues"
+    },
+    {
+      "source": "supervisor-detect-orphan-features.mjs",
+      "export": "detectOrphanFeatures"
+    },
+    {
+      "source": "supervisor-detect-stalled-wave.mjs",
+      "export": "detectStalledWaveExecution"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceCloseGiveUp"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceResetBranch"
+    },
+    {
+      "source": "supervisor-merge-failure-metrics.mjs",
+      "export": "emitMergeFailureMetrics"
+    },
+    {
+      "source": "supervisor-open-bug-gate.mjs",
+      "export": "evaluateOpenBugGate"
+    },
+    {
+      "source": "supervisor-open-bug-gate.mjs",
+      "export": "extractSnapshotOpenBugs"
+    },
+    {
+      "source": "supervisor-remediate-orphan-features.mjs",
+      "export": "remediateOrphanFeatures"
+    },
+    {
+      "source": "supervisor-sanitize-artifact-labels.mjs",
+      "export": "sanitizeArtifactLabels"
+    },
+    {
+      "source": "supervisor-snapshot-cli-crashes.mjs",
+      "export": "appendCliCrashActionItems"
+    },
+    {
+      "source": "supervisor-snapshot-identity.mjs",
+      "export": "collectStaleTelemetry"
+    },
+    {
+      "source": "supervisor-snapshot-identity.mjs",
+      "export": "resolveSnapshotIdentity"
+    },
+    {
+      "source": "supervisor-snapshot-provisioning-drift.mjs",
+      "export": "appendProvisioningDriftActionItems"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "asPositiveInt"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "collectClosedFallbackDefectBugHistory"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "encodeJsonB64"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "extractWaveGiveupSourceIssueNumber"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "hasLabel"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "persistDurableSnapshotPacket"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "resolveIssueState"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "scanRecentCliCrashes"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "shouldEscalateCliCrash"
+    },
+    {
+      "source": "supervisor-update-priorities-from-merge-failures.mjs",
+      "export": "updatePrioritiesFromMergeFailures"
+    },
+    {
+      "source": "supervisor-validate-main-branch.mjs",
+      "export": "validateMainBranchHealth"
+    },
+    {
+      "source": "wave-create-ready.mjs",
+      "export": "createReadyMarkersFromArgs"
+    },
+    {
+      "source": "wave-create-ready.mjs",
+      "export": "createReadyMarkersFromRun"
+    },
+    {
+      "source": "wave-find-ready.mjs",
+      "export": "pickReadyWaveFromRepo"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "commentReviewFailuresIssueExecution"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "releaseWaveQuarantine"
+    },
+    {
+      "source": "wave-issue-inspector.mjs",
+      "export": "decideExistingReuse"
+    },
+    {
+      "source": "wave-issue-inspector.mjs",
+      "export": "estimateWaveIssueComplexity"
+    },
+    {
+      "source": "wave-issue-inspector.mjs",
+      "export": "inspectBranchChanges"
+    },
+    {
+      "source": "wave-issue-inspector.mjs",
+      "export": "inspectExistingCommits"
+    },
+    {
+      "source": "wave-issue-inspector.mjs",
+      "export": "resolveExecutionMode"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "buildReviewEvidenceDiagnostics"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "buildReviewEvidenceNote"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "buildReviewEvidenceScopeDiagnostics"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "commitSubjectMatchesIssue"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "isSharedWaveBranch"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "loadReviewEvidenceArtifact"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "persistReviewEvidence"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "resolveIssueScopedDelta"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "resolvePath"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "resolvePersistedQaCommands"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "run"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "runQaCommand"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "sha256Hex"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "summaryIndicatesZeroDelta"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "WAVE_ISSUE_EXECUTE_GRAPH_PATH"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "cleanupLegacyWorktree"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "ensureWorktreeToolchain"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "resetStaleBranch"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "revertToSnapshot"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "setupWaveIssueWorktree"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "snapshotBranchHead"
+    },
+    {
+      "source": "wave-issue-worktree.mjs",
+      "export": "validateWorkRepo"
+    },
+    {
+      "source": "wave-list-milestones-b64.mjs",
+      "export": "waveListMilestonesB64"
+    },
+    {
+      "source": "wave-list-priorities-b64.mjs",
+      "export": "waveListPrioritiesB64"
+    },
+    {
+      "source": "wave-list-ready-issues-b64.mjs",
+      "export": "waveListReadyIssuesB64"
+    },
+    {
+      "source": "wave-open-judge-followup.mjs",
+      "export": "openJudgeFollowupArtifact"
+    },
+    {
+      "source": "wave-sanitize-executor.mjs",
+      "export": "applyWaveOrphanStateRepair"
+    },
+    {
+      "source": "wave-sanitize-executor.mjs",
+      "export": "requeueAfterJudgeFailure"
+    },
+    {
+      "source": "wave-sanitize-executor.mjs",
+      "export": "sanitizeWaveState"
+    },
+    {
+      "source": "wave-sanitize-rules.mjs",
+      "export": "readRunMetadata"
+    },
+    {
+      "source": "wave-sanitize-rules.mjs",
+      "export": "readRunStatuses"
+    },
+    {
+      "source": "wave-sanitize-state.mjs",
+      "export": "readRunStatuses"
+    }
+  ],
+  "behavior_gaps": [
+    {
+      "source": "artifact-emit-issue.mjs",
+      "export": "emitArtifactIssue"
+    },
+    {
+      "source": "artifact-ingest.mjs",
+      "export": "ingestArtifactIssues"
+    },
+    {
+      "source": "labels-normalize.mjs",
+      "export": "normalizeIssueLabels"
+    },
+    {
+      "source": "supervisor-close-merge-followups.mjs",
+      "export": "closeStaleMergeFollowups"
+    },
+    {
+      "source": "supervisor-close-non-goals.mjs",
+      "export": "closeStaleNonGoalIssues"
+    },
+    {
+      "source": "supervisor-detect-stalled-wave.mjs",
+      "export": "buildRemediationPlanSummary"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceCloseGiveUp"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceResetBranch"
+    },
+    {
+      "source": "supervisor-remediate-orphan-features.mjs",
+      "export": "orphanSignature"
+    },
+    {
+      "source": "supervisor-remediate-orphan-features.mjs",
+      "export": "remediateOrphanFeatures"
+    },
+    {
+      "source": "supervisor-sanitize-artifact-labels.mjs",
+      "export": "sanitizeArtifactLabels"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "persistDurableSnapshotPacket"
+    },
+    {
+      "source": "supervisor-update-priorities-from-merge-failures.mjs",
+      "export": "updatePrioritiesFromMergeFailures"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "commentReviewFailuresIssueExecution"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "releaseWaveQuarantine"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "persistReviewEvidence"
+    },
+    {
+      "source": "wave-sanitize-executor.mjs",
+      "export": "applyWaveOrphanStateRepair"
+    }
+  ],
+  "effect_gaps": [
+    {
+      "source": "artifact-emit-issue.mjs",
+      "export": "emitArtifactIssue"
+    },
+    {
+      "source": "artifact-ingest.mjs",
+      "export": "ingestArtifactIssues"
+    },
+    {
+      "source": "labels-normalize.mjs",
+      "export": "normalizeIssueLabels"
+    },
+    {
+      "source": "supervisor-close-merge-followups.mjs",
+      "export": "closeStaleMergeFollowups"
+    },
+    {
+      "source": "supervisor-close-non-goals.mjs",
+      "export": "closeStaleNonGoalIssues"
+    },
+    {
+      "source": "supervisor-detect-stalled-wave.mjs",
+      "export": "buildRemediationPlanSummary"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceCloseGiveUp"
+    },
+    {
+      "source": "supervisor-force-ops.mjs",
+      "export": "forceResetBranch"
+    },
+    {
+      "source": "supervisor-remediate-orphan-features.mjs",
+      "export": "orphanSignature"
+    },
+    {
+      "source": "supervisor-remediate-orphan-features.mjs",
+      "export": "remediateOrphanFeatures"
+    },
+    {
+      "source": "supervisor-sanitize-artifact-labels.mjs",
+      "export": "sanitizeArtifactLabels"
+    },
+    {
+      "source": "supervisor-state-collector.mjs",
+      "export": "persistDurableSnapshotPacket"
+    },
+    {
+      "source": "supervisor-update-priorities-from-merge-failures.mjs",
+      "export": "updatePrioritiesFromMergeFailures"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "commentReviewFailuresIssueExecution"
+    },
+    {
+      "source": "wave-handle-review-failures.mjs",
+      "export": "releaseWaveQuarantine"
+    },
+    {
+      "source": "wave-issue-shared.mjs",
+      "export": "persistReviewEvidence"
+    },
+    {
+      "source": "wave-sanitize-executor.mjs",
+      "export": "applyWaveOrphanStateRepair"
+    }
+  ]
+}

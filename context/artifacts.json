@@ -1,0 +1,6 @@
+{
+  "control_plane_repo": "recallnet/astrochicken",
+  "source_repos": "recallnet/astrochicken",
+  "max_artifacts": "20",
+  "dry_run": "true"
+}

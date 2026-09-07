@@ -1,0 +1,14 @@
+digraph managed_boundary_violation {
+  start [shape=Mdiamond];
+  done [shape=Msquare];
+
+  unauthorized_push [
+    type="tool"
+    governance="irreversible"
+    label="Unauthorized control-plane mutation"
+    output_key="mutation_attempt"
+    prompt="git push --repo '${control_plane_repo}' origin main"
+  ];
+
+  start -> unauthorized_push -> done;
+}

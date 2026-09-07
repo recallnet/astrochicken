@@ -1,0 +1,1549 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "factory_supervisor_tick",
+  "familyId": "dispatch_control",
+  "title": "Factory supervisor tick",
+  "description": "Typed source for the mothership maintenance supervisor graph.",
+  "sourcePath": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "factory_supervisor_tick",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "action_item_gate",
+        "runtimeNodeId": "action_item_gate"
+      },
+      {
+        "sourceNodeId": "apply_rejected_upstream",
+        "runtimeNodeId": "apply_rejected_upstream"
+      },
+      {
+        "sourceNodeId": "bug_fast_gate",
+        "runtimeNodeId": "bug_fast_gate"
+      },
+      {
+        "sourceNodeId": "bug_fast_resolution_gate",
+        "runtimeNodeId": "bug_fast_resolution_gate"
+      },
+      {
+        "sourceNodeId": "count_ready_goals",
+        "runtimeNodeId": "count_ready_goals"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_disposition_feedback",
+        "runtimeNodeId": "emit_disposition_feedback"
+      },
+      {
+        "sourceNodeId": "emit_review_metrics_summary",
+        "runtimeNodeId": "emit_review_metrics_summary"
+      },
+      {
+        "sourceNodeId": "ensure_goal_execution_path",
+        "runtimeNodeId": "ensure_goal_execution_path"
+      },
+      {
+        "sourceNodeId": "evaluate_action_item_gate",
+        "runtimeNodeId": "evaluate_action_item_gate"
+      },
+      {
+        "sourceNodeId": "evaluate_external_factory_lifecycle",
+        "runtimeNodeId": "evaluate_external_factory_lifecycle"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate_after_fast",
+        "runtimeNodeId": "evaluate_open_bug_gate_after_fast"
+      },
+      {
+        "sourceNodeId": "evaluate_open_bug_gate_fast",
+        "runtimeNodeId": "evaluate_open_bug_gate_fast"
+      },
+      {
+        "sourceNodeId": "evaluate_tick_idle",
+        "runtimeNodeId": "evaluate_tick_idle"
+      },
+      {
+        "sourceNodeId": "external_lifecycle_gate",
+        "runtimeNodeId": "external_lifecycle_gate"
+      },
+      {
+        "sourceNodeId": "fan_in_goal_run",
+        "runtimeNodeId": "fan_in_goal_run"
+      },
+      {
+        "sourceNodeId": "fan_out_goal_run",
+        "runtimeNodeId": "fan_out_goal_run"
+      },
+      {
+        "sourceNodeId": "fast_route_telemetry_clear",
+        "runtimeNodeId": "fast_route_telemetry_clear"
+      },
+      {
+        "sourceNodeId": "fast_route_telemetry_open",
+        "runtimeNodeId": "fast_route_telemetry_open"
+      },
+      {
+        "sourceNodeId": "goal_decompose_backpressure",
+        "runtimeNodeId": "goal_decompose_backpressure"
+      },
+      {
+        "sourceNodeId": "goal_decompose_gate",
+        "runtimeNodeId": "goal_decompose_gate"
+      },
+      {
+        "sourceNodeId": "goal_gate",
+        "runtimeNodeId": "goal_gate"
+      },
+      {
+        "sourceNodeId": "keep_all_goals",
+        "runtimeNodeId": "keep_all_goals"
+      },
+      {
+        "sourceNodeId": "limit_kept_goals",
+        "runtimeNodeId": "limit_kept_goals"
+      },
+      {
+        "sourceNodeId": "list_ready_goals",
+        "runtimeNodeId": "list_ready_goals"
+      },
+      {
+        "sourceNodeId": "load_intent_stack",
+        "runtimeNodeId": "load_intent_stack"
+      },
+      {
+        "sourceNodeId": "load_supervisor_bug_fast_task_prompt",
+        "runtimeNodeId": "load_supervisor_bug_fast_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_supervisor_review_task_prompt",
+        "runtimeNodeId": "load_supervisor_review_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_supervisor_rules",
+        "runtimeNodeId": "load_supervisor_rules"
+      },
+      {
+        "sourceNodeId": "load_supervisor_skill",
+        "runtimeNodeId": "load_supervisor_skill"
+      },
+      {
+        "sourceNodeId": "load_supervisor_system_prompt",
+        "runtimeNodeId": "load_supervisor_system_prompt"
+      },
+      {
+        "sourceNodeId": "recovery_sweep_runtime",
+        "runtimeNodeId": "recovery_sweep_runtime"
+      },
+      {
+        "sourceNodeId": "release_manifest",
+        "runtimeNodeId": "release_manifest"
+      },
+      {
+        "sourceNodeId": "set_capability_goal_decomposition_skills",
+        "runtimeNodeId": "set_capability_goal_decomposition_skills"
+      },
+      {
+        "sourceNodeId": "set_control_plane_repo",
+        "runtimeNodeId": "set_control_plane_repo"
+      },
+      {
+        "sourceNodeId": "set_date_fast",
+        "runtimeNodeId": "set_date_fast"
+      },
+      {
+        "sourceNodeId": "set_date",
+        "runtimeNodeId": "set_date"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_max_concurrent_goals_pre",
+        "runtimeNodeId": "set_max_concurrent_goals_pre"
+      },
+      {
+        "sourceNodeId": "set_max_goal_runs_per_tick",
+        "runtimeNodeId": "set_max_goal_runs_per_tick"
+      },
+      {
+        "sourceNodeId": "set_release_sha",
+        "runtimeNodeId": "set_release_sha"
+      },
+      {
+        "sourceNodeId": "set_source_repos",
+        "runtimeNodeId": "set_source_repos"
+      },
+      {
+        "sourceNodeId": "set_supervisor_factory_identity",
+        "runtimeNodeId": "set_supervisor_factory_identity"
+      },
+      {
+        "sourceNodeId": "set_target_repo",
+        "runtimeNodeId": "set_target_repo"
+      },
+      {
+        "sourceNodeId": "snapshot_state_fast",
+        "runtimeNodeId": "snapshot_state_fast"
+      },
+      {
+        "sourceNodeId": "snapshot_state",
+        "runtimeNodeId": "snapshot_state"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "supervisor_health",
+        "runtimeNodeId": "supervisor_health"
+      },
+      {
+        "sourceNodeId": "supervisor_review_bug_fast",
+        "runtimeNodeId": "supervisor_review_bug_fast"
+      },
+      {
+        "sourceNodeId": "supervisor_review",
+        "runtimeNodeId": "supervisor_review"
+      },
+      {
+        "sourceNodeId": "sync_release_manifest",
+        "runtimeNodeId": "sync_release_manifest"
+      },
+      {
+        "sourceNodeId": "tick_idle_gate",
+        "runtimeNodeId": "tick_idle_gate"
+      },
+      {
+        "sourceNodeId": "update_tick_idle_cursor",
+        "runtimeNodeId": "update_tick_idle_cursor"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "action_item_gate",
+      "kind": "decision",
+      "title": "Action items to process?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "apply_rejected_upstream",
+      "kind": "tool_action",
+      "title": "Apply rejected/superseded upstream closure",
+      "handlerType": "tool",
+      "actionId": "triage.apply_rejected_upstream",
+      "dotAttributes": {
+        "action_blocker_ref": "${blockerRef}",
+        "action_issue": "${source_issue_number}",
+        "action_repo": "${source_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__apply_rejected_upstream_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "bug_fast_gate",
+      "kind": "decision",
+      "title": "Open bugs? (fast route)",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "bug_fast_resolution_gate",
+      "kind": "decision",
+      "title": "Bugs resolved by fast route?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "count_ready_goals",
+      "kind": "tool_action",
+      "title": "Count ready goals",
+      "handlerType": "tool",
+      "actionId": "common.count_json_items",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "goal_count"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "title": "Done",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "emit_disposition_feedback",
+      "kind": "tool_action",
+      "title": "Emit disposition feedback to external-factory issues",
+      "handlerType": "tool",
+      "actionId": "artifact.emit_disposition_feedback",
+      "dotAttributes": {
+        "action_manifest_path": ".hatch/runs/${__run_id}/artifacts/release-manifest.json",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__emit_disposition_feedback_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "emit_review_metrics_summary",
+      "kind": "tool_action",
+      "title": "Emit review metrics summary",
+      "handlerType": "tool",
+      "actionId": "factory.review_metrics",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_lookback_hours": "1",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__review_metrics_summary_result"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "ensure_goal_execution_path",
+      "kind": "tool_action",
+      "title": "Ensure goal execution-path packets",
+      "handlerType": "tool",
+      "actionId": "goal.ensure_execution_paths",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_goal_issues": "${kept_goals_limited}",
+        "action_repo_root": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "goal_execution_path_count",
+          "goal_execution_path_records",
+          "goal_execution_paths"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "evaluate_action_item_gate",
+      "kind": "tool_action",
+      "title": "Check if supervisor review has work",
+      "handlerType": "tool",
+      "actionId": "supervisor.action_item_gate",
+      "dotAttributes": {
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo": "${target_repo}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_action_items",
+          "action_item_count"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "evaluate_external_factory_lifecycle",
+      "kind": "tool_action",
+      "title": "Evaluate external factory blocker lifecycle",
+      "handlerType": "tool",
+      "actionId": "supervisor.external_factory_lifecycle",
+      "dotAttributes": {
+        "action_blocked_items": "[]",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_runtime": "in_process",
+        "action_source_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "lifecycle_state",
+          "reason",
+          "source_repo",
+          "source_issue_number",
+          "blockerRef"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate_after_fast",
+      "kind": "tool_action",
+      "title": "Evaluate open bug gate after fast route",
+      "handlerType": "tool",
+      "actionId": "supervisor.open_bug_gate",
+      "dotAttributes": {
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo": "${target_repo}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_open_bugs",
+          "open_bug_count",
+          "parse_error"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "evaluate_open_bug_gate_fast",
+      "kind": "tool_action",
+      "title": "Evaluate open bug gate",
+      "handlerType": "tool",
+      "actionId": "supervisor.open_bug_gate",
+      "dotAttributes": {
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo": "${target_repo}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_open_bugs",
+          "open_bug_count",
+          "parse_error"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "evaluate_tick_idle",
+      "kind": "tool_action",
+      "title": "Check if tick has reporting work",
+      "handlerType": "tool",
+      "actionId": "supervisor.tick_idle_check",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_gh_repo": "${gh_repo}",
+        "action_in_flight_count": "0",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_selected_count": "0",
+        "action_spawn_success_count": "0",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "tick_idle",
+          "tick_idle_reason"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "external_lifecycle_gate",
+      "kind": "decision",
+      "title": "External lifecycle rejected upstream?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "fan_in_goal_run",
+      "kind": "dynamic_fan_in",
+      "title": "Collect goal runs",
+      "handlerType": "fan_in.dynamic",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.fan_in.dynamic"
+      },
+      "binding": {
+        "outputKey": "goal_runs"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "fan_out_goal_run",
+      "kind": "dynamic_fan_out",
+      "title": "Run goals in parallel",
+      "handlerType": "fan_out.dynamic",
+      "dotAttributes": {
+        "context_keys": "capability_goal_decomposition_skills",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.fan_out.dynamic"
+      },
+      "policy": {
+        "recoveryOwner": "supervisor"
+      },
+      "composition": {
+        "templateWorkflowRef": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+        "sourceKey": "kept_goals_limited",
+        "itemKey": "issue_number",
+        "maxConcurrency": 2
+      }
+    },
+    {
+      "id": "fast_route_telemetry_clear",
+      "kind": "tool_action",
+      "title": "Record fast-route clear branch",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "fast-route-clear",
+        "action_runtime": "in_process",
+        "action_value": "fast-route-clear",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "fast_route_branch_marker"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "fast_route_telemetry_open",
+      "kind": "tool_action",
+      "title": "Record fast-route open-bug branch",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "fast-route-open",
+        "action_runtime": "in_process",
+        "action_value": "fast-route-open",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "fast_route_branch_marker"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "goal_decompose_backpressure",
+      "kind": "tool_action",
+      "title": "Check goal decomposition backpressure",
+      "handlerType": "tool",
+      "actionId": "goal.decompose_backpressure",
+      "dotAttributes": {
+        "action_max_concurrent_goals": "${max_concurrent_goals_pre}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "decompose_allowed",
+          "decompose_skip_reason",
+          "executable_goal_count",
+          "max_concurrent_goals"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "goal_decompose_gate",
+      "kind": "decision",
+      "title": "Decompose goals this tick?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "goal_gate",
+      "kind": "decision",
+      "title": "Any ready goals?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "keep_all_goals",
+      "kind": "tool_action",
+      "title": "Keep all ready goals",
+      "handlerType": "tool",
+      "actionId": "goal.filter_kept_goals",
+      "dotAttributes": {
+        "action_decisions": "[]",
+        "action_issues": "${goal_issues}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "kept_goals"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "limit_kept_goals",
+      "kind": "tool_action",
+      "title": "Limit goal runs per tick",
+      "handlerType": "tool",
+      "actionId": "goal.limit_kept",
+      "dotAttributes": {
+        "action_kept_goals": "${kept_goals}",
+        "action_max_goals_per_tick": "${max_goal_runs_per_tick}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "kept_goals_limited"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "list_ready_goals",
+      "kind": "tool_action",
+      "title": "List ready goals",
+      "handlerType": "tool",
+      "actionId": "goal.list_ready",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "goal_issues"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_intent_stack",
+      "kind": "tool_action",
+      "title": "Load intent stack",
+      "handlerType": "tool",
+      "actionId": "common.resolve_intent_stack",
+      "dotAttributes": {
+        "action_factory_root": "factories/mothership",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "intent_stack"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_supervisor_bug_fast_task_prompt",
+      "kind": "tool_action",
+      "title": "Load supervisor bug fast task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/supervisor/bug_fast.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "supervisor_bug_fast_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_supervisor_review_task_prompt",
+      "kind": "tool_action",
+      "title": "Load supervisor review task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/supervisor/review.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "supervisor_review_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_supervisor_rules",
+      "kind": "tool_action",
+      "title": "Load mothership supervisor addendum",
+      "prompt": "cat factories/mothership/skills/supervisor_rules.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "supervisor_rules_content"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_supervisor_skill",
+      "kind": "tool_action",
+      "title": "Load shared supervisor template",
+      "prompt": "cat packages/factory-skills/skills/runtime/supervisor_review/SKILL.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "supervisor_skill_content"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "load_supervisor_system_prompt",
+      "kind": "tool_action",
+      "title": "Load supervisor system prompt",
+      "prompt": "cat packages/factory-prompts/prompts/supervisor/system.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "supervisor_system_prompt"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "recovery_sweep_runtime",
+      "kind": "tool_action",
+      "title": "Sweep stale run/worktree residue",
+      "handlerType": "tool",
+      "actionId": "factory.recovery_sweep",
+      "dotAttributes": {
+        "action_apply": "true",
+        "action_repo_path": "${repo}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_stale_minutes": "20",
+        "recovery_sink_type": "wait",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "action_branch_marker": "${fast_route_branch_marker}"
+      },
+      "binding": {
+        "outputKey": "__recovery_sweep_runtime_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "release_manifest",
+      "kind": "tool_action",
+      "title": "Emit release manifest",
+      "handlerType": "tool",
+      "actionId": "artifact.release_manifest",
+      "dotAttributes": {
+        "action_control_plane_repo": "${gh_repo}",
+        "action_release_sha": "${release_sha}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_source_repos": "${source_repos}",
+        "action_states": "closed",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__release_manifest_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_capability_goal_decomposition_skills",
+      "kind": "tool_action",
+      "title": "set capability_goal_decomposition_skills",
+      "handlerType": "tool",
+      "actionId": "common.resolve_capability_goal_decomposition_skills_path",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "capability_goal_decomposition_skills"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_control_plane_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_fallback": "${target_repo}",
+        "action_key": "control_plane_repo",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "control_plane_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_date",
+      "kind": "tool_action",
+      "title": "Set current date",
+      "prompt": "date -u '+%Y-%m-%dT%H:%M:%SZ'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "date"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_date_fast",
+      "kind": "tool_action",
+      "title": "Set current date (bug fast route)",
+      "prompt": "date -u '+%Y-%m-%dT%H:%M:%SZ'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "branch_marker": "${fast_route_branch_marker}"
+      },
+      "binding": {
+        "outputKey": "date"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Resolve control-plane repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "${target_repo}",
+        "action_runtime": "in_process",
+        "action_value": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "gh_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_max_concurrent_goals_pre",
+      "kind": "tool_action",
+      "title": "Resolve max concurrent goal runs (pre-goal gate)",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_fallback": "3",
+        "action_key": "max_concurrent_goals",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "max_concurrent_goals_pre"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_max_goal_runs_per_tick",
+      "kind": "tool_action",
+      "title": "Resolve max goal runs per tick",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_fallback": "2",
+        "action_key": "max_goal_runs_per_tick",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "max_goal_runs_per_tick"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_release_sha",
+      "kind": "tool_action",
+      "title": "Resolve release SHA from main branch",
+      "prompt": "git rev-parse main",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "release_sha"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_source_repos",
+      "kind": "tool_action",
+      "title": "Resolve source repos",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "${target_repo}",
+        "action_runtime": "in_process",
+        "action_value": "${source_repos}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "source_repos"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_supervisor_factory_identity",
+      "kind": "tool_action",
+      "title": "Resolve supervisor factory identity",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_fallback": "mothership/factory_supervisor",
+        "action_key": "factory_id",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "factory_id"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "set_target_repo",
+      "kind": "tool_action",
+      "title": "Resolve target repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_default",
+      "dotAttributes": {
+        "action_fallback": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_value": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "target_repo"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "snapshot_state",
+      "kind": "tool_action",
+      "title": "Snapshot factory issue state",
+      "handlerType": "tool",
+      "actionId": "supervisor.state_snapshot",
+      "dotAttributes": {
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo": "${target_repo}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "state_snapshot"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "snapshot_state_fast",
+      "kind": "tool_action",
+      "title": "Snapshot bug queue before tick work",
+      "handlerType": "tool",
+      "actionId": "supervisor.state_snapshot",
+      "dotAttributes": {
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_repo": "${target_repo}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${target_repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "state_snapshot"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "title": "Start",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "supervisor_health",
+      "kind": "tool_action",
+      "title": "Supervisor health check",
+      "handlerType": "tool",
+      "actionId": "supervisor.health_check",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_pipeline": "factory_supervisor_tick",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__supervisor_health_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "supervisor_review",
+      "kind": "llm_prompt",
+      "title": "Supervisor LLM review",
+      "roleClass": "supervisor",
+      "prompt": "${supervisor_system_prompt}\n\nFactory target: ${target_repo}\nDate: ${date}\n\nFactory context:\n- factory_id=${factory_id}\n- target_repo=${target_repo}\n- control_plane_repo=${control_plane_repo}\n- gh_repo=${gh_repo}\n\nSupervisor template (shared):\n${supervisor_skill_content}\n\nFactory-specific addendum:\n${supervisor_rules_content}\n\nState snapshot:\n${state_snapshot}\n\n${supervisor_review_task_prompt}",
+      "dotAttributes": {
+        "benchmark_job_id": "supervisor.tick.review",
+        "llm_path_id": "mothership.supervisor.review",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,supervisor_skill_content,supervisor_rules_content,state_snapshot",
+        "prompt_source": "supervisor_review_task_prompt",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "session_id": "supervisor-${factory_id}",
+        "skill_id": "supervisor.review",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_review_task_prompt",
+        "workdir": "."
+      },
+      "policy": {
+        "timeout": "120m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "supervisor_review_bug_fast",
+      "kind": "llm_prompt",
+      "title": "Supervisor bug fast-route",
+      "roleClass": "supervisor",
+      "prompt": "${supervisor_system_prompt}\n\nFactory target: ${target_repo}\nDate: ${date}\n\nFactory context:\n- factory_id=${factory_id}\n- target_repo=${target_repo}\n- control_plane_repo=${control_plane_repo}\n- gh_repo=${gh_repo}\n\nIntent stack JSON:\n${intent_stack}\n\nSupervisor template (shared):\n${supervisor_skill_content}\n\nFactory-specific addendum:\n${supervisor_rules_content}\n\nState snapshot:\n${state_snapshot}\n\n${supervisor_bug_fast_task_prompt}",
+      "dotAttributes": {
+        "benchmark_job_id": "supervisor.tick.bug_review_fast",
+        "llm_path_id": "mothership.supervisor.review_bug_fast",
+        "prompt_input_keys": "target_repo,date,factory_id,control_plane_repo,gh_repo,intent_stack,supervisor_skill_content,supervisor_rules_content,state_snapshot",
+        "prompt_source": "supervisor_bug_fast_task_prompt",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "session_id": "supervisor-${factory_id}",
+        "skill_id": "supervisor.review_bug_fast",
+        "system_prompt_source": "supervisor_system_prompt",
+        "task_prompt_source": "supervisor_bug_fast_task_prompt",
+        "workdir": "."
+      },
+      "policy": {
+        "timeout": "120m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "sync_release_manifest",
+      "kind": "tool_action",
+      "title": "Sync manifest to canonical location",
+      "handlerType": "tool",
+      "actionId": "factory.publish_control_plane_manifest",
+      "dotAttributes": {
+        "action_manifest_path": ".hatch/runs/${__run_id}/artifacts/release-manifest.json",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__sync_release_manifest_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "tick_idle_gate",
+      "kind": "decision",
+      "title": "Tick idle (goals running, no changes)?",
+      "policy": {
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "update_tick_idle_cursor",
+      "kind": "tool_action",
+      "title": "Advance tick-idle cursor (end of tick)",
+      "handlerType": "tool",
+      "actionId": "supervisor.tick_idle_cursor_update",
+      "dotAttributes": {
+        "action_factory_id": "${factory_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__tick_idle_cursor_result"
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "action_item_gate",
+      "to": "load_supervisor_review_task_prompt",
+      "condition": "has_action_items=true"
+    },
+    {
+      "from": "action_item_gate",
+      "to": "update_tick_idle_cursor",
+      "condition": "has_action_items!=true"
+    },
+    {
+      "from": "apply_rejected_upstream",
+      "to": "evaluate_tick_idle"
+    },
+    {
+      "from": "bug_fast_gate",
+      "to": "fast_route_telemetry_clear",
+      "condition": "has_open_bugs!=true"
+    },
+    {
+      "from": "bug_fast_gate",
+      "to": "fast_route_telemetry_open",
+      "condition": "has_open_bugs=true"
+    },
+    {
+      "from": "bug_fast_resolution_gate",
+      "to": "done",
+      "condition": "has_open_bugs=true"
+    },
+    {
+      "from": "bug_fast_resolution_gate",
+      "to": "recovery_sweep_runtime",
+      "condition": "has_open_bugs!=true"
+    },
+    {
+      "from": "count_ready_goals",
+      "to": "goal_gate"
+    },
+    {
+      "from": "emit_disposition_feedback",
+      "to": "emit_review_metrics_summary"
+    },
+    {
+      "from": "emit_review_metrics_summary",
+      "to": "evaluate_external_factory_lifecycle"
+    },
+    {
+      "from": "ensure_goal_execution_path",
+      "to": "set_capability_goal_decomposition_skills"
+    },
+    {
+      "from": "evaluate_action_item_gate",
+      "to": "action_item_gate"
+    },
+    {
+      "from": "evaluate_external_factory_lifecycle",
+      "to": "external_lifecycle_gate"
+    },
+    {
+      "from": "evaluate_open_bug_gate_after_fast",
+      "to": "bug_fast_resolution_gate"
+    },
+    {
+      "from": "evaluate_open_bug_gate_fast",
+      "to": "bug_fast_gate"
+    },
+    {
+      "from": "evaluate_tick_idle",
+      "to": "tick_idle_gate"
+    },
+    {
+      "from": "external_lifecycle_gate",
+      "to": "apply_rejected_upstream",
+      "condition": "lifecycle_state=rejected_upstream"
+    },
+    {
+      "from": "external_lifecycle_gate",
+      "to": "evaluate_tick_idle",
+      "condition": "lifecycle_state!=rejected_upstream"
+    },
+    {
+      "from": "fan_in_goal_run",
+      "to": "set_release_sha"
+    },
+    {
+      "from": "fan_out_goal_run",
+      "to": "fan_in_goal_run"
+    },
+    {
+      "from": "fast_route_telemetry_clear",
+      "to": "recovery_sweep_runtime"
+    },
+    {
+      "from": "fast_route_telemetry_open",
+      "to": "set_date_fast"
+    },
+    {
+      "from": "goal_decompose_backpressure",
+      "to": "goal_decompose_gate",
+      "dotAttributes": {
+        "input_key": "goal_issues"
+      }
+    },
+    {
+      "from": "goal_decompose_gate",
+      "to": "keep_all_goals",
+      "condition": "decompose_allowed=true"
+    },
+    {
+      "from": "goal_decompose_gate",
+      "to": "set_release_sha",
+      "condition": "decompose_allowed!=true"
+    },
+    {
+      "from": "goal_gate",
+      "to": "set_max_concurrent_goals_pre",
+      "condition": "goal_count!=0"
+    },
+    {
+      "from": "goal_gate",
+      "to": "set_release_sha",
+      "condition": "goal_count=0"
+    },
+    {
+      "from": "keep_all_goals",
+      "to": "set_max_goal_runs_per_tick"
+    },
+    {
+      "from": "limit_kept_goals",
+      "to": "ensure_goal_execution_path"
+    },
+    {
+      "from": "list_ready_goals",
+      "to": "count_ready_goals"
+    },
+    {
+      "from": "load_intent_stack",
+      "to": "snapshot_state_fast"
+    },
+    {
+      "from": "load_supervisor_bug_fast_task_prompt",
+      "to": "supervisor_review_bug_fast"
+    },
+    {
+      "from": "load_supervisor_review_task_prompt",
+      "to": "supervisor_review"
+    },
+    {
+      "from": "load_supervisor_rules",
+      "to": "load_supervisor_system_prompt"
+    },
+    {
+      "from": "load_supervisor_skill",
+      "to": "load_supervisor_rules"
+    },
+    {
+      "from": "load_supervisor_system_prompt",
+      "to": "load_intent_stack"
+    },
+    {
+      "from": "recovery_sweep_runtime",
+      "to": "list_ready_goals"
+    },
+    {
+      "from": "release_manifest",
+      "to": "sync_release_manifest"
+    },
+    {
+      "from": "set_capability_goal_decomposition_skills",
+      "to": "fan_out_goal_run"
+    },
+    {
+      "from": "set_control_plane_repo",
+      "to": "set_supervisor_factory_identity"
+    },
+    {
+      "from": "set_date_fast",
+      "to": "load_supervisor_bug_fast_task_prompt"
+    },
+    {
+      "from": "set_date",
+      "to": "evaluate_action_item_gate"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "set_target_repo"
+    },
+    {
+      "from": "set_max_concurrent_goals_pre",
+      "to": "goal_decompose_backpressure"
+    },
+    {
+      "from": "set_max_goal_runs_per_tick",
+      "to": "limit_kept_goals"
+    },
+    {
+      "from": "set_release_sha",
+      "to": "release_manifest"
+    },
+    {
+      "from": "set_supervisor_factory_identity",
+      "to": "set_source_repos"
+    },
+    {
+      "from": "set_target_repo",
+      "to": "set_control_plane_repo"
+    },
+    {
+      "from": "snapshot_state_fast",
+      "to": "evaluate_open_bug_gate_fast"
+    },
+    {
+      "from": "snapshot_state",
+      "to": "set_date"
+    },
+    {
+      "from": "start",
+      "to": "set_gh_repo"
+    },
+    {
+      "from": "supervisor_health",
+      "to": "snapshot_state"
+    },
+    {
+      "from": "supervisor_review_bug_fast",
+      "to": "evaluate_open_bug_gate_after_fast"
+    },
+    {
+      "from": "supervisor_review",
+      "to": "update_tick_idle_cursor"
+    },
+    {
+      "from": "sync_release_manifest",
+      "to": "emit_disposition_feedback"
+    },
+    {
+      "from": "tick_idle_gate",
+      "to": "supervisor_health",
+      "condition": "tick_idle!=true"
+    },
+    {
+      "from": "tick_idle_gate",
+      "to": "update_tick_idle_cursor",
+      "condition": "tick_idle=true"
+    },
+    {
+      "from": "update_tick_idle_cursor",
+      "to": "done"
+    },
+    {
+      "from": "set_source_repos",
+      "to": "load_supervisor_skill"
+    }
+  ]
+}

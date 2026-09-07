@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
+
+const args = process.argv.slice(2);
+if (args[0] !== "run" || !args[1]) {
+  console.error(`[npm-stub] unsupported args: ${args.join(" ")}`);
+  process.exit(64);
+}
+
+const script = args[1];
+const logPath = process.env.PRE_COMMIT_NPM_STUB_LOG;
+if (logPath) {
+  appendFileSync(
+    logPath,
+    `${JSON.stringify({
+      executable: "npm",
+      argv: args,
+      cwd: process.cwd(),
+      script,
+      command: `npm ${args.join(" ")}`,
+    })}\n`,
+    "utf8",
+  );
+}
+
+const envSuffix = script.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
+const envKey = `PRE_COMMIT_${envSuffix}_EXIT`;
+const rawExit = process.env[envKey] ?? "0";
+const exitCode = Number.parseInt(rawExit, 10);
+
+if (!Number.isInteger(exitCode) || exitCode < 0 || exitCode > 255) {
+  console.error(`[npm-stub] invalid exit code for ${envKey}: ${rawExit}`);
+  process.exit(65);
+}
+
+console.log(`[npm-stub] run ${script}`);
+process.exit(exitCode);

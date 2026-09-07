@@ -1,0 +1,24 @@
+{
+  "name": "@hatch/github-adapter",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/github-adapter.ts",
+    "./create-backend": "./src/create-backend.ts",
+    "./daily-lens-github-state": "./src/daily-lens-github-state.ts",
+    "./test": "./src/test-adapter.ts"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.ts",
+    "typecheck": "find src test -name '*.ts' -print0 | sort -z | xargs -0 node --check"
+  },
+  "dependencies": {
+    "@hatch/factory-core": "workspace:*",
+    "zod": "^4.3.6"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

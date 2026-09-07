@@ -1,0 +1,333 @@
+{
+  "schema_version": "benchmark_job_registry/v1",
+  "jobs": [
+    {
+      "job_id": "goal.batch.repair",
+      "description": "Repair goal review decisions after deterministic validation failures",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/goal_batch.dot",
+          "node_id": "repair_decisions"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.batch.review",
+      "description": "Review open goals for dedupe/closure decisions before goal fan-out",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/goal_batch.dot",
+          "node_id": "review_goals"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.decompose.analyze",
+      "description": "Analyze a goal issue and produce compact decomposition context",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "node_id": "analyze"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.decompose.propose",
+      "description": "Propose implementable feature breakdown for a goal",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "node_id": "propose"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.decompose.review",
+      "description": "Review proposed decomposition for completeness and quality",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "node_id": "review"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.write_issue.judge",
+      "description": "Judge generated implementation issue quality before accepting",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "node_id": "judge_issue"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.write_issue.revise",
+      "description": "Revise a generated implementation issue based on judge feedback",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "node_id": "revise_issue_spec"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.write_issue.repair",
+      "description": "Repair a drafted implementation issue spec after deterministic validation failures",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "node_id": "repair_issue_spec"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.write_issue.write",
+      "description": "Write and create a single implementation issue from goal decomposition context",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "node_id": "draft_issue_spec"
+        }
+      ]
+    },
+    {
+      "job_id": "issue.execute.build",
+      "description": "Build a single issue implementation on an issue-scoped branch",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-coding/graphs/issue_execute_item.dot",
+          "node_id": "build"
+        }
+      ]
+    },
+    {
+      "job_id": "issue.execute.judge",
+      "description": "Judge post-merge alignment for issue execution pipeline",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-product-judge/graphs/product_judge.dot",
+          "node_id": "judge"
+        }
+      ]
+    },
+    {
+      "job_id": "issue.execute.review",
+      "description": "Review single issue implementation for correctness and scope",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-coding/graphs/issue_execute_item.dot",
+          "node_id": "review"
+        }
+      ]
+    },
+    {
+      "job_id": "supervisor.tick.bug_review_fast",
+      "description": "Execute fast-route supervisor bug remediation for open bug queue",
+      "nodes": [
+        {
+          "graph": "factory_supervisor_tick.dot",
+          "node_id": "supervisor_review_bug_fast"
+        }
+      ]
+    },
+    {
+      "job_id": "supervisor.tick.release_narrate",
+      "description": "Narrate release capability shift for operator-facing report",
+      "nodes": [
+        {
+          "graph": "@hatch/capability-release-reporting/graphs/release_report_flow.dot",
+          "node_id": "release_narrator"
+        }
+      ]
+    },
+    {
+      "job_id": "supervisor.tick.review",
+      "description": "Execute full supervisor recovery/action-item review",
+      "nodes": [
+        {
+          "graph": "factory_supervisor_tick.dot",
+          "node_id": "supervisor_review"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.issue.build",
+      "description": "Build a goal sub-issue implementation on the goal-scoped branch",
+      "nodes": [
+        {
+          "graph": "goal_issue_execute.dot",
+          "node_id": "build"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.issue.review",
+      "description": "Review goal sub-issue implementation for issue and goal alignment",
+      "nodes": [
+        {
+          "graph": "goal_issue_execute.dot",
+          "node_id": "review"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.judge",
+      "description": "Judge post-merge goal outcome before goal closure",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "judge"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.resolve_conflict",
+      "description": "Resolve merge conflicts for goal merge flows",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "resolve_conflict"
+        },
+        {
+          "graph": "@hatch/capability-merge/graphs/merge_item.dot",
+          "node_id": "resolve_conflict"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.resolve_post_merge",
+      "description": "Resolve post-merge failures after deterministic merge path",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "resolve_post_merge"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.clean_main",
+      "description": "Clean dirty canonical checkout after merge (untracked files, modified files, partial git state)",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "clean_main"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.resolve_push_failure",
+      "description": "Resolve push failure after successful merge (e.g. rebase onto diverged origin/main)",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "resolve_push_failure"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.retry_resolve_conflict",
+      "description": "Retry merge conflict resolution after finalize detected incomplete state",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "retry_resolve_conflict"
+        },
+        {
+          "graph": "@hatch/capability-merge/graphs/merge_item.dot",
+          "node_id": "retry_resolve_conflict"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.retry_resolve_post_merge",
+      "description": "Retry post-merge resolution after finalize detected incomplete state",
+      "nodes": [
+        {
+          "graph": "goal_execute.dot",
+          "node_id": "retry_resolve_post_merge"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.issue.build",
+      "description": "Build a wave sub-issue implementation on the wave-scoped branch",
+      "nodes": [
+        {
+          "graph": "wave_issue_execute.dot",
+          "node_id": "build"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.issue.review",
+      "description": "Review wave sub-issue implementation for correctness and scope",
+      "nodes": [
+        {
+          "graph": "wave_issue_execute.dot",
+          "node_id": "review"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.judge",
+      "description": "Judge post-merge wave outcome before wave closure",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "judge"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.resolve_conflict",
+      "description": "Resolve merge conflicts for wave merge flows",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "resolve_conflict"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.retry_resolve_conflict",
+      "description": "Retry merge conflict resolution after finalize detected incomplete state in wave flow",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "retry_resolve_conflict"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.resolve_post_merge",
+      "description": "Resolve post-merge failures after deterministic merge path in wave flow",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "resolve_post_merge"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.retry_resolve_post_merge",
+      "description": "Retry post-merge resolution after finalize detected incomplete state in wave flow",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "retry_resolve_post_merge"
+        }
+      ]
+    },
+    {
+      "job_id": "wave.execute.merge.resolve_push_failure",
+      "description": "Resolve push failure after successful merge in wave flow",
+      "nodes": [
+        {
+          "graph": "wave_execute.dot",
+          "node_id": "resolve_push_failure"
+        }
+      ]
+    }
+  ]
+}

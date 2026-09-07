@@ -1,0 +1,42 @@
+{
+  "_policy": "review",
+  "_shared_note": "shared.* reviewer verdict contract must remain stable for supervisor/recovery nodes.",
+  "_factory_note": "factory.* keys can be adjusted locally without breaking shared reviewer schema guarantees.",
+  "shared": {
+    "verdict_schema": {
+      "required_fields": ["status", "summary", "findings", "qa"],
+      "allowed_status": ["approve", "request_changes"]
+    },
+    "qa": {
+      "require_command_evidence": true
+    },
+    "review": {
+      "visual_refinement": {
+        "required_metadata": [
+          "visual_risk_class",
+          "hotspot_files",
+          "scope_limit_minutes",
+          "refinement_strategy",
+          "scenario_sources"
+        ]
+      }
+    }
+  },
+  "factory": {
+    "qa": {
+      "required_command": "pnpm test",
+      "visual_refinement": {
+        "required_command": "npm run qa",
+        "additional_evidence": [
+          "scenario_root_reference",
+          "agents_guidance_reference",
+          "adversarial_review_artifacts"
+        ]
+      }
+    },
+    "labels": {
+      "approved": "review:approved",
+      "changes_requested": "review:changes-requested"
+    }
+  }
+}

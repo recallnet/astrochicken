@@ -1,0 +1,146 @@
+{
+  "schema_version": "phase1_gate_readiness/v1",
+  "ok": true,
+  "summary": {
+    "active_graph_roots": 40,
+    "active_graphs": 3,
+    "active_runtime_files": 367,
+    "active_command_references": 0,
+    "graph_transport_violations": 0,
+    "runtime_internal_cli_violations": 0,
+    "runtime_internal_cli_allowlisted_external_boundaries": 0,
+    "command_thinness_violations": 1,
+    "diagnostics": 0
+  },
+  "scope_contract": {
+    "gates": [
+      {
+        "gate_id": "typed_action_graph_transport",
+        "profile_scope": [
+          "fast",
+          "strict",
+          "full"
+        ],
+        "surface_type": "graph",
+        "classifications": [
+          "active_factory",
+          "active_runtime"
+        ]
+      },
+      {
+        "gate_id": "runtime_internal_cli_repo_wide",
+        "profile_scope": [
+          "fast",
+          "strict",
+          "full"
+        ],
+        "surface_type": "runtime",
+        "classifications": [
+          "hot_path",
+          "execution_path"
+        ]
+      },
+      {
+        "gate_id": "command_thinness_active_owner_surface",
+        "profile_scope": [
+          "fast",
+          "strict",
+          "full"
+        ],
+        "surface_type": "command",
+        "classifications": [
+          "active_deterministic_owner"
+        ]
+      }
+    ],
+    "routes": [
+      {
+        "route_id": "pre_commit",
+        "description": "git commit local hook path",
+        "profile": "strict",
+        "source_path": ".githooks/pre-commit",
+        "phase1_gate_ids": [
+          "typed_action_graph_transport",
+          "runtime_internal_cli_repo_wide",
+          "command_thinness_active_owner_surface",
+          "phase1_gate_readiness"
+        ]
+      },
+      {
+        "route_id": "pre_push",
+        "description": "git push local hook path",
+        "profile": "fast",
+        "source_path": ".githooks/pre-push",
+        "phase1_gate_ids": [
+          "typed_action_graph_transport",
+          "runtime_internal_cli_repo_wide",
+          "command_thinness_active_owner_surface",
+          "phase1_gate_readiness"
+        ]
+      },
+      {
+        "route_id": "pre_merge_script",
+        "description": "pre-merge package script",
+        "profile": "full",
+        "source_path": "package.json",
+        "phase1_gate_ids": [
+          "typed_action_graph_transport",
+          "runtime_internal_cli_repo_wide",
+          "command_thinness_active_owner_surface",
+          "phase1_gate_readiness"
+        ]
+      },
+      {
+        "route_id": "pre_merge_workflow",
+        "description": "pre-merge CI workflow",
+        "profile": "full",
+        "source_path": ".github/workflows/pre-merge-quality.yml",
+        "phase1_gate_ids": [
+          "typed_action_graph_transport",
+          "runtime_internal_cli_repo_wide",
+          "command_thinness_active_owner_surface",
+          "phase1_gate_readiness"
+        ]
+      }
+    ]
+  },
+  "phase1_violation_inventory": {
+    "graph_transport": {
+      "gate_id": "typed_action_graph_transport",
+      "checked": 0,
+      "classifications": [
+        "active_factory",
+        "active_runtime"
+      ],
+      "violations": []
+    },
+    "runtime_internal_cli": {
+      "gate_id": "runtime_internal_cli_repo_wide",
+      "checked": 367,
+      "classifications": [
+        "hot_path",
+        "execution_path"
+      ],
+      "allowlisted_external_boundaries": [],
+      "violations": []
+    },
+    "command_thinness": {
+      "gate_id": "command_thinness_active_owner_surface",
+      "checked": 367,
+      "classifications": [
+        "active_deterministic_owner"
+      ],
+      "violations": [
+        {
+          "file": "packages/factory-ops/src/commands/goal-final-state-review.ts",
+          "kind": "command_thinness_hotspot",
+          "classification": "oversized",
+          "lines": 403,
+          "count": 0,
+          "transport_mode": ""
+        }
+      ]
+    }
+  },
+  "diagnostics": []
+}

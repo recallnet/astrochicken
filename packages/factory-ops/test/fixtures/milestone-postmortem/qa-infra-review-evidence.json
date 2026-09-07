@@ -1,0 +1,22 @@
+{
+  "issue_number": "630",
+  "issue_title": "Enrich QA give-up bug evidence with review QA details",
+  "issue_body_excerpt": "QA infrastructure failure with review evidence.",
+  "branch": "wave/goal-611-wave-2",
+  "worktree_dir": "/tmp/wave-630",
+  "commits_ahead": "1",
+  "issue_commits": "1",
+  "changed_files": [
+    "packages/factory-ops/src/commands/milestone-postmortem.mjs"
+  ],
+  "issue_changed_files": [
+    "packages/factory-ops/src/commands/milestone-postmortem.mjs"
+  ],
+  "snapshot_sha": "deadbeef",
+  "summary": "QA infra failure",
+  "qa": {
+    "status": "fail",
+    "command": "npm run test",
+    "exit_code": 2
+  }
+}

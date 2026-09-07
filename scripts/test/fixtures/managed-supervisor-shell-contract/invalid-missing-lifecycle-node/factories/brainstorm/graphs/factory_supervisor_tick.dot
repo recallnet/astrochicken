@@ -1,0 +1,7 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond label="Start"];
+  run_managed_supervisor_shell [type="pipeline" label="Run shared managed supervisor shell" pipeline="packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"];
+  done [shape=Msquare label="Done"];
+
+  start -> run_managed_supervisor_shell -> done;
+}

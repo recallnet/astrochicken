@@ -1,0 +1,6 @@
+digraph inline_script_debt_fixture {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  marked [type="tool" label="Marked fixture node" output_key="out_marked" governance="irreversible" prompt="# hatch:no-inline-script-ok\npython3 - <<'PY'\nprint('fixture')\nPY"]
+  start -> marked -> done
+}

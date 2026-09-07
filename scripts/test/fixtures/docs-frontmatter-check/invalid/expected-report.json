@@ -1,0 +1,168 @@
+{
+  "schema_version": "docs_frontmatter_check/v1",
+  "ok": false,
+  "summary": {
+    "docs": 3,
+    "templates": 4,
+    "diagnostics": 17
+  },
+  "docs": [
+    "docs/a-missing-frontmatter.md",
+    "docs/m-malformed.md",
+    "docs/z-required.md"
+  ],
+  "template_ids": [
+    "architecture",
+    "roadmap",
+    "state_machines",
+    "vision"
+  ],
+  "required_frontmatter_keys": [
+    "doc_type",
+    "owner",
+    "review_policy",
+    "reviewed",
+    "status",
+    "summary",
+    "tags",
+    "written"
+  ],
+  "diagnostics": [
+    {
+      "id": "frontmatter.date_invalid:docs/m-malformed.md:0:0:frontmatter.reviewed must be a valid YYYY-MM-DD date.",
+      "code": "frontmatter.date_invalid",
+      "message": "frontmatter.reviewed must be a valid YYYY-MM-DD date.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.date_invalid:docs/m-malformed.md:0:0:frontmatter.written must be a valid YYYY-MM-DD date.",
+      "code": "frontmatter.date_invalid",
+      "message": "frontmatter.written must be a valid YYYY-MM-DD date.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.doc_type_mismatch:docs/z-required.md:0:0:frontmatter.doc_type must match docs policy required_doc_types mapping ('architecture').",
+      "code": "frontmatter.doc_type_mismatch",
+      "message": "frontmatter.doc_type must match docs policy required_doc_types mapping ('architecture').",
+      "path": "docs/z-required.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.malformed_line:docs/m-malformed.md:3:1:Malformed frontmatter line: 'owner \"docs-stewards\"'.",
+      "code": "frontmatter.malformed_line",
+      "message": "Malformed frontmatter line: 'owner \"docs-stewards\"'.",
+      "path": "docs/m-malformed.md",
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.missing_block:docs/a-missing-frontmatter.md:1:1:Document must start with a YAML frontmatter block ('---').",
+      "code": "frontmatter.missing_block",
+      "message": "Document must start with a YAML frontmatter block ('---').",
+      "path": "docs/a-missing-frontmatter.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'owner'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'owner'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'review_policy'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'review_policy'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'reviewed'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'reviewed'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'summary'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'summary'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'tags'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'tags'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.required_missing:docs/m-malformed.md:1:1:Missing required frontmatter key 'written'.",
+      "code": "frontmatter.required_missing",
+      "message": "Missing required frontmatter key 'written'.",
+      "path": "docs/m-malformed.md",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "id": "frontmatter.tags_not_sorted:docs/z-required.md:0:0:frontmatter.tags must be lexicographically sorted.",
+      "code": "frontmatter.tags_not_sorted",
+      "message": "frontmatter.tags must be lexicographically sorted.",
+      "path": "docs/z-required.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.type_mismatch:docs/m-malformed.md:0:0:frontmatter.owner must be a non-empty string.",
+      "code": "frontmatter.type_mismatch",
+      "message": "frontmatter.owner must be a non-empty string.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.type_mismatch:docs/m-malformed.md:0:0:frontmatter.review_policy must be a non-empty string.",
+      "code": "frontmatter.type_mismatch",
+      "message": "frontmatter.review_policy must be a non-empty string.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.type_mismatch:docs/m-malformed.md:0:0:frontmatter.summary must be a non-empty string.",
+      "code": "frontmatter.type_mismatch",
+      "message": "frontmatter.summary must be a non-empty string.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.type_mismatch:docs/m-malformed.md:0:0:frontmatter.tags must be a non-empty string array.",
+      "code": "frontmatter.type_mismatch",
+      "message": "frontmatter.tags must be a non-empty string array.",
+      "path": "docs/m-malformed.md",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "id": "frontmatter.type_mismatch:docs/z-required.md:0:0:frontmatter.summary must be a non-empty string.",
+      "code": "frontmatter.type_mismatch",
+      "message": "frontmatter.summary must be a non-empty string.",
+      "path": "docs/z-required.md",
+      "line": 0,
+      "column": 0
+    }
+  ]
+}

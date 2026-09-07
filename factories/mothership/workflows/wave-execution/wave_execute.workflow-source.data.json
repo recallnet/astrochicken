@@ -1,0 +1,3308 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "wave_execute",
+  "familyId": "wave_execution",
+  "title": "Wave execute",
+  "description": "Typed source for the mothership wave execution workflow family.",
+  "sourcePath": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/mothership/wave_execute.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "imports": [
+    "../roles.stylesheet"
+  ],
+  "graphAttributes": {
+    "typed_action_transport_mode": "enforced",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "wave_execute",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "accumulate",
+        "runtimeNodeId": "accumulate"
+      },
+      {
+        "sourceNodeId": "acquire_merge_lock",
+        "runtimeNodeId": "acquire_merge_lock"
+      },
+      {
+        "sourceNodeId": "assert_main_after_merge",
+        "runtimeNodeId": "assert_main_after_merge"
+      },
+      {
+        "sourceNodeId": "assert_main_branch",
+        "runtimeNodeId": "assert_main_branch"
+      },
+      {
+        "sourceNodeId": "build_conflict_packet",
+        "runtimeNodeId": "build_conflict_packet"
+      },
+      {
+        "sourceNodeId": "build_judge_context",
+        "runtimeNodeId": "build_judge_context"
+      },
+      {
+        "sourceNodeId": "build_judge_context_recovery_packet",
+        "runtimeNodeId": "build_judge_context_recovery_packet"
+      },
+      {
+        "sourceNodeId": "build_judge_evidence",
+        "runtimeNodeId": "build_judge_evidence"
+      },
+      {
+        "sourceNodeId": "build_judge_evidence_recovery_packet",
+        "runtimeNodeId": "build_judge_evidence_recovery_packet"
+      },
+      {
+        "sourceNodeId": "build_merge_commit_message",
+        "runtimeNodeId": "build_merge_commit_message"
+      },
+      {
+        "sourceNodeId": "build_merged_results",
+        "runtimeNodeId": "build_merged_results"
+      },
+      {
+        "sourceNodeId": "build_post_merge_packet",
+        "runtimeNodeId": "build_post_merge_packet"
+      },
+      {
+        "sourceNodeId": "build_push_failure_packet",
+        "runtimeNodeId": "build_push_failure_packet"
+      },
+      {
+        "sourceNodeId": "check_cp_blocker",
+        "runtimeNodeId": "check_cp_blocker"
+      },
+      {
+        "sourceNodeId": "check_merge_candidates",
+        "runtimeNodeId": "check_merge_candidates"
+      },
+      {
+        "sourceNodeId": "cleanup_failed_merge",
+        "runtimeNodeId": "cleanup_failed_merge"
+      },
+      {
+        "sourceNodeId": "cleanup_merge_worktree",
+        "runtimeNodeId": "cleanup_merge_worktree"
+      },
+      {
+        "sourceNodeId": "cleanup_wave_worktree",
+        "runtimeNodeId": "cleanup_wave_worktree"
+      },
+      {
+        "sourceNodeId": "clear_demo_artifact_url",
+        "runtimeNodeId": "clear_demo_artifact_url"
+      },
+      {
+        "sourceNodeId": "clear_demo_status",
+        "runtimeNodeId": "clear_demo_status"
+      },
+      {
+        "sourceNodeId": "clear_demo_error",
+        "runtimeNodeId": "clear_demo_error"
+      },
+      {
+        "sourceNodeId": "clear_impl_result",
+        "runtimeNodeId": "clear_impl_result"
+      },
+      {
+        "sourceNodeId": "close_merged_issues",
+        "runtimeNodeId": "close_merged_issues"
+      },
+      {
+        "sourceNodeId": "close_milestone",
+        "runtimeNodeId": "close_milestone"
+      },
+      {
+        "sourceNodeId": "close_ready_issue",
+        "runtimeNodeId": "close_ready_issue"
+      },
+      {
+        "sourceNodeId": "cp_blocked_exit",
+        "runtimeNodeId": "cp_blocked_exit"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "emit_resolution_failure",
+        "runtimeNodeId": "emit_resolution_failure"
+      },
+      {
+        "sourceNodeId": "encode_merge_candidates_b64",
+        "runtimeNodeId": "encode_merge_candidates_b64"
+      },
+      {
+        "sourceNodeId": "ensure_judge_decision",
+        "runtimeNodeId": "ensure_judge_decision"
+      },
+      {
+        "sourceNodeId": "ensure_labels",
+        "runtimeNodeId": "ensure_labels"
+      },
+      {
+        "sourceNodeId": "execute_issue_in_wave",
+        "runtimeNodeId": "execute_issue_in_wave"
+      },
+      {
+        "sourceNodeId": "final_review_gate",
+        "runtimeNodeId": "final_review_gate"
+      },
+      {
+        "sourceNodeId": "final_state_review",
+        "runtimeNodeId": "final_state_review"
+      },
+      {
+        "sourceNodeId": "finalize_from_close",
+        "runtimeNodeId": "finalize_from_close"
+      },
+      {
+        "sourceNodeId": "finalize_from_fail",
+        "runtimeNodeId": "finalize_from_fail"
+      },
+      {
+        "sourceNodeId": "finalize_from_no_merge",
+        "runtimeNodeId": "finalize_from_no_merge"
+      },
+      {
+        "sourceNodeId": "finalize_gate",
+        "runtimeNodeId": "finalize_gate"
+      },
+      {
+        "sourceNodeId": "finalize_merge_commit",
+        "runtimeNodeId": "finalize_merge_commit"
+      },
+      {
+        "sourceNodeId": "finalize_post_merge_commit",
+        "runtimeNodeId": "finalize_post_merge_commit"
+      },
+      {
+        "sourceNodeId": "finalize_post_merge_gate",
+        "runtimeNodeId": "finalize_post_merge_gate"
+      },
+      {
+        "sourceNodeId": "find_ready_wave",
+        "runtimeNodeId": "find_ready_wave"
+      },
+      {
+        "sourceNodeId": "gate",
+        "runtimeNodeId": "gate"
+      },
+      {
+        "sourceNodeId": "handle_merge_failures",
+        "runtimeNodeId": "handle_merge_failures"
+      },
+      {
+        "sourceNodeId": "handle_review_failures",
+        "runtimeNodeId": "handle_review_failures"
+      },
+      {
+        "sourceNodeId": "init_branch",
+        "runtimeNodeId": "init_branch"
+      },
+      {
+        "sourceNodeId": "issue_loop_gate",
+        "runtimeNodeId": "issue_loop_gate"
+      },
+      {
+        "sourceNodeId": "judge",
+        "runtimeNodeId": "judge"
+      },
+      {
+        "sourceNodeId": "judge_context_gate",
+        "runtimeNodeId": "judge_context_gate"
+      },
+      {
+        "sourceNodeId": "judge_evidence_gate",
+        "runtimeNodeId": "judge_evidence_gate"
+      },
+      {
+        "sourceNodeId": "list_issues",
+        "runtimeNodeId": "list_issues"
+      },
+      {
+        "sourceNodeId": "load_merge_finalize_retry_task_prompt",
+        "runtimeNodeId": "load_merge_finalize_retry_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_post_merge_retry_task_prompt",
+        "runtimeNodeId": "load_merge_post_merge_retry_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolve_conflict_task_prompt",
+        "runtimeNodeId": "load_merge_resolve_conflict_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolve_post_merge_task_prompt",
+        "runtimeNodeId": "load_merge_resolve_post_merge_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolve_push_failure_task_prompt",
+        "runtimeNodeId": "load_merge_resolve_push_failure_task_prompt"
+      },
+      {
+        "sourceNodeId": "load_merge_resolver_system_prompt",
+        "runtimeNodeId": "load_merge_resolver_system_prompt"
+      },
+      {
+        "sourceNodeId": "lock_gate",
+        "runtimeNodeId": "lock_gate"
+      },
+      {
+        "sourceNodeId": "lock_wave",
+        "runtimeNodeId": "lock_wave"
+      },
+      {
+        "sourceNodeId": "merge_candidates_gate",
+        "runtimeNodeId": "merge_candidates_gate"
+      },
+      {
+        "sourceNodeId": "merge_gate",
+        "runtimeNodeId": "merge_gate"
+      },
+      {
+        "sourceNodeId": "merge_shared_branch",
+        "runtimeNodeId": "merge_shared_branch"
+      },
+      {
+        "sourceNodeId": "next_issue",
+        "runtimeNodeId": "next_issue"
+      },
+      {
+        "sourceNodeId": "open_followup",
+        "runtimeNodeId": "open_followup"
+      },
+      {
+        "sourceNodeId": "post_merge_resolution_gate",
+        "runtimeNodeId": "post_merge_resolution_gate"
+      },
+      {
+        "sourceNodeId": "postmortem",
+        "runtimeNodeId": "postmortem"
+      },
+      {
+        "sourceNodeId": "postmortem_gate",
+        "runtimeNodeId": "postmortem_gate"
+      },
+      {
+        "sourceNodeId": "push_gate",
+        "runtimeNodeId": "push_gate"
+      },
+      {
+        "sourceNodeId": "push_main_branch",
+        "runtimeNodeId": "push_main_branch"
+      },
+      {
+        "sourceNodeId": "rebase_shared_branch",
+        "runtimeNodeId": "rebase_shared_branch"
+      },
+      {
+        "sourceNodeId": "rebase_shared_gate",
+        "runtimeNodeId": "rebase_shared_gate"
+      },
+      {
+        "sourceNodeId": "release_claim_on_lock_fail",
+        "runtimeNodeId": "release_claim_on_lock_fail"
+      },
+      {
+        "sourceNodeId": "release_merge_lock",
+        "runtimeNodeId": "release_merge_lock"
+      },
+      {
+        "sourceNodeId": "requeue_after_judge_failure",
+        "runtimeNodeId": "requeue_after_judge_failure"
+      },
+      {
+        "sourceNodeId": "run_demo_gate",
+        "runtimeNodeId": "run_demo_gate"
+      },
+      {
+        "sourceNodeId": "run_wave_demo_generate",
+        "runtimeNodeId": "run_wave_demo_generate"
+      },
+      {
+        "sourceNodeId": "resolution_gate",
+        "runtimeNodeId": "resolution_gate"
+      },
+      {
+        "sourceNodeId": "resolve_config",
+        "runtimeNodeId": "resolve_config"
+      },
+      {
+        "sourceNodeId": "resolve_demo_strategy_policy",
+        "runtimeNodeId": "resolve_demo_strategy_policy"
+      },
+      {
+        "sourceNodeId": "resolve_conflict",
+        "runtimeNodeId": "resolve_conflict"
+      },
+      {
+        "sourceNodeId": "resolve_goal_number",
+        "runtimeNodeId": "resolve_goal_number"
+      },
+      {
+        "sourceNodeId": "resolve_merge_context",
+        "runtimeNodeId": "resolve_merge_context"
+      },
+      {
+        "sourceNodeId": "resolve_post_merge",
+        "runtimeNodeId": "resolve_post_merge"
+      },
+      {
+        "sourceNodeId": "resolve_push_failure",
+        "runtimeNodeId": "resolve_push_failure"
+      },
+      {
+        "sourceNodeId": "retry_push_gate",
+        "runtimeNodeId": "retry_push_gate"
+      },
+      {
+        "sourceNodeId": "retry_push_main",
+        "runtimeNodeId": "retry_push_main"
+      },
+      {
+        "sourceNodeId": "retry_resolve_conflict",
+        "runtimeNodeId": "retry_resolve_conflict"
+      },
+      {
+        "sourceNodeId": "retry_resolve_post_merge",
+        "runtimeNodeId": "retry_resolve_post_merge"
+      },
+      {
+        "sourceNodeId": "sanitize_state",
+        "runtimeNodeId": "sanitize_state"
+      },
+      {
+        "sourceNodeId": "seed_state",
+        "runtimeNodeId": "seed_state"
+      },
+      {
+        "sourceNodeId": "set_capability_coding_skills",
+        "runtimeNodeId": "set_capability_coding_skills"
+      },
+      {
+        "sourceNodeId": "set_capability_merge_skills",
+        "runtimeNodeId": "set_capability_merge_skills"
+      },
+      {
+        "sourceNodeId": "set_gh_repo",
+        "runtimeNodeId": "set_gh_repo"
+      },
+      {
+        "sourceNodeId": "set_repo",
+        "runtimeNodeId": "set_repo"
+      },
+      {
+        "sourceNodeId": "set_resolution_source_deterministic",
+        "runtimeNodeId": "set_resolution_source_deterministic"
+      },
+      {
+        "sourceNodeId": "set_resolution_source_llm",
+        "runtimeNodeId": "set_resolution_source_llm"
+      },
+      {
+        "sourceNodeId": "set_wave_already_merged",
+        "runtimeNodeId": "set_wave_already_merged"
+      },
+      {
+        "sourceNodeId": "set_wave_merge_failed",
+        "runtimeNodeId": "set_wave_merge_failed"
+      },
+      {
+        "sourceNodeId": "set_wave_merged",
+        "runtimeNodeId": "set_wave_merged"
+      },
+      {
+        "sourceNodeId": "setup_merge_worktree",
+        "runtimeNodeId": "setup_merge_worktree"
+      },
+      {
+        "sourceNodeId": "shared_merge_gate",
+        "runtimeNodeId": "shared_merge_gate"
+      },
+      {
+        "sourceNodeId": "split_results",
+        "runtimeNodeId": "split_results"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "unlock_no_merge",
+        "runtimeNodeId": "unlock_no_merge"
+      },
+      {
+        "sourceNodeId": "unlock_ready_issue",
+        "runtimeNodeId": "unlock_ready_issue"
+      },
+      {
+        "sourceNodeId": "validate_judge_context",
+        "runtimeNodeId": "validate_judge_context"
+      },
+      {
+        "sourceNodeId": "validate_judge_evidence",
+        "runtimeNodeId": "validate_judge_evidence"
+      },
+      {
+        "sourceNodeId": "verify_post_merge_resolution",
+        "runtimeNodeId": "verify_post_merge_resolution"
+      },
+      {
+        "sourceNodeId": "verify_resolution",
+        "runtimeNodeId": "verify_resolution"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "accumulate",
+      "kind": "tool_action",
+      "title": "Accumulate milestone result",
+      "handlerType": "tool",
+      "actionId": "software.accumulate_milestone_result",
+      "dotAttributes": {
+        "action_completed": "${completed_issues}",
+        "action_impl_results": "${impl_results}",
+        "action_issue_number": "${next_issue_number}",
+        "action_issue_title": "${next_issue_title}",
+        "action_item": "${impl_result}",
+        "action_processed": "${processed_issues}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "impl_results",
+          "completed_issues",
+          "processed_issues",
+          "last_review_failed",
+          "last_review_notes",
+          "last_issue_number",
+          "last_branch",
+          "branch",
+          "worktree_dir",
+          "last_review_evidence_path"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "acquire_merge_lock",
+      "kind": "tool_action",
+      "title": "Acquire local merge lock",
+      "handlerType": "tool",
+      "actionId": "merge.acquire_lock",
+      "dotAttributes": {
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "lock_acquired"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "assert_main_after_merge",
+      "kind": "tool_action",
+      "title": "Assert main branch after merge ops",
+      "handlerType": "tool",
+      "actionId": "merge.assert_main_branch",
+      "dotAttributes": {
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "corrected"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "assert_main_branch",
+      "kind": "tool_action",
+      "title": "Assert main branch at pipeline start",
+      "handlerType": "tool",
+      "actionId": "merge.assert_main_branch",
+      "dotAttributes": {
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "corrected"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_conflict_packet",
+      "kind": "tool_action",
+      "title": "Build conflict packet",
+      "handlerType": "tool",
+      "actionId": "merge.build_conflict_packet",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_issue": "${ready_issue_number}",
+        "action_merge_candidates": "${merge_candidates}",
+        "action_merge_stderr": "${rebase_stderr}",
+        "action_node_id": "build_conflict_packet",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${merge_worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "conflict_packet_path",
+          "conflict_packet_id",
+          "conflict_packet_schema_version",
+          "conflict_packet_storage_class"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_judge_context",
+      "kind": "tool_action",
+      "title": "Build pre-merge judge context contract",
+      "handlerType": "tool",
+      "actionId": "judge.build_context_contract",
+      "dotAttributes": {
+        "action_gh_repo": "recallnet/astrochicken",
+        "action_judge_context_b64": "${merge_candidates_b64}",
+        "action_judge_context_scope_identity": "wave_execute",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_judge_rubric": "alignment.default",
+        "action_milestone_title": "${milestone_title}",
+        "action_objective_id": "post_merge_alignment",
+        "action_runtime": "in_process",
+        "action_scenario_context": "post-merge",
+        "action_scenario_registry_root": "${scenarios_root}",
+        "action_scenario_selector": "astrochicken",
+        "action_scope": "judge",
+        "action_subject_id": "${milestone_title}",
+        "action_worktree_dir": "${repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_context_path",
+          "judge_context_sha256",
+          "judge_context_valid",
+          "judge_context_error",
+          "judge_scenario_selection_path",
+          "judge_scenario_selection_sha256",
+          "judge_scenario_selection_signature_sha256"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_judge_context_recovery_packet",
+      "kind": "tool_action",
+      "title": "Build judge context recovery packet",
+      "handlerType": "tool",
+      "actionId": "judge.build_recovery_packet",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_error_text": "${judge_context_error}",
+        "action_factory_id": "${factory_id}",
+        "action_gate_code": "${judge_context_gate_code}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_scope_identity": "wave_execute",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_milestone_title": "${milestone_title}",
+        "action_node_id": "build_judge_context_recovery_packet",
+        "action_packet_type": "judge_context_contract_recovery",
+        "action_pipeline": "wave_execute",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${repo}",
+        "action_route_code": "${judge_route_code}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_scenario_registry_root": "${scenarios_root}",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_context_recovery_packet_path",
+          "judge_context_recovery_packet_id",
+          "judge_context_recovery_packet_schema_version",
+          "judge_context_recovery_packet_storage_class",
+          "judge_context_recovery_packet_type"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "build_judge_evidence",
+      "kind": "tool_action",
+      "title": "Build pre-merge judge evidence contract",
+      "handlerType": "tool",
+      "actionId": "judge.build_evidence_contract",
+      "dotAttributes": {
+        "action_judge_context_b64": "${merge_candidates_b64}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_require_qa_markers": "true",
+        "action_runtime": "in_process",
+        "action_subject_id": "${milestone_title}",
+        "action_worktree_dir": "${repo}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_evidence_path",
+          "judge_evidence_sha256",
+          "judge_evidence_valid",
+          "judge_evidence_error"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_judge_evidence_recovery_packet",
+      "kind": "tool_action",
+      "title": "Build judge evidence recovery packet",
+      "handlerType": "tool",
+      "actionId": "judge.build_recovery_packet",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_error_text": "${judge_evidence_error}",
+        "action_factory_id": "${factory_id}",
+        "action_gate_code": "${judge_evidence_gate_code}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_scope_identity": "wave_execute",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_milestone_title": "${milestone_title}",
+        "action_node_id": "build_judge_evidence_recovery_packet",
+        "action_packet_type": "judge_evidence_contract_recovery",
+        "action_pipeline": "wave_execute",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${repo}",
+        "action_route_code": "${judge_route_code}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_scenario_registry_root": "${scenarios_root}",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_evidence_recovery_packet_path",
+          "judge_evidence_recovery_packet_id",
+          "judge_evidence_recovery_packet_schema_version",
+          "judge_evidence_recovery_packet_storage_class",
+          "judge_evidence_recovery_packet_type"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "build_merge_commit_message",
+      "kind": "tool_action",
+      "title": "Build goal-scoped merge commit message",
+      "handlerType": "tool",
+      "actionId": "merge.build_commit_message",
+      "dotAttributes": {
+        "action_goal_issue_number": "${goal_issue_number}",
+        "action_merge_candidates_raw": "${merge_candidates}",
+        "action_milestone_title": "${milestone_title}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "merge_commit_message"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "build_merged_results",
+      "kind": "tool_action",
+      "title": "Build wave merge results",
+      "handlerType": "tool",
+      "actionId": "software.build_wave_merge_results",
+      "dotAttributes": {
+        "action_merge_candidates": "${merge_candidates}",
+        "action_merge_notes": "${merge_stderr} ${resolution_notes}",
+        "action_merge_resolver": "${resolution_source}",
+        "action_merge_status": "${wave_merge_status}",
+        "action_path_taken": "merge",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "merged_results",
+          "merge_failures",
+          "merged_count",
+          "failed_count"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_post_merge_packet",
+      "kind": "tool_action",
+      "title": "Build post-merge conflict packet",
+      "handlerType": "tool",
+      "actionId": "merge.build_conflict_packet",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_issue": "${ready_issue_number}",
+        "action_merge_stderr": "${merge_stderr}",
+        "action_node_id": "build_post_merge_packet",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${merge_worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "conflict_packet_path",
+          "conflict_packet_id",
+          "conflict_packet_schema_version",
+          "conflict_packet_storage_class"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "build_push_failure_packet",
+      "kind": "tool_action",
+      "title": "Build push failure packet",
+      "handlerType": "tool",
+      "actionId": "merge.build_conflict_packet",
+      "dotAttributes": {
+        "action_branch": "main",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_issue": "${ready_issue_number}",
+        "action_merge_stderr": "${push_stderr}",
+        "action_node_id": "build_push_failure_packet",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_target_repo": "${gh_repo}",
+        "action_worktree_dir": "${merge_worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "push_failure_packet_path",
+          "push_failure_packet_id",
+          "push_failure_packet_schema_version",
+          "push_failure_packet_storage_class"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "check_cp_blocker",
+      "kind": "tool_action",
+      "title": "Check control-plane blocker",
+      "handlerType": "tool",
+      "actionId": "wave.check_control_plane_blocker",
+      "dotAttributes": {
+        "action_issue": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "blocker_active",
+          "status",
+          "kind",
+          "blockerRef",
+          "unblockCondition"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "check_merge_candidates",
+      "kind": "tool_action",
+      "title": "Check merge candidates",
+      "handlerType": "tool",
+      "actionId": "software.check_wave_merge_candidates",
+      "dotAttributes": {
+        "action_merge_candidates": "${merge_candidates}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_merge_candidates",
+          "merge_candidate_count"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "cleanup_failed_merge",
+      "kind": "tool_action",
+      "title": "Cleanup failed merge state",
+      "prompt": "# hatch:no-inline-script-ok\ngit -C \"${merge_worktree_dir}\" merge --abort >/dev/null 2>&1 || true\ngit -C \"${merge_worktree_dir}\" rebase --abort >/dev/null 2>&1 || true",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__cleanup_failed_merge_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "cleanup_merge_worktree",
+      "kind": "tool_action",
+      "title": "Cleanup merge worktree",
+      "handlerType": "tool",
+      "actionId": "merge.cleanup_worktree",
+      "dotAttributes": {
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__cleanup_merge_worktree_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "cleanup_wave_worktree",
+      "kind": "tool_action",
+      "title": "Cleanup wave worktree",
+      "handlerType": "tool",
+      "actionId": "coding.cleanup_wave_issue_worktree",
+      "dotAttributes": {
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__cleanup_wave_worktree_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "clear_demo_artifact_url",
+      "kind": "tool_action",
+      "title": "Clear demo artifact URL",
+      "prompt": "printf ''",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "artifact_url"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "clear_demo_status",
+      "kind": "tool_action",
+      "title": "Clear demo status",
+      "prompt": "printf 'not_requested'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "clear_demo_error",
+      "kind": "tool_action",
+      "title": "Clear demo error",
+      "prompt": "printf ''",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_error"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "clear_impl_result",
+      "kind": "tool_action",
+      "title": "Clear stale impl_result before next iteration",
+      "prompt": ":",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "impl_result"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "close_merged_issues",
+      "kind": "tool_action",
+      "title": "Close all merged wave issues",
+      "handlerType": "tool",
+      "actionId": "software.close_wave_merged_issues",
+      "dotAttributes": {
+        "action_merge_candidates": "${merge_candidates}",
+        "action_milestone_title": "${milestone_title}",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "closed_count",
+          "failed_count"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "close_milestone",
+      "kind": "tool_action",
+      "title": "Close milestone",
+      "prompt": "# hatch:no-inline-script-ok\ngh api repos/${gh_repo}/milestones --state open --jq '.[] | select(.title==\"${milestone_title}\") | .number' | xargs -I{} gh api -X PATCH repos/${gh_repo}/milestones/{} -f state=closed >/dev/null",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__close_milestone_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "close_ready_issue",
+      "kind": "tool_action",
+      "title": "Close ready issue",
+      "handlerType": "tool",
+      "actionId": "wave.complete_ready",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_milestone_title": "${milestone_title}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__close_ready_issue_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "cp_blocked_exit",
+      "kind": "tool_action",
+      "title": "cp_blocked",
+      "handlerType": "exit"
+    },
+    {
+      "id": "decide",
+      "kind": "decision",
+      "title": "Judge pass?"
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "title": "Done"
+    },
+    {
+      "id": "emit_resolution_failure",
+      "kind": "tool_action",
+      "title": "Emit resolution failure telemetry",
+      "handlerType": "tool",
+      "actionId": "merge.emit_resolution_failure",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_factory_id": "${factory_id}",
+        "action_issue": "${ready_issue_number}",
+        "action_recurrence_key": "wave_execute::set_resolution_source_llm::merge_conflict_llm_resolution",
+        "action_resolution_check": "${resolution_check}",
+        "action_resolution_notes": "${resolution_notes}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "resolution_failure_event"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "encode_merge_candidates_b64",
+      "kind": "tool_action",
+      "title": "Encode merge candidates payload (base64)",
+      "handlerType": "tool",
+      "actionId": "common.encode_base64",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "action_value": "${merge_candidates}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_candidates_b64"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "ensure_judge_decision",
+      "kind": "tool_action",
+      "title": "Normalize judge decision with deterministic fallback",
+      "handlerType": "tool",
+      "actionId": "software.fallback_wave_judge",
+      "dotAttributes": {
+        "action_error": "llm_judge_unavailable",
+        "action_runtime": "in_process",
+        "action_verdict": "${verdict}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "judge_result",
+        "outputFormat": "json",
+        "outputs": [
+          "disposition",
+          "confidence",
+          "recommended_transition",
+          "reason_codes",
+          "notes",
+          "verdict"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "ensure_labels",
+      "kind": "tool_action",
+      "title": "Ensure wave labels",
+      "handlerType": "tool",
+      "actionId": "labels.ensure_factory",
+      "dotAttributes": {
+        "action_factory_id": "mothership",
+        "action_keys": "ready,wave_in_progress",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__ensure_labels_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "execute_issue_in_wave",
+      "kind": "pipeline",
+      "title": "Execute issue in wave branch",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "export_keys": "impl_result",
+        "inherit_context": "true",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.pipeline"
+      },
+      "composition": {
+        "workflowRef": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "final_review_gate",
+      "kind": "decision",
+      "title": "Work completed?"
+    },
+    {
+      "id": "final_state_review",
+      "kind": "tool_action",
+      "title": "Reconcile final issue/milestone state",
+      "handlerType": "tool",
+      "actionId": "software.resolve_goal_final_state",
+      "dotAttributes": {
+        "action_goal_number": "${goal_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "action_runs_dir": "${runs_dir}"
+      },
+      "binding": {
+        "outputKey": "__final_state_review_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_from_close",
+      "kind": "tool_action",
+      "title": "Finalize from close",
+      "handlerType": "tool",
+      "actionId": "wave.finalize_terminal_claim",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "terminal_close",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_terminal_path": "close",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_terminal_path"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_from_fail",
+      "kind": "tool_action",
+      "title": "Finalize from fail",
+      "handlerType": "tool",
+      "actionId": "wave.finalize_terminal_claim",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "terminal_judge_fail",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_terminal_path": "fail",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_terminal_path"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_from_no_merge",
+      "kind": "tool_action",
+      "title": "Finalize from no-merge",
+      "handlerType": "tool",
+      "actionId": "wave.finalize_terminal_claim",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "terminal_no_merge",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "action_terminal_path": "no_merge",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_terminal_path"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_gate",
+      "kind": "decision",
+      "title": "Finalize status"
+    },
+    {
+      "id": "finalize_merge_commit",
+      "kind": "tool_action",
+      "title": "Finalize merge commit if pending",
+      "handlerType": "tool",
+      "actionId": "merge.finalize_commit",
+      "dotAttributes": {
+        "action_commit_message": "${merge_commit_message}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "finalize_status",
+          "finalize_reason",
+          "finalize_detail"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_post_merge_commit",
+      "kind": "tool_action",
+      "title": "Finalize post-merge commit if pending",
+      "handlerType": "tool",
+      "actionId": "merge.finalize_commit",
+      "dotAttributes": {
+        "action_commit_message": "${merge_commit_message}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "finalize_status",
+          "finalize_reason",
+          "finalize_detail"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "finalize_post_merge_gate",
+      "kind": "decision",
+      "title": "Post-merge finalize status"
+    },
+    {
+      "id": "find_ready_wave",
+      "kind": "tool_action",
+      "title": "Find ready wave",
+      "handlerType": "tool",
+      "actionId": "wave.find_ready",
+      "dotAttributes": {
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "action_stale_run_minutes": "${stale_run_minutes}",
+        "action_worker_id": "${__run_id}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "milestone_title",
+          "ready_issue_number",
+          "claim_token",
+          "claim_owner_id",
+          "claim_run_id",
+          "claim_lease_expires_at",
+          "claim_reason",
+          "claim_acquired"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "gate",
+      "kind": "decision",
+      "title": "Ready wave?"
+    },
+    {
+      "id": "handle_merge_failures",
+      "kind": "tool_action",
+      "title": "Comment merge failures",
+      "handlerType": "tool",
+      "actionId": "software.handle_wave_merge_failures",
+      "dotAttributes": {
+        "action_merge_failures": "${merge_failures}",
+        "action_milestone_title": "${milestone_title}",
+        "action_pipeline": "wave_execute",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__handle_merge_failures_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "handle_review_failures",
+      "kind": "tool_action",
+      "title": "Comment review failures",
+      "handlerType": "tool",
+      "actionId": "software.handle_wave_review_failures",
+      "dotAttributes": {
+        "action_cooldown_hours": "${review_cooldown_hours}",
+        "action_pipeline": "wave_execute",
+        "action_quarantine_threshold": "${review_quarantine_threshold}",
+        "action_repo": "${gh_repo}",
+        "action_review_failures": "${review_failures}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__handle_review_failures_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "init_branch",
+      "kind": "tool_action",
+      "title": "Init shared agent sessions for wave",
+      "handlerType": "tool",
+      "actionId": "software.empty_milestone_branch_context",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "branch",
+          "worktree_dir",
+          "agent_session_id",
+          "reviewer_session_id",
+          "wave_sessions_dir"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "issue_loop_gate",
+      "kind": "decision",
+      "title": "Next issue?"
+    },
+    {
+      "id": "judge",
+      "kind": "llm_prompt",
+      "title": "Post-merge judge",
+      "roleClass": "post_merge_judge",
+      "prompt": "You are the post-merge judge for ${gh_repo}.\n\nSurvey the existing scenario registry and use zero, one, or at most two scenarios only when they materially sharpen judgment for this merged wave. Scenarios are optional and sparse; do not force them.\nTreat scenarios as high-value judgment aids, not exhaustive checklists.\nDo NOT reveal or quote any scenario. Provide a redacted verdict envelope.\n\nMerge metadata:\n${merged_results}\n\nImplementation results (per-issue review status and evidence):\n${impl_results}\n\nMerge diff summary:\n${merge_stdout}\n\nReturn JSON:\n{\n  \"schema\": \"verdict/v1\",\n  \"verdict_kind\": \"post_merge_judge\",\n  \"disposition\": \"approve|reject|defer|escalate\",\n  \"confidence\": \"high|medium|low\",\n  \"recommended_transition\": \"close_milestone|open_followup|request_more_evidence|escalate_contract\",\n  \"observation\": {\n    \"alignment_score\": 0.0,\n    \"constraint_violations\": [],\n    \"missing_evidence\": []\n  },\n  \"recommendation\": {\n    \"action\": \"close_milestone|open_followup|request_more_evidence|escalate_contract\",\n    \"next_steps\": [\"Redacted feedback or confirmation\"]\n  },\n  \"reason_codes\": [\"POST_MERGE_ALIGNED|POST_MERGE_MISALIGNED|POST_MERGE_EVIDENCE_GAP|POST_MERGE_CONTRACT_INVALID\"],\n  \"notes\": \"Concise human-readable rationale\"\n}\n\nRules:\n- If disposition=approve, recommended_transition must be close_milestone.\n- If disposition=reject, recommended_transition must be open_followup.\n- If disposition=defer, recommended_transition must be request_more_evidence.\n- If disposition=escalate, recommended_transition must be escalate_contract.\n- reason_codes must be non-empty.\nReturn JSON only.",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.judge",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "scenarios": "astrochicken",
+        "skill_id": "wave.execute.merge"
+      },
+      "binding": {
+        "outputs": [
+          "disposition",
+          "confidence",
+          "recommended_transition",
+          "reason_codes",
+          "notes",
+          "verdict"
+        ]
+      }
+    },
+    {
+      "id": "judge_context_gate",
+      "kind": "decision",
+      "title": "Judge context complete?"
+    },
+    {
+      "id": "judge_evidence_gate",
+      "kind": "decision",
+      "title": "Judge evidence complete?"
+    },
+    {
+      "id": "list_issues",
+      "kind": "tool_action",
+      "title": "List milestone issues",
+      "prompt": "gh issue list --repo ${gh_repo} --state open --milestone \"${milestone_title}\" --json number,title,labels",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__list_issues_result"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_finalize_retry_task_prompt",
+      "kind": "tool_action",
+      "title": "Load merge finalize retry task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_finalize_conflict.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_finalize_retry_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_post_merge_retry_task_prompt",
+      "kind": "tool_action",
+      "title": "Load post-merge retry task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/retry_post_merge.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_post_merge_retry_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_resolve_conflict_task_prompt",
+      "kind": "tool_action",
+      "title": "Load resolve-conflict task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_resolve_conflict_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_resolve_post_merge_task_prompt",
+      "kind": "tool_action",
+      "title": "Load post-merge task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_post_merge.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_resolve_post_merge_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_resolve_push_failure_task_prompt",
+      "kind": "tool_action",
+      "title": "Load push-failure task prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/resolve_push_failure.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_resolve_push_failure_task_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "load_merge_resolver_system_prompt",
+      "kind": "tool_action",
+      "title": "Load merge resolver system prompt",
+      "prompt": "cat packages/factory-prompts/prompts/merge_resolver/system.md",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "merge_resolver_system_prompt"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "lock_gate",
+      "kind": "decision",
+      "title": "Lock granted?"
+    },
+    {
+      "id": "lock_wave",
+      "kind": "tool_action",
+      "title": "Lock wave",
+      "handlerType": "tool",
+      "actionId": "wave.lock_ready",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_milestone_title": "${milestone_title}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "lock_granted",
+          "milestone_title",
+          "ready_issue_number",
+          "claim_token",
+          "claim_owner_id",
+          "claim_run_id",
+          "claim_lease_expires_at",
+          "reason"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "merge_candidates_gate",
+      "kind": "decision",
+      "title": "Any merge candidates?"
+    },
+    {
+      "id": "merge_gate",
+      "kind": "decision",
+      "title": "Any merges?"
+    },
+    {
+      "id": "merge_shared_branch",
+      "kind": "tool_action",
+      "title": "Merge shared wave branch",
+      "handlerType": "tool",
+      "actionId": "merge.attempt_deterministic",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_branch_head_sha": "${merge_branch_head_sha}",
+        "action_commit_message": "${merge_commit_message}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "merge_status",
+          "merge_stdout",
+          "merge_stderr",
+          "merge_worktree_dir",
+          "merge_branch_head_sha",
+          "merged_head_sha"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "next_issue",
+      "kind": "tool_action",
+      "title": "Pick next unblocked issue",
+      "handlerType": "tool",
+      "actionId": "software.pick_next_milestone_issue",
+      "dotAttributes": {
+        "action_completed": "${completed_issues}",
+        "action_milestone_title": "${milestone_title}",
+        "action_processed": "${processed_issues}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "has_next",
+          "next_issue_number",
+          "next_issue_title",
+          "remaining_count",
+          "blocked_count",
+          "no_next_reason"
+        ]
+      },
+      "policy": {
+        "governance": "reversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "open_followup",
+      "kind": "tool_action",
+      "title": "Open judge-failure artifact",
+      "handlerType": "tool",
+      "actionId": "wave.open_judge_followup",
+      "dotAttributes": {
+        "action_judge_notes": "${notes}",
+        "action_milestone_title": "${milestone_title}",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__open_followup_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "post_merge_resolution_gate",
+      "kind": "decision",
+      "title": "Post-merge resolved?"
+    },
+    {
+      "id": "postmortem",
+      "kind": "tool_action",
+      "title": "Post-mortem: persist give-up incident packet and classify",
+      "handlerType": "tool",
+      "actionId": "software.milestone_postmortem",
+      "dotAttributes": {
+        "action_branch": "${last_branch}",
+        "action_issue_number": "${last_issue_number}",
+        "action_repo": "${gh_repo}",
+        "action_review_evidence_path": "${last_review_evidence_path}",
+        "action_review_notes": "${last_review_notes}",
+        "action_runtime": "in_process",
+        "action_worktree_dir": "${worktree_dir}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__postmortem_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "postmortem_gate",
+      "kind": "decision",
+      "title": "Issue failed?"
+    },
+    {
+      "id": "push_gate",
+      "kind": "decision",
+      "title": "Push status"
+    },
+    {
+      "id": "push_main_branch",
+      "kind": "tool_action",
+      "title": "Push local main to origin",
+      "handlerType": "tool",
+      "actionId": "merge.push_main_branch",
+      "dotAttributes": {
+        "action_branch": "main",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_remote": "origin",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "push_status",
+          "push_stdout",
+          "push_stderr"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "rebase_shared_branch",
+      "kind": "tool_action",
+      "title": "Rebase shared wave branch on main",
+      "handlerType": "tool",
+      "actionId": "merge.rebase_on_main",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "rebase_status",
+          "rebase_stdout",
+          "rebase_stderr",
+          "merge_worktree_dir",
+          "merge_branch_head_sha"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "rebase_shared_gate",
+      "kind": "decision",
+      "title": "Rebase status"
+    },
+    {
+      "id": "release_claim_on_lock_fail",
+      "kind": "tool_action",
+      "title": "Release claim on lock failure",
+      "handlerType": "tool",
+      "actionId": "wave.release_claim",
+      "dotAttributes": {
+        "action_claim_owner_id": "${claim_owner_id}",
+        "action_claim_run_id": "${claim_run_id}",
+        "action_claim_token": "${claim_token}",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "lock_gate_failed",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__release_claim_on_lock_fail_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "release_merge_lock",
+      "kind": "tool_action",
+      "title": "Release local merge lock",
+      "handlerType": "tool",
+      "actionId": "merge.release_lock",
+      "dotAttributes": {
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__release_merge_lock_result"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "requeue_after_judge_failure",
+      "kind": "tool_action",
+      "title": "Requeue judge-failure wave marker",
+      "handlerType": "tool",
+      "actionId": "wave.requeue_after_judge_failure",
+      "dotAttributes": {
+        "action_cooldown_policy": "{\"blocked\":false}",
+        "action_judge_context": "{\"judge_context_scope_identity\":\"wave_execute\"}",
+        "action_milestone": "${milestone_title}",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_wave": "${milestone_title}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "wave_ready_marker_action",
+          "wave_ready_marker_issue",
+          "cooldown_reason",
+          "judge_context_scope_identity",
+          "decision",
+          "markerIssueNumber",
+          "cooldownReason",
+          "milestone",
+          "wave"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "run_demo_gate",
+      "kind": "decision",
+      "title": "Run demo subflow?"
+    },
+    {
+      "id": "run_wave_demo_generate",
+      "kind": "pipeline",
+      "title": "Run wave demo generation",
+      "handlerType": "pipeline",
+      "dotAttributes": {
+        "export_keys": "artifact_url,demo_status,demo_error,demo_strategy_resolved",
+        "fail_open": "true",
+        "inherit_context": "true",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.pipeline"
+      },
+      "composition": {
+        "workflowRef": "factories/mothership/workflows/wave-execution/wave_demo_generate.workflow-source.mjs"
+      }
+    },
+    {
+      "id": "resolution_gate",
+      "kind": "decision",
+      "title": "Conflict resolved?"
+    },
+    {
+      "id": "resolve_config",
+      "kind": "tool_action",
+      "title": "Resolve wave config defaults",
+      "handlerType": "tool",
+      "actionId": "software.resolve_wave_config",
+      "dotAttributes": {
+        "action_integration_command": "${integration_command}",
+        "action_review_qa_command": "${review_qa_command}",
+        "action_runtime": "in_process",
+        "action_stalled_wave_minutes": "${stalled_wave_minutes}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "integration_command",
+          "review_qa_command",
+          "stale_run_minutes"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "resolve_demo_strategy_policy",
+      "kind": "tool_action",
+      "title": "Resolve demo strategy policy",
+      "handlerType": "tool",
+      "actionId": "common.resolve_factory_config",
+      "dotAttributes": {
+        "action_factory_root": "${factory_root}",
+        "action_fallback": "auto",
+        "action_key": "demo_strategy",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "demo_strategy_policy"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "resolve_conflict",
+      "kind": "llm_prompt",
+      "title": "Resolve merge conflict",
+      "roleClass": "merge_resolver",
+      "prompt": "${merge_resolver_system_prompt}\n\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\n\n${merge_resolve_conflict_task_prompt}\n\nConflict packet: ${conflict_packet_path}",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.resolve_conflict",
+        "prompt_input_keys": "capability_merge_skills,conflict_packet_path",
+        "prompt_source": "merge_resolve_conflict_task_prompt",
+        "prompt_version": "2026-03-12.r1",
+        "reasoning_effort": "medium",
+        "role_version": "1.0.0",
+        "skill_id": "wave.execute.merge",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_conflict_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      },
+      "policy": {
+        "timeout": "45m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "resolve_goal_number",
+      "kind": "tool_action",
+      "title": "Resolve goal number",
+      "handlerType": "tool",
+      "actionId": "coding.resolve_goal_number_from_milestone",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "goal_issue_number"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "resolve_merge_context",
+      "kind": "tool_action",
+      "title": "Resolve merge branch/worktree context",
+      "handlerType": "tool",
+      "actionId": "merge.resolve_context",
+      "dotAttributes": {
+        "action_fallback_branch": "${branch}",
+        "action_fallback_worktree_dir": "${worktree_dir}",
+        "action_merge_candidates": "${merge_candidates}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "branch",
+          "worktree_dir"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "resolve_post_merge",
+      "kind": "llm_prompt",
+      "title": "LLM: resolve post-merge failure",
+      "roleClass": "merge_resolver",
+      "prompt": "${merge_resolver_system_prompt}\n\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\n\nMerge stderr:\n${merge_stderr}\n\n${merge_resolve_post_merge_task_prompt}\n\nConflict packet: ${conflict_packet_path}",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.resolve_post_merge",
+        "prompt_input_keys": "capability_merge_skills,merge_stderr,conflict_packet_path",
+        "prompt_source": "merge_resolve_post_merge_task_prompt",
+        "prompt_version": "2026-03-09.r1",
+        "reasoning_effort": "medium",
+        "role_version": "1.0.0",
+        "skill_id": "wave.execute.merge",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_post_merge_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      },
+      "policy": {
+        "timeout": "45m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "resolve_push_failure",
+      "kind": "llm_prompt",
+      "title": "LLM: resolve push failure",
+      "roleClass": "merge_resolver",
+      "prompt": "${merge_resolver_system_prompt}\n\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\n\nPush stderr:\n${push_stderr}\n\nPush failure packet: ${push_failure_packet_path}\n\n${merge_resolve_push_failure_task_prompt}",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.resolve_push_failure",
+        "prompt_input_keys": "capability_merge_skills,push_stderr,push_failure_packet_path",
+        "prompt_source": "merge_resolve_push_failure_task_prompt",
+        "prompt_version": "2026-03-12.r1",
+        "reasoning_effort": "medium",
+        "role_version": "1.0.0",
+        "skill_id": "wave.execute.merge",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_resolve_push_failure_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      },
+      "policy": {
+        "timeout": "45m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "retry_push_gate",
+      "kind": "decision",
+      "title": "Retry push status"
+    },
+    {
+      "id": "retry_push_main",
+      "kind": "tool_action",
+      "title": "Retry push after LLM resolution",
+      "handlerType": "tool",
+      "actionId": "merge.push_main_branch",
+      "dotAttributes": {
+        "action_branch": "main",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_remote": "origin",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "push_status",
+          "push_stdout",
+          "push_stderr"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "retry_resolve_conflict",
+      "kind": "llm_prompt",
+      "title": "LLM: fix merge finalization issue",
+      "roleClass": "merge_resolver",
+      "prompt": "${merge_resolver_system_prompt}\n\nProblem: ${finalize_reason}\nDetail: ${finalize_detail}\n\n${merge_finalize_retry_task_prompt}\n\nConflict packet (for reference): ${conflict_packet_path}",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.retry_resolve_conflict",
+        "prompt_input_keys": "finalize_reason,finalize_detail,conflict_packet_path",
+        "prompt_source": "merge_finalize_retry_task_prompt",
+        "prompt_version": "2026-03-11.r1",
+        "reasoning_effort": "medium",
+        "role_version": "1.0.0",
+        "skill_id": "wave.execute.merge",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_finalize_retry_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      },
+      "policy": {
+        "timeout": "45m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "retry_resolve_post_merge",
+      "kind": "llm_prompt",
+      "title": "LLM: fix post-merge finalization issue",
+      "roleClass": "merge_resolver",
+      "prompt": "${merge_resolver_system_prompt}\n\nProblem: ${finalize_reason}\nDetail: ${finalize_detail}\n\n${merge_post_merge_retry_task_prompt}",
+      "dotAttributes": {
+        "benchmark_job_id": "wave.execute.merge.retry_resolve_post_merge",
+        "prompt_input_keys": "finalize_reason,finalize_detail",
+        "prompt_source": "merge_post_merge_retry_task_prompt",
+        "prompt_version": "2026-03-11.r1",
+        "reasoning_effort": "medium",
+        "role_version": "1.0.0",
+        "skill_id": "wave.execute.merge",
+        "system_prompt_source": "merge_resolver_system_prompt",
+        "task_prompt_source": "merge_post_merge_retry_task_prompt",
+        "workdir": "${merge_worktree_dir}"
+      },
+      "policy": {
+        "timeout": "45m",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "sanitize_state",
+      "kind": "tool_action",
+      "title": "Normalize wave-ready state",
+      "handlerType": "tool",
+      "actionId": "wave.sanitize_state",
+      "dotAttributes": {
+        "action_apply": "true",
+        "action_pipeline": "wave_execute",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "action_stale_run_minutes": "${stale_run_minutes}",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__sanitize_state_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "seed_state",
+      "kind": "tool_action",
+      "title": "Seed completed/processed from canonical milestone runs",
+      "handlerType": "tool",
+      "actionId": "software.seed_milestone_state",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool",
+        "action_runs_dir": "${runs_dir}"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "completed_issues",
+          "processed_issues"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_capability_coding_skills",
+      "kind": "tool_action",
+      "title": "Resolve capability-coding skills path",
+      "handlerType": "tool",
+      "actionId": "common.resolve_capability_coding_skills_path",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "capability_coding_skills"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_capability_merge_skills",
+      "kind": "tool_action",
+      "title": "Resolve capability-merge skills path",
+      "handlerType": "tool",
+      "actionId": "common.resolve_capability_merge_skills_path",
+      "dotAttributes": {
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "capability_merge_skills"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_gh_repo",
+      "kind": "tool_action",
+      "title": "Resolve GitHub repo",
+      "handlerType": "tool",
+      "actionId": "common.resolve_gh_repo",
+      "dotAttributes": {
+        "action_gh_repo": "${gh_repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "gh_repo"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_repo",
+      "kind": "tool_action",
+      "title": "Set repo",
+      "prompt": "# hatch:no-inline-script-ok\ngit rev-parse --show-toplevel | tr -d '\n'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "repo"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_resolution_source_deterministic",
+      "kind": "tool_action",
+      "title": "Set merge resolver: deterministic",
+      "prompt": "printf 'deterministic'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "resolution_source"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_resolution_source_llm",
+      "kind": "tool_action",
+      "title": "Set merge resolver: llm",
+      "prompt": "printf 'llm'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "resolution_source"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_wave_already_merged",
+      "kind": "tool_action",
+      "title": "Set merge status: already merged",
+      "prompt": "printf 'merged'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_merge_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_wave_merge_failed",
+      "kind": "tool_action",
+      "title": "Set merge status: failed",
+      "prompt": "printf 'failed'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_merge_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "set_wave_merged",
+      "kind": "tool_action",
+      "title": "Set merge status: merged",
+      "prompt": "printf 'merged'",
+      "handlerType": "tool",
+      "dotAttributes": {
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "wave_merge_status"
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "setup_merge_worktree",
+      "kind": "tool_action",
+      "title": "Setup merge worktree",
+      "handlerType": "tool",
+      "actionId": "merge.setup_worktree",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_issue": "${ready_issue_number}",
+        "action_pipeline": "wave-execute",
+        "action_repo": "${repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "setup",
+          "reason",
+          "merge_worktree_dir",
+          "merge_base_ref",
+          "merge_branch_head_sha"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "shared_merge_gate",
+      "kind": "decision",
+      "title": "Merge status"
+    },
+    {
+      "id": "split_results",
+      "kind": "tool_action",
+      "title": "Filter review failures",
+      "handlerType": "tool",
+      "actionId": "software.split_wave_results",
+      "dotAttributes": {
+        "action_fallback": "${impl_results}",
+        "action_runs_dir": "${runs_dir}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "merge_candidates",
+          "review_failures"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "title": "Start"
+    },
+    {
+      "id": "unlock_no_merge",
+      "kind": "tool_action",
+      "title": "Unlock ready issue (no merges)",
+      "handlerType": "tool",
+      "actionId": "wave.block_ready",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_pipeline": "wave_execute",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "no_merge_candidates",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__unlock_no_merge_result"
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "unlock_ready_issue",
+      "kind": "tool_action",
+      "title": "Unlock ready issue",
+      "handlerType": "tool",
+      "actionId": "wave.block_ready",
+      "dotAttributes": {
+        "action_milestone_title": "${milestone_title}",
+        "action_pipeline": "wave_execute",
+        "action_ready_issue_number": "${ready_issue_number}",
+        "action_reason": "judge_failed",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputKey": "__unlock_ready_issue_result"
+      },
+      "policy": {
+        "governance": "irreversible",
+        "recoveryOwner": "supervisor"
+      }
+    },
+    {
+      "id": "validate_judge_context",
+      "kind": "tool_action",
+      "title": "Validate pre-merge judge context contract",
+      "handlerType": "tool",
+      "actionId": "judge.validate_context_contract",
+      "dotAttributes": {
+        "action_judge_context_b64": "${merge_candidates_b64}",
+        "action_judge_context_error": "${judge_context_error}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_scope_identity": "wave_execute",
+        "action_judge_context_sha256": "${judge_context_sha256}",
+        "action_judge_context_valid": "${judge_context_valid}",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_judge_rubric": "alignment.default",
+        "action_objective_id": "post_merge_alignment",
+        "action_runtime": "in_process",
+        "action_scenario_context": "post-merge",
+        "action_scenario_registry_root": "${scenarios_root}",
+        "action_scenario_selector": "astrochicken",
+        "action_scope": "judge",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_context_gate_pass",
+          "judge_context_gate_code",
+          "judge_context_error",
+          "judge_context_path",
+          "judge_context_sha256",
+          "judge_scenario_selection_path",
+          "judge_scenario_selection_sha256",
+          "judge_scenario_selection_signature_sha256",
+          "judge_route_code",
+          "disposition",
+          "confidence",
+          "recommended_transition",
+          "reason_codes",
+          "notes",
+          "verdict"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "validate_judge_evidence",
+      "kind": "tool_action",
+      "title": "Validate pre-merge judge evidence contract",
+      "handlerType": "tool",
+      "actionId": "judge.validate_evidence_contract",
+      "dotAttributes": {
+        "action_judge_context_b64": "${merge_candidates_b64}",
+        "action_judge_evidence_error": "${judge_evidence_error}",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_evidence_valid": "${judge_evidence_valid}",
+        "action_judge_kind": "wave_execution_post_merge",
+        "action_require_qa_markers": "true",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "judge_evidence_gate_pass",
+          "judge_evidence_gate_code",
+          "judge_evidence_error",
+          "judge_route_code",
+          "disposition",
+          "confidence",
+          "recommended_transition",
+          "reason_codes",
+          "notes",
+          "verdict"
+        ]
+      },
+      "policy": {
+        "governance": "irreversible"
+      }
+    },
+    {
+      "id": "verify_post_merge_resolution",
+      "kind": "tool_action",
+      "title": "Verify post-merge resolution",
+      "handlerType": "tool",
+      "actionId": "merge.verify_resolution",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "resolution_status",
+          "resolution_notes"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    },
+    {
+      "id": "verify_resolution",
+      "kind": "tool_action",
+      "title": "Verify conflict resolved",
+      "handlerType": "tool",
+      "actionId": "merge.verify_resolution",
+      "dotAttributes": {
+        "action_branch": "${branch}",
+        "action_merge_worktree_dir": "${merge_worktree_dir}",
+        "action_repo": "${repo}",
+        "action_runtime": "in_process",
+        "trust_domain": "mothership.local",
+        "trust_role": "mothership.local.tool"
+      },
+      "binding": {
+        "outputFormat": "json",
+        "outputs": [
+          "resolution_status",
+          "resolution_notes"
+        ]
+      },
+      "policy": {
+        "governance": "reversible"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "accumulate",
+      "to": "postmortem_gate"
+    },
+    {
+      "from": "acquire_merge_lock",
+      "to": "resolve_merge_context"
+    },
+    {
+      "from": "assert_main_after_merge",
+      "to": "final_review_gate"
+    },
+    {
+      "from": "assert_main_branch",
+      "to": "set_gh_repo"
+    },
+    {
+      "from": "build_conflict_packet",
+      "to": "resolve_conflict"
+    },
+    {
+      "from": "build_judge_context_recovery_packet",
+      "to": "unlock_ready_issue"
+    },
+    {
+      "from": "build_judge_context",
+      "to": "validate_judge_context"
+    },
+    {
+      "from": "build_judge_evidence_recovery_packet",
+      "to": "unlock_ready_issue"
+    },
+    {
+      "from": "build_judge_evidence",
+      "to": "build_judge_context"
+    },
+    {
+      "from": "build_merge_commit_message",
+      "to": "acquire_merge_lock"
+    },
+    {
+      "from": "build_merged_results",
+      "to": "handle_merge_failures"
+    },
+    {
+      "from": "build_post_merge_packet",
+      "to": "resolve_post_merge"
+    },
+    {
+      "from": "build_push_failure_packet",
+      "to": "resolve_push_failure"
+    },
+    {
+      "from": "check_cp_blocker",
+      "to": "cp_blocked_exit",
+      "condition": "blocker_active=true"
+    },
+    {
+      "from": "check_cp_blocker",
+      "to": "lock_wave",
+      "condition": "blocker_active!=true"
+    },
+    {
+      "from": "check_merge_candidates",
+      "to": "merge_candidates_gate"
+    },
+    {
+      "from": "cleanup_failed_merge",
+      "to": "build_merged_results"
+    },
+    {
+      "from": "cleanup_merge_worktree",
+      "to": "cleanup_wave_worktree"
+    },
+    {
+      "from": "cleanup_wave_worktree",
+      "to": "done"
+    },
+    {
+      "from": "clear_impl_result",
+      "to": "execute_issue_in_wave"
+    },
+    {
+      "from": "close_merged_issues",
+      "to": "build_merged_results"
+    },
+    {
+      "from": "close_milestone",
+      "to": "close_ready_issue"
+    },
+    {
+      "from": "close_ready_issue",
+      "to": "finalize_from_close"
+    },
+    {
+      "from": "decide",
+      "to": "close_milestone",
+      "condition": "disposition=approve"
+    },
+    {
+      "from": "decide",
+      "to": "unlock_ready_issue",
+      "condition": "disposition!=approve"
+    },
+    {
+      "from": "emit_resolution_failure",
+      "to": "set_wave_merge_failed"
+    },
+    {
+      "from": "encode_merge_candidates_b64",
+      "to": "build_judge_evidence"
+    },
+    {
+      "from": "ensure_judge_decision",
+      "to": "decide"
+    },
+    {
+      "from": "ensure_labels",
+      "to": "sanitize_state"
+    },
+    {
+      "from": "execute_issue_in_wave",
+      "to": "accumulate"
+    },
+    {
+      "from": "final_review_gate",
+      "to": "cleanup_merge_worktree",
+      "condition": "wave_terminal_path!=close"
+    },
+    {
+      "from": "final_review_gate",
+      "to": "final_state_review",
+      "condition": "wave_terminal_path=close"
+    },
+    {
+      "from": "final_state_review",
+      "to": "cleanup_merge_worktree"
+    },
+    {
+      "from": "finalize_from_close",
+      "to": "release_merge_lock"
+    },
+    {
+      "from": "finalize_from_fail",
+      "to": "release_merge_lock"
+    },
+    {
+      "from": "finalize_from_no_merge",
+      "to": "release_merge_lock"
+    },
+    {
+      "from": "finalize_gate",
+      "to": "retry_resolve_conflict",
+      "condition": "finalize_status!=ok"
+    },
+    {
+      "from": "finalize_gate",
+      "to": "verify_resolution",
+      "condition": "finalize_status=ok"
+    },
+    {
+      "from": "finalize_merge_commit",
+      "to": "finalize_gate"
+    },
+    {
+      "from": "finalize_post_merge_commit",
+      "to": "finalize_post_merge_gate"
+    },
+    {
+      "from": "finalize_post_merge_gate",
+      "to": "retry_resolve_post_merge",
+      "condition": "finalize_status!=ok"
+    },
+    {
+      "from": "finalize_post_merge_gate",
+      "to": "verify_post_merge_resolution",
+      "condition": "finalize_status=ok"
+    },
+    {
+      "from": "find_ready_wave",
+      "to": "gate"
+    },
+    {
+      "from": "gate",
+      "to": "check_cp_blocker",
+      "condition": "milestone_title!="
+    },
+    {
+      "from": "gate",
+      "to": "done",
+      "condition": "milestone_title="
+    },
+    {
+      "from": "handle_review_failures",
+      "to": "check_merge_candidates"
+    },
+    {
+      "from": "init_branch",
+      "to": "next_issue"
+    },
+    {
+      "from": "issue_loop_gate",
+      "to": "clear_impl_result",
+      "condition": "has_next=true"
+    },
+    {
+      "from": "issue_loop_gate",
+      "to": "split_results",
+      "condition": "has_next!=true"
+    },
+    {
+      "from": "judge_context_gate",
+      "to": "build_judge_context_recovery_packet",
+      "condition": "judge_context_gate_pass!=true"
+    },
+    {
+      "from": "judge_context_gate",
+      "to": "validate_judge_evidence",
+      "condition": "judge_context_gate_pass=true"
+    },
+    {
+      "from": "judge_evidence_gate",
+      "to": "build_judge_evidence_recovery_packet",
+      "condition": "judge_evidence_gate_pass!=true"
+    },
+    {
+      "from": "judge_evidence_gate",
+      "to": "build_merge_commit_message",
+      "condition": "judge_evidence_gate_pass=true"
+    },
+    {
+      "from": "judge",
+      "to": "ensure_judge_decision"
+    },
+    {
+      "from": "list_issues",
+      "to": "resolve_goal_number"
+    },
+    {
+      "from": "load_merge_finalize_retry_task_prompt",
+      "to": "load_merge_resolve_post_merge_task_prompt"
+    },
+    {
+      "from": "load_merge_post_merge_retry_task_prompt",
+      "to": "load_merge_resolve_push_failure_task_prompt"
+    },
+    {
+      "from": "load_merge_resolve_conflict_task_prompt",
+      "to": "load_merge_finalize_retry_task_prompt"
+    },
+    {
+      "from": "load_merge_resolve_post_merge_task_prompt",
+      "to": "load_merge_post_merge_retry_task_prompt"
+    },
+    {
+      "from": "load_merge_resolve_push_failure_task_prompt",
+      "to": "ensure_labels"
+    },
+    {
+      "from": "load_merge_resolver_system_prompt",
+      "to": "load_merge_resolve_conflict_task_prompt"
+    },
+    {
+      "from": "lock_gate",
+      "to": "list_issues",
+      "condition": "lock_granted=true"
+    },
+    {
+      "from": "lock_gate",
+      "to": "release_claim_on_lock_fail",
+      "condition": "lock_granted!=true"
+    },
+    {
+      "from": "lock_wave",
+      "to": "lock_gate"
+    },
+    {
+      "from": "merge_candidates_gate",
+      "to": "encode_merge_candidates_b64",
+      "condition": "has_merge_candidates=true"
+    },
+    {
+      "from": "merge_candidates_gate",
+      "to": "unlock_no_merge",
+      "condition": "has_merge_candidates=false"
+    },
+    {
+      "from": "merge_gate",
+      "to": "unlock_no_merge",
+      "condition": "merged_count=0"
+    },
+    {
+      "from": "merge_shared_branch",
+      "to": "shared_merge_gate"
+    },
+    {
+      "from": "next_issue",
+      "to": "issue_loop_gate"
+    },
+    {
+      "from": "open_followup",
+      "to": "finalize_from_fail"
+    },
+    {
+      "from": "post_merge_resolution_gate",
+      "to": "set_wave_merge_failed",
+      "condition": "resolution_status!=resolved"
+    },
+    {
+      "from": "post_merge_resolution_gate",
+      "to": "set_wave_merged",
+      "condition": "resolution_status=resolved"
+    },
+    {
+      "from": "postmortem_gate",
+      "to": "next_issue",
+      "condition": "last_review_failed!=true"
+    },
+    {
+      "from": "postmortem_gate",
+      "to": "postmortem",
+      "condition": "last_review_failed=true"
+    },
+    {
+      "from": "postmortem",
+      "to": "next_issue"
+    },
+    {
+      "from": "push_gate",
+      "to": "build_push_failure_packet",
+      "condition": "push_status!=pushed"
+    },
+    {
+      "from": "push_gate",
+      "to": "close_merged_issues",
+      "condition": "push_status=pushed"
+    },
+    {
+      "from": "push_main_branch",
+      "to": "push_gate"
+    },
+    {
+      "from": "rebase_shared_branch",
+      "to": "rebase_shared_gate"
+    },
+    {
+      "from": "rebase_shared_gate",
+      "to": "set_resolution_source_deterministic",
+      "condition": "rebase_status=ready"
+    },
+    {
+      "from": "rebase_shared_gate",
+      "to": "set_resolution_source_llm",
+      "condition": "rebase_status!=ready"
+    },
+    {
+      "from": "release_claim_on_lock_fail",
+      "to": "done"
+    },
+    {
+      "from": "release_merge_lock",
+      "to": "assert_main_after_merge"
+    },
+    {
+      "from": "requeue_after_judge_failure",
+      "to": "open_followup"
+    },
+    {
+      "from": "resolution_gate",
+      "to": "emit_resolution_failure",
+      "condition": "resolution_status!=resolved"
+    },
+    {
+      "from": "resolution_gate",
+      "to": "merge_shared_branch",
+      "condition": "resolution_status=resolved"
+    },
+    {
+      "from": "resolve_config",
+      "to": "set_capability_coding_skills"
+    },
+    {
+      "from": "resolve_conflict",
+      "to": "finalize_merge_commit"
+    },
+    {
+      "from": "resolve_goal_number",
+      "to": "seed_state"
+    },
+    {
+      "from": "resolve_merge_context",
+      "to": "setup_merge_worktree"
+    },
+    {
+      "from": "resolve_post_merge",
+      "to": "finalize_post_merge_commit"
+    },
+    {
+      "from": "resolve_push_failure",
+      "to": "retry_push_main"
+    },
+    {
+      "from": "retry_push_gate",
+      "to": "close_merged_issues",
+      "condition": "push_status=pushed"
+    },
+    {
+      "from": "retry_push_gate",
+      "to": "set_wave_merge_failed",
+      "condition": "push_status!=pushed"
+    },
+    {
+      "from": "retry_push_main",
+      "to": "retry_push_gate"
+    },
+    {
+      "from": "retry_resolve_conflict",
+      "to": "verify_resolution"
+    },
+    {
+      "from": "retry_resolve_post_merge",
+      "to": "verify_post_merge_resolution"
+    },
+    {
+      "from": "sanitize_state",
+      "to": "find_ready_wave"
+    },
+    {
+      "from": "seed_state",
+      "to": "init_branch"
+    },
+    {
+      "from": "set_capability_coding_skills",
+      "to": "set_capability_merge_skills"
+    },
+    {
+      "from": "set_capability_merge_skills",
+      "to": "load_merge_resolver_system_prompt"
+    },
+    {
+      "from": "set_gh_repo",
+      "to": "resolve_config"
+    },
+    {
+      "from": "set_repo",
+      "to": "assert_main_branch"
+    },
+    {
+      "from": "set_resolution_source_deterministic",
+      "to": "merge_shared_branch"
+    },
+    {
+      "from": "set_resolution_source_llm",
+      "to": "build_conflict_packet"
+    },
+    {
+      "from": "set_wave_already_merged",
+      "to": "push_main_branch"
+    },
+    {
+      "from": "set_wave_merge_failed",
+      "to": "cleanup_failed_merge"
+    },
+    {
+      "from": "set_wave_merged",
+      "to": "push_main_branch"
+    },
+    {
+      "from": "setup_merge_worktree",
+      "to": "rebase_shared_branch"
+    },
+    {
+      "from": "shared_merge_gate",
+      "to": "build_post_merge_packet",
+      "condition": "merge_status!=merged && merge_status!=already_merged"
+    },
+    {
+      "from": "shared_merge_gate",
+      "to": "set_wave_already_merged",
+      "condition": "merge_status=already_merged"
+    },
+    {
+      "from": "shared_merge_gate",
+      "to": "set_wave_merged",
+      "condition": "merge_status=merged"
+    },
+    {
+      "from": "split_results",
+      "to": "handle_review_failures"
+    },
+    {
+      "from": "start",
+      "to": "set_repo"
+    },
+    {
+      "from": "unlock_no_merge",
+      "to": "finalize_from_no_merge"
+    },
+    {
+      "from": "unlock_ready_issue",
+      "to": "requeue_after_judge_failure"
+    },
+    {
+      "from": "validate_judge_context",
+      "to": "judge_context_gate"
+    },
+    {
+      "from": "validate_judge_evidence",
+      "to": "judge_evidence_gate"
+    },
+    {
+      "from": "verify_post_merge_resolution",
+      "to": "post_merge_resolution_gate"
+    },
+    {
+      "from": "verify_resolution",
+      "to": "resolution_gate"
+    },
+    {
+      "from": "handle_merge_failures",
+      "to": "clear_demo_artifact_url"
+    },
+    {
+      "from": "clear_demo_artifact_url",
+      "to": "clear_demo_status"
+    },
+    {
+      "from": "clear_demo_status",
+      "to": "clear_demo_error"
+    },
+    {
+      "from": "clear_demo_error",
+      "to": "resolve_demo_strategy_policy"
+    },
+    {
+      "from": "resolve_demo_strategy_policy",
+      "to": "merge_gate"
+    },
+    {
+      "from": "merge_gate",
+      "to": "run_demo_gate",
+      "condition": "merged_count!=0"
+    },
+    {
+      "from": "run_demo_gate",
+      "to": "judge",
+      "condition": "demo_strategy_policy=none"
+    },
+    {
+      "from": "run_demo_gate",
+      "to": "run_wave_demo_generate",
+      "condition": "demo_strategy_policy!=none"
+    },
+    {
+      "from": "run_wave_demo_generate",
+      "to": "judge"
+    }
+  ]
+}

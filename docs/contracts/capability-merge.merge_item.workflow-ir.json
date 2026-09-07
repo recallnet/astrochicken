@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "merge_item",
+  "familyId": "merge",
+  "sourcePath": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+  "outputPath": "docs/contracts/capability-merge.merge_item.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+    "docs/contracts/workflow-ir/capability-merge/merge_item.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "merge",
+      "correlation_id": "workflow-ir-contract:merge_item",
+      "factory_id": "capability-merge",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "merge_item",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "merge_item"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "merge",
+        "correlation_id": "workflow-ir-contract:merge_item",
+        "factory_id": "capability-merge",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "merge_item",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "merge_item"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-merge/merge_item.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-merge/merge_item.dot",
+      "docs/contracts/workflow-ir/capability-merge/merge_item.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LW1lcmdlLW1lcmdlX2l0ZW0iCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAibWVyZ2VfaXRlbSIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9jYXBhYmlsaXR5LW1lcmdlL3dvcmtmbG93cy9tZXJnZV9pdGVtL21lcmdlX2l0ZW0ud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJtZXJnZV9pdGVtIiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "merge_item"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "merge_item",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:341f4aa0460dc34aea68a335a28ab3456011f0757769eb0c5dcc64e72bf0ff64",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-merge-merge_item",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs. Do not edit by hand.\ndigraph merge_item {\n    label = \"merge_item\"\n    workflow_source = \"packages/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    attempt_merge [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.attempt_deterministic\" label=\"Attempt deterministic merge\" output_format=\"json\" outputs=\"merge_status,merge_stdout,merge_stderr,merge_worktree_dir,merge_branch_head_sha,merged_head_sha\" action_repo=\"${repo}\" action_branch=\"${branch}\" action_branch_head_sha=\"${merge_branch_head_sha}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    build_conflict_packet [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.build_conflict_packet\" label=\"Build conflict packet\" output_format=\"json\" outputs=\"conflict_packet_path,conflict_packet_id,conflict_packet_schema_version,conflict_packet_storage_class\" action_repo=\"${repo}\" action_issue_number=\"${issue_number}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_pipeline=\"merge_item\" action_node_id=\"build_conflict_packet\" action_branch=\"${branch}\" action_control_plane_repo=\"${control_plane_repo}\" action_merge_candidates=\"${merge_candidates}\" action_merge_stderr=\"${merge_stderr}\" action_target_repo=\"${gh_repo}\" action_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    cleanup_failed_merge [type=\"tool\" governance=\"irreversible\" label=\"Cleanup failed merge state\" output_key=\"__cleanup_failed_merge_result\" prompt=\"# hatch:no-inline-script-ok\\ngit -C \\\"${merge_worktree_dir}\\\" merge --abort >/dev/null 2>&1 || true\\ngit -C \\\"${merge_worktree_dir}\\\" rebase --abort >/dev/null 2>&1 || true\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    cleanup_merge_worktree [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.cleanup_worktree\" label=\"Cleanup merge worktree\" output_key=\"__cleanup_merge_worktree_result\" action_repo=\"${repo}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    close_issue [type=\"tool\" governance=\"irreversible\" label=\"Close merged issue\" output_key=\"__close_issue_result\" prompt=\"# hatch:no-inline-script-ok\\nif [ '${final_merge_status}' = 'merged' ] || [ '${final_merge_status}' = 'already_merged' ]; then gh issue close ${issue_number} --repo ${gh_repo} --reason completed || true; fi\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    encode_integration_command [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode integration command\" output_key=\"integration_command_b64\" action_value=\"${integration_command}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    encode_merge_notes [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode merge notes\" output_key=\"merge_notes_b64\" action_value=\"${merge_stderr} ${resolution_notes}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    extract_merge [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"merge.extract_item\" label=\"Extract merge\" output_format=\"json\" outputs=\"issue_number,branch,worktree_dir\" action_merge_item=\"${merge_item}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    finalize_gate [shape=\"diamond\" label=\"Finalize status\"]\n    finalize_merge_commit [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.finalize_commit\" label=\"Finalize merge commit if pending\" output_format=\"json\" outputs=\"finalize_status,finalize_reason\" action_repo=\"${repo}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    integration [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.run_integration\" label=\"Integration checks (non-blocking)\" output_key=\"integration_result\" output_format=\"json\" outputs=\"integration_command,integration_exit_code,integration_stdout,integration_stderr,integration_duration_ms,integration_legacy_text\" action_repo=\"${repo}\" action_integration_command_b64=\"${integration_command_b64}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    load_merge_resolve_conflict_retry_task_prompt [type=\"tool\" governance=\"reversible\" label=\"Load retry resolve-conflict task prompt\" output_key=\"merge_resolve_conflict_retry_task_prompt\" prompt=\"cat packages/factory-prompts/prompts/merge_resolver/retry_resolve_conflict.md\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    load_merge_resolve_conflict_task_prompt [type=\"tool\" governance=\"reversible\" label=\"Load resolve-conflict task prompt\" output_key=\"merge_resolve_conflict_task_prompt\" prompt=\"cat packages/factory-prompts/prompts/merge_resolver/resolve_conflict.md\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    load_merge_resolver_system_prompt [type=\"tool\" governance=\"reversible\" label=\"Load merge resolver system prompt\" output_key=\"merge_resolver_system_prompt\" prompt=\"cat packages/factory-prompts/prompts/merge_resolver/system.md\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    merge_gate [shape=\"diamond\" label=\"Merge status\"]\n    rebase_gate [shape=\"diamond\" label=\"Rebase status\"]\n    rebase_on_main [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.rebase_on_main\" label=\"Rebase branch on main\" output_format=\"json\" outputs=\"rebase_status,rebase_stdout,rebase_stderr,merge_worktree_dir,merge_branch_head_sha\" action_repo=\"${repo}\" action_branch=\"${branch}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    report [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.build_report\" label=\"Report merge\" output_key=\"merge_result\" output_format=\"json\" outputs=\"issue_number,branch,merge_status,notes,path_taken,hatch.merge.resolver\" action_issue_number=\"${issue_number}\" action_branch=\"${branch}\" action_integration_result=\"${integration_result}\" action_merge_resolver=\"${resolution_source}\" action_merge_status=\"${final_merge_status}\" action_notes_b64=\"${merge_notes_b64}\" action_path_taken=\"merge\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    resolution_gate [shape=\"diamond\" label=\"Conflict resolved?\"]\n    resolve_conflict [class=\"merge_resolver\" benchmark_job_id=\"goal.execute.merge.resolve_conflict\" llm_path_id=\"capability.merge_item.resolve_conflict\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.execute.merge\" label=\"Resolve merge conflict\" reasoning_effort=\"low\" timeout=\"45m\" prompt=\"${merge_resolver_system_prompt}\\n\\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\\n\\n${merge_resolve_conflict_task_prompt}\\n\\nConflict packet: ${conflict_packet_path}\" prompt_input_keys=\"capability_merge_skills,conflict_packet_path\" prompt_source=\"merge_resolve_conflict_task_prompt\" recovery_owner=\"supervisor\" system_prompt_source=\"merge_resolver_system_prompt\" task_prompt_source=\"merge_resolve_conflict_task_prompt\" workdir=\"${merge_worktree_dir}\"]\n    retry_resolve_conflict [class=\"merge_resolver\" benchmark_job_id=\"goal.execute.merge.retry_resolve_conflict\" llm_path_id=\"capability.merge_item.retry_resolve_conflict\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.execute.merge\" label=\"Retry: resolve merge conflict\" reasoning_effort=\"low\" timeout=\"60m\" prompt=\"${merge_resolver_system_prompt}\\n\\nLoad and follow ${capability_merge_skills}/merge_conflict_resolver/SKILL.md.\\n\\n${merge_resolve_conflict_retry_task_prompt}\\n\\nConflict packet: ${conflict_packet_path}\" prompt_input_keys=\"capability_merge_skills,conflict_packet_path\" prompt_source=\"merge_resolve_conflict_retry_task_prompt\" recovery_owner=\"supervisor\" system_prompt_source=\"merge_resolver_system_prompt\" task_prompt_source=\"merge_resolve_conflict_retry_task_prompt\" workdir=\"${merge_worktree_dir}\"]\n    route_error_to_resolver [type=\"tool\" governance=\"reversible\" label=\"Route error to resolver\" prompt=\":\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_resolution_source_deterministic [type=\"tool\" governance=\"reversible\" label=\"Set merge resolver: deterministic\" output_key=\"resolution_source\" prompt=\"printf 'deterministic'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_resolution_source_llm [type=\"tool\" governance=\"reversible\" label=\"Set merge resolver: llm\" output_key=\"resolution_source\" prompt=\"printf 'llm'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_status_already [type=\"tool\" governance=\"reversible\" label=\"Set already-merged status\" output_key=\"final_merge_status\" prompt=\"printf 'already_merged'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_status_failed [type=\"tool\" governance=\"reversible\" label=\"Set failed status\" output_key=\"final_merge_status\" prompt=\"printf 'failed'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_status_merged [type=\"tool\" governance=\"reversible\" label=\"Set merged status\" output_key=\"final_merge_status\" prompt=\"printf 'merged'\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    setup_merge_worktree [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"merge.setup_worktree\" label=\"Setup merge worktree\" output_format=\"json\" outputs=\"setup,reason,merge_worktree_dir,merge_base_ref,merge_branch_head_sha\" action_repo=\"${repo}\" action_issue_number=\"${issue_number}\" action_run_id=\"${__run_id}\" action_pipeline=\"merge-item\" action_branch=\"${branch}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\"]\n    verify_resolution [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"merge.verify_resolution\" label=\"Verify conflict resolved\" output_format=\"json\" outputs=\"resolution_status,resolution_notes\" action_repo=\"${repo}\" action_branch=\"${branch}\" action_merge_worktree_dir=\"${merge_worktree_dir}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    encode_integration_command -> integration -> close_issue -> encode_merge_notes -> report -> cleanup_merge_worktree -> done\n    set_resolution_source_llm -> build_conflict_packet -> resolve_conflict -> finalize_merge_commit -> finalize_gate\n    set_status_merged -> encode_integration_command\n    start -> load_merge_resolver_system_prompt -> load_merge_resolve_conflict_task_prompt -> load_merge_resolve_conflict_retry_task_prompt -> extract_merge -> setup_merge_worktree -> rebase_on_main -> rebase_gate\n    verify_resolution -> resolution_gate\n    attempt_merge -> merge_gate\n    cleanup_failed_merge -> encode_integration_command\n    finalize_gate -> retry_resolve_conflict [condition=\"finalize_status!=ok\"]\n    finalize_gate -> verify_resolution [condition=\"finalize_status=ok\"]\n    merge_gate -> route_error_to_resolver [condition=\"merge_status=error\"]\n    merge_gate -> set_resolution_source_llm [condition=\"merge_status=conflict\"]\n    merge_gate -> set_status_already [condition=\"merge_status=already_merged\"]\n    merge_gate -> set_status_merged [condition=\"merge_status=merged\"]\n    rebase_gate -> set_resolution_source_deterministic [condition=\"rebase_status=ready\"]\n    rebase_gate -> set_resolution_source_llm [condition=\"rebase_status!=ready\"]\n    resolution_gate -> set_status_failed [condition=\"resolution_status!=resolved\"]\n    resolution_gate -> set_status_merged [condition=\"resolution_status=resolved\"]\n    retry_resolve_conflict -> verify_resolution\n    route_error_to_resolver -> set_resolution_source_llm\n    set_resolution_source_deterministic -> attempt_merge\n    set_status_already -> encode_integration_command\n    set_status_failed -> cleanup_failed_merge\n}"
+}

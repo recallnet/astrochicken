@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REAL_NODE="${PRE_COMMIT_REAL_NODE:-}"
+if [[ -z "$REAL_NODE" ]]; then
+  while IFS= read -r candidate; do
+    if [[ -n "$candidate" && "$candidate" != "$0" ]]; then
+      REAL_NODE="$candidate"
+      break
+    fi
+  done < <(which -a node 2>/dev/null || true)
+fi
+
+if [[ -z "$REAL_NODE" ]]; then
+  echo "[node-stub] unable to locate real node executable" >&2
+  exit 66
+fi
+
+if [[ "${PRE_COMMIT_RUNTIME_STARTUP_PROBE_STUB:-0}" == "1" && "${1:-}" == "scripts/check-runtime-startup-probe.mjs" ]]; then
+  exit_code="${PRE_COMMIT_RUNTIME_STARTUP_PROBE_EXIT:-0}"
+  if [[ "$exit_code" == "0" ]]; then
+    echo "[runtime-startup-probe] result=ok probes=3"
+  else
+    echo "[runtime-startup-probe] result=fail probes=3"
+  fi
+  exit "$exit_code"
+fi
+
+exec "$REAL_NODE" "$@"

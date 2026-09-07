@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "release_report_flow",
+  "familyId": "release_reporting",
+  "sourcePath": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+  "outputPath": "docs/contracts/capability-release-reporting.release_report_flow.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+    "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "release_reporting",
+      "correlation_id": "workflow-ir-contract:release_report_flow",
+      "factory_id": "capability-release-reporting",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "release_report_flow",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "release_report_flow"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "release_reporting",
+        "correlation_id": "workflow-ir-contract:release_report_flow",
+        "factory_id": "capability-release-reporting",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "release_report_flow",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "release_report_flow"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+      "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LXJlbGVhc2UtcmVwb3J0aW5nLXJlbGVhc2VfcmVwb3J0X2Zsb3ciCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAicmVsZWFzZV9yZXBvcnRfZmxvdyIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9jYXBhYmlsaXR5LXJlbGVhc2UtcmVwb3J0aW5nL3dvcmtmbG93cy9yZWxlYXNlX3JlcG9ydF9mbG93L3JlbGVhc2VfcmVwb3J0X2Zsb3cud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJyZWxlYXNlX3JlcG9ydF9mbG93IiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "release_report_flow"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "release_report_flow",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:4c252eeb450fccfbb473f782d4d6155311517f15ac29bc3cd71566fdbe41440e",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs. Do not edit by hand.\ndigraph release_report_flow {\n    label = \"release_report_flow\"\n    workflow_source = \"packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    build_release_report_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"release.build_report_context\" label=\"Build release report context\" output_key=\"release_report_context\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_output_contract=\"release.report_context@v1\" action_repo_path=\"${repo_path}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    build_release_slack_blocks [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"release.build_slack_blocks\" label=\"Build release Slack Block Kit payload\" output_key=\"release_slack_payload\" action_context_b64=\"${release_report_context_b64}\" action_input_contract=\"release.report_context@v1+release.narrative@v1\" action_narrative_b64=\"${release_narrative_b64}\" action_output_contract=\"release.slack_payload@v1\" action_report_issue_url=\"${release_report_issue_url}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    create_shaping_followup_issue [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"release.shaping_followup\" label=\"Create example-web comprehension follow-up issue (best-effort)\" output_key=\"release_shaping_followup_delivery\" action_factory_id=\"${factory_id}\" action_context_b64=\"${release_report_context_b64}\" action_input_contract=\"release.report_context@v1+release.narrative@v1\" action_narrative_b64=\"${release_narrative_b64}\" action_output_contract=\"release.shaping_followup_delivery@v1\" action_repo_path=\"${repo_path}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    emit_release_narrative_document [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"release.emit_narrative_document\" label=\"Emit release narrative document\" output_key=\"release_narrative_document_delivery\" output_format=\"json\" outputs=\"release_narrative_document_json_path:json_path,release_narrative_document_markdown_path:markdown_path\" action_factory_id=\"${factory_id}\" action_category=\"delivery\" action_contains_internal_only=\"false\" action_context_b64=\"${release_report_context_b64}\" action_input_contract=\"release.report_context@v1+release.narrative@v1+release.report_issue_delivery@v1\" action_internal_only_sections=\"[]\" action_issue_url=\"${release_report_issue_url}\" action_narrative_b64=\"${release_narrative_b64}\" action_output_contract=\"release.narrative_document_delivery@v1\" action_output_dir=\"reports/release/narratives\" action_publishable=\"true\" action_repo_path=\"${repo_path}\" action_tags=\"[\\\"release-report\\\",\\\"factory-ops\\\"]\" action_taxonomy=\"[\\\"delivery\\\",\\\"operations\\\"]\" action_topics=\"[\\\"${gh_repo}\\\",\\\"${factory_id}\\\"]\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    encode_release_narrative [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode release narrative (base64)\" output_key=\"release_narrative_b64\" action_value=\"${release_narrative}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    encode_release_report_context [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode release context (base64)\" output_key=\"release_report_context_b64\" action_value=\"${release_report_context}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    encode_release_slack_payload [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.encode_base64\" label=\"Encode release Slack payload (base64)\" output_key=\"release_slack_payload_b64\" action_value=\"${release_slack_payload}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    load_release_narrator_skill [type=\"tool\" governance=\"reversible\" label=\"Load release narrator skill\" output_key=\"release_narrator_skill_content\" prompt=\"cat packages/factory-skills/skills/runtime/release_narrator/SKILL.md\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    narrative_delivery_gate [shape=\"diamond\" label=\"Narrative wants delivery?\"]\n    post_release_to_slack [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"release.post_to_slack\" label=\"Post release report to Slack\" output_key=\"release_slack_delivery\" action_context_b64=\"${release_report_context_b64}\" action_input_contract=\"release.report_context@v1+release.slack_payload@v1\" action_output_contract=\"release.slack_delivery@v1\" action_payload_b64=\"${release_slack_payload_b64}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    publish_release_report [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"release.publish_report\" label=\"Publish release understanding issue\" output_key=\"release_report_issue_delivery\" output_format=\"json\" outputs=\"release_report_issue_url:issue_url\" action_repo=\"${release_reporting_repo}\" action_context_b64=\"${release_report_context_b64}\" action_input_contract=\"release.report_context@v1+release.narrative@v1\" action_narrative_b64=\"${release_narrative_b64}\" action_output_contract=\"release.report_issue_delivery@v1\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    release_narrator [class=\"release_narrator\" benchmark_job_id=\"supervisor.tick.release_narrate\" llm_path_id=\"capability.release_report_flow.release_narrator\" prompt_version=\"2026-03-21.r1\" role_version=\"2.0.0\" skill_id=\"supervisor.release_narrator\" label=\"Narrate release capability shift\" output_key=\"release_narrative\" output_format=\"json\" outputs=\"delivery_decision,headline,summary,report_body\" reasoning_effort=\"low\" timeout=\"5m\" prompt=\"You are the release narrator for ${gh_repo}.\\n\\n${release_narrator_skill_content}\\n\\nRelease context JSON:\\n${release_report_context}\\n\\nReturn a JSON object with the keys described in the skill contract above. No markdown fences.\" session_id=\"supervisor-${factory_id}\"]\n    start [shape=\"Mdiamond\"]\n    update_release_dedup_cursor [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"release.update_dedup_cursor\" label=\"Update release dedup cursor\" output_key=\"__release_dedup_cursor_result\" action_factory_id=\"${factory_id}\" action_context_b64=\"${release_report_context_b64}\" action_delivery_status=\"${release_report_issue_delivery}\" action_input_contract=\"release.report_context@v1+release.delivery_status@v1\" action_output_contract=\"release.dedup_cursor_update@v1\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start -> build_release_report_context -> load_release_narrator_skill -> release_narrator -> narrative_delivery_gate\n    update_release_dedup_cursor -> done\n    build_release_slack_blocks -> encode_release_slack_payload\n    create_shaping_followup_issue -> build_release_slack_blocks [condition=\"delivery_decision=slack_and_issue\"]\n    create_shaping_followup_issue -> update_release_dedup_cursor [condition=\"delivery_decision=issue_only\"]\n    emit_release_narrative_document -> create_shaping_followup_issue\n    encode_release_narrative -> publish_release_report\n    encode_release_report_context -> encode_release_narrative\n    encode_release_slack_payload -> post_release_to_slack\n    narrative_delivery_gate -> done [condition=\"delivery_decision=skip\"]\n    narrative_delivery_gate -> encode_release_report_context [condition=\"delivery_decision!=skip\"]\n    post_release_to_slack -> update_release_dedup_cursor\n    publish_release_report -> emit_release_narrative_document\n}"
+}

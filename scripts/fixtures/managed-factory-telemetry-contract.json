@@ -1,0 +1,58 @@
+{
+  "schema": "managed-factory-telemetry-contract/v1",
+  "events": [
+    {
+      "event": "factory.lifecycle.tick",
+      "required_fields": [
+        "factory_id",
+        "instance_id",
+        "installation_id",
+        "host_id",
+        "kind_id",
+        "run_id",
+        "tick_id",
+        "event_type",
+        "status",
+        "started_at",
+        "ended_at",
+        "duration_ms",
+        "incident_fingerprint",
+        "runtime_version",
+        "kind_version",
+        "policy_profile",
+        "tick_idle"
+      ]
+    },
+    {
+      "event": "factory.lifecycle.sleep",
+      "required_fields": [
+        "factory_id",
+        "instance_id",
+        "installation_id",
+        "host_id",
+        "kind_id",
+        "run_id",
+        "tick_id",
+        "event_type",
+        "status",
+        "started_at",
+        "ended_at",
+        "duration_ms",
+        "incident_fingerprint",
+        "runtime_version",
+        "kind_version",
+        "policy_profile",
+        "reason",
+        "sleep_ms"
+      ]
+    }
+  ],
+  "daemon_state_snapshot_schema": {
+    "required_fields": [
+      "branch",
+      "canonical_checkout_path",
+      "factory_id",
+      "running_from_canonical"
+    ]
+  }
+}

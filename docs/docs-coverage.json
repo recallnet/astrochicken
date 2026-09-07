@@ -1,0 +1,74 @@
+{
+  "docs_coverage/v1": {
+    "surface_rules": [
+      {
+        "id": "factory-ops-commands",
+        "description": "Every public factory-ops command must have reference documentation.",
+        "source_glob": "packages/factory-ops/src/commands/*.mjs",
+        "doc_glob": "docs/reference/factory-ops/*.md",
+        "mapping": "basename",
+        "exemptions": [
+          "_internal-*.mjs"
+        ]
+      },
+      {
+        "id": "factory-graphs",
+        "description": "Every mothership graph must have reference documentation.",
+        "source_glob": "factories/mothership/graphs/*.dot",
+        "doc_glob": "docs/reference/graphs/*.md",
+        "mapping": "basename",
+        "exemptions": []
+      },
+      {
+        "id": "subsystem-docs",
+        "description": "Key architectural subsystems must each have a dedicated architecture doc.",
+        "required_docs": [
+          {
+            "path": "docs/architecture/release-distribution.md",
+            "anchored_to": [
+              "packages/factory-ops/src/commands/factory-resume-gate.ts",
+              "packages/factory-ops/src/commands/release-manifest.ts",
+              "packages/factory-ops/src/commands/release-rollout-controller.ts"
+            ]
+          },
+          {
+            "path": "docs/architecture/wave-execution.md",
+            "anchored_to": [
+              "factories/mothership/graphs/goal_execute.dot"
+            ]
+          },
+          {
+            "path": "docs/architecture/bug-fast-route.md",
+            "anchored_to": [
+              "packages/factory-ops/src/commands/supervisor-artifact.ts"
+            ]
+          },
+          {
+            "path": "docs/architecture/control-plane-blockers.md",
+            "anchored_to": [
+              "packages/factory-ops/src/lib/control-plane-blocker.ts"
+            ]
+          },
+          {
+            "path": "docs/architecture/pre-commit-gates.md",
+            "anchored_to": [
+              ".githooks/pre-commit",
+              "scripts/pre-commit-staged-file-classifier.mjs"
+            ]
+          },
+          {
+            "path": "docs/architecture/merge-infrastructure.md",
+            "anchored_to": [
+              "factories/mothership/graphs/goal_execute.dot",
+              "packages/factory-skills/skills/merge_conflict_resolver/SKILL.md"
+            ]
+          }
+        ]
+      }
+    ],
+    "exemption_policy": {
+      "max_global_exemptions": 10,
+      "require_reason": true
+    }
+  }
+}

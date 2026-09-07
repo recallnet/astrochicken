@@ -1,0 +1,23 @@
+{
+  "schema": "hatch.test-taxonomy.v1",
+  "allowed_categories": [
+    "unit",
+    "contract",
+    "integration",
+    "regressions"
+  ],
+  "naming": {
+    "required_class_suffixes": [
+      ".unit.test.",
+      ".contract.test.",
+      ".integration.test.",
+      ".regression.test.",
+      ".regressions.test."
+    ],
+    "forbidden_new_generic_names": [
+      "misc.test.",
+      "helpers.test.",
+      "integration.test."
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "capabilityId": "foreman",
+  "description": "Foreman host scheduling, incident ownership, telemetry, and extension-facing tool surfaces.",
+  "entrypoints": [
+    {
+      "description": "Exports the foreman package runtime surface through the package root entrypoint.",
+      "id": "foreman_module_api",
+      "kind": "module",
+      "path": ".",
+      "title": "Foreman module surface",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-foreman/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Writes the canonical foreman cycle history artifact under the run-scoped foreman directory.",
+        "id": "foreman_cycle_artifact",
+        "producerPaths": [
+          "src/host.ts",
+          "src/telemetry.ts"
+        ],
+        "ref": "foreman_cycle_artifact/v1",
+        "standard": "platform_contract_artifact",
+        "title": "Foreman cycle artifact"
+      }
+    ],
+    "events": [],
+    "telemetry": []
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-foreman",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "factory_id",
+    "foreman_config"
+  ],
+  "requiredHandlers": [],
+  "requiredRoles": [
+    ".foreman"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "vitest.config.ts",
+      "refs": []
+    },
+    {
+      "path": "src/extension.ts",
+      "refs": []
+    },
+    {
+      "path": "src/host.ts",
+      "refs": [
+        "foreman_cycle_artifact/v1"
+      ]
+    },
+    {
+      "path": "src/index.ts",
+      "refs": []
+    },
+    {
+      "path": "src/telemetry.ts",
+      "refs": [
+        "foreman_cycle_artifact/v1"
+      ]
+    },
+    {
+      "path": "src/types.ts",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-foreman/capability-contract.mjs",
+  "title": "Foreman Capability",
+  "version": "0.1.0"
+}

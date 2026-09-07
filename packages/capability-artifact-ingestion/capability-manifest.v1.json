@@ -1,0 +1,89 @@
+{
+  "capabilityId": "artifact_ingestion",
+  "contractPath": "packages/capability-artifact-ingestion/capability-contract.v1.json",
+  "description": "Poll artifact issues from source repos and draft goals in the control-plane repo.",
+  "discoveredSurfaces": {
+    "graphs": [
+      "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+    ],
+    "producerPaths": [
+      "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+    ],
+    "prompts": [],
+    "skills": [],
+    "supportFiles": []
+  },
+  "entrypoints": [
+    {
+      "description": "Ingests artifact issues and drafts control-plane goals.",
+      "id": "artifact_ingest",
+      "kind": "graph",
+      "path": "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
+      "title": "Artifact ingest graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "exports": {
+    "./capability-contract.v1.json": "./capability-contract.v1.json",
+    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
+    "./contract": "./capability-contract.v1.json",
+    "./graphs/*": "./graphs/*",
+    "./manifest": "./capability-manifest.v1.json",
+    "./workflows/*": "./workflows/*"
+  },
+  "manifestPath": "packages/capability-artifact-ingestion/capability-manifest.v1.json",
+  "nonGoals": [],
+  "outputSurfaces": {
+    "artifacts": [],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Artifact ingestion runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/artifact_ingest/artifact_ingest.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageDescription": "Hatch artifact ingestion capability: poll artifact issues from source repos and draft goals in control-plane repo",
+  "packageJsonPath": "packages/capability-artifact-ingestion/package.json",
+  "packageName": "@hatch/capability-artifact-ingestion",
+  "packageRoot": "packages/capability-artifact-ingestion",
+  "publishedFiles": [
+    "capability-contract.v1.json",
+    "capability-manifest.v1.json",
+    "graphs",
+    "workflows"
+  ],
+  "requiredContextKeys": [
+    "control_plane_repo",
+    "dry_run",
+    "max_artifacts",
+    "source_repos",
+    "trust_domain",
+    "trust_role",
+    "trusted_factory_ids"
+  ],
+  "requiredHandlers": [
+    "tool"
+  ],
+  "requiredRoles": [],
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_manifest/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-artifact-ingestion/capability-contract.mjs",
+  "title": "Artifact Ingestion Capability",
+  "version": "0.1.0"
+}

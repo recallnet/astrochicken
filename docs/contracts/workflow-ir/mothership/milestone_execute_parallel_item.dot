@@ -1,0 +1,15 @@
+// Generated from factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs. Do not edit by hand.
+@import "../../../../factories/mothership/roles.stylesheet"
+
+digraph milestone_execute_parallel_item {
+    label = "milestone_execute_parallel_item"
+    workflow_source = "factories/mothership/workflows/goal-execution/milestone_execute_parallel_item.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    execute_issue [type="pipeline" label="Execute issue in isolated milestone branch" pipeline="factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs" export_keys="impl_result" inherit_context="true" trust_domain="mothership.local" trust_role="mothership.local.pipeline"]
+    extract_parallel_issue [type="tool" governance="reversible" action_runtime="in_process" action_id="coding.extract_issue_item" label="Extract parallel issue context" output_format="json" outputs="next_issue_number,next_issue_title" action_issue_item="${parallel_issue}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    isolate_parallel_context [type="tool" governance="reversible" action_runtime="in_process" action_id="software.build_milestone_parallel_context" label="Build issue-isolated branch/session context" output_format="json" outputs="branch,worktree_dir,agent_session_id" action_issue_number="${next_issue_number}" action_milestone_title="${milestone_title}" trust_domain="mothership.local" trust_role="mothership.local.tool"]
+    start [shape="Mdiamond"]
+    start -> extract_parallel_issue -> isolate_parallel_context -> execute_issue -> done
+}

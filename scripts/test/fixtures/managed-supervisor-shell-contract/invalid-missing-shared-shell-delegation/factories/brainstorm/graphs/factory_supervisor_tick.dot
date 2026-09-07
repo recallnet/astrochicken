@@ -1,0 +1,7 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond label="Start"];
+  run_local_supervisor [type="pipeline" label="Run local supervisor" pipeline="factories/brainstorm/graphs/local_supervisor.dot"];
+  done [shape=Msquare label="Done"];
+
+  start -> run_local_supervisor -> done;
+}

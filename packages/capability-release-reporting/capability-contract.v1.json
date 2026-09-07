@@ -1,0 +1,85 @@
+{
+  "capabilityId": "release_reporting",
+  "description": "Release narration, Slack delivery, dedup, and tick-idle cursor updates.",
+  "entrypoints": [
+    {
+      "description": "Builds and publishes release reporting outputs.",
+      "id": "release_report_flow",
+      "kind": "graph",
+      "path": "workflows/release_report_flow/release_report_flow.workflow-source.mjs",
+      "title": "Release report flow graph",
+      "transport": "sync"
+    }
+  ],
+  "exportedContextKeys": {},
+  "nonGoals": [],
+  "outputPath": "packages/capability-release-reporting/capability-contract.v1.json",
+  "outputSurfaces": {
+    "artifacts": [
+      {
+        "description": "Publishes the governed release report artifact through the canonical OCI helper surface.",
+        "id": "release_report_bundle",
+        "producerPaths": [
+          "src/in-process-action-owners.mjs",
+          "workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+        ],
+        "ref": "release_report_bundle",
+        "standard": "oci_artifact_class",
+        "title": "Release report OCI bundle"
+      }
+    ],
+    "events": [],
+    "telemetry": [
+      {
+        "description": "Release reporting runs emit the standard Hatch workflow lifecycle and quality signals.",
+        "id": "workflow_runtime",
+        "producerPaths": [
+          "workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+        ],
+        "ref": "hatch.workflow.lifecycle",
+        "standard": "otel_runtime",
+        "title": "Workflow runtime telemetry"
+      }
+    ]
+  },
+  "ownedStages": [],
+  "packageName": "@hatch/capability-release-reporting",
+  "privateGlueRequired": false,
+  "requiredContextKeys": [
+    "factory_id",
+    "gh_repo",
+    "release_reporting_repo",
+    "trust_domain",
+    "trust_role"
+  ],
+  "requiredHandlers": [
+    "codergen",
+    "tool"
+  ],
+  "requiredRoles": [
+    ".release_narrator"
+  ],
+  "reusableAcrossFactories": true,
+  "roleSessionAssumptions": {},
+  "schemaVersion": "capability_contract/v1",
+  "skillPaths": [],
+  "sourceFileOutputCoverage": [
+    {
+      "path": "src/build-report-context.ts",
+      "refs": []
+    },
+    {
+      "path": "src/in-process-action-owners.mjs",
+      "refs": [
+        "release_report_bundle"
+      ]
+    },
+    {
+      "path": "src/release-action-contracts.ts",
+      "refs": []
+    }
+  ],
+  "sourcePath": "packages/capability-release-reporting/capability-contract.mjs",
+  "title": "Release Reporting Capability",
+  "version": "0.1.0"
+}

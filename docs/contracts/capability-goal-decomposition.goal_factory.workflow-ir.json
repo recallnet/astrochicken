@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "goal_factory",
+  "familyId": "goal_decomposition",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+  "outputPath": "docs/contracts/capability-goal-decomposition.goal_factory.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+    "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_decomposition",
+      "correlation_id": "workflow-ir-contract:goal_factory",
+      "factory_id": "capability-goal-decomposition",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "goal_factory",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "goal_factory"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_decomposition",
+        "correlation_id": "workflow-ir-contract:goal_factory",
+        "factory_id": "capability-goal-decomposition",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "goal_factory",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "goal_factory"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.dot",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/goal_factory.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi1nb2FsX2ZhY3RvcnkiCiAgICAgIH0sCiAgICAgICJpbnRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJjb21waWxlcl92ZXJzaW9uIjogIndvcmtmbG93X2lyX2NvbXBpbGVyL3YxIiwKICAgICAgICAid29ya2Zsb3dfaWQiOiAiZ29hbF9mYWN0b3J5IgogICAgICB9LAogICAgICAicmVzb2x2ZWRfZGVwZW5kZW5jaWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJkaWdlc3QiOiB7CiAgICAgICAgICAgICJzaGEyNTYiOiAidHlwZWQtc291cmNlLWdlbmVyYXRlZCIKICAgICAgICAgIH0sCiAgICAgICAgICAidXJpIjogInBhY2thZ2VzL2NhcGFiaWxpdHktZ29hbC1kZWNvbXBvc2l0aW9uL3dvcmtmbG93cy9nb2FsX2ZhY3RvcnkvZ29hbF9mYWN0b3J5LndvcmtmbG93LXNvdXJjZS5tanMiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJ1bl9kZXRhaWxzIjogewogICAgICAiYnVpbGRlciI6IHsKICAgICAgICAiaWQiOiAiaHR0cHM6Ly9yZWNhbGxuZXQuZGV2L2J1aWxkZXJzL3dvcmtmbG93LWlyIgogICAgICB9LAogICAgICAibWV0YWRhdGEiOiB7CiAgICAgICAgImZpbmlzaGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDEuMDAwWiIsCiAgICAgICAgImludm9jYXRpb25faWQiOiAiZ29hbF9mYWN0b3J5IiwKICAgICAgICAic3RhcnRlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAwLjAwMFoiCiAgICAgIH0KICAgIH0KICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8vc2xzYS5kZXYvcHJvdmVuYW5jZS92MSIKfQ==",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "goal_factory"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "goal_factory",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:1104c91ecdc951a06e8d0e09bb10f8e3ef4a4b8403a9b1a7f55d4bbe4ed6b9d0",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-goal_factory",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs. Do not edit by hand.\ndigraph goal_factory {\n    label = \"goal_factory\"\n    workflow_source = \"packages/capability-goal-decomposition/workflows/goal_factory/goal_factory.workflow-source.mjs\"\n    close_goal [type=\"tool\" governance=\"irreversible\" label=\"Close goal issue\" output_key=\"__close_goal_result\" prompt=\"gh issue close ${issue_number} --repo ${gh_repo} --reason completed\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    intake_decompose [type=\"pipeline\" label=\"Intake and decompose goal\" export_keys=\"goal_context,approved_features,external_bug_report,external_bug_errors,external_bug_present,external_bug_intake_activated\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    issues [type=\"pipeline\" label=\"Write issues\" export_keys=\"issue_urls\" inherit_context=\"true\" pipeline=\"@hatch/capability-goal-decomposition/workflows/write_issues/write_issues.workflow-source.mjs\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.pipeline\"]\n    start [shape=\"Mdiamond\"]\n    start -> intake_decompose -> issues -> close_goal -> done\n}"
+}

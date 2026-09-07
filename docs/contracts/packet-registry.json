@@ -1,0 +1,300 @@
+{
+  "schema_version": "packet_registry/v1",
+  "generated_at": "static",
+  "packet_types": [
+    {
+      "packet_type": "canonical_checkout_recovery",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": true,
+      "storage_class": "factory_packet",
+      "consumer": "supervisor.canonical_checkout_recovery",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "supervisor_recovery"
+    },
+    {
+      "packet_type": "close_stale_wave_giveup_bug",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Cleanup recommendation for stale reopen-loop bugs based on current issue state; safe to regenerate each tick."
+    },
+    {
+      "packet_type": "contract_drift_wave_cleanup",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.contract_drift_review",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Contract-drift cleanup recommendation computed from current run/hash comparison and refreshed each snapshot."
+    },
+    {
+      "packet_type": "control_plane_blocker_review",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.blocker_review",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Supervisor-only snapshot triage hint; ownership remains in the current tick and does not require cross-tick packet replay yet."
+    },
+    {
+      "packet_type": "goal_decomposition_packet",
+      "family": "goal_decomposition_packet",
+      "schema_version": "goal_decomposition_packet/v1",
+      "durable": true,
+      "storage_class": "factory_packet",
+      "consumer": "goal.decomposition_dedupe",
+      "validator": "validateGoalDecompositionPacket",
+      "takeover_contract": "goal_decomposition_dedupe"
+    },
+    {
+      "packet_type": "goal_execution_path_packet",
+      "family": "goal_execution_path_packet",
+      "schema_version": "goal_execution_path_packet/v1",
+      "durable": true,
+      "storage_class": "factory_packet",
+      "consumer": "goal.execution_path_router",
+      "validator": "validateGoalExecutionPathPacket",
+      "takeover_contract": "goal_execution_path"
+    },
+    {
+      "packet_type": "goal_hard_plan_materialization_packet",
+      "family": "goal_hard_plan_materialization_packet",
+      "schema_version": "goal_hard_plan_materialization_packet/v1",
+      "durable": true,
+      "storage_class": "factory_packet",
+      "consumer": "goal.hard_plan_materialization",
+      "validator": "validateGoalHardPlanMaterializationPacket",
+      "takeover_contract": "goal_hard_plan_materialization"
+    },
+    {
+      "packet_type": "goal_hard_plan_packet",
+      "family": "goal_hard_plan_packet",
+      "schema_version": "goal_hard_plan_packet/v1",
+      "durable": true,
+      "storage_class": "factory_packet",
+      "consumer": "goal.hard_plan_review",
+      "validator": "validateGoalHardPlanPacket",
+      "takeover_contract": "goal_hard_plan"
+    },
+    {
+      "packet_type": "human_blocker",
+      "family": "human_blocker",
+      "schema_version": "human_blocker.v1",
+      "durable": true,
+      "storage_class": "issue_artifact",
+      "consumer": "supervisor.human_blocker_review",
+      "validator": "validateHumanBlockerPacket",
+      "takeover_contract": "human_blocker_review"
+    },
+    {
+      "packet_type": "human_blocker_recheck",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Immediate re-evaluation hint for open human blockers; durable ownership already lives in human_blocker packets."
+    },
+    {
+      "packet_type": "incident_packet",
+      "family": "incident_packet",
+      "schema_version": "incident_packet.v1",
+      "durable": true,
+      "storage_class": "issue_artifact",
+      "consumer": "control_plane.incident_triage",
+      "validator": "validateIncidentPacket",
+      "takeover_contract": "control_plane_incident"
+    },
+    {
+      "packet_type": "judge_context_contract_recovery",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": true,
+      "storage_class": "factory_run_packet",
+      "consumer": "supervisor.judge_contract_recovery",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "supervisor_recovery"
+    },
+    {
+      "packet_type": "judge_context_packet",
+      "family": "judge_context_packet",
+      "schema_version": "judge_context/v1",
+      "durable": true,
+      "storage_class": "artifact",
+      "consumer": "judge",
+      "validator": "validateJudgeContextContract",
+      "takeover_contract": ""
+    },
+    {
+      "packet_type": "judge_evidence_contract_recovery",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": true,
+      "storage_class": "factory_run_packet",
+      "consumer": "supervisor.judge_contract_recovery",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "supervisor_recovery"
+    },
+    {
+      "packet_type": "judge_evidence_packet",
+      "family": "judge_evidence_packet",
+      "schema_version": "judge_evidence/v1",
+      "durable": true,
+      "storage_class": "artifact",
+      "consumer": "judge",
+      "validator": "validateJudgeEvidenceContract",
+      "takeover_contract": ""
+    },
+    {
+      "packet_type": "local_cli_runtime_crash",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Local-factory immediate-fix instruction that should be acted on in the same coding session, not handed off across ticks."
+    },
+    {
+      "packet_type": "merge_conflict_packet",
+      "family": "merge_conflict_packet",
+      "schema_version": "merge_conflict_packet/v1",
+      "durable": true,
+      "storage_class": "run_artifact",
+      "consumer": "supervisor.merge_conflict_resolver",
+      "validator": "validateMergeConflictPacket",
+      "takeover_contract": "merge_conflict_recovery"
+    },
+    {
+      "packet_type": "merge_followup_triage",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Short-lived triage suggestion for open merge-followup issues; intended for immediate supervisor review in the same snapshot cycle."
+    },
+    {
+      "packet_type": "orphan_feature_triage",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Transient classification suggestion generated from live issue metadata; regenerated each snapshot tick."
+    },
+    {
+      "packet_type": "relabel_merge_followup",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Label-normalization recommendation derived from current labels and title heuristics; safe to recompute."
+    },
+    {
+      "packet_type": "remote_cli_runtime_crash",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": true,
+      "storage_class": "factory_run_packet",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "supervisor_recovery"
+    },
+    {
+      "packet_type": "review_harness_degradation",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Snapshot-time review-harness warning generated from recent verdict telemetry and recalculated each tick."
+    },
+    {
+      "packet_type": "reviewer_context_packet",
+      "family": "reviewer_context_packet",
+      "schema_version": "reviewer_context/v1",
+      "durable": true,
+      "storage_class": "artifact",
+      "consumer": "reviewer",
+      "validator": "validateReviewerContextContract",
+      "takeover_contract": ""
+    },
+    {
+      "packet_type": "run_liveness_recovery",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Liveness sweep recommendation derived from recent runtime heartbeat state; recomputed every supervisor snapshot."
+    },
+    {
+      "packet_type": "stale_bug_recheck",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Time-window recheck reminder for stale bugs; relies on current bug age and can be recalculated without durable handoff."
+    },
+    {
+      "packet_type": "stalled_wave_recovery",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Snapshot-time stalled-wave recommendation synthesized from recent run telemetry and regenerated each tick."
+    },
+    {
+      "packet_type": "unlabeled_issue_classification",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Current-state labeling prompt synthesized from live issue fields; regenerated deterministically each tick."
+    },
+    {
+      "packet_type": "unscheduled_wave_requeue",
+      "family": "remediation_packet",
+      "schema_version": "remediation_packet/v1",
+      "durable": false,
+      "storage_class": "state_snapshot",
+      "consumer": "supervisor.state_snapshot",
+      "validator": "validateRemediationPacket",
+      "takeover_contract": "",
+      "ephemeral_justification": "Wave-marker requeue suggestion derived from current milestone/marker state and intended for immediate supervisor action."
+    }
+  ]
+}

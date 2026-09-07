@@ -1,0 +1,5 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "demo",
+  "control_token": "${MISSING_FACTORY_TOKEN}"
+}

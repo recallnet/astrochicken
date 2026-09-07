@@ -1,0 +1,26 @@
+{
+	"name": "@hatch/capability-goal-decomposition",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch goal-decomposition capability: goal analysis and issue-writing graphs + skill bundle",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./workflows/*": "./workflows/*",
+		"./prompts/*": "./prompts/*",
+		"./skills/*": "./skills/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json",
+		"./timeouts.defaults.json": "./timeouts.defaults.json"
+	},
+	"files": [
+		"graphs",
+		"prompts",
+		"skills",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"timeouts.defaults.json",
+		"workflows"
+	]
+}

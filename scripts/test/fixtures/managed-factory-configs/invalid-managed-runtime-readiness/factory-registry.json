@@ -1,0 +1,12 @@
+{
+  "schema": "hatch.factory.registry.v1",
+  "instances": [
+    {
+      "instance_id": "example-trading",
+      "kind_id": "example-trading",
+      "control_plane_repo": "recallnet/astrochicken",
+      "target_repo": "example-org/example-trading",
+      "status": "active"
+    }
+  ]
+}

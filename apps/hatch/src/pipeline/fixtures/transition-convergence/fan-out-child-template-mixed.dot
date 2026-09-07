@@ -1,0 +1,48 @@
+digraph fan_out_child_template_mixed {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	emit_exports [
+		type="tool"
+		label="Emit Child Exports"
+		outputs="alpha,zeta"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="echo \"{\\\"alpha\\\":\\\"a${__fan_out_index}\\\",\\\"zeta\\\":\\\"z${__fan_out_index}\\\"}\""
+	]
+	gate [
+		type="tool"
+		label="Gate Child Success"
+		output_key="gate_result"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="test ${item} != fail"
+	]
+	emit_index [
+		type="tool"
+		label="Emit Child Index"
+		output_key="index"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="echo ${__fan_out_index}"
+	]
+	emit_index_alt [
+		type="tool"
+		label="Emit Child Index Alt"
+		output_key="index"
+		governance="reversible"
+		tool_id="shell"
+		action_id="file.write"
+		prompt="echo alt-${__fan_out_index}"
+	]
+	done [shape=Msquare]
+
+	start -> emit_exports
+	emit_exports -> gate [condition="outcome=success"]
+	gate -> emit_index [condition="outcome=success && item!=fail"]
+	gate -> emit_index_alt [condition="outcome=success && route=alternate"]
+	emit_index -> done [condition="outcome=success"]
+	emit_index_alt -> done [condition="outcome=success"]
+}

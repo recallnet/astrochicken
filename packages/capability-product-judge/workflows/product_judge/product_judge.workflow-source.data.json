@@ -1,0 +1,460 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "product_judge",
+  "familyId": "product_judge",
+  "title": "Product Judge",
+  "description": "Typed workflow source owner for packages/capability-product-judge/graphs/product_judge.dot.",
+  "sourcePath": "packages/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-product-judge/product_judge.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "product_judge",
+    "typed_action_transport_mode": "enforced"
+  },
+  "sourceMap": {
+    "graphName": "product_judge",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "build_judge_context",
+        "runtimeNodeId": "build_judge_context"
+      },
+      {
+        "sourceNodeId": "build_judge_context_recovery_packet",
+        "runtimeNodeId": "build_judge_context_recovery_packet"
+      },
+      {
+        "sourceNodeId": "build_judge_evidence",
+        "runtimeNodeId": "build_judge_evidence"
+      },
+      {
+        "sourceNodeId": "build_judge_evidence_recovery_packet",
+        "runtimeNodeId": "build_judge_evidence_recovery_packet"
+      },
+      {
+        "sourceNodeId": "close_milestone",
+        "runtimeNodeId": "close_milestone"
+      },
+      {
+        "sourceNodeId": "decide",
+        "runtimeNodeId": "decide"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "judge",
+        "runtimeNodeId": "judge"
+      },
+      {
+        "sourceNodeId": "judge_context_gate",
+        "runtimeNodeId": "judge_context_gate"
+      },
+      {
+        "sourceNodeId": "judge_evidence_gate",
+        "runtimeNodeId": "judge_evidence_gate"
+      },
+      {
+        "sourceNodeId": "open_followup",
+        "runtimeNodeId": "open_followup"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "validate_judge_context",
+        "runtimeNodeId": "validate_judge_context"
+      },
+      {
+        "sourceNodeId": "validate_judge_evidence",
+        "runtimeNodeId": "validate_judge_evidence"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "build_judge_context",
+      "kind": "tool_action",
+      "title": "Build judge context contract",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.build_context_contract",
+        "label": "Build judge context contract",
+        "output_format": "json",
+        "outputs": "judge_context_path,judge_context_sha256,judge_context_valid,judge_context_error,judge_scenario_selection_path,judge_scenario_selection_sha256,judge_scenario_selection_signature_sha256",
+        "action_gh_repo": "${gh_repo}",
+        "action_judge_context_raw": "${merge_candidates}",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_judge_rubric": "alignment.default",
+        "action_milestone_title": "${milestone_title}",
+        "action_objective_id": "post_merge_alignment",
+        "action_scenario_selector": "astrochicken",
+        "action_subject_id": "${milestone_title}",
+        "action_worktree_dir": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "build_judge_context_recovery_packet",
+      "kind": "tool_action",
+      "title": "Build judge context recovery packet",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.build_recovery_packet",
+        "label": "Build judge context recovery packet",
+        "output_format": "json",
+        "outputs": "judge_context_recovery_packet_path,judge_context_recovery_packet_id,judge_context_recovery_packet_schema_version,judge_context_recovery_packet_storage_class,judge_context_recovery_packet_type",
+        "action_repo": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "issue_execution",
+        "action_node_id": "build_judge_context_recovery_packet",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_error_text": "${judge_context_error}",
+        "action_gate_code": "${judge_context_gate_code}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_scope_identity": "issue_execution",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_milestone_title": "${milestone_title}",
+        "action_packet_type": "judge_context_contract_recovery",
+        "action_route_code": "${judge_route_code}",
+        "action_target_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "build_judge_evidence",
+      "kind": "tool_action",
+      "title": "Build judge evidence contract",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.build_evidence_contract",
+        "label": "Build judge evidence contract",
+        "output_format": "json",
+        "outputs": "judge_evidence_path,judge_evidence_sha256,judge_evidence_valid,judge_evidence_error",
+        "action_judge_context_raw": "${merge_candidates}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_require_qa_markers": "true",
+        "action_subject_id": "${milestone_title}",
+        "action_worktree_dir": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "build_judge_evidence_recovery_packet",
+      "kind": "tool_action",
+      "title": "Build judge evidence recovery packet",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.build_recovery_packet",
+        "label": "Build judge evidence recovery packet",
+        "output_format": "json",
+        "outputs": "judge_evidence_recovery_packet_path,judge_evidence_recovery_packet_id,judge_evidence_recovery_packet_schema_version,judge_evidence_recovery_packet_storage_class,judge_evidence_recovery_packet_type",
+        "action_repo": "${repo}",
+        "action_factory_id": "${factory_id}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "issue_execution",
+        "action_node_id": "build_judge_evidence_recovery_packet",
+        "action_control_plane_repo": "${control_plane_repo}",
+        "action_error_text": "${judge_evidence_error}",
+        "action_gate_code": "${judge_evidence_gate_code}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_scope_identity": "issue_execution",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_milestone_title": "${milestone_title}",
+        "action_packet_type": "judge_evidence_contract_recovery",
+        "action_route_code": "${judge_route_code}",
+        "action_target_repo": "${gh_repo}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "close_milestone",
+      "kind": "llm_prompt",
+      "title": "Close milestone",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "label": "Close milestone",
+        "output_key": "close_milestone_status",
+        "prompt": "# hatch:no-inline-script-ok\ngh api repos/${gh_repo}/milestones --state open --jq '.[] | select(.title==\"${milestone_title}\") | .number' | xargs -I{} gh api -X PATCH repos/${gh_repo}/milestones/{} -f state=closed >/dev/null",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "decide",
+      "kind": "decision",
+      "title": "Judge pass?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Judge pass?",
+        "recovery_owner": "supervisor"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "judge",
+      "kind": "llm_prompt",
+      "title": "Post-merge judge",
+      "dotAttributes": {
+        "class": "post_merge_judge",
+        "benchmark_job_id": "issue.execute.judge",
+        "prompt_version": "2026-03-09.r1",
+        "role_version": "1.0.0",
+        "skill_id": "issue.execute",
+        "label": "Post-merge judge",
+        "outputs": "disposition,confidence,recommended_transition,reason_codes,notes,verdict",
+        "prompt": "You are the post-merge judge for ${gh_repo}.\n\nSurvey the existing scenario registry and use zero, one, or at most two scenarios only when they materially sharpen judgment for this merged work. Scenarios are optional and sparse; do not force them.\nTreat scenarios as high-value judgment aids, not exhaustive checklists.\nDo NOT reveal or quote any scenario. Provide a redacted verdict envelope.\n\nMerged issues: ${merge_results}\n\nReturn JSON:\n{\n  \"schema\": \"verdict/v1\",\n  \"verdict_kind\": \"post_merge_judge\",\n  \"disposition\": \"approve|reject|defer|escalate\",\n  \"confidence\": \"high|medium|low\",\n  \"recommended_transition\": \"close_milestone|open_followup|request_more_evidence|escalate_contract\",\n  \"observation\": {\n    \"alignment_score\": 0.0,\n    \"constraint_violations\": [],\n    \"missing_evidence\": []\n  },\n  \"recommendation\": {\n    \"action\": \"close_milestone|open_followup|request_more_evidence|escalate_contract\",\n    \"next_steps\": [\"Redacted feedback or confirmation\"]\n  },\n  \"reason_codes\": [\"POST_MERGE_ALIGNED|POST_MERGE_MISALIGNED|POST_MERGE_EVIDENCE_GAP|POST_MERGE_CONTRACT_INVALID\"],\n  \"notes\": \"Concise human-readable rationale\"\n}\n\nRules:\n- If disposition=approve, recommended_transition must be close_milestone.\n- If disposition=reject, recommended_transition must be open_followup.\n- If disposition=defer, recommended_transition must be request_more_evidence.\n- If disposition=escalate, recommended_transition must be escalate_contract.\n- reason_codes must be non-empty.\nReturn JSON only.",
+        "objective_id": "post_merge_alignment",
+        "scenarios": "astrochicken"
+      }
+    },
+    {
+      "id": "judge_context_gate",
+      "kind": "decision",
+      "title": "Judge context complete?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Judge context complete?"
+      }
+    },
+    {
+      "id": "judge_evidence_gate",
+      "kind": "decision",
+      "title": "Judge evidence complete?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Judge evidence complete?"
+      }
+    },
+    {
+      "id": "open_followup",
+      "kind": "tool_action",
+      "title": "Open follow-up",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "wave.open_judge_followup",
+        "label": "Open follow-up",
+        "output_key": "open_followup_status",
+        "action_repo": "${gh_repo}",
+        "action_run_id": "${__run_id}",
+        "action_pipeline": "issue_execution",
+        "action_judge_notes": "${notes}",
+        "action_milestone_title": "${milestone_title}",
+        "recovery_owner": "supervisor",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "validate_judge_context",
+      "kind": "tool_action",
+      "title": "Validate judge context contract",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.validate_context_contract",
+        "label": "Validate judge context contract",
+        "output_format": "json",
+        "outputs": "judge_context_gate_pass,judge_context_gate_code,judge_context_error,judge_context_path,judge_context_sha256,judge_scenario_selection_path,judge_scenario_selection_sha256,judge_scenario_selection_signature_sha256,judge_route_code,disposition,confidence,recommended_transition,reason_codes,notes,verdict",
+        "action_judge_context_error": "${judge_context_error}",
+        "action_judge_context_path": "${judge_context_path}",
+        "action_judge_context_raw": "${merge_candidates}",
+        "action_judge_context_sha256": "${judge_context_sha256}",
+        "action_judge_context_valid": "${judge_context_valid}",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_judge_rubric": "alignment.default",
+        "action_objective_id": "post_merge_alignment",
+        "action_scenario_selector": "astrochicken",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "validate_judge_evidence",
+      "kind": "tool_action",
+      "title": "Validate judge evidence contract",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "judge.validate_evidence_contract",
+        "label": "Validate judge evidence contract",
+        "output_format": "json",
+        "outputs": "judge_evidence_gate_pass,judge_evidence_gate_code,judge_evidence_error,judge_route_code,disposition,confidence,recommended_transition,reason_codes,notes,verdict",
+        "action_judge_context_raw": "${merge_candidates}",
+        "action_judge_evidence_error": "${judge_evidence_error}",
+        "action_judge_evidence_path": "${judge_evidence_path}",
+        "action_judge_evidence_sha256": "${judge_evidence_sha256}",
+        "action_judge_evidence_valid": "${judge_evidence_valid}",
+        "action_judge_kind": "issue_execution_post_merge",
+        "action_require_qa_markers": "true",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "build_judge_evidence"
+    },
+    {
+      "from": "validate_judge_evidence",
+      "to": "judge_evidence_gate"
+    },
+    {
+      "from": "build_judge_context_recovery_packet",
+      "to": "decide"
+    },
+    {
+      "from": "build_judge_context",
+      "to": "validate_judge_context"
+    },
+    {
+      "from": "build_judge_evidence_recovery_packet",
+      "to": "decide"
+    },
+    {
+      "from": "build_judge_evidence",
+      "to": "build_judge_context"
+    },
+    {
+      "from": "build_judge_evidence",
+      "to": "validate_judge_evidence",
+      "condition": "judge_evidence_valid=__contract_edge__",
+      "dotAttributes": {
+        "condition": "judge_evidence_valid=__contract_edge__"
+      }
+    },
+    {
+      "from": "close_milestone",
+      "to": "done"
+    },
+    {
+      "from": "decide",
+      "to": "close_milestone",
+      "condition": "disposition=approve",
+      "dotAttributes": {
+        "condition": "disposition=approve"
+      }
+    },
+    {
+      "from": "decide",
+      "to": "open_followup",
+      "condition": "disposition!=approve",
+      "dotAttributes": {
+        "condition": "disposition!=approve"
+      }
+    },
+    {
+      "from": "judge_context_gate",
+      "to": "build_judge_context_recovery_packet",
+      "condition": "judge_context_gate_pass!=true",
+      "dotAttributes": {
+        "condition": "judge_context_gate_pass!=true"
+      }
+    },
+    {
+      "from": "judge_context_gate",
+      "to": "validate_judge_evidence",
+      "condition": "judge_context_gate_pass=true",
+      "dotAttributes": {
+        "condition": "judge_context_gate_pass=true"
+      }
+    },
+    {
+      "from": "judge_evidence_gate",
+      "to": "build_judge_evidence_recovery_packet",
+      "condition": "judge_evidence_gate_pass!=true",
+      "dotAttributes": {
+        "condition": "judge_evidence_gate_pass!=true"
+      }
+    },
+    {
+      "from": "judge_evidence_gate",
+      "to": "judge",
+      "condition": "judge_evidence_gate_pass=true",
+      "dotAttributes": {
+        "condition": "judge_evidence_gate_pass=true"
+      }
+    },
+    {
+      "from": "judge",
+      "to": "decide"
+    },
+    {
+      "from": "open_followup",
+      "to": "done"
+    },
+    {
+      "from": "validate_judge_context",
+      "to": "judge_context_gate"
+    }
+  ]
+}

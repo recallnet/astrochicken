@@ -1,0 +1,25 @@
+{
+  "open_bugs": [
+    {
+      "number": 1347,
+      "title": "[bug] fast-route topology regression",
+      "labels": [
+        { "name": "managed-factory-bug" },
+        { "name": "factory:example-trading" }
+      ]
+    },
+    {
+      "number": 1348,
+      "title": "[bug] open-bug gate telemetry drift",
+      "labels": [
+        { "name": "managed-factory-bug" },
+        { "name": "factory:example-trading" }
+      ]
+    }
+  ],
+  "supervisorReview": {
+    "mode": "fast-route",
+    "entry_node": "supervisor_review_bug_fast",
+    "owner": "factory-supervisor"
+  }
+}

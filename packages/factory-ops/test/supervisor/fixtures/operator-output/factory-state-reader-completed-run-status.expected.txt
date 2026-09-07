@@ -1,0 +1,17 @@
+Factory: (unresolved)
+Factory ID: mothership
+Home Repo: recallnet/astrochicken
+Target Repo: recallnet/astrochicken
+Factory Mode: standalone
+Control Plane: (unresolved)
+Runs Dir: <runs-dir>
+
+Control plane gate: channel=general reason=control_plane_manifest_unavailable can_resume=false
+  Manifest: local_fs .hatch/releases/canary/release-manifest.json @ (unknown)
+  Resume condition: Publish or sync a control-plane release manifest.
+
+Managed state: action=none health=control_plane_blocked
+  Reason: Publish or sync a control-plane release manifest.
+
+No active runs.
+(1 completed, 0 failed)

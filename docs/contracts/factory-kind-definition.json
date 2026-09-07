@@ -1,0 +1,79 @@
+{
+  "$id": "https://recallnet.dev/contracts/factory-kind-definition.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Versioned managed factory kind definition document.",
+  "properties": {
+    "capabilities": {
+      "items": {
+        "additionalProperties": {},
+        "properties": {
+          "channel": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "channel"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "domain_graph": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "execution_mode": {
+      "enum": [
+        "issues_only",
+        "code"
+      ],
+      "type": "string"
+    },
+    "kind_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "managed": {
+      "type": "boolean"
+    },
+    "required_labels": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991,
+      "type": "integer"
+    },
+    "shared_supervisor_shell": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "supported_destinations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "kind_id",
+    "schema_version",
+    "execution_mode",
+    "shared_supervisor_shell",
+    "domain_graph",
+    "required_labels"
+  ],
+  "title": "Factory Kind Definition",
+  "type": "object"
+}

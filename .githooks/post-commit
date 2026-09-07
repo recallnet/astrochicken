@@ -1,0 +1,24 @@
+#!/bin/bash
+# Post-commit: rebuild hatch + relink hatch-ops from the canonical checkout only.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="."
+LOG_DIR="$REPO_ROOT/.hook-logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/post-commit.log"
+
+{
+  # @context:regression !critical Post-commit full builds stacked on top of
+  # pre-commit/pre-push gates and contributed to runaway Node process storms
+  # under concurrent agent sessions. Keep post-commit side effects lightweight.
+  echo "[post-commit] Skipping automatic hatch build to avoid background load."
+
+  if [ -f "scripts/relink-global-cli.mjs" ]; then
+    node scripts/relink-global-cli.mjs
+  else
+    echo "[post-commit] Skipping hatch-ops relink reason=missing_relink_script"
+  fi
+
+  echo "[post-commit] Done."
+} 2>&1 | tee "$LOG_FILE"

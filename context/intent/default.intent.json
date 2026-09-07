@@ -1,0 +1,6 @@
+{
+  "schema": "hatch.intent.v1",
+  "id": "intent.default",
+  "title": "Default intent",
+  "summary": "Fallback intent metadata for Hatch pipelines when no specific intent is supplied."
+}

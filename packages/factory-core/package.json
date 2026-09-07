@@ -1,0 +1,75 @@
+{
+  "name": "@hatch/factory-core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./daily-lens-collector": "./src/daily-lens-collector.ts",
+    "./issue-url-normalization": "./src/issue-url-normalization.ts",
+    "./workspace-package-manager": "./src/workspace-package-manager.ts",
+    "./transport": "./src/transport.ts",
+    "./primitives": "./src/primitives.ts",
+    "./hatch-config-schema-boundaries": {
+      "types": "./src/hatch-config-schema-boundaries.d.ts",
+      "import": "./src/hatch-config-schema-boundaries.ts"
+    },
+    "./schema-registry": {
+      "types": "./src/schema-registry.d.ts",
+      "import": "./src/schema-registry.ts"
+    },
+    "./openapi-registry": {
+      "types": "./src/openapi-registry.d.ts",
+      "import": "./src/openapi-registry.ts"
+    },
+    "./asyncapi-registry": {
+      "types": "./src/asyncapi-registry.d.ts",
+      "import": "./src/asyncapi-registry.ts"
+    },
+    "./cloudevents-registry": {
+      "types": "./src/cloudevents-registry.d.ts",
+      "import": "./src/cloudevents-registry.ts"
+    },
+    "./openlineage-registry": {
+      "types": "./src/openlineage-registry.d.ts",
+      "import": "./src/openlineage-registry.ts"
+    },
+    "./oci-artifact-registry": {
+      "types": "./src/oci-artifact-registry.d.ts",
+      "import": "./src/oci-artifact-registry.ts"
+    },
+    "./artifact-trust-registry": {
+      "types": "./src/artifact-trust-registry.d.ts",
+      "import": "./src/artifact-trust-registry.ts"
+    },
+    "./capability-contract-registry": {
+      "types": "./src/capability-contract-registry.d.ts",
+      "import": "./src/capability-contract-registry.ts"
+    },
+    "./factory-composition-registry": {
+      "types": "./src/factory-composition-registry.d.ts",
+      "import": "./src/factory-composition-registry.ts"
+    },
+    "./workflow-source-registry": {
+      "types": "./src/workflow-source-registry.d.ts",
+      "import": "./src/workflow-source-registry.ts"
+    },
+    "./workflow-ir-registry": {
+      "types": "./src/workflow-ir-registry.d.ts",
+      "import": "./src/workflow-ir-registry.ts"
+    },
+    "./hatch-run-lifecycle-asyncapi": {
+      "types": "./src/hatch-run-lifecycle-asyncapi.d.ts",
+      "import": "./src/hatch-run-lifecycle-asyncapi.ts"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
+  }
+}

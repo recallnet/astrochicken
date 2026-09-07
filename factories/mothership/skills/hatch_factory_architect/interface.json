@@ -1,0 +1,53 @@
+{
+  "name": "hatch_factory_architect",
+  "version": "0.1.0",
+  "description": "Factory-native architect contract for deterministic Hatch factory design, playbooks, and validation decisions.",
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "design_summary": { "type": "string" },
+      "playbook_steps": { "type": "array", "items": { "type": "string" } },
+      "validation_commands": { "type": "array", "items": { "type": "string" } },
+      "next_actions": { "type": "array", "items": { "type": "string" } },
+      "context_keys_used": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+  "tools": {
+    "allowed": ["read", "glob", "grep"],
+    "forbidden": ["bash", "write", "edit", "deploy", "push"]
+  },
+  "safety": {
+    "may_modify_tests": false,
+    "may_create_files": false,
+    "may_delete_files": false,
+    "may_run_destructive_commands": false
+  },
+  "pi_coding_agent": {
+    "supported_prompts": ["primary", "revise", "audit"],
+    "required_context_keys": [
+      "agents_contract",
+      "factory_design_skill",
+      "factory_design_templates",
+      "hatch_cli_entrypoint",
+      "hatch_pipeline_typescript",
+      "hatch_dispatch_typescript",
+      "mothership_graphs",
+      "mothership_ops_commands",
+      "mothership_factory_config",
+      "factory_supervisor_tick_doc",
+      "factory_native_subagent_contract",
+      "factories_readme"
+    ],
+    "judge_context_inputs": [
+      "judge_context_path",
+      "judge_context_sha256",
+      "judge_context_valid",
+      "judge_context_error",
+      "judge_scenario_selection_path",
+      "judge_scenario_selection_sha256",
+      "judge_scenario_selection_signature_sha256",
+      "judge_context_identity",
+      "judge_context_purpose"
+    ]
+  }
+}

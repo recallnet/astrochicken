@@ -1,0 +1,10 @@
+// Test LLM integration: asks Codex to generate a haiku
+digraph llm_test {
+    label = "LLM Test"
+
+    start [shape=Mdiamond]
+    haiku [label="Write haiku" prompt="Write a haiku about programming. Output ONLY the haiku, nothing else." llm_provider="codex" llm_model="gpt-5.3-codex"]
+    done [shape=Msquare]
+
+    start -> haiku -> done
+}

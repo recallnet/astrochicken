@@ -1,0 +1,174 @@
+{
+  "$id": "https://recallnet.dev/contracts/workflow-ir-document.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {},
+  "description": "Canonical deterministic workflow IR document envelope for generated DOT runtime IR and governed OCI publication-intent metadata.",
+  "properties": {
+    "artifactClass": {
+      "const": "workflow_ir_bundle",
+      "type": "string"
+    },
+    "artifactRef": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "artifactVersion": {
+      "const": "workflow_ir_bundle/v1",
+      "type": "string"
+    },
+    "compilerVersion": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "dot": {
+      "type": "string"
+    },
+    "familyId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "generatedFiles": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "metadata": {
+      "additionalProperties": {},
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "outputPath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "publicationPlan": {
+      "additionalProperties": {},
+      "properties": {
+        "args": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "artifact_class": {
+          "const": "workflow_ir_bundle",
+          "type": "string"
+        },
+        "artifact_ref": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "additionalProperties": {},
+            "properties": {
+              "mediaType": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "mediaType"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "lifecycle_policy": {
+          "additionalProperties": {},
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "media_type": {
+          "const": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {},
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "subject": {
+          "additionalProperties": {},
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "trust_policy": {
+          "additionalProperties": {},
+          "propertyNames": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "artifact_class",
+        "artifact_ref",
+        "media_type",
+        "metadata",
+        "files",
+        "args"
+      ],
+      "type": "object"
+    },
+    "runtimeGraphPath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "workflow_ir_document/v1",
+      "type": "string"
+    },
+    "sourcePath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "trustBundle": {
+      "additionalProperties": {},
+      "propertyNames": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "workflowId": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "artifactClass",
+    "artifactVersion",
+    "workflowId",
+    "familyId",
+    "sourcePath",
+    "runtimeGraphPath",
+    "compilerVersion",
+    "artifactRef",
+    "generatedFiles",
+    "metadata",
+    "publicationPlan",
+    "dot"
+  ],
+  "title": "Workflow IR Document",
+  "type": "object"
+}

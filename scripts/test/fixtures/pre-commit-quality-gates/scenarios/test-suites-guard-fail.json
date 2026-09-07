@@ -1,0 +1,7 @@
+{
+  "stagedPaths": ["apps/hatch/src/cli.ts"],
+  "testGuardGatesExit": 31,
+  "expectedStatus": 31,
+  "expectedNpmCalls": ["test:guard-gates"],
+  "expectedReason": "bucket_guard_only"
+}

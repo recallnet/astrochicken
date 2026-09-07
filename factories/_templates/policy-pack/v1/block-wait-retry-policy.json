@@ -1,0 +1,24 @@
+{
+  "_policy": "block_wait_retry",
+  "_shared_note": "shared.* keys define bounded retry and cooldown defaults for blocked/waiting flows.",
+  "_factory_note": "factory.* keys allow local retry budgets and wait tolerances.",
+  "shared": {
+    "retry": {
+      "max_attempts": 3,
+      "backoff_seconds": 60
+    },
+    "wait": {
+      "cooldown_minutes": 30,
+      "_cooldown_source": "DEFAULT_TERMINAL_COOLDOWN_MS in packages/factory-ops/src/commands/wave-create-ready.mjs (30 * 60 * 1000 ms = 30 minutes)"
+    }
+  },
+  "factory": {
+    "retry": {
+      "max_attempts": 3,
+      "backoff_seconds": 60
+    },
+    "wait": {
+      "max_minutes": 240
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "reactor_collector_contract/v1",
+  "collector_profile_path": "packages/factory-telemetry/config/otel-collector.yaml",
+  "reactor_helper_path": "apps/hatch/src/pipeline/reactor-instrumentation.ts",
+  "summary": {
+    "control_plane_entrypoints": 2,
+    "helper_consumer_files": 2,
+    "diagnostics": 0
+  },
+  "control_plane_entrypoints": [
+    "apps/hatch/src/cli.ts",
+    "apps/hatch/src/server/server.ts"
+  ],
+  "helper_consumers": [
+    "apps/hatch/src/cli.ts",
+    "apps/hatch/src/server/server.ts"
+  ],
+  "banned_runtime_imports": [
+    "bindLangfuseLifecycleTelemetry",
+    "createLangfuseTelemetry",
+    "createRuntimeRedisTelemetrySink",
+    "projectRunLifecycleEventsToTelemetrySink"
+  ],
+  "handler_layer_files": [
+    "apps/hatch/src/pipeline/handler/manager.ts",
+    "apps/hatch/src/pipeline/handler/codergen.ts"
+  ],
+  "banned_handler_imports": [
+    "bindLangfuseSessionTelemetry",
+    "computeLangfusePromptHash",
+    "emitLangfuseGenerationEvent",
+    "nextLangfuseAttemptIndex",
+    "recordLangfuseSessionContext"
+  ]
+}

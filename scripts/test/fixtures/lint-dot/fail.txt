@@ -1,0 +1,7 @@
+digraph lint_dot_fail {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  step [type="tool" label="Step" output_key="step_out" governance="irreversible" prompt="python3 -c \"print('x')\""]
+  start -> step
+  step -> done [condition="step_out=ok"]
+}

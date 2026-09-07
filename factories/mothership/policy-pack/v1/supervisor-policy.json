@@ -1,0 +1,20 @@
+{
+  "_policy": "supervisor",
+  "_shared_note": "shared.* keys are platform-owned defaults and must stay aligned with control-plane runtime contracts.",
+  "_factory_note": "factory.* keys are safe customization hooks. Override via factory.config.json policyPack.overrides.supervisor.",
+  "shared": {
+    "max_review_retries": 3,
+    "review_retry_backoff_seconds": 60,
+    "force_merge_on_retry_exhaustion": true,
+    "dispatch": {
+      "max_goal_runs_per_tick": 2
+    }
+  },
+  "factory": {
+    "max_review_retries": 2,
+    "review_retry_backoff_seconds": 60,
+    "dispatch": {
+      "max_goal_runs_per_tick": 2
+    }
+  }
+}

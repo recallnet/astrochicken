@@ -1,0 +1,7 @@
+{
+  "schema": "hatch.intent.v1",
+  "id": "intent.test.unknown",
+  "title": "Unknown key intent",
+  "summary": "This intent includes an unknown key.",
+  "mystery": "nope"
+}

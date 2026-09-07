@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "managed-supervisor-shell",
+  "familyId": "runtime",
+  "sourcePath": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+  "outputPath": "docs/contracts/factory-runtime.managed-supervisor-shell.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+    "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "runtime",
+      "correlation_id": "workflow-ir-contract:managed-supervisor-shell",
+      "factory_id": "factory-runtime",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "managed-supervisor-shell",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "managed-supervisor-shell"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "runtime",
+        "correlation_id": "workflow-ir-contract:managed-supervisor-shell",
+        "factory_id": "factory-runtime",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "managed-supervisor-shell",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "managed-supervisor-shell"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+      "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpmYWN0b3J5LXJ1bnRpbWUtbWFuYWdlZC1zdXBlcnZpc29yLXNoZWxsIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogIm1hbmFnZWQtc3VwZXJ2aXNvci1zaGVsbCIKICAgICAgfSwKICAgICAgInJlc29sdmVkX2RlcGVuZGVuY2llcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiZGlnZXN0IjogewogICAgICAgICAgICAic2hhMjU2IjogInR5cGVkLXNvdXJjZS1nZW5lcmF0ZWQiCiAgICAgICAgICB9LAogICAgICAgICAgInVyaSI6ICJwYWNrYWdlcy9mYWN0b3J5LXJ1bnRpbWUvd29ya2Zsb3dzL21hbmFnZWQtc3VwZXJ2aXNvci1zaGVsbC9tYW5hZ2VkLXN1cGVydmlzb3Itc2hlbGwud29ya2Zsb3ctc291cmNlLm1qcyIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicnVuX2RldGFpbHMiOiB7CiAgICAgICJidWlsZGVyIjogewogICAgICAgICJpZCI6ICJodHRwczovL3JlY2FsbG5ldC5kZXYvYnVpbGRlcnMvd29ya2Zsb3ctaXIiCiAgICAgIH0sCiAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAiZmluaXNoZWRfb24iOiAiMjAyNi0wMy0yMVQwMDowMDowMS4wMDBaIiwKICAgICAgICAiaW52b2NhdGlvbl9pZCI6ICJtYW5hZ2VkLXN1cGVydmlzb3Itc2hlbGwiLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "managed-supervisor-shell"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "managed-supervisor-shell",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:72aa658294b193d245b0f53238c8fab9bd4efd4bc1350c196c770fef9c94fafd",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:factory-runtime-managed-supervisor-shell",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs. Do not edit by hand.\ndigraph \"managed-supervisor-shell\" {\n    label = \"managed_supervisor\"\n    workflow_source = \"packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs\"\n    action_item_gate [shape=\"diamond\" label=\"Action items unresolved?\" recovery_owner=\"supervisor\"]\n    check_control_state [type=\"tool\" governance=\"reversible\" label=\"Check control state\" output_format=\"json\" outputs=\"control_gate,control_state_action,control_state_reason,should_run,parse_error,state_path\" prompt=\"hatch-ops supervisor managed-control-gate --factory-id '${factory_id}' --root-dir '${repo}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_active [type=\"tool\" governance=\"reversible\" label=\"Lifecycle -> active\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" prompt=\"hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'true' --has-domain-failure 'false'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_blocked_platform [type=\"tool\" governance=\"reversible\" label=\"Lifecycle -> blocked_platform\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" prompt=\"hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'true' --has-action-items '${has_action_items}' --has-selected-work 'false' --has-domain-failure 'false'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_degraded [type=\"tool\" governance=\"reversible\" label=\"Lifecycle -> degraded\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" prompt=\"hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'true' --has-domain-failure 'true'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_domain_failure [type=\"tool\" governance=\"reversible\" label=\"Classify domain failure\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" prompt=\"hatch-ops supervisor managed-failure-classifier --domain-error '${__composite_reason}' --parse-error '${parse_error}' --gate '${control_gate}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_idle [type=\"tool\" governance=\"reversible\" label=\"Lifecycle -> idle\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" prompt=\"hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'false' --has-domain-failure 'false'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_manifest_failure [type=\"tool\" governance=\"reversible\" label=\"Classify manifest failure\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" prompt=\"hatch-ops supervisor managed-failure-classifier --domain-error '${manifest_error}' --parse-error '' --gate 'manifest'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_paused [type=\"tool\" governance=\"reversible\" label=\"Lifecycle -> paused/draining\" output_format=\"json\" outputs=\"lifecycle_state,health_state\" prompt=\"hatch-ops supervisor managed-health-classifier --control-gate '${control_gate}' --has-open-upstream-bugs 'false' --has-action-items 'false' --has-selected-work 'false' --has-domain-failure 'false'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    classify_paused_failure [type=\"tool\" governance=\"reversible\" label=\"Classify paused/draining as local control-state owner\" output_format=\"json\" outputs=\"failure_classification,failure_reason\" prompt=\"hatch-ops supervisor managed-failure-classifier --domain-error '${control_state_action}:${control_state_reason}' --parse-error '' --gate 'control_state'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    control_state_gate [shape=\"diamond\" label=\"Control state allows tick?\" recovery_owner=\"supervisor\"]\n    domain_failure_gate [shape=\"diamond\" label=\"Domain failure observed?\" recovery_owner=\"supervisor\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\" recovery_owner=\"supervisor\"]\n    emit_run_summary [type=\"tool\" governance=\"reversible\" label=\"Emit telemetry run summary\" output_key=\"managed_run_summary\" prompt=\"hatch-ops supervisor managed-emit-run-summary --factory-id '${factory_id}' --instance-id '${instance_id}' --kind-id '${kind_id}' --home-repo '${target_repo}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --trust-domain '${trust_domain}' --trust-role '${trust_role}' --lifecycle-state '${lifecycle_state}' --health-state '${health_state}' --failure-classification '${failure_classification}' --failure-reason '${failure_reason}' --control-gate '${control_gate}' --control-state-action '${control_state_action}' --control-state-reason '${control_state_reason}' --has-open-upstream-bugs '${has_open_upstream_bugs}' --open-upstream-bug-count '${open_upstream_bug_count}' --open-upstream-bug-numbers '${open_upstream_bug_numbers}' --has-action-items '${has_action_items}' --action-item-count '${action_item_count}' --unresolved-actions '${action_item_count}' --queue-depth '${action_item_count}' --oldest-work-age-seconds '0' --latest-incidents '[]' --has-issue '${has_issue}' --selected-issue-number '${selected_issue_number}' --domain-result '${domain_result}' --manifest-ok '${manifest_ok}' --manifest-error '${manifest_error}' --parse-error '${parse_error}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_action_items [type=\"tool\" governance=\"reversible\" label=\"Evaluate unresolved action items\" output_format=\"json\" outputs=\"has_action_items,action_item_count\" prompt=\"hatch-ops supervisor managed-action-item-gate --snapshot \\\"${state_snapshot}\\\"\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_open_bug_gate [type=\"tool\" governance=\"reversible\" label=\"Evaluate open bug gate\" output_format=\"json\" outputs=\"has_open_bugs,open_bug_count,parse_error\" prompt=\"hatch-ops supervisor open-bug-gate --repo '${target_repo}' --factory-id '${factory_id}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    evaluate_upstream_blockers [type=\"tool\" governance=\"reversible\" label=\"Evaluate upstream managed blockers\" output_format=\"json\" outputs=\"has_open_upstream_bugs,open_upstream_bug_count,open_upstream_bug_numbers,parse_error\" prompt=\"hatch-ops supervisor upstream-bug-gate --repo '${control_plane_repo}' --label 'managed-factory-bug' --label 'kind:${kind_id}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    intake_gate [shape=\"diamond\" label=\"Intake work selected?\" recovery_owner=\"supervisor\"]\n    load_context [type=\"tool\" governance=\"reversible\" label=\"Load managed kind + instance context\" output_format=\"json\" outputs=\"manifest_ok,manifest_error,factory_id,factory_root,kind_path,instance_path,kind_id,instance_id,target_repo,control_plane_repo,domain_graph,shared_supervisor_shell,destinations_json,intake_json,kind_context_json,trust_domain,trust_role\" prompt=\"hatch-ops supervisor managed-load-context --factory-id '${factory_id}' --factory-root '${factory_root}' --kind-path '${kind_path}' --instance-path '${instance_path}' --kind-id '${kind_id}' --instance-id '${instance_id}' --home-repo '${target_repo}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --destinations-json '${destinations_json}' --trust-domain '${trust_domain}' --trust-role '${trust_role}' --root-dir '${repo}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    manifest_gate [shape=\"diamond\" label=\"Manifests valid?\" recovery_owner=\"supervisor\"]\n    open_bug_gate [shape=\"diamond\" label=\"Open bugs? (self-heal route)\" recovery_owner=\"supervisor\"]\n    persist_lifecycle_state [type=\"tool\" governance=\"reversible\" label=\"Persist lifecycle state snapshot\" output_format=\"json\" outputs=\"ok,state_path,state_version,mirror_path,mirror_version,mirror_updated_at,mirror_error,lifecycle_state,lifecycle_reason,lifecycle_failure_classification,lifecycle_failure_reason,lifecycle_updated_at,blockers,unresolved_actions,queue_depth,oldest_work_age_seconds,latest_incidents,error,message\" prompt=\"hatch-ops supervisor managed-persist-state --factory-id '${factory_id}' --instance-id '${instance_id}' --root-dir '${repo}' --lifecycle-state '${lifecycle_state}' --lifecycle-reason '${failure_reason}' --failure-classification '${failure_classification}' --failure-reason '${failure_reason}' --has-open-upstream-bugs '${has_open_upstream_bugs}' --open-upstream-bug-count '${open_upstream_bug_count}' --open-upstream-bug-numbers '${open_upstream_bug_numbers}' --has-action-items '${has_action_items}' --action-item-count '${action_item_count}' --unresolved-actions '${action_item_count}' --queue-depth '${action_item_count}' --oldest-work-age-seconds '0' --latest-incidents '[]' --actor 'managed_supervisor'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    run_domain_graph [type=\"pipeline\" label=\"Run kind domain graph\" export_keys=\"domain_result\" fail_open=\"true\" inherit_context=\"true\" pipeline=\"${domain_graph}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    select_intake [type=\"tool\" governance=\"reversible\" label=\"Select next intake unit\" output_format=\"json\" outputs=\"has_issue,selected_issue_number,selected_issue_title,selected_issue_body,intake_json,parse_error\" prompt=\"hatch-ops supervisor managed-intake-selector --repo '${target_repo}' --intake-json '${intake_json}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_empty_domain_result [type=\"tool\" governance=\"reversible\" label=\"Set empty domain result\" output_key=\"domain_result\" prompt=\"printf '{}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_classification_infrastructure [type=\"tool\" governance=\"reversible\" label=\"Set failure classification: infrastructure\" output_key=\"failure_classification\" prompt=\"printf 'infrastructure'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_classification_none_manifest [type=\"tool\" governance=\"reversible\" label=\"Set failure classification: none (manifest path)\" output_key=\"failure_classification\" prompt=\"printf 'none'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_reason_empty_manifest [type=\"tool\" governance=\"reversible\" label=\"Set empty failure reason (manifest path)\" output_key=\"failure_reason\" prompt=\"printf ''\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    set_failure_reason_upstream [type=\"tool\" governance=\"reversible\" label=\"Set failure reason: upstream blocker gate\" output_key=\"failure_reason\" prompt=\"printf 'open_upstream_bugs=%s issue_numbers=%s parse_error=%s' '${open_upstream_bug_count}' '${open_upstream_bug_numbers}' '${parse_error}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    snapshot_state [type=\"tool\" governance=\"reversible\" label=\"Load durable snapshot\" output_key=\"state_snapshot\" prompt=\"hatch-ops supervisor state-snapshot --repo '${target_repo}' --factory-id '${factory_id}' --target-repo '${target_repo}' --control-plane-repo '${control_plane_repo}' --runs-dir '${runs_dir}'\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}\"]\n    start [shape=\"Mdiamond\" recovery_owner=\"supervisor\"]\n    upstream_gate [shape=\"diamond\" label=\"Open upstream blockers?\" recovery_owner=\"supervisor\"]\n    classify_degraded -> persist_lifecycle_state\n    classify_idle -> set_empty_domain_result\n    persist_lifecycle_state -> emit_run_summary -> done\n    run_domain_graph -> classify_domain_failure -> domain_failure_gate\n    set_empty_domain_result -> persist_lifecycle_state\n    start -> load_context -> manifest_gate\n    action_item_gate -> run_domain_graph [condition=\"has_action_items=true\"]\n    action_item_gate -> select_intake [condition=\"has_action_items!=true\"]\n    check_control_state -> control_state_gate\n    classify_active -> persist_lifecycle_state\n    classify_blocked_platform -> set_empty_domain_result\n    classify_manifest_failure -> classify_degraded [condition=\"failure_classification!=none\"]\n    classify_manifest_failure -> set_failure_classification_none_manifest [condition=\"failure_classification=none\"]\n    classify_paused_failure -> set_empty_domain_result\n    classify_paused -> classify_paused_failure\n    control_state_gate -> classify_paused [condition=\"should_run!=true\"]\n    control_state_gate -> evaluate_upstream_blockers [condition=\"should_run=true\"]\n    domain_failure_gate -> classify_active [condition=\"failure_classification=none\"]\n    domain_failure_gate -> classify_degraded [condition=\"failure_classification!=none\"]\n    evaluate_action_items -> action_item_gate\n    evaluate_open_bug_gate -> open_bug_gate\n    evaluate_upstream_blockers -> upstream_gate\n    intake_gate -> evaluate_open_bug_gate [condition=\"has_issue!=true\"]\n    intake_gate -> run_domain_graph [condition=\"has_issue=true\"]\n    manifest_gate -> classify_manifest_failure [condition=\"manifest_ok!=true\"]\n    manifest_gate -> snapshot_state [condition=\"manifest_ok=true\"]\n    open_bug_gate -> classify_idle [condition=\"has_open_bugs!=true\"]\n    open_bug_gate -> run_domain_graph [condition=\"has_open_bugs=true\"]\n    select_intake -> intake_gate\n    set_failure_classification_infrastructure -> set_failure_reason_upstream\n    set_failure_classification_none_manifest -> set_failure_reason_empty_manifest [condition=\"failure_classification=none\"]\n    set_failure_reason_empty_manifest -> classify_idle [condition=\"failure_classification=none\"]\n    set_failure_reason_upstream -> classify_blocked_platform\n    snapshot_state -> check_control_state\n    upstream_gate -> evaluate_action_items [condition=\"has_open_upstream_bugs!=true\"]\n    upstream_gate -> set_failure_classification_infrastructure [condition=\"has_open_upstream_bugs=true\"]\n}"
+}

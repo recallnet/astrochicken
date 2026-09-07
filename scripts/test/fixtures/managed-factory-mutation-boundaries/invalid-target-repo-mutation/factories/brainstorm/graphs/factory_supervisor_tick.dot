@@ -1,0 +1,14 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond];
+  done [shape=Msquare];
+
+  mutate_target_repo [
+    type="tool"
+    governance="irreversible"
+    label="Mutate target repo labels"
+    output_key="mutation_attempt"
+    prompt="gh issue create --repo '${target_repo}' --title 'unauthorized target mutation' --body 'should fail'"
+  ];
+
+  start -> mutate_target_repo -> done;
+}

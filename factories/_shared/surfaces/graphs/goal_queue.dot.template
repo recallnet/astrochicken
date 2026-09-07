@@ -1,0 +1,86 @@
+// goal_queue.dot
+//
+// Batch workflow: dedupe goals deterministically, then run goal_run per ready goal.
+//
+// Usage:
+//   hatch run factories/{{factory_id}}/graphs/goal_queue.dot
+
+@import "../roles.stylesheet"
+
+digraph goal_queue {
+    label = "goal_queue"
+    start [shape=Mdiamond]
+    done [shape=Msquare]
+
+    normalize_labels [type="tool" governance="reversible"
+                      label="Normalize issue labels"
+                      output_key="__normalize_labels_result"
+                      prompt="hatch-ops labels run --op normalize --repo {{goal_repo_expr}} --state open" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    sanitize_governance_overlap [type="tool" governance="irreversible"
+                                 label="Normalize governance overlap"
+                                 output_key="__sanitize_governance_overlap_result"
+                                 prompt="hatch-ops governance run --op sanitize-overlap --repo {{goal_repo_expr}} --run-id '${__run_id}' --pipeline 'goal_queue'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    auto_ready_artifacts [type="tool" governance="irreversible"
+                          label="Auto-ready artifact goals"
+                          output_key="__auto_ready_artifacts_result"
+                          prompt="hatch-ops goal run --op auto-ready-artifacts --repo {{goal_repo_expr}}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    sanitize_goal_duplicates [type="tool" governance="irreversible"
+                              label="Normalize goal duplicates"
+                              output_key="__sanitize_goal_duplicates_result"
+                              prompt="hatch-ops goal run --op sanitize-duplicates --repo {{goal_repo_expr}} --run-id '${__run_id}' --pipeline 'goal_queue'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    list_goals [type="tool" governance="reversible"
+                label="List open goals"
+                output_key="goal_issues"
+                prompt="hatch-ops goal run --op list-ready --repo {{goal_repo_expr}}" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    count_goals [type="tool" governance="irreversible"
+                 label="Count goals"
+                 output_key="goal_count"
+                 prompt="# hatch:no-inline-script-ok\nhatch-ops common run --op count-json --raw-b64 \"$(printf '%s' \"${goal_issues}\" | base64 | tr -d '\n')\"" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    resolve_skip_review_single_goal [type="tool" governance="reversible"
+                                     label="Resolve single-goal review toggle"
+                                     output_key="skip_review_single_goal"
+                                     prompt="hatch-ops common run --op resolve-boolean --value '${skip_review_single_goal}' --fallback false" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    gate [shape=diamond label="Any goals?"]
+
+    evaluate_goal_review_skip [type="tool" governance="reversible"
+                               label="Evaluate single-goal review bypass"
+                               output_format="json"
+                               outputs="skip,reason,hatch_ceremony_pipeline,hatch_ceremony_skipped,hatch_ceremony_skip_reason,hatch_ceremony_reason"
+                               prompt="hatch-ops common run --op ceremony-goal-review --goal-count '${goal_count}' --skip-review-single-goal '${skip_review_single_goal}' --pipeline 'goal_queue'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    skip_review_gate [shape=diamond label="Skip review ceremony?"]
+
+    // Pass-through: extract issue numbers from goal list with no filtering.
+    // Deterministic dedup already happened in sanitize_goal_duplicates above.
+    keep_all [type="tool" governance="irreversible"
+              label="Keep all goals"
+              output_key="kept_goals"
+              prompt="# hatch:no-inline-script-ok\nhatch-ops goal run --op filter-kept --issues-b64 \"$(printf '%s' \"${goal_issues}\" | base64 | tr -d '\n')\" --decisions-b64 \"$(printf '%s' \"[]\" | base64 | tr -d '\n')\"" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    fan_out [type="fan_out.dynamic"
+             label="Run goal"
+             source_key="kept_goals"
+             item_key="issue_number"
+             template="factories/{{factory_id}}/graphs/goal_run.dot"
+             max_concurrency="2" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.fan_out.dynamic"]
+
+    fan_in [type="fan_in.dynamic"
+            label="Collect goal runs"
+            output_key="goal_runs" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.fan_in.dynamic"]
+
+    start -> normalize_labels -> sanitize_governance_overlap -> auto_ready_artifacts -> sanitize_goal_duplicates -> list_goals -> count_goals -> resolve_skip_review_single_goal -> gate
+    gate -> done [condition="goal_count=0"]
+    gate -> evaluate_goal_review_skip [condition="goal_count!=0"]
+    evaluate_goal_review_skip -> skip_review_gate
+    skip_review_gate -> keep_all [condition="skip=true" label="skip"]
+    skip_review_gate -> keep_all [condition="skip!=true" label="full"]
+    keep_all -> fan_out
+    fan_out -> fan_in -> done
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "coverage_policy_ratchet_baseline/v1",
+  "generated": "2026-03-25T04:32:33.013Z",
+  "description": "Checked-in coverage policy floors for critical runtime workspaces. Thresholds may increase and source scope may tighten, but protected includes/src roots cannot be removed and new source exclusions cannot be added without explicitly updating this baseline.",
+  "policies": [
+    {
+      "id": "apps_hatch_vitest",
+      "label": "apps/hatch vitest coverage policy",
+      "path": "apps/hatch/vitest.config.mjs",
+      "kind": "vitest",
+      "include": [
+        "src/**/*.ts"
+      ],
+      "exclude": [],
+      "thresholds": {
+        "statements": 34,
+        "lines": 34,
+        "functions": 66,
+        "branches": 66
+      }
+    },
+    {
+      "id": "factory_ops_c8",
+      "label": "packages/factory-ops c8 coverage policy",
+      "path": "config/testing/package-test-manifests/packages-factory-ops.json",
+      "kind": "c8",
+      "src": [
+        "packages/factory-ops/src/commands/factory-distributed-lease.ts",
+        "packages/factory-ops/src/commands/factory-host-lifecycle.ts",
+        "packages/factory-ops/src/commands/factory-lease-marker.ts",
+        "packages/factory-ops/src/commands/lease-holder.ts",
+        "packages/factory-ops/src/commands/lease-http-client.ts",
+        "packages/factory-ops/src/commands/wave-claim.ts",
+        "packages/factory-ops/src/commands/wave-claim-diagnostics.ts",
+        "packages/factory-ops/src/commands/wave-sanitize-state.ts",
+        "packages/factory-ops/src/commands/wave-throughput-invariants.ts",
+        "packages/factory-ops/src/lib/daemon-lease.ts",
+        "packages/factory-ops/src/lib/daemon.ts",
+        "packages/factory-ops/src/lib/wave-claim-lifecycle.ts",
+        "packages/factory-ops/src/lib/wave-ready-claim-ops.ts",
+        "packages/factory-ops/src/lib/wave-ready-lease-cloudevents.ts",
+        "packages/factory-ops/src/lib/wave-ready-lease.ts",
+        "packages/factory-ops/src/commands/wave-demo-classify.ts",
+        "packages/factory-ops/src/commands/wave-demo-publish.ts",
+        "packages/factory-ops/src/commands/wave-demo-terminal.ts"
+      ],
+      "exclude": [],
+      "thresholds": {
+        "statements": 55,
+        "lines": 55,
+        "functions": 53,
+        "branches": 59
+      }
+    }
+  ]
+}

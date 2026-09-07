@@ -1,0 +1,9 @@
+digraph strict_identity_invalid {
+  start [shape=Mdiamond]
+  bad_id [label="Bad id" type="tool" governance="reversible" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.tool" agent_id="tool.bash" agent_role="tool.operator"]
+  bad_role [label="Bad role" type="stack.manager_loop" governance="reversible" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.stack.manager_loop" agent_id="stack.manager_loop" agent_role="manager.owner"]
+  valid_code [label="Valid code" type="codergen" prompt=":" trust_domain="mothership.local" trust_role="mothership.local.codergen" agent_id="unknown" agent_role="unknown"]
+  done [shape=Msquare]
+
+  start -> bad_id -> bad_role -> valid_code -> done
+}

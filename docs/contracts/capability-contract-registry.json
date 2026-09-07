@@ -1,0 +1,110 @@
+{
+  "schema_version": "capability_contract_registry/v1",
+  "summary": {
+    "registered_capabilities": 10,
+    "diagnostics": 0
+  },
+  "capabilities": [
+    {
+      "package_name": "@hatch/capability-artifact-ingestion",
+      "capability_id": "artifact_ingestion",
+      "version": "0.1.0",
+      "source_path": "packages/capability-artifact-ingestion/capability-contract.mjs",
+      "output_path": "packages/capability-artifact-ingestion/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-brainstorming",
+      "capability_id": "brainstorming",
+      "version": "0.1.0",
+      "source_path": "packages/capability-brainstorming/capability-contract.mjs",
+      "output_path": "packages/capability-brainstorming/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-coding",
+      "capability_id": "coding",
+      "version": "0.1.0",
+      "source_path": "packages/capability-coding/capability-contract.mjs",
+      "output_path": "packages/capability-coding/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-foreman",
+      "capability_id": "foreman",
+      "version": "0.1.0",
+      "source_path": "packages/capability-foreman/capability-contract.mjs",
+      "output_path": "packages/capability-foreman/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-goal-decomposition",
+      "capability_id": "goal_decomposition",
+      "version": "0.1.0",
+      "source_path": "packages/capability-goal-decomposition/capability-contract.mjs",
+      "output_path": "packages/capability-goal-decomposition/capability-contract.v1.json",
+      "sync_entrypoints": 8,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-merge",
+      "capability_id": "merge",
+      "version": "0.1.0",
+      "source_path": "packages/capability-merge/capability-contract.mjs",
+      "output_path": "packages/capability-merge/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-product-judge",
+      "capability_id": "product_judge",
+      "version": "0.1.0",
+      "source_path": "packages/capability-product-judge/capability-contract.mjs",
+      "output_path": "packages/capability-product-judge/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-release-reporting",
+      "capability_id": "release_reporting",
+      "version": "0.1.0",
+      "source_path": "packages/capability-release-reporting/capability-contract.mjs",
+      "output_path": "packages/capability-release-reporting/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-software-development",
+      "capability_id": "software_development",
+      "version": "0.1.0",
+      "source_path": "packages/capability-software-development/capability-contract.mjs",
+      "output_path": "packages/capability-software-development/capability-contract.v1.json",
+      "sync_entrypoints": 4,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    },
+    {
+      "package_name": "@hatch/capability-wave-dispatch",
+      "capability_id": "wave_dispatch",
+      "version": "0.1.0",
+      "source_path": "packages/capability-wave-dispatch/capability-contract.mjs",
+      "output_path": "packages/capability-wave-dispatch/capability-contract.v1.json",
+      "sync_entrypoints": 1,
+      "async_entrypoints": 0,
+      "reusable_across_factories": true
+    }
+  ],
+  "diagnostics": []
+}

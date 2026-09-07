@@ -1,0 +1,20 @@
+{
+  "issue_number": "645",
+  "issue_title": "QA evidence diff completeness gate for zero-diff failures",
+  "issue_body_excerpt": "QA failed with zero issue diff.",
+  "branch": "wave/goal-323-wave-1",
+  "worktree_dir": "/tmp/wave-645",
+  "commits_ahead": "1",
+  "issue_commits": "0",
+  "changed_files": [
+    "README.md",
+    "packages/factory-ops/src/commands/reviewer-context-contract.mjs"
+  ],
+  "issue_changed_files": [],
+  "snapshot_sha": "deadbeef",
+  "summary": "QA failed with zero issue diff",
+  "qa": {
+    "status": "fail",
+    "command": "node --test ./packages/factory-ops/test/commands/reviewer-context-contract.test.mjs"
+  }
+}

@@ -1,0 +1,96 @@
+// release_report_flow.dot
+// Child pipeline for shared release reporting/narration/slack delivery.
+
+@import "../roles.stylesheet"
+
+digraph release_report_flow {
+    label = "release_report_flow"
+    workdir = "."
+    start [shape=Mdiamond]
+    done [shape=Msquare]
+
+    build_release_report_context [type="tool" governance="reversible"
+                                  label="Build release report context"
+                                  output_key="release_report_context"
+                                  prompt="hatch-ops release build-report-context --repo '${gh_repo}' --repo-path '.' --factory-id '${factory_id}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    check_new_content [type="tool" governance="reversible"
+                       label="Check for new shipped content"
+                       output_format="json"
+                       outputs="has_new_content,goals_closed,issues_closed,commits_landed"
+                       prompt="hatch-ops release check-new-content --context '${release_report_context}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    new_content_gate [shape=diamond label="New content to narrate?"]
+
+    load_release_narrator_skill [type="tool" governance="reversible"
+                                 label="Load release narrator skill"
+                                 output_key="release_narrator_skill_content"
+                                 prompt="cat packages/factory-skills/skills/runtime/release_narrator/SKILL.md" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    load_release_narrator_guardrails [type="tool" governance="reversible"
+                                      label="Load release narrator guardrails"
+                                      output_key="release_narrator_guardrails"
+                                      prompt="hatch-ops release narrator-guardrails" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    release_narrator [class="release_narrator"
+                      benchmark_job_id="supervisor.tick.release_narrate"
+                      prompt_version="2026-03-11.r2"
+                      role_version="1.0.0"
+                      skill_id="supervisor.release_narrator"
+                      session_id="supervisor-${factory_id}"
+                      label="Narrate release capability shift"
+                      output_key="release_narrative"
+                      output_format="json"
+                      outputs="headline,narrative"
+                      reasoning_effort="low"
+                      timeout="2m"
+                      prompt="You are the release narrator for ${gh_repo}.\n\n${release_narrator_skill_content}\n\n${release_narrator_guardrails}\n\nYour primary input is the release context JSON below. The `goals` array contains shipped goals with resolved titles from GitHub — these are your primary source for headline and narrative.\nUse goal titles to understand what capability shipped. The `commit_log` provides supporting detail but do NOT lead with individual commits.\n\nRelease context JSON:\n${release_report_context}\n\nReturn JSON object only with exactly keys \"headline\" and \"narrative\".\nLead with the capability shift for operators, then state what it unlocks next.\nDo not list commit messages, issue titles, PR lists, or file paths.\nNo markdown fences." ]
+
+    encode_release_report_context [type="tool" governance="reversible"
+                                   label="Encode release context (base64)"
+                                   output_key="release_report_context_b64"
+                                   prompt="hatch-ops common run --op encode-base64 --raw '${release_report_context}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    encode_release_narrative [type="tool" governance="reversible"
+                              label="Encode release narrative (base64)"
+                              output_key="release_narrative_b64"
+                              prompt="hatch-ops common run --op encode-base64 --raw '${release_narrative}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    publish_release_report [type="tool" governance="irreversible"
+                            label="Publish release understanding issue"
+                            output_key="release_report_issue_delivery"
+                            prompt="hatch-ops release publish-report --context-b64 '${release_report_context_b64}' --narrative-b64 '${release_narrative_b64}' --repo '${gh_repo}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    emit_release_narrative_document [type="tool" governance="reversible"
+                                     label="Emit release narrative document"
+                                     output_key="release_narrative_document_delivery"
+                                     prompt="hatch-ops release emit-narrative-document --context-b64 '${release_report_context_b64}' --narrative-b64 '${release_narrative_b64}' --issue-url '${release_report_issue_url}' --repo-path '${repo_path}' --factory-id '${factory_id}' --output-dir 'reports/release/narratives' --taxonomy-json '[\"delivery\",\"operations\"]' --category 'delivery' --tags-json '[\"release-report\",\"factory-ops\"]' --topics-json '[\"${gh_repo}\",\"${factory_id}\"]' --publishable 'true' --contains-internal-only 'false' --internal-only-sections-json '[]'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    create_shaping_followup_issue [type="tool" governance="irreversible"
+                                   label="Create example-web comprehension follow-up issue (best-effort)"
+                                   output_key="release_shaping_followup_delivery"
+                                   prompt="hatch-ops release example-web-followup --context-b64 '${release_report_context_b64}' --narrative-b64 '${release_narrative_b64}' --factory-id '${factory_id}' --repo-path '${repo_path}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    build_release_slack_blocks [type="tool" governance="reversible"
+                                label="Build release Slack Block Kit payload"
+                                output_key="release_slack_payload"
+                                prompt="hatch-ops release build-slack-blocks --context-b64 '${release_report_context_b64}' --narrative-b64 '${release_narrative_b64}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    encode_release_slack_payload [type="tool" governance="reversible"
+                                  label="Encode release Slack payload (base64)"
+                                  output_key="release_slack_payload_b64"
+                                  prompt="hatch-ops common run --op encode-base64 --raw '${release_slack_payload}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+    post_release_to_slack [type="tool" governance="irreversible"
+                           label="Post release report to Slack"
+                           output_key="release_slack_delivery"
+                           prompt="hatch-ops release post-to-slack --context-b64 '${release_report_context_b64}' --payload-b64 '${release_slack_payload_b64}'" trust_domain="{{trust_domain}}" trust_role="{{trust_domain}}.tool"]
+
+{{release_tail_nodes}}
+
+    start -> build_release_report_context -> check_new_content -> new_content_gate
+    new_content_gate -> load_release_narrator_skill [condition="has_new_content=true"]
+{{release_skip_edge}}
+    load_release_narrator_skill -> load_release_narrator_guardrails -> release_narrator -> encode_release_report_context -> encode_release_narrative -> publish_release_report -> emit_release_narrative_document -> create_shaping_followup_issue -> build_release_slack_blocks -> encode_release_slack_payload -> post_release_to_slack
+{{release_tail_edges}}
+}

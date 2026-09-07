@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+import { readFileSync } from "node:fs";
+
+const fixturePath = process.env.WAVE_DISPATCH_FIXTURE;
+if (!fixturePath) {
+  console.error("Missing WAVE_DISPATCH_FIXTURE");
+  process.exit(1);
+}
+
+const data = JSON.parse(readFileSync(fixturePath, "utf8"));
+const args = process.argv.slice(2);
+
+if (args[0] === "issue" && args[1] === "list") {
+  const milestoneIndex = args.indexOf("--milestone");
+  const milestone = milestoneIndex >= 0 ? args[milestoneIndex + 1] : "";
+  const issues = data.milestoneIssues?.[milestone] ?? [];
+  process.stdout.write(JSON.stringify(issues));
+  process.exit(0);
+}
+
+if (args[0] === "api") {
+  const queryArg = args.find((arg) => arg.startsWith("query=")) ?? "";
+  const match = queryArg.match(/issue\(number:(\d+)\)/);
+  const issueNumber = match ? match[1] : "";
+  const blockers = data.blockedBy?.[issueNumber] ?? [];
+  process.stdout.write(
+    JSON.stringify({ data: { repository: { i: { blockedBy: { nodes: blockers } } } } }),
+  );
+  process.exit(0);
+}
+
+process.stdout.write("[]");

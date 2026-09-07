@@ -1,0 +1,39 @@
+// Generated from packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs. Do not edit by hand.
+digraph wave_dispatch {
+    label = "wave_dispatch"
+    workflow_source = "packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs"
+    typed_action_transport_mode = "enforced"
+    workdir = "."
+    acquire_dispatch_lease [type="tool" governance="reversible" action_runtime="in_process" action_id="factory.acquire_lease" label="Acquire distributed dispatch lease" output_format="json" outputs="lease_acquired,lease_reason,lease_tracking_issue_number,lease_factory_id,lease_name,lease_run_id,lease_holder_id,lease_expires_at,lease_version,lease_comment_id,lease_comment_etag" action_repo="${gh_repo}" action_factory_id="${factory_id}" action_run_id="${__run_id}" action_lease_name="wave_dispatch" action_lease_seconds="${factory_lease_seconds}" action_tracking_issue="${tracking_issue_number}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    create_ready [type="tool" governance="irreversible" action_runtime="in_process" action_id="wave.create_ready_markers" label="Create ready issues" output_key="__create_ready_result" action_repo="${gh_repo}" action_selected_waves="${selected_waves}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    decide [type="tool" governance="reversible" action_runtime="in_process" action_id="wave.dispatch_select" label="Select waves" output_format="json" outputs="selected_waves,selected_count,in_flight_count,ready_count,priorities_text,control_plane_blocked_items,control_plane_blocked_waves" action_repo="${gh_repo}" action_max_concurrent="${max_concurrent_waves}" action_milestones_b64="${milestones_b64}" action_priorities_issue_b64="${priorities_issue_b64}" action_ready_issues_b64="${ready_issues_b64}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    done [shape="Msquare" recovery_sink_type="terminal"]
+    ensure_labels [type="tool" governance="irreversible" action_runtime="in_process" action_id="labels.ensure_factory" label="Ensure wave labels" output_key="__ensure_wave_labels_result" action_repo="${gh_repo}" action_factory_id="${factory_id}" action_keys="ready,wave_in_progress,priorities,quarantined,blocked_control_plane" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    gate [shape="diamond" label="Select any?"]
+    lease_gate [shape="diamond" label="Lease acquired?"]
+    list_milestones [type="tool" governance="reversible" action_runtime="in_process" action_id="wave.list_milestones_b64" label="List open wave milestones" output_key="milestones_b64" action_repo="${gh_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    list_priorities [type="tool" governance="reversible" action_runtime="in_process" action_id="wave.list_priorities_b64" label="Find priorities issue" output_key="priorities_issue_b64" action_repo="${gh_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    list_ready_issues [type="tool" governance="reversible" action_runtime="in_process" action_id="wave.list_ready_issues_b64" label="List ready wave markers" output_key="ready_issues_b64" action_repo="${gh_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    release_dispatch_lease [type="tool" governance="reversible" action_runtime="in_process" action_id="factory.release_lease" label="Release distributed dispatch lease" output_format="json" outputs="lease_released,lease_release_reason" action_repo="${gh_repo}" action_factory_id="${factory_id}" action_run_id="${__run_id}" action_holder_id="${lease_holder_id}" action_lease_name="wave_dispatch" action_reason="wave_dispatch_terminal" action_tracking_issue="${lease_tracking_issue_number}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    sanitize_state [type="tool" governance="irreversible" action_runtime="in_process" action_id="wave.sanitize_state" label="Normalize wave-ready state" output_key="__sanitize_state_result" action_repo="${gh_repo}" action_run_id="${__run_id}" action_pipeline="wave_dispatch" action_apply="true" action_stale_run_minutes="${stale_run_minutes}" recovery_owner="supervisor" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    set_factory_id [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve factory id" output_key="factory_id" action_fallback="factory_supervisor" action_value="${factory_id}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    set_factory_lease_seconds [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve distributed lease seconds" output_key="factory_lease_seconds" action_fallback="600" action_value="${factory_lease_seconds}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    set_gh_repo [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_gh_repo" label="Resolve GitHub repo" output_key="gh_repo" action_gh_repo="${gh_repo}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    set_stale_run_minutes [type="tool" governance="reversible" action_runtime="in_process" action_id="common.resolve_default" label="Resolve stale lease threshold" output_key="stale_run_minutes" action_fallback="20" action_value="${stalled_wave_minutes}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    set_tracking_issue [type="tool" governance="reversible" action_runtime="in_process" action_id="factory.resolve_tracking_issue" label="Resolve factory tracking issue" output_key="tracking_issue_number" action_repo="${gh_repo}" action_factory_root="${factory_root}" action_tracking_issue="${factory_tracking_issue_number}" trust_domain="${trust_domain}" trust_role="${trust_role}.tool"]
+    start [shape="Mdiamond"]
+    release_dispatch_lease -> done
+    start -> set_gh_repo -> set_factory_id -> set_tracking_issue -> set_factory_lease_seconds -> acquire_dispatch_lease -> lease_gate
+    create_ready -> release_dispatch_lease
+    decide -> gate
+    ensure_labels -> set_stale_run_minutes
+    gate -> create_ready [condition="selected_waves!=[]"]
+    gate -> release_dispatch_lease [condition="selected_waves=[]"]
+    lease_gate -> done [condition="lease_acquired!=true"]
+    lease_gate -> ensure_labels [condition="lease_acquired=true"]
+    list_milestones -> list_ready_issues
+    list_priorities -> decide
+    list_ready_issues -> list_priorities
+    sanitize_state -> list_milestones
+    set_stale_run_minutes -> sanitize_state
+}

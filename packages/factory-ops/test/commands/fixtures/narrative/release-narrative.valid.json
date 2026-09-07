@@ -1,0 +1,40 @@
+{
+  "delivery_decision": "slack_and_issue",
+  "headline": "Release briefs now stay on shared narrative contract",
+  "before_state": "Release narration drifted because each flow used local schema checks.",
+  "after_state": "Release narration now validates against shared narrative contract helpers.",
+  "summary": "Release narration now enforces shared taxonomy and extension boundaries, so contract drift is caught before publication.",
+  "conceptual_shift": "Narration validation moved from local checks to a shared narrative-document contract.",
+  "why_it_matters": "Teams can trust Daily Lens and release reports to speak the same metadata language rather than diverging.",
+  "proof_points": [
+    "Issue #2511 defined the shared metadata contract."
+  ],
+  "structural_changes": [
+    "Release validator now delegates narrative metadata validation to shared contract helpers."
+  ],
+  "behavioral_shifts": [
+    "Narrator outputs now fail deterministically when taxonomy or extension keys drift."
+  ],
+  "implicit_decisions": [
+    "Taxonomy expansion now requires reviewed code/config changes."
+  ],
+  "entry_points": [
+    "packages/factory-ops/src/lib/release-narrative-validator.mjs"
+  ],
+  "watch_items": [],
+  "metadata": {
+    "taxonomy": [
+      "delivery"
+    ]
+  },
+  "astrochicken": {
+    "backlinks": {
+      "canonical_issue": "https://github.com/recallnet/astrochicken/issues/2366"
+    },
+    "privacy": {
+      "publishable": true,
+      "contains_internal_only": false
+    },
+    "internal_note": "Internal context kept off the public summary."
+  }
+}

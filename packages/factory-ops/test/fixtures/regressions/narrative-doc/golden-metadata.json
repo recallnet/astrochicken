@@ -1,0 +1,13 @@
+{
+  "title": "Daily lens summary",
+  "summary": "Factory health and delivery outcomes for the reporting window.",
+  "category": "delivery",
+  "published_on": "2026-03-20",
+  "tags": ["daily-lens", "mothership"],
+  "topics": ["release-narration", "goal-throughput"],
+  "astro": {
+    "canonical_issue_url": "https://github.com/recallnet/astrochicken/issues/2511",
+    "visibility": "public",
+    "internal_only_sections": ["Internal Notes", "Operator Follow-ups"]
+  }
+}

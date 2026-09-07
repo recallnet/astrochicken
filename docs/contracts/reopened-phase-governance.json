@@ -1,0 +1,45 @@
+{
+  "schema_version": "reopened_phase_governance/v1",
+  "summary": {
+    "diagnostics": 0,
+    "claim_mapping_diagnostics": 0,
+    "legacy_inventory_diagnostics": 0
+  },
+  "legacy_inventory": {
+    "private_capability_output_emission": 0,
+    "handwritten_migrated_family_dot": 0,
+    "thin_factory_execution_semantics": 0,
+    "fake_factory_stub_claims": 0
+  },
+  "legacy_inventory_details": {
+    "thin_factory_execution_semantics": [],
+    "fake_factory_stub_claims": []
+  },
+  "diagnostics": [],
+  "supporting_gate_status": {
+    "capability_output_contract": true,
+    "governed_output_path_only": true,
+    "capability_output_producer_discovery_fail_closed": true,
+    "capability_output_contract_runtime_parity": true,
+    "workflow_source_contract": true,
+    "governed_execution_dot_input_forbidden": true,
+    "generated_governed_dot_only": true,
+    "no_handwritten_dot_for_migrated_families": true,
+    "workflow_ir_acceptance": true,
+    "workflow_ir_claim_truth": true,
+    "workflow_ir_publish_or_plan_exclusive": true,
+    "workflow_ir_runtime_parity_e2e": true,
+    "workflow_ir_parity_contract": true,
+    "factory_composition_contract": true,
+    "factory_local_dot_scope_guard": true,
+    "factory_execution_glue_forbidden": true,
+    "factory_composition_binding_truth": true,
+    "thin_factory_end_state_guard": true,
+    "legacy_pattern_zero_inventory": true,
+    "lineage_governance_contract": true,
+    "lineage_supported_class_truth": true,
+    "lineage_projection_presence": true,
+    "lineage_hot_path_isolation": true,
+    "governed_surface_totality": true
+  }
+}

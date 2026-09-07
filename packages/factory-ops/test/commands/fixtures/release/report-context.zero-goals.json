@@ -1,0 +1,21 @@
+{
+  "factory_id": "mothership",
+  "repo": "recallnet/astrochicken",
+  "generated_at": "2026-03-09T21:00:00.000Z",
+  "since_iso": "2026-03-08T21:00:00.000Z",
+  "goals": [],
+  "issues": [],
+  "prs": [],
+  "metrics": {
+    "goals_closed": 0,
+    "issues_closed": 0,
+    "commits_landed": 0
+  },
+  "timing": {
+    "avg_wave_minutes": 0
+  },
+  "diff_stats": {
+    "text": "+0 -0"
+  },
+  "errors": []
+}

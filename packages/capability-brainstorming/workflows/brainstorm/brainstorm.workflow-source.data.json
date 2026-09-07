@@ -1,0 +1,728 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "brainstorm",
+  "familyId": "brainstorming",
+  "title": "Brainstorm",
+  "description": "Typed workflow source owner for packages/capability-brainstorming/graphs/brainstorm.dot.",
+  "sourcePath": "packages/capability-brainstorming/workflows/brainstorm/brainstorm.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-brainstorming/brainstorm.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "brainstorm",
+    "workdir": "."
+  },
+  "sourceMap": {
+    "graphName": "brainstorm",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "blue",
+        "runtimeNodeId": "blue"
+      },
+      {
+        "sourceNodeId": "blue_early_exit_gate",
+        "runtimeNodeId": "blue_early_exit_gate"
+      },
+      {
+        "sourceNodeId": "blue_gate",
+        "runtimeNodeId": "blue_gate"
+      },
+      {
+        "sourceNodeId": "bump_round",
+        "runtimeNodeId": "bump_round"
+      },
+      {
+        "sourceNodeId": "check_blue",
+        "runtimeNodeId": "check_blue"
+      },
+      {
+        "sourceNodeId": "check_red",
+        "runtimeNodeId": "check_red"
+      },
+      {
+        "sourceNodeId": "check_repair",
+        "runtimeNodeId": "check_repair"
+      },
+      {
+        "sourceNodeId": "check_wrap",
+        "runtimeNodeId": "check_wrap"
+      },
+      {
+        "sourceNodeId": "close_issue",
+        "runtimeNodeId": "close_issue"
+      },
+      {
+        "sourceNodeId": "done",
+        "runtimeNodeId": "done"
+      },
+      {
+        "sourceNodeId": "force_wrap",
+        "runtimeNodeId": "force_wrap"
+      },
+      {
+        "sourceNodeId": "format_repair",
+        "runtimeNodeId": "format_repair"
+      },
+      {
+        "sourceNodeId": "init_round",
+        "runtimeNodeId": "init_round"
+      },
+      {
+        "sourceNodeId": "load_context",
+        "runtimeNodeId": "load_context"
+      },
+      {
+        "sourceNodeId": "loop_guard_blue",
+        "runtimeNodeId": "loop_guard_blue"
+      },
+      {
+        "sourceNodeId": "post_blue_comment",
+        "runtimeNodeId": "post_blue_comment"
+      },
+      {
+        "sourceNodeId": "post_red_comment",
+        "runtimeNodeId": "post_red_comment"
+      },
+      {
+        "sourceNodeId": "post_repair_comment",
+        "runtimeNodeId": "post_repair_comment"
+      },
+      {
+        "sourceNodeId": "post_wrap_comment",
+        "runtimeNodeId": "post_wrap_comment"
+      },
+      {
+        "sourceNodeId": "red",
+        "runtimeNodeId": "red"
+      },
+      {
+        "sourceNodeId": "red_early_exit_gate",
+        "runtimeNodeId": "red_early_exit_gate"
+      },
+      {
+        "sourceNodeId": "red_gate",
+        "runtimeNodeId": "red_gate"
+      },
+      {
+        "sourceNodeId": "round_gate",
+        "runtimeNodeId": "round_gate"
+      },
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "wrap_gate",
+        "runtimeNodeId": "wrap_gate"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "blue",
+      "kind": "llm_prompt",
+      "title": "Blue strategist",
+      "dotAttributes": {
+        "type": "agent.kw",
+        "governance": "reversible",
+        "class": "blue_strategist",
+        "benchmark_job_id": "brainstorm.blue",
+        "prompt_version": "2026-03-17.r1",
+        "role_version": "2.0.0",
+        "skill_id": "brainstorm.blue",
+        "llm_model": "anthropic/claude-opus-4.6",
+        "label": "Blue strategist",
+        "output_key": "blue_output",
+        "prompt": "Load and follow the blue strategist skill:\n- ${capability_brainstorming_skills}/blue_strategist/SKILL.md\n\nIntent stack JSON:\n${intent_stack}\n\nBrainstorm issue #${brainstorm_issue_number} body:\n${brainstorm_issue_body}\n\nSeed prompt (${seed_prompt_source}):\n${seed_prompt}\n\nShipped goals delta:\n${shipped_goals_delta}\n\nScenario holdouts delta:\n${scenario_holdouts_delta}\n\nIntent stack changed since last brainstorm:\n${intent_stack_changed}\n\nOpen backlog summary:\n${open_backlog_summary}\n\nCurrent round:\n${round}\n\nLatest red output:\n${red_output}",
+        "llm_provider": "openrouter",
+        "session_id": "blue_strategist"
+      }
+    },
+    {
+      "id": "blue_early_exit_gate",
+      "kind": "decision",
+      "title": "Blue early exit: empty-blue guard triggered?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Blue early exit: empty-blue guard triggered?"
+      }
+    },
+    {
+      "id": "blue_gate",
+      "kind": "decision",
+      "title": "Blue produced final report?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Blue produced final report?"
+      }
+    },
+    {
+      "id": "bump_round",
+      "kind": "tool_action",
+      "title": "Bump round counter",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.bump_round",
+        "label": "Bump round counter",
+        "output_format": "json",
+        "outputs": "round,has_next,at_limit",
+        "action_max_rounds": "10",
+        "action_round": "${round}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "check_blue",
+      "kind": "tool_action",
+      "title": "Check blue output for final report",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.check_output",
+        "label": "Check blue output for final report",
+        "output_format": "json",
+        "outputs": "is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output",
+        "action_agent_output": "${blue_output}",
+        "action_source": "blue",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "check_red",
+      "kind": "tool_action",
+      "title": "Check red output for final report",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.check_output",
+        "label": "Check red output for final report",
+        "output_format": "json",
+        "outputs": "is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output",
+        "action_agent_output": "${red_output}",
+        "action_source": "red",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "check_repair",
+      "kind": "tool_action",
+      "title": "Check repair output for final report",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.check_output",
+        "label": "Check repair output for final report",
+        "output_format": "json",
+        "outputs": "is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output",
+        "action_agent_output": "${blue_output}",
+        "action_source": "format_repair",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "check_wrap",
+      "kind": "tool_action",
+      "title": "Check force-wrap output for final report",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.check_output",
+        "label": "Check force-wrap output for final report",
+        "output_format": "json",
+        "outputs": "is_final,source,final_report,conversational_output,should_force_wrap,termination_reason,is_empty_output",
+        "action_agent_output": "${blue_output}",
+        "action_source": "force_wrap",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "close_issue",
+      "kind": "tool_action",
+      "title": "Close brainstorm issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "irreversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.close_issue",
+        "label": "Close brainstorm issue",
+        "output_key": "__brainstorm_close_result",
+        "action_repo": "${target_repo}",
+        "action_factory_id": "${factory_id}",
+        "action_brainstorm_issue_number": "${brainstorm_issue_number}",
+        "action_next_cursor": "${next_cursor}",
+        "action_root_dir": "${repo}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "done",
+      "kind": "terminal",
+      "dotAttributes": {
+        "shape": "Msquare"
+      }
+    },
+    {
+      "id": "force_wrap",
+      "kind": "llm_prompt",
+      "title": "Force wrap: request final report",
+      "dotAttributes": {
+        "type": "agent.kw",
+        "governance": "reversible",
+        "class": "blue_strategist",
+        "benchmark_job_id": "brainstorm.force_wrap",
+        "prompt_version": "2026-03-17.r1",
+        "role_version": "2.0.0",
+        "skill_id": "brainstorm.force_wrap",
+        "llm_model": "anthropic/claude-opus-4.6",
+        "label": "Force wrap: request final report",
+        "output_key": "blue_output",
+        "prompt": "This is the final round of the brainstorm. You must now produce the final report.\n\nSynthesize everything discussed into the final report JSON. Output ONLY the JSON object, nothing else:\n\n{\n  \"proposal\": \"concise goal direction (1-3 sentences)\",\n  \"success_criteria\": [\"testable criterion 1\", \"...\"],\n  \"scope_in\": [\"specific deliverable included\", \"...\"],\n  \"scope_out\": [\"specific item excluded\", \"...\"]\n}\n\nUse the full conversation history to produce the strongest possible goal. Do not add commentary — output only valid JSON.\n\nLatest red output:\n${red_output}\n\nLatest blue output:\n${blue_output}\n\nSeed prompt (${seed_prompt_source}):\n${seed_prompt}",
+        "llm_provider": "openrouter",
+        "session_id": "blue_strategist"
+      }
+    },
+    {
+      "id": "format_repair",
+      "kind": "llm_prompt",
+      "title": "Format repair: fix report format",
+      "dotAttributes": {
+        "type": "agent.kw",
+        "governance": "reversible",
+        "class": "blue_strategist",
+        "benchmark_job_id": "brainstorm.format_repair",
+        "prompt_version": "2026-03-17.r1",
+        "role_version": "2.0.0",
+        "skill_id": "brainstorm.format_repair",
+        "llm_model": "anthropic/claude-opus-4.6",
+        "label": "Format repair: fix report format",
+        "output_key": "blue_output",
+        "prompt": "Your previous output was not valid JSON in the required format. Output ONLY this exact JSON structure, nothing else — no markdown fences, no explanation, no preamble:\n\n{\n  \"proposal\": \"concise goal direction (1-3 sentences)\",\n  \"success_criteria\": [\"testable criterion 1\", \"...\"],\n  \"scope_in\": [\"specific deliverable included\", \"...\"],\n  \"scope_out\": [\"specific item excluded\", \"...\"]\n}\n\nFill in the fields based on the brainstorm conversation. Every field is required. success_criteria, scope_in, and scope_out must each have at least one entry.\n\nYour previous (invalid) output was:\n${blue_output}\n\nSeed prompt:\n${seed_prompt}",
+        "llm_provider": "openrouter",
+        "session_id": "blue_strategist"
+      }
+    },
+    {
+      "id": "init_round",
+      "kind": "llm_prompt",
+      "title": "Init round counter",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "label": "Init round counter",
+        "output_key": "round",
+        "prompt": "echo 0",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "load_context",
+      "kind": "tool_action",
+      "title": "Load brainstorm context",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.load_context",
+        "label": "Load brainstorm context",
+        "output_format": "json",
+        "outputs": "seed_prompt,seed_prompt_source,shipped_goals_delta,scenario_holdouts_delta,intent_stack_changed,open_backlog_summary,cursor_path,next_cursor,next_cursor_b64",
+        "action_factory_id": "${factory_id}",
+        "action_brainstorm_issue_body": "${brainstorm_issue_body}",
+        "action_brainstorm_issue_number": "${brainstorm_issue_number}",
+        "action_intent_stack": "${intent_stack}",
+        "action_open_backlog_summary": "${open_backlog_summary}",
+        "action_root_dir": "${repo}",
+        "action_scenario_holdouts": "${scenario_holdouts}",
+        "action_shipped_goals_since_last": "${shipped_goals_since_last}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "loop_guard_blue",
+      "kind": "tool_action",
+      "title": "Loop guard: detect repeated empty blue turns",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.loop_guard",
+        "label": "Loop guard: detect repeated empty blue turns",
+        "output_format": "json",
+        "outputs": "empty_blue_count,trigger_force_wrap,suppress_round_comment,guard_reason",
+        "action_source": "blue",
+        "action_conversational_output": "${conversational_output}",
+        "action_previous_empty_blue_count": "${empty_blue_count}",
+        "action_should_force_wrap": "${should_force_wrap}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "post_blue_comment",
+      "kind": "tool_action",
+      "title": "Post blue turn comment to issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.post_turn_comment",
+        "label": "Post blue turn comment to issue",
+        "output_key": "__blue_comment_result",
+        "action_repo": "${target_repo}",
+        "action_issue_number": "${brainstorm_issue_number}",
+        "action_run_id": "${run_id}",
+        "action_agent_output": "${blue_output}",
+        "action_is_final": "${is_final}",
+        "action_langfuse_project_url": "${LANGFUSE_PROJECT_URL}",
+        "action_round": "${round}",
+        "action_source": "blue",
+        "action_suppress_round_comment": "${suppress_round_comment}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "post_red_comment",
+      "kind": "tool_action",
+      "title": "Post red turn comment to issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.post_turn_comment",
+        "label": "Post red turn comment to issue",
+        "output_key": "__red_comment_result",
+        "action_repo": "${target_repo}",
+        "action_issue_number": "${brainstorm_issue_number}",
+        "action_run_id": "${run_id}",
+        "action_agent_output": "${red_output}",
+        "action_is_final": "${is_final}",
+        "action_langfuse_project_url": "${LANGFUSE_PROJECT_URL}",
+        "action_round": "${round}",
+        "action_source": "red",
+        "action_suppress_round_comment": "${suppress_round_comment}",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "post_repair_comment",
+      "kind": "tool_action",
+      "title": "Post repair comment to issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.post_turn_comment",
+        "label": "Post repair comment to issue",
+        "output_key": "__repair_comment_result",
+        "action_repo": "${target_repo}",
+        "action_issue_number": "${brainstorm_issue_number}",
+        "action_run_id": "${run_id}",
+        "action_agent_output": "${blue_output}",
+        "action_is_final": "${is_final}",
+        "action_langfuse_project_url": "${LANGFUSE_PROJECT_URL}",
+        "action_round": "${round}",
+        "action_source": "format_repair",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "post_wrap_comment",
+      "kind": "tool_action",
+      "title": "Post force-wrap comment to issue",
+      "dotAttributes": {
+        "type": "tool",
+        "governance": "reversible",
+        "action_runtime": "in_process",
+        "action_id": "brainstorm.post_turn_comment",
+        "label": "Post force-wrap comment to issue",
+        "output_key": "__wrap_comment_result",
+        "action_repo": "${target_repo}",
+        "action_issue_number": "${brainstorm_issue_number}",
+        "action_run_id": "${run_id}",
+        "action_agent_output": "${blue_output}",
+        "action_is_final": "${is_final}",
+        "action_langfuse_project_url": "${LANGFUSE_PROJECT_URL}",
+        "action_round": "${round}",
+        "action_source": "force_wrap",
+        "trust_domain": "${trust_domain}",
+        "trust_role": "${trust_role}"
+      }
+    },
+    {
+      "id": "red",
+      "kind": "llm_prompt",
+      "title": "Red strategist",
+      "dotAttributes": {
+        "type": "agent.kw",
+        "governance": "reversible",
+        "class": "red_strategist",
+        "benchmark_job_id": "brainstorm.red",
+        "prompt_version": "2026-03-17.r1",
+        "role_version": "2.0.0",
+        "skill_id": "brainstorm.red",
+        "llm_model": "anthropic/claude-sonnet-4.6",
+        "label": "Red strategist",
+        "output_key": "red_output",
+        "prompt": "Load and follow the red strategist skill:\n- ${capability_brainstorming_skills}/red_strategist/SKILL.md\n\nIntent stack JSON:\n${intent_stack}\n\nBrainstorm issue #${brainstorm_issue_number} body:\n${brainstorm_issue_body}\n\nSeed prompt (${seed_prompt_source}):\n${seed_prompt}\n\nShipped goals delta:\n${shipped_goals_delta}\n\nScenario holdouts delta:\n${scenario_holdouts_delta}\n\nIntent stack changed since last brainstorm:\n${intent_stack_changed}\n\nOpen backlog summary:\n${open_backlog_summary}\n\nCurrent round:\n${round}\n\nLatest blue output (if any):\n${blue_output}",
+        "llm_provider": "openrouter",
+        "session_id": "red_strategist"
+      }
+    },
+    {
+      "id": "red_early_exit_gate",
+      "kind": "decision",
+      "title": "Red early exit: terminate signal without final report?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Red early exit: terminate signal without final report?"
+      }
+    },
+    {
+      "id": "red_gate",
+      "kind": "decision",
+      "title": "Red produced final report?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Red produced final report?"
+      }
+    },
+    {
+      "id": "round_gate",
+      "kind": "decision",
+      "title": "Continue brainstorm rounds?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Continue brainstorm rounds?"
+      }
+    },
+    {
+      "id": "start",
+      "kind": "start",
+      "dotAttributes": {
+        "shape": "Mdiamond"
+      }
+    },
+    {
+      "id": "wrap_gate",
+      "kind": "decision",
+      "title": "Force wrap produced valid report?",
+      "dotAttributes": {
+        "shape": "diamond",
+        "label": "Force wrap produced valid report?"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "close_issue",
+      "to": "done"
+    },
+    {
+      "from": "force_wrap",
+      "to": "check_wrap"
+    },
+    {
+      "from": "check_wrap",
+      "to": "post_wrap_comment"
+    },
+    {
+      "from": "post_wrap_comment",
+      "to": "wrap_gate"
+    },
+    {
+      "from": "red",
+      "to": "check_red"
+    },
+    {
+      "from": "check_red",
+      "to": "red_early_exit_gate"
+    },
+    {
+      "from": "start",
+      "to": "load_context"
+    },
+    {
+      "from": "load_context",
+      "to": "init_round"
+    },
+    {
+      "from": "init_round",
+      "to": "red"
+    },
+    {
+      "from": "blue_early_exit_gate",
+      "to": "force_wrap",
+      "condition": "trigger_force_wrap=true",
+      "dotAttributes": {
+        "condition": "trigger_force_wrap=true"
+      }
+    },
+    {
+      "from": "blue_early_exit_gate",
+      "to": "post_blue_comment",
+      "condition": "trigger_force_wrap!=true",
+      "dotAttributes": {
+        "condition": "trigger_force_wrap!=true"
+      }
+    },
+    {
+      "from": "blue_gate",
+      "to": "bump_round",
+      "condition": "is_final!=true",
+      "dotAttributes": {
+        "condition": "is_final!=true"
+      }
+    },
+    {
+      "from": "blue_gate",
+      "to": "close_issue",
+      "condition": "is_final=true",
+      "dotAttributes": {
+        "condition": "is_final=true"
+      }
+    },
+    {
+      "from": "blue",
+      "to": "check_blue"
+    },
+    {
+      "from": "bump_round",
+      "to": "round_gate"
+    },
+    {
+      "from": "check_blue",
+      "to": "loop_guard_blue"
+    },
+    {
+      "from": "check_repair",
+      "to": "post_repair_comment"
+    },
+    {
+      "from": "format_repair",
+      "to": "check_repair"
+    },
+    {
+      "from": "loop_guard_blue",
+      "to": "blue_early_exit_gate"
+    },
+    {
+      "from": "post_blue_comment",
+      "to": "blue_gate"
+    },
+    {
+      "from": "post_red_comment",
+      "to": "red_gate"
+    },
+    {
+      "from": "post_repair_comment",
+      "to": "close_issue"
+    },
+    {
+      "from": "red_early_exit_gate",
+      "to": "force_wrap",
+      "condition": "should_force_wrap=true",
+      "dotAttributes": {
+        "condition": "should_force_wrap=true"
+      }
+    },
+    {
+      "from": "red_early_exit_gate",
+      "to": "post_red_comment",
+      "condition": "should_force_wrap!=true",
+      "dotAttributes": {
+        "condition": "should_force_wrap!=true"
+      }
+    },
+    {
+      "from": "red_gate",
+      "to": "blue",
+      "condition": "is_final!=true",
+      "dotAttributes": {
+        "condition": "is_final!=true"
+      }
+    },
+    {
+      "from": "red_gate",
+      "to": "close_issue",
+      "condition": "is_final=true",
+      "dotAttributes": {
+        "condition": "is_final=true"
+      }
+    },
+    {
+      "from": "round_gate",
+      "to": "force_wrap",
+      "condition": "has_next!=true",
+      "dotAttributes": {
+        "condition": "has_next!=true"
+      }
+    },
+    {
+      "from": "round_gate",
+      "to": "red",
+      "condition": "has_next=true",
+      "dotAttributes": {
+        "condition": "has_next=true"
+      }
+    },
+    {
+      "from": "wrap_gate",
+      "to": "close_issue",
+      "condition": "is_final=true",
+      "dotAttributes": {
+        "condition": "is_final=true"
+      }
+    },
+    {
+      "from": "wrap_gate",
+      "to": "format_repair",
+      "condition": "is_final!=true",
+      "dotAttributes": {
+        "condition": "is_final!=true"
+      }
+    }
+  ]
+}

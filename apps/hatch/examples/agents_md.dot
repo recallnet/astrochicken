@@ -1,0 +1,25 @@
+// Review this repo's code and generate AGENTS.md
+// Run from any directory: hatch run examples/agents_md.dot
+digraph agents_md {
+    label = "Generate AGENTS.md"
+    workdir = "/path/to/your/repo"
+
+    start [shape=Mdiamond]
+    done  [shape=Msquare]
+
+    // Step 1: Gather the codebase structure and key files
+    scan [type="tool" governance="reversible" label="Scan Repo" output_key="scan_output"
+          prompt="find src -name '*.ts'"]
+
+    // Step 2: LLM analyzes the code and generates AGENTS.md content
+    analyze [label="Generate AGENTS.md"
+             prompt="You are reviewing a TypeScript codebase. Based on the code listing below, generate an AGENTS.md file. AGENTS.md tells AI coding agents how to work in this repo.\n\nRepo scan:\n${scan_output}\n\nInclude:\n1. Project overview (what Hatch is - a DOT-based pipeline runner for AI workflows, powered by pi SDK)\n2. Module structure (src/pipeline/, src/pipeline/handler/, src/server/, src/cli.ts)\n3. Key commands: npm run build, hatch run <file.dot>, hatch validate <file.dot>\n4. Architecture: how the layers connect (pi SDK -> pipeline engine -> handlers)\n5. Conventions: TypeScript ESM, interfaces at boundaries, no global state\n6. How to add a new pipeline handler (implement Handler from engine.ts, register in register.ts)\n\nOutput ONLY the markdown content for AGENTS.md. No code fences wrapping the whole thing. Start directly with the heading."]
+
+    // Step 3: Write the file
+    write [type="tool" governance="irreversible" label="Write AGENTS.md" output_key="write_result"
+           prompt="cp README.md AGENTS.md"]
+    verify [label="Verify AGENTS.md write"
+            prompt="Write command result: ${write_result}"]
+
+    start -> scan -> analyze -> write -> verify -> done
+}

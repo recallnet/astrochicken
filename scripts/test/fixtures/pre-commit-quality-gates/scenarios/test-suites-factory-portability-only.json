@@ -1,0 +1,6 @@
+{
+  "stagedPaths": ["packages/factory-ops/src/lib/factory-context-resolver.mjs"],
+  "expectedStatus": 0,
+  "expectedNpmCalls": [],
+  "expectedReason": "platform_invariant_trigger"
+}

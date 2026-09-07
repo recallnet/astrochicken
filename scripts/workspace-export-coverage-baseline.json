@@ -1,0 +1,707 @@
+{
+  "schema": "workspace_export_coverage_baseline/v1",
+  "generated": "2026-03-30T17:29:35.877Z",
+  "description": "Known uncovered exports for critical workspaces. Debt can only decrease, never increase.",
+  "workspaces": [
+    {
+      "id": "apps_hatch",
+      "label": "apps/hatch",
+      "gaps": [
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdComplexity"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdDispatch"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdFactory"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdGraph"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdNew"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdRecover"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdResolve"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdResume"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdRun"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdRuns"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdServe"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdTrace"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdValidate"
+        },
+        {
+          "source": "src/cli-commands.ts",
+          "export": "cmdWatch"
+        },
+        {
+          "source": "src/cli/factory-context-overrides.ts",
+          "export": "buildFactoryContextResolverOptions"
+        },
+        {
+          "source": "src/cli/factory-context-runtime.ts",
+          "export": "logFactoryContextStartup"
+        },
+        {
+          "source": "src/cli/factory-context-runtime.ts",
+          "export": "resolveFactoryContextOrExit"
+        },
+        {
+          "source": "src/cli/graph-command.ts",
+          "export": "cmdGraph"
+        },
+        {
+          "source": "src/cli/validate-args.ts",
+          "export": "VALIDATE_USAGE"
+        },
+        {
+          "source": "src/complexity/cli.ts",
+          "export": "COMPLEXITY_COMMAND_USAGE"
+        },
+        {
+          "source": "src/complexity/telemetry.ts",
+          "export": "mapPathTakenToExecutionPath"
+        },
+        {
+          "source": "src/dispatch/registry.ts",
+          "export": "FACTORY_REGISTRY_SCHEMA_VERSION"
+        },
+        {
+          "source": "src/dispatch/registry.ts",
+          "export": "FactoryRegistryLoadError"
+        },
+        {
+          "source": "src/dispatch/registry.ts",
+          "export": "FactoryRegistrySchemaError"
+        },
+        {
+          "source": "src/dispatch/registry.ts",
+          "export": "formatFactoryRegistryIssues"
+        },
+        {
+          "source": "src/factory/context-resolver.ts",
+          "export": "formatFactoryContextHeaderLines"
+        },
+        {
+          "source": "src/factory/context-resolver.ts",
+          "export": "normalizeFactoryContext"
+        },
+        {
+          "source": "src/pipeline/engine-telemetry.ts",
+          "export": "EngineEventBus"
+        },
+        {
+          "source": "src/pipeline/execution-failure.ts",
+          "export": "attachExecutionFailureSignals"
+        },
+        {
+          "source": "src/pipeline/execution-failure.ts",
+          "export": "createAbortCauseError"
+        },
+        {
+          "source": "src/pipeline/execution-failure.ts",
+          "export": "extractExecutionFailureSignals"
+        },
+        {
+          "source": "src/pipeline/fast-route.ts",
+          "export": "derivePathTakenFromSelectedEdge"
+        },
+        {
+          "source": "src/pipeline/fast-route.ts",
+          "export": "resolveFastRouteHasOpenBugs"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "edgeCondition"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "edgeInputKey"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "edgeLabel"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "edgeLoopRestart"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "edgeWeight"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphDefaultFidelity"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphDefaultMaxRetry"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphFallbackRetryTarget"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphGoal"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphIdentityMode"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphIdentityModeRaw"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphIntentPatches"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphIntentProfile"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphIntentRef"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphLabel"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphModelStylesheet"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphRetryTarget"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "graphWorkDir"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "incomingEdges"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeActionId"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeAllowPartial"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeAutoStatus"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeFallbackRetryTarget"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeFidelity"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeGoalGate"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeGovernance"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeGovernanceDecision"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeIntentPatches"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeIntentProfile"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeIntentRef"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeLabel"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeMaxRetries"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeOutputFormat"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeOutputKey"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeOutputs"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodePrompt"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeReasoningEffort"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeRetryTarget"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeScenarios"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeShape"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeThreadID"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeToolId"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeTrustParticipates"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeType"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "nodeWorkDir"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "outgoingEdges"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "parseDuration"
+        },
+        {
+          "source": "src/pipeline/graph.ts",
+          "export": "shapeToHandlerType"
+        },
+        {
+          "source": "src/pipeline/guard-core.ts",
+          "export": "emitDecision"
+        },
+        {
+          "source": "src/pipeline/guard-core.ts",
+          "export": "loadFactoryGuardState"
+        },
+        {
+          "source": "src/pipeline/guard-core.ts",
+          "export": "persistRunGuard"
+        },
+        {
+          "source": "src/pipeline/guard-core.ts",
+          "export": "saveFactoryGuardState"
+        },
+        {
+          "source": "src/pipeline/guard-core.ts",
+          "export": "snapshotOwner"
+        },
+        {
+          "source": "src/pipeline/guard-recovery.ts",
+          "export": "incrementGuardCounter"
+        },
+        {
+          "source": "src/pipeline/guard-recovery.ts",
+          "export": "resetGuardBudgets"
+        },
+        {
+          "source": "src/pipeline/guard.ts",
+          "export": "guardCounterForHandlerType"
+        },
+        {
+          "source": "src/pipeline/handler/assert.ts",
+          "export": "AssertHandler"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "buildCompositeExportWritebackContextUpdates"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "buildCompositeFailureContextUpdates"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "classifyCompositeFailure"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "COMPOSITE_CHILD_ABORTED_REASON"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "COMPOSITE_CHILD_FAILED_REASON"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "COMPOSITE_CHILD_TIMEOUT_REASON"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "COMPOSITE_FAILURE_CONTEXT_KEYS"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "formatCompositeFailureError"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "normalizeCompositeFailureReason"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "readCompositeFailureFromContextUpdates"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "resolveCompositeFailureSignals"
+        },
+        {
+          "source": "src/pipeline/handler/composite-contract.ts",
+          "export": "validateCompositeIndexedExportOrdering"
+        },
+        {
+          "source": "src/pipeline/handler/conditional.ts",
+          "export": "ConditionalHandler"
+        },
+        {
+          "source": "src/pipeline/handler/exit.ts",
+          "export": "ExitHandler"
+        },
+        {
+          "source": "src/pipeline/handler/human.ts",
+          "export": "AutoApproveInterviewer"
+        },
+        {
+          "source": "src/pipeline/handler/human.ts",
+          "export": "ConsoleInterviewer"
+        },
+        {
+          "source": "src/pipeline/handler/human.ts",
+          "export": "HumanHandler"
+        },
+        {
+          "source": "src/pipeline/handler/parallel.ts",
+          "export": "FanInHandler"
+        },
+        {
+          "source": "src/pipeline/handler/parallel.ts",
+          "export": "ParallelHandler"
+        },
+        {
+          "source": "src/pipeline/handler/register.ts",
+          "export": "registerAll"
+        },
+        {
+          "source": "src/pipeline/handler/session-completion.ts",
+          "export": "promptAndExtractText"
+        },
+        {
+          "source": "src/pipeline/handler/start.ts",
+          "export": "StartHandler"
+        },
+        {
+          "source": "src/pipeline/identity.ts",
+          "export": "DEFAULT_IDENTITY_MODE"
+        },
+        {
+          "source": "src/pipeline/identity.ts",
+          "export": "IDENTITY_MODES"
+        },
+        {
+          "source": "src/pipeline/identity.ts",
+          "export": "IRREVERSIBLE_HANDLER_TYPES_V1"
+        },
+        {
+          "source": "src/pipeline/identity.ts",
+          "export": "isIdentityMode"
+        },
+        {
+          "source": "src/pipeline/identity.ts",
+          "export": "isIrreversibleHandlerTypeV1"
+        },
+        {
+          "source": "src/pipeline/intent.ts",
+          "export": "DEFAULT_INTENT_PROFILE"
+        },
+        {
+          "source": "src/pipeline/intent.ts",
+          "export": "IntentResolutionError"
+        },
+        {
+          "source": "src/pipeline/intent.ts",
+          "export": "resolveIntentBinding"
+        },
+        {
+          "source": "src/pipeline/intent.ts",
+          "export": "validateIntentBindings"
+        },
+        {
+          "source": "src/pipeline/live.ts",
+          "export": "createLiveStatusHandler"
+        },
+        {
+          "source": "src/pipeline/lock.ts",
+          "export": "lockDirPath"
+        },
+        {
+          "source": "src/pipeline/run-lifecycle.ts",
+          "export": "appendRunLifecycleEvents"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "cleanupRun"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "createChildId"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "createDefaultRunGuardState"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "createGuardCounters"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "eventsPath"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "findNearestFactoryConfigPath"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "findRecoverableRun"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "generateRunId"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "hashOutput"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "isPidAlive"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "isStaleRun"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "latestTickArtifact"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "listRuns"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "listTickArtifacts"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "normalizeRunGuardState"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "RUN_METADATA_SCHEMA_VERSION"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "RUN_STATE_SCHEMA_VERSION"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "runMetadataPath"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "sessionsDir"
+        },
+        {
+          "source": "src/pipeline/run.ts",
+          "export": "ticksDir"
+        },
+        {
+          "source": "src/pipeline/stylesheet-imports.ts",
+          "export": "StylesheetImportError"
+        },
+        {
+          "source": "src/pipeline/stylesheet.ts",
+          "export": "applyStylesheetToNode"
+        },
+        {
+          "source": "src/pipeline/stylesheet.ts",
+          "export": "parseStylesheet"
+        },
+        {
+          "source": "src/pipeline/stylesheet.ts",
+          "export": "selectorMatches"
+        },
+        {
+          "source": "src/pipeline/stylesheet.ts",
+          "export": "selectorSpecificity"
+        },
+        {
+          "source": "src/pipeline/telemetry-benchmark-identity.ts",
+          "export": "applyTelemetryBenchmarkIdentity"
+        },
+        {
+          "source": "src/pipeline/telemetry-benchmark-identity.ts",
+          "export": "resolveTelemetryBenchmarkIdentity"
+        },
+        {
+          "source": "src/pipeline/trace.ts",
+          "export": "defaultTracePath"
+        },
+        {
+          "source": "src/pipeline/trace.ts",
+          "export": "formatTrace"
+        },
+        {
+          "source": "src/pipeline/validate.ts",
+          "export": "isValidationMode"
+        },
+        {
+          "source": "src/pipeline/validate.ts",
+          "export": "VALIDATION_MODES"
+        },
+        {
+          "source": "src/pipeline/watch.ts",
+          "export": "parseTriggerArgs"
+        },
+        {
+          "source": "src/pipeline/watch.ts",
+          "export": "WatchLoop"
+        }
+      ]
+    },
+    {
+      "id": "factory_telemetry",
+      "label": "packages/factory-telemetry",
+      "gaps": [
+        {
+          "source": "src/langfuse-lifecycle.ts",
+          "export": "getLangfuseLifecycleEmitter"
+        },
+        {
+          "source": "src/langfuse-lifecycle.ts",
+          "export": "LANGFUSE_FLUSH_TIMEOUT_MS_FLAG"
+        },
+        {
+          "source": "src/langfuse-lifecycle.ts",
+          "export": "LANGFUSE_HEARTBEAT_FLUSH_EVERY_FLAG"
+        },
+        {
+          "source": "src/langfuse-lifecycle.ts",
+          "export": "LANGFUSE_RETRY_TIMEOUT_MS_FLAG"
+        },
+        {
+          "source": "src/langfuse-lifecycle.ts",
+          "export": "setLangfuseLifecycleEmitter"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "bindLangfuseSessionTelemetry"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "computeLangfusePromptHash"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "isLangfusePromptTextEnabled"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "LANGFUSE_PROMPT_TEXT_FLAG"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "nextLangfuseAttemptIndex"
+        },
+        {
+          "source": "src/langfuse-telemetry.ts",
+          "export": "resolveLangfuseTraceId"
+        },
+        {
+          "source": "src/otel-stdout.ts",
+          "export": "flushOtelRuntime"
+        },
+        {
+          "source": "src/otel-stdout.ts",
+          "export": "registerTelemetryFlushHook"
+        },
+        {
+          "source": "src/otel-stdout.ts",
+          "export": "registerTelemetryShutdownHook"
+        },
+        {
+          "source": "src/otel-stdout.ts",
+          "export": "shutdownOtelRuntime"
+        }
+      ]
+    }
+  ]
+}

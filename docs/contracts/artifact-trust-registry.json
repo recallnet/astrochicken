@@ -1,0 +1,97 @@
+{
+  "schema_version": "artifact_trust_registry/v1",
+  "required_classes": [
+    {
+      "key": "contract_spec_bundle",
+      "version": "contract_spec_bundle/v1",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "trust_policy": {
+        "schema_version": "artifact_trust_policy/v1",
+        "required": true,
+        "signing_stack": "cosign",
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ],
+        "rationale": "Generated contract bundles are governed outputs that require canonical provenance and attestations."
+      },
+      "governed_publisher_paths": []
+    },
+    {
+      "key": "judge_evidence_bundle",
+      "version": "judge_evidence_bundle/v1",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "trust_policy": {
+        "schema_version": "artifact_trust_policy/v1",
+        "required": true,
+        "signing_stack": "cosign",
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ],
+        "rationale": "Judge evidence bundles require canonical signing, attestations, and provenance for release auditability."
+      },
+      "governed_publisher_paths": []
+    },
+    {
+      "key": "release_bundle",
+      "version": "release_bundle/v1",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "trust_policy": {
+        "schema_version": "artifact_trust_policy/v1",
+        "required": true,
+        "signing_stack": "cosign",
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ],
+        "rationale": "Release bundles are promotion-critical artifacts and must be signed, attestable, and verifiable."
+      },
+      "governed_publisher_paths": []
+    },
+    {
+      "key": "release_report_bundle",
+      "version": "release_report_bundle/v1",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "trust_policy": {
+        "schema_version": "artifact_trust_policy/v1",
+        "required": true,
+        "signing_stack": "cosign",
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ],
+        "rationale": "Release report bundles are first-class release artifacts and must use the canonical signing and provenance stack."
+      },
+      "governed_publisher_paths": [
+        "packages/factory-ops/src/commands/release-emit-narrative-document.ts"
+      ]
+    },
+    {
+      "key": "workflow_ir_bundle",
+      "version": "workflow_ir_bundle/v1",
+      "source_path": "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+      "trust_policy": {
+        "schema_version": "artifact_trust_policy/v1",
+        "required": true,
+        "signing_stack": "cosign",
+        "attestation_stack": "in_toto_dsse",
+        "provenance_profile": "slsa_provenance/v1",
+        "verification_boundaries": [
+          "promotion",
+          "release"
+        ],
+        "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions."
+      },
+      "governed_publisher_paths": []
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+digraph hello_world {
+    label = "Hello World Pipeline"
+
+    start [shape=Mdiamond]
+    greet [label="Generate greeting" recovery_owner="supervisor" prompt="Write a friendly one-line greeting."]
+    check [shape=diamond label="Good greeting?"]
+    done [shape=Msquare label="Done"]
+
+    start -> greet -> check
+    check -> done  [condition="outcome=success" label="good"]
+    check -> greet [condition="outcome!=success" label="retry"]
+}

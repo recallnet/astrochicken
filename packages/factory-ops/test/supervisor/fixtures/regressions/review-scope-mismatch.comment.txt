@@ -1,0 +1,3 @@
+Review failed after attempts:
+
+Review failed after 3/3 attempts. Scope mismatch for #560. The issue scope explicitly includes extending stalled-wave detection output (report + lease state) and wiring remediation into the supervisor tick graph.

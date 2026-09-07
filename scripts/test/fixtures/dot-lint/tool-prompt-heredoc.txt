@@ -1,0 +1,6 @@
+digraph tool_prompt_heredoc {
+  start [shape=Mdiamond]
+  done [shape=Msquare]
+  heredoc_prompt [type="tool" label="Heredoc prompt" output_key="out_heredoc" governance="reversible" prompt="cat <<EOF"]
+  start -> heredoc_prompt -> done
+}

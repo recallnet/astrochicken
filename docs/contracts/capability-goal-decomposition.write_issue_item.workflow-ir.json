@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "workflow_ir_document/v1",
+  "artifactClass": "workflow_ir_bundle",
+  "artifactVersion": "workflow_ir_bundle/v1",
+  "workflowId": "write_issue_item",
+  "familyId": "goal_decomposition",
+  "sourcePath": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
+  "runtimeGraphPath": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+  "outputPath": "docs/contracts/capability-goal-decomposition.write_issue_item.workflow-ir.json",
+  "compilerVersion": "workflow_ir_compiler/v1",
+  "artifactRef": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item",
+  "generatedFiles": [
+    "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+    "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.png"
+  ],
+  "metadata": {
+    "artifact_identity": {
+      "capability_id": "goal_decomposition",
+      "correlation_id": "workflow-ir-contract:write_issue_item",
+      "factory_id": "capability-goal-decomposition",
+      "run_id": "workflow-ir-contract",
+      "workflow_id": "write_issue_item",
+      "workflow_source_revision": "typed-source-generated"
+    },
+    "compiler_version": "workflow_ir_compiler/v1",
+    "schema_version": "workflow_ir_artifact_metadata/v1",
+    "workflow_graph_id": "write_issue_item"
+  },
+  "publicationPlan": {
+    "artifact_class": "workflow_ir_bundle",
+    "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item",
+    "media_type": "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+    "metadata": {
+      "artifact_identity": {
+        "capability_id": "goal_decomposition",
+        "correlation_id": "workflow-ir-contract:write_issue_item",
+        "factory_id": "capability-goal-decomposition",
+        "run_id": "workflow-ir-contract",
+        "workflow_id": "write_issue_item",
+        "workflow_source_revision": "typed-source-generated"
+      },
+      "compiler_version": "workflow_ir_compiler/v1",
+      "schema_version": "workflow_ir_artifact_metadata/v1",
+      "workflow_graph_id": "write_issue_item"
+    },
+    "files": [
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+        "mediaType": "text/vnd.graphviz"
+      },
+      {
+        "path": "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.png",
+        "mediaType": "image/png"
+      }
+    ],
+    "trust_policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "args": [
+      "oras",
+      "push",
+      "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item",
+      "--artifact-type",
+      "application/vnd.recallnet.factory.workflow-ir.bundle.v1",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+      "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.png"
+    ]
+  },
+  "trustBundle": {
+    "attestations": [
+      {
+        "dsse_envelope": {
+          "payload": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwKICAicHJlZGljYXRlIjogewogICAgImJ1aWxkX2RlZmluaXRpb24iOiB7CiAgICAgICJidWlsZF90eXBlIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZC93b3JrZmxvdy1pciIsCiAgICAgICJleHRlcm5hbF9wYXJhbWV0ZXJzIjogewogICAgICAgICJhcnRpZmFjdF9yZWYiOiAiZ2hjci5pby9yZWNhbGxuZXQvZmFjdG9yeS93b3JrZmxvdy1pcjpjYXBhYmlsaXR5LWdvYWwtZGVjb21wb3NpdGlvbi13cml0ZV9pc3N1ZV9pdGVtIgogICAgICB9LAogICAgICAiaW50ZXJuYWxfcGFyYW1ldGVycyI6IHsKICAgICAgICAiY29tcGlsZXJfdmVyc2lvbiI6ICJ3b3JrZmxvd19pcl9jb21waWxlci92MSIsCiAgICAgICAgIndvcmtmbG93X2lkIjogIndyaXRlX2lzc3VlX2l0ZW0iCiAgICAgIH0sCiAgICAgICJyZXNvbHZlZF9kZXBlbmRlbmNpZXMiOiBbCiAgICAgICAgewogICAgICAgICAgImRpZ2VzdCI6IHsKICAgICAgICAgICAgInNoYTI1NiI6ICJ0eXBlZC1zb3VyY2UtZ2VuZXJhdGVkIgogICAgICAgICAgfSwKICAgICAgICAgICJ1cmkiOiAicGFja2FnZXMvY2FwYWJpbGl0eS1nb2FsLWRlY29tcG9zaXRpb24vd29ya2Zsb3dzL3dyaXRlX2lzc3VlX2l0ZW0vd3JpdGVfaXNzdWVfaXRlbS53b3JrZmxvdy1zb3VyY2UubWpzIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJydW5fZGV0YWlscyI6IHsKICAgICAgImJ1aWxkZXIiOiB7CiAgICAgICAgImlkIjogImh0dHBzOi8vcmVjYWxsbmV0LmRldi9idWlsZGVycy93b3JrZmxvdy1pciIKICAgICAgfSwKICAgICAgIm1ldGFkYXRhIjogewogICAgICAgICJmaW5pc2hlZF9vbiI6ICIyMDI2LTAzLTIxVDAwOjAwOjAxLjAwMFoiLAogICAgICAgICJpbnZvY2F0aW9uX2lkIjogIndyaXRlX2lzc3VlX2l0ZW0iLAogICAgICAgICJzdGFydGVkX29uIjogIjIwMjYtMDMtMjFUMDA6MDA6MDAuMDAwWiIKICAgICAgfQogICAgfQogIH0sCiAgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIgp9",
+          "payload_type": "application/vnd.in-toto+json",
+          "schema_version": "dsse_envelope/v1",
+          "signatures": [
+            {
+              "keyid": "workflow-ir-contract-key",
+              "sig": "c2lnbmF0dXJl"
+            }
+          ]
+        },
+        "predicate": {
+          "build_definition": {
+            "build_type": "https://recallnet.dev/build/workflow-ir",
+            "external_parameters": {
+              "artifact_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item"
+            },
+            "internal_parameters": {
+              "compiler_version": "workflow_ir_compiler/v1",
+              "workflow_id": "write_issue_item"
+            },
+            "resolved_dependencies": [
+              {
+                "digest": {
+                  "sha256": "typed-source-generated"
+                },
+                "uri": "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs"
+              }
+            ]
+          },
+          "run_details": {
+            "builder": {
+              "id": "https://recallnet.dev/builders/workflow-ir"
+            },
+            "metadata": {
+              "finished_on": "2026-03-21T00:00:01.000Z",
+              "invocation_id": "write_issue_item",
+              "started_on": "2026-03-21T00:00:00.000Z"
+            }
+          }
+        },
+        "predicate_type": "https://slsa.dev/provenance/v1",
+        "schema_version": "artifact_attestation/v1",
+        "stack": "cosign"
+      }
+    ],
+    "policy": {
+      "attestation_stack": "in_toto_dsse",
+      "provenance_profile": "slsa_provenance/v1",
+      "rationale": "Workflow IR bundles require canonical signing, attestation, and verification because they drive downstream release and provenance decisions.",
+      "required": true,
+      "schema_version": "artifact_trust_policy/v1",
+      "signing_stack": "cosign",
+      "verification_boundaries": [
+        "promotion",
+        "release"
+      ]
+    },
+    "schema_version": "artifact_trust_bundle/v1",
+    "signature": {
+      "key_id": "workflow-ir-contract-key",
+      "payload_digest": "sha256:c9acb0c6eecd588bd43ec07236796bdea2045161d922f9c47918761ae301c1ef",
+      "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-goal-decomposition-write_issue_item",
+      "payload_type": "oci_artifact",
+      "schema_version": "artifact_signature/v1",
+      "signature": "c2lnbmF0dXJl",
+      "signature_algorithm": "sha256",
+      "stack": "cosign"
+    },
+    "verifications": [
+      {
+        "boundary": "promotion",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      },
+      {
+        "boundary": "release",
+        "reason": "contract_generated",
+        "schema_version": "artifact_verification/v1",
+        "status": "verified",
+        "verified_at": "2026-03-21T00:00:02.000Z",
+        "verifier": "cosign"
+      }
+    ]
+  },
+  "dot": "// Generated from packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs. Do not edit by hand.\ndigraph write_issue_item {\n    label = \"write_issue_item\"\n    workflow_source = \"packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs\"\n    typed_action_transport_mode = \"enforced\"\n    workdir = \".\"\n    create_issue [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"common.create_issue\" label=\"Create issue\" outputs=\"ok,issue_url,created_issue_number,status,stderr\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_issue_spec_b64=\"${issue_spec_b64}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    decide [shape=\"diamond\" label=\"Decision?\"]\n    done [shape=\"Msquare\" recovery_sink_type=\"terminal\"]\n    draft_issue_spec [class=\"issue_writer\" benchmark_job_id=\"goal.write_issue.write\" llm_path_id=\"capability.write_issue_item.draft_issue_spec\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_issue\" llm_model=\"openai/gpt-5.3-codex\" label=\"Draft issue spec\" output_key=\"issue_spec_raw\" output_format=\"json\" reasoning_effort=\"medium\" timeout=\"${goal_decomposition_timeouts.issue_draft}\" prompt=\"Use read to load ${capability_goal_decomposition_skills}/issue_writer/current.md and follow its guidance on issue structure.\\n\\nYou are drafting a single implementation issue spec for GitHub.\\n\\nIntent stack JSON:\\n${intent_stack}\\n\\nGoal issue JSON:\\n${goal_issue}\\n\\nGoal context JSON:\\n${goal_context}\\n\\nFeature JSON:\\n${feature}\\n\\nReviewer notes (if any):\\n${review_notes}\\n\\nDownstream execution constraints:\\n- This issue will be executed by one coding agent and reviewed by one semantic reviewer on a shared wave branch.\\n- The issue must be implementable as a single implementation issue, not a coordination umbrella or a meta-task.\\n- The reviewer will judge whether the implementation satisfies the issue and remains aligned to the parent goal.\\n- The issue body must give the builder enough context to start immediately without first rediscovering the codebase.\\n- Include specific file paths, functions, tests, and boundaries whenever goal_context supports them.\\n- Acceptance criteria must be concrete, observable, and scoped to what this one issue can complete.\\n\\nBefore drafting, sanity-check the feature itself:\\n- If the feature mainly describes scaffolding, fallback continuity, decomposition support, or meta-work instead of a real shipped increment, do not simply polish it into a nicer issue.\\n- Rewrite the issue so it directly ships one meaningful slice of the parent goal's promised product surface.\\n- If the feature is too broad or mixes multiple deliverables, pick one strong slice that can stand alone while remaining materially aligned to the goal.\\n- Use the platform and factory intent to prefer real shipped value over factory ceremony or preparatory work.\\n- The finished issue should still make sense if someone later asks: 'If this issue ships cleanly, what real part of the goal is now done?'\\n\\nReturn JSON only with issue_title, issue_body, and issue_labels.\\nDo not call gh directly.\" session_id=\"goal-decomposer-${issue_number}\"]\n    fallback_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.fallback_issue_spec_bundle\" label=\"Fallback issue spec\" outputs=\"issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec=\"${issue_spec_raw}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    fallback_revised_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.fallback_issue_spec_bundle\" label=\"Fallback revised issue spec\" outputs=\"issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec=\"${revised_issue_spec_raw}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    issue_spec_gate [shape=\"diamond\" label=\"Issue spec valid?\"]\n    judge_issue [class=\"issue_quality_judge\" benchmark_job_id=\"goal.write_issue.judge\" llm_path_id=\"capability.write_issue_item.judge_issue\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_issue.judge\" llm_model=\"openai/gpt-5.3-codex\" label=\"Judge issue quality\" output_format=\"json\" outputs=\"pass,decision,review_notes\" reasoning_effort=\"low\" timeout=\"${goal_decomposition_timeouts.issue_judge}\" prompt=\"You are the issue quality judge for ${gh_repo}.\\n\\nJudge whether the created issue is aligned to the parent goal, grounded in current code reality, and executable as a single implementation issue on a shared wave branch.\\n\\nGoal issue JSON:\\n${goal_issue}\\n\\nGoal context JSON:\\n${goal_context}\\n\\nFeature JSON:\\n${feature}\\n\\nCreated issue spec JSON:\\n${issue_spec}\\n\\nCreated issue URL:\\n${issue_url}\\n\\nUse read to load the issue content if needed. Evaluate:\\n- Is the issue small enough for one builder-reviewer loop, but substantial enough to ship a real increment?\\n- Does it depend on unstated exploration to discover basic files, boundaries, or intended behavior?\\n- Do acceptance criteria describe what done looks like for this issue alone?\\n- Does it stay aligned to the parent goal and avoid creating hidden follow-up work?\\n\\nReturn JSON with:\\n{\\n  \\\"pass\\\": true,\\n  \\\"decision\\\": \\\"approved|revise\\\",\\n  \\\"review_notes\\\": \\\"Actionable feedback. Empty when approved.\\\"\\n}\\n\\nRules:\\n- If pass=true, decision must be 'approved' and review_notes should be empty or a short confirmation.\\n- If pass=false, decision must be 'revise' and review_notes must explain exactly what to change.\\n- Keep review_notes concrete: cite missing files, boundaries, acceptance criteria, or scope problems.\\n\\nReturn JSON only.\"]\n    link_sub_issue [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"goal.add_sub_issue\" label=\"Link sub-issue to goal\" output_key=\"__sub_issue_link_result\" action_repo=\"${gh_repo}\" action_factory_id=\"${factory_id}\" action_run_id=\"${__run_id}\" action_child=\"${created_issue_number}\" action_parent=\"${issue_number}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    load_intent_stack [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.resolve_intent_stack\" label=\"Load intent stack\" output_key=\"intent_stack\" action_factory_root=\"${factory_root}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    normalize_decision [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.normalize_decision\" label=\"Normalize decision\" output_key=\"decision\" action_value=\"${decision}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    normalize_feature_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.normalize_feature_issue_spec_bundle\" label=\"Normalize feature issue spec\" outputs=\"issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec_b64=\"${issue_spec_b64}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    normalize_revised_feature_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.normalize_feature_issue_spec_bundle\" label=\"Normalize revised issue spec\" outputs=\"issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec_b64=\"${issue_spec_b64}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    repair_issue_spec [class=\"issue_writer\" benchmark_job_id=\"goal.write_issue.repair\" llm_path_id=\"capability.write_issue_item.repair_issue_spec\" prompt_version=\"2026-03-12.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_issue\" llm_model=\"openai/gpt-5.3-codex\" label=\"Repair issue spec\" output_key=\"issue_spec_raw\" output_format=\"json\" reasoning_effort=\"medium\" timeout=\"${goal_decomposition_timeouts.issue_repair}\" prompt=\"Your previous issue spec failed deterministic validation.\\n\\nOriginal issue spec JSON:\\n${issue_spec_raw}\\n\\nRepair instructions:\\n${retry_prompt}\\n\\nReturn JSON only with issue_title, issue_body, and issue_labels.\" recovery_owner=\"supervisor\" session_id=\"goal-decomposer-${issue_number}\"]\n    repaired_issue_spec_gate [shape=\"diamond\" label=\"Repaired issue spec valid?\"]\n    revise_issue_spec [class=\"issue_writer\" benchmark_job_id=\"goal.write_issue.revise\" llm_path_id=\"capability.write_issue_item.revise_issue_spec\" prompt_version=\"2026-03-09.r1\" role_version=\"1.0.0\" skill_id=\"goal.write_issue\" llm_model=\"openai/gpt-5.3-codex\" label=\"Revise issue spec\" output_key=\"revised_issue_spec_raw\" output_format=\"json\" reasoning_effort=\"medium\" timeout=\"${goal_decomposition_timeouts.issue_revise}\" prompt=\"Use read to load ${capability_goal_decomposition_skills}/issue_writer/current.md and follow its guidance on issue structure.\\n\\nYou are revising an existing GitHub issue spec based on judge feedback.\\n\\nIntent stack JSON:\\n${intent_stack}\\n\\nGoal issue JSON:\\n${goal_issue}\\n\\nGoal context JSON:\\n${goal_context}\\n\\nFeature JSON:\\n${feature}\\n\\nCurrent issue URL:\\n${issue_url}\\n\\nReview notes to address:\\n${review_notes}\\n\\nRead the current issue content, then revise the issue spec to address the review notes.\\nKeep the revised issue executable on a shared wave branch by one builder-reviewer loop.\\nPreserve alignment to the parent goal, include specific file paths, functions, tests, and boundaries when supported by goal_context, and tighten any vague or over-broad acceptance criteria.\\n\\nDo not preserve weak framing just because it came from the input feature. If the current issue still reads like scaffolding, continuity work, or meta-work instead of a real shipped increment, rewrite it toward one meaningful slice of the parent goal while staying faithful to platform and factory intent.\\n\\nReturn JSON only with issue_title, issue_body, and issue_labels.\\nDo not call gh directly.\" session_id=\"goal-decomposer-${issue_number}\"]\n    start [shape=\"Mdiamond\"]\n    sub_issue_link_gate [shape=\"diamond\" label=\"Sub-issue linked?\"]\n    update_issue [type=\"tool\" governance=\"irreversible\" action_runtime=\"in_process\" action_id=\"common.update_issue\" label=\"Update issue\" outputs=\"ok,issue_url,status,stderr\" action_repo=\"${gh_repo}\" action_issue_spec_b64=\"${issue_spec_b64}\" action_issue_url=\"${issue_url}\" recovery_owner=\"supervisor\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    validate_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.validate_issue_spec_draft\" label=\"Validate issue spec\" output_format=\"json\" outputs=\"ok,error,retry_prompt,issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec=\"${issue_spec}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    validate_repaired_issue_spec [type=\"tool\" governance=\"reversible\" action_runtime=\"in_process\" action_id=\"common.validate_issue_spec_draft\" label=\"Validate repaired issue spec\" output_format=\"json\" outputs=\"ok,error,retry_prompt,issue_spec,issue_spec_b64\" action_feature=\"${feature}\" action_issue_spec=\"${issue_spec}\" trust_domain=\"${trust_domain}\" trust_role=\"${trust_role}.tool\"]\n    create_issue -> link_sub_issue -> sub_issue_link_gate\n    revise_issue_spec -> fallback_revised_issue_spec -> normalize_revised_feature_issue_spec -> update_issue -> done\n    start -> load_intent_stack -> draft_issue_spec -> fallback_issue_spec -> normalize_feature_issue_spec -> validate_issue_spec -> issue_spec_gate\n    decide -> done [condition=\"decision=approved\"]\n    decide -> revise_issue_spec [condition=\"decision!=approved && decision!=revise\" label=\"fallback\"]\n    decide -> revise_issue_spec [condition=\"decision=revise\" label=\"revise\"]\n    issue_spec_gate -> create_issue [condition=\"ok=true\" label=\"valid\"]\n    issue_spec_gate -> repair_issue_spec [condition=\"ok!=true\" label=\"repair\"]\n    judge_issue -> normalize_decision\n    normalize_decision -> decide\n    repair_issue_spec -> validate_repaired_issue_spec\n    repaired_issue_spec_gate -> create_issue [condition=\"ok=true\" label=\"valid\"]\n    repaired_issue_spec_gate -> done [condition=\"ok!=true\" label=\"fail_closed\"]\n    sub_issue_link_gate -> done [condition=\"ok!=true\" label=\"fail_closed\"]\n    sub_issue_link_gate -> judge_issue [condition=\"ok=true\"]\n    validate_repaired_issue_spec -> repaired_issue_spec_gate\n}"
+}

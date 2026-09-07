@@ -1,0 +1,23 @@
+{
+  "version": "live_doc_assets/v1",
+  "rationale": "Live factory guidance is gated like code.",
+  "notes": [
+    "This manifest is deterministic and hand-maintained.",
+    "Archived patterns are excluded from live asset detection even when parent globs overlap."
+  ],
+  "live_doc_asset_globs_description": "Contract-bearing docs/skills/templates that define the shipped factory workflow.",
+  "archived_doc_globs_description": "Quarantined historical docs that must stay neutral and outside live contract gating.",
+  "live_doc_asset_globs": [
+    "docs/agent-runbooks/**",
+    "docs/factory-supervisor-tick.md",
+    "docs/langfuse-kpis.md",
+    "docs/runbooks/**",
+    "docs/skills/**",
+    "docs/templates/**",
+    "factories/mothership/skills/**"
+  ],
+  "archived_doc_globs": [
+    "docs/archive/**",
+    "docs/skills/factory-design-workspace/**"
+  ]
+}

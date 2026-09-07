@@ -1,0 +1,64 @@
+{
+  "$id": "https://recallnet.dev/contracts/release-bundle-artifact-metadata.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Durable release bundle and manifest publication metadata.",
+  "properties": {
+    "artifact_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "type": "string"
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "factory_id": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "traceparent": {
+          "type": "string"
+        },
+        "tracestate": {
+          "type": "string"
+        },
+        "workflow_id": {
+          "type": "string"
+        },
+        "workflow_source_revision": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "factory_id",
+        "run_id",
+        "capability_id",
+        "workflow_id",
+        "workflow_source_revision",
+        "correlation_id"
+      ],
+      "type": "object"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "release_bundle_artifact_metadata/v1",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_identity",
+    "release_id",
+    "channel"
+  ],
+  "title": "Release Bundle Metadata",
+  "type": "object"
+}

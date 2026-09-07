@@ -1,0 +1,65 @@
+{
+  "selected_issues": [
+    {
+      "issue_id": 1,
+      "issue_number": 1,
+      "factory_id": "mothership",
+      "sort_key": "mothership#1",
+      "decision": "selected",
+      "reason_code": "selected",
+      "reason_details": {},
+      "notes": [
+        "blocked_by_missing",
+        "blocks_missing",
+        "related_to_missing"
+      ]
+    },
+    {
+      "issue_id": 3,
+      "issue_number": 3,
+      "factory_id": "mothership",
+      "sort_key": "mothership#3",
+      "decision": "selected",
+      "reason_code": "selected",
+      "reason_details": {},
+      "notes": [
+        "blocked_by_missing",
+        "blocks_missing",
+        "related_to_missing"
+      ]
+    },
+    {
+      "issue_id": 2,
+      "issue_number": 2,
+      "factory_id": "mothership",
+      "sort_key": "mothership#2",
+      "decision": "selected",
+      "reason_code": "selected",
+      "reason_details": {},
+      "notes": [
+        "blocked_by_missing",
+        "blocks_missing",
+        "related_to_missing"
+      ]
+    }
+  ],
+  "skipped_issues": [],
+  "requeued_issues": [],
+  "stats": {
+    "total_issues": 3,
+    "eligible_count": 3,
+    "selected_count": 3,
+    "skipped_count": 0,
+    "requeued_count": 0,
+    "global_limit": 3,
+    "global_in_flight": 0,
+    "global_slots": 3,
+    "per_factory": {
+      "mothership": {
+        "limit": 3,
+        "in_flight": 0,
+        "slots_available": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "docsToCheck": [
+    "scripts/test/fixtures/docs-policy/canonical-docs/legacy-commands.md",
+    "scripts/test/fixtures/docs-policy/canonical-docs/legacy-paths.md"
+  ]
+}

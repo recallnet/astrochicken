@@ -1,0 +1,61 @@
+{
+  "docs_templates/v1": {
+    "required_frontmatter_keys": [
+      "doc_type",
+      "owner",
+      "review_policy",
+      "reviewed",
+      "status",
+      "summary",
+      "tags",
+      "written"
+    ],
+    "shared_sections_path": "docs/templates/shared/required-sections.md.tmpl",
+    "templates": [
+      {
+        "id": "architecture",
+        "doc_type": "architecture",
+        "title": "Architecture",
+        "path": "docs/templates/architecture.md.tmpl",
+        "sections": [
+          "## Context",
+          "## Decision",
+          "## Consequences"
+        ]
+      },
+      {
+        "id": "roadmap",
+        "doc_type": "roadmap",
+        "title": "Roadmap",
+        "path": "docs/templates/roadmap.md.tmpl",
+        "sections": [
+          "## Guiding Principle",
+          "## Phases",
+          "## Open Questions"
+        ]
+      },
+      {
+        "id": "state_machines",
+        "doc_type": "state_machines",
+        "title": "State Machines",
+        "path": "docs/templates/state-machines.md.tmpl",
+        "sections": [
+          "## Legend",
+          "## System Overview",
+          "## Transition Contracts"
+        ]
+      },
+      {
+        "id": "vision",
+        "doc_type": "vision",
+        "title": "Vision",
+        "path": "docs/templates/vision.md.tmpl",
+        "sections": [
+          "## Thesis",
+          "## Principles",
+          "## Success Criteria"
+        ]
+      }
+    ]
+  }
+}

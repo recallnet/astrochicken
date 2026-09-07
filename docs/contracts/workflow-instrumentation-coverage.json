@@ -1,0 +1,18 @@
+{
+  "schema_version": "workflow_instrumentation_helper_report/v1",
+  "summary": {
+    "helper_consumer_files": 3,
+    "direct_bypass_files": 0,
+    "diagnostics": 0
+  },
+  "helper_paths": [
+    "apps/hatch/src/pipeline/instrumentation-helpers.ts",
+    "apps/hatch/src/pipeline/reactor-instrumentation.ts"
+  ],
+  "helper_consumers": [
+    "apps/hatch/src/pipeline/engine.ts",
+    "apps/hatch/src/pipeline/handler/fan_out_detached.ts",
+    "apps/hatch/src/pipeline/handler/fan_out_dynamic.ts"
+  ],
+  "direct_bypass_files": []
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "hatch.test-topology.v1",
+  "allowed_test_prefixes": [
+    "apps/hatch/src/",
+    "packages/factory-core/test/",
+    "packages/factory-prompts/test/",
+    "packages/capability-foreman/src/",
+    "packages/factory-ops/test/",
+    "packages/factory-runtime-guard/test/",
+    "packages/factory-skills/test/",
+    "packages/github-adapter/test/",
+    "packages/web-tools/test/",
+    "packages/factory-telemetry/src/",
+    "packages/capability-release-reporting/test/",
+    "scripts/"
+  ],
+  "allowed_fixture_prefixes": [
+    "apps/hatch/src/",
+    "factories/_templates/factory/conformance/",
+    "packages/factory-ops/test/",
+    "scripts/fixtures/",
+    "scripts/test/"
+  ],
+  "fixture_directory_names": [
+    "fixtures",
+    "golden"
+  ]
+}

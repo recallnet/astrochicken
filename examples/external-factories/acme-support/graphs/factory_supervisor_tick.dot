@@ -1,0 +1,16 @@
+digraph acme_support_factory_supervisor_tick {
+    label = "acme_support_factory_supervisor_tick"
+
+    start [shape=Mdiamond]
+    done [shape=Msquare]
+
+    shared_supervisor_tick [type="pipeline"
+                            recovery_owner="supervisor"
+                            label="Run shared managed-factory supervisor tick"
+                            pipeline="factories/mothership/graphs/factory_supervisor_tick.dot"
+                            inherit_context="true"
+                            trust_domain="acme-support.local"
+                            trust_role="acme-support.local.pipeline"]
+
+    start -> shared_supervisor_tick -> done
+}

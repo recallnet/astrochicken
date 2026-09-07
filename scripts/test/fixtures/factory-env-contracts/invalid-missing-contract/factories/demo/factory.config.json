@@ -1,0 +1,5 @@
+{
+  "schema": "hatch.factory.config.v1",
+  "factory_id": "demo",
+  "control_token": "${HATCH_FACTORY_GITHUB_TOKEN}"
+}

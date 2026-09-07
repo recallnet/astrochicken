@@ -1,0 +1,21 @@
+{
+  "issue_number": "1175",
+  "issue_title": "Emit stale-branch supervisor guidance when review evidence is zero-delta",
+  "issue_body_excerpt": "Wave issue giveup should surface deterministic stale-branch guidance.",
+  "branch": "wave/goal-1175-wave-1",
+  "worktree_dir": "/tmp/wave-1175",
+  "commits_ahead": "0",
+  "issue_commits": "2",
+  "changed_files": [
+    "README.md"
+  ],
+  "issue_changed_files": [],
+  "snapshot_sha": "deadbeef",
+  "judge_context_valid": "false",
+  "judge_context_error": "judge_context_path_missing",
+  "summary": "No commits ahead of main for this issue branch",
+  "qa": {
+    "status": "pass",
+    "command": "npm run test:wave-claim-gates"
+  }
+}

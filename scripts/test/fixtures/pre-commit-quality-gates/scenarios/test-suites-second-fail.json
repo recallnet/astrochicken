@@ -1,0 +1,8 @@
+{
+  "stagedPaths": ["apps/hatch/src/cli.ts", "packages/factory-ops/src/cli/commands/wave.mjs"],
+  "testGuardGatesExit": 0,
+  "testWaveClaimGatesExit": 29,
+  "expectedStatus": 29,
+  "expectedNpmCalls": ["test:guard-gates", "test:wave-claim-gates"],
+  "expectedReason": "bucket_overlap_guard_wave"
+}

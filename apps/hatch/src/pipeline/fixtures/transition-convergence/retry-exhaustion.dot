@@ -1,0 +1,9 @@
+digraph retry_exhaustion {
+	node [recovery_owner="supervisor"]
+	start [shape=Mdiamond]
+	retry_node [type="tool" label="Retry until exhausted" output_key="retry_marker" governance="reversible" tool_id="shell" action_id="file.write" max_retries="3"]
+	done [shape=Msquare]
+
+	start -> retry_node
+	retry_node -> done [condition="outcome=success"]
+}

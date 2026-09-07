@@ -1,0 +1,94 @@
+{
+  "artifactDefaults": {
+    "canonicalCheckoutPath": "${HATCH_CANONICAL_CHECKOUT_PATH}",
+    "runsDir": ".hatch/example-web/runs",
+    "scheduledGraphs": [
+      "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs"
+    ],
+    "trustDomain": "example-web.local",
+    "trustRoles": [
+      "example-web.local.agent.worktree",
+      "example-web.local.codergen",
+      "example-web.local.fan_in.dynamic",
+      "example-web.local.fan_out.dynamic",
+      "example-web.local.pipeline",
+      "example-web.local.stack.manager_loop",
+      "example-web.local.tool"
+    ]
+  },
+  "bootstrap": {
+    "conformanceReadmePath": null,
+    "createEvolveDocPath": null,
+    "initCommand": "hatch factory init --id example-web --repo example-org/example-web --control-plane recallnet/astrochicken",
+    "intentPath": "factories/example-web/INTENT.md",
+    "readmePath": "factories/example-web/README.md"
+  },
+  "compositionModel": "thin_composition",
+  "configPath": "factories/example-web/factory.config.json",
+  "dispatchGraphPath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "factoryId": "example-web",
+  "graphBindings": [
+    {
+      "capabilityPackage": "@hatch/capability-software-development",
+      "id": "goal_execute",
+      "owner": "shared",
+      "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_intake_decompose",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-software-development",
+      "id": "goal_issue_execute",
+      "owner": "shared",
+      "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_queue",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/capability-goal-decomposition",
+      "id": "goal_run",
+      "owner": "shared",
+      "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
+      "role": "capability_binding"
+    },
+    {
+      "capabilityPackage": "@hatch/factory-runtime",
+      "id": "factory_supervisor_tick",
+      "owner": "shared",
+      "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+      "role": "dispatch"
+    }
+  ],
+  "manifestPath": "factories/example-web/inventory/factory-composition-manifest.v1.json",
+  "policy": {
+    "configPath": "factories/example-web/factory.config.json",
+    "overrideKeys": [],
+    "policyFiles": [],
+    "policyPackDir": null,
+    "policyPackVersion": null
+  },
+  "privateExecutionGluePaths": [],
+  "registryPath": "factory-registry.json",
+  "schemaVersion": "factory_composition_manifest/v1",
+  "supervisorGraphPath": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+  "telemetryDefaults": {
+    "benchmarkTelemetryExemptions": [],
+    "benchmarkTelemetryWarnOnly": false,
+    "conformanceEntrypoint": null,
+    "conformanceRunsDir": null,
+    "dispatchLatencySloSeconds": null,
+    "maintenanceIntervalSeconds": null
+  }
+}

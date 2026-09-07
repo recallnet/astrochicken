@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+JOB_NAME="$1"
+RUN_ID="$2"
+BRANCH="${GITHUB_REF_NAME}"
+SHA="${GITHUB_SHA}"
+ACTOR="${GITHUB_ACTOR}"
+RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}"
+
+TITLE="CI: ${JOB_NAME} failed on ${BRANCH}"
+
+LOGS=$(gh run view "$RUN_ID" --log-failed 2>&1 | tail -80 || echo "Logs unavailable")
+
+EXISTING=$(gh issue list --label bug --state all \
+  --search "\"${TITLE}\" in:title" \
+  --json number,state,closedAt \
+  --jq 'sort_by(.closedAt // "") | reverse | .[0].number // empty' 2>/dev/null || echo "")
+EXISTING_STATE=$(gh issue list --label bug --state all \
+  --search "\"${TITLE}\" in:title" \
+  --json number,state,closedAt \
+  --jq 'sort_by(.closedAt // "") | reverse | .[0].state // empty' 2>/dev/null || echo "")
+
+BODY="## CI: \`${JOB_NAME}\` failed
+
+**Branch:** \`${BRANCH}\`
+**Commit:** \`${SHA}\` by @${ACTOR}
+**Run:** ${RUN_URL}
+
+### Logs
+\`\`\`
+${LOGS}
+\`\`\`"
+
+if [ -n "$EXISTING" ]; then
+  if [ "$EXISTING_STATE" = "CLOSED" ]; then
+    gh issue reopen "$EXISTING" || true
+  fi
+  gh issue comment "$EXISTING" --body "$BODY" || true
+else
+  gh issue create --title "$TITLE" --label "bug" --body "$BODY" || true
+fi

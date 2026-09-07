@@ -1,0 +1,103 @@
+// Standalone factory usage: copy this file to your factory root as roles.stylesheet.
+// To customize per-role model/provider without forking, create roles.stylesheet.override
+// and @import it after this file in your graph @import chain.
+// See roles.stylesheet.override.example emitted by: node scripts/sync-shared-factory-surfaces.mjs --external-root
+@import "../_shared/roles.stylesheet"
+
+.reviewer {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.judge {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.issue_quality_judge {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.post_merge_judge {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.coder {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.agent.worktree";
+}
+
+.supervisor {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.stack.manager_loop";
+}
+
+.knowledge_worker {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.goal_decomposer {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.goal_batch_reviewer {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.scenario_author {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.release_narrator {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.codergen";
+}
+
+.triage_planner {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.triage_planner";
+}
+
+.merge_resolver {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.3-codex";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.stack.manager_loop";
+}
+
+.issue_writer {
+  llm_provider = "openrouter";
+  llm_model = "openai/gpt-5.1-codex-mini";
+  trust_domain = "{{trust_domain}}";
+  trust_role = "{{trust_domain}}.issue_writer";
+}

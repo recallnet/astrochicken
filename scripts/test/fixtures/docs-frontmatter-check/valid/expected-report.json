@@ -1,0 +1,30 @@
+{
+  "schema_version": "docs_frontmatter_check/v1",
+  "ok": true,
+  "summary": {
+    "docs": 2,
+    "templates": 4,
+    "diagnostics": 0
+  },
+  "docs": [
+    "docs/architecture.md",
+    "docs/reference.md"
+  ],
+  "template_ids": [
+    "architecture",
+    "roadmap",
+    "state_machines",
+    "vision"
+  ],
+  "required_frontmatter_keys": [
+    "doc_type",
+    "owner",
+    "review_policy",
+    "reviewed",
+    "status",
+    "summary",
+    "tags",
+    "written"
+  ],
+  "diagnostics": []
+}

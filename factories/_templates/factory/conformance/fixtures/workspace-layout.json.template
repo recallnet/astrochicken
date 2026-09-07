@@ -1,0 +1,12 @@
+{
+  "schema": "hatch.factory.conformance.workspace_layout.v1",
+  "factory_root": "factories/{{factory_id}}",
+  "expected_paths": [
+    "factories/{{factory_id}}/factory.config.json",
+    "factories/{{factory_id}}/graphs/factory_supervisor_tick.dot",
+    "factories/{{factory_id}}/conformance/factory_supervisor_tick.dot",
+    "factories/{{factory_id}}/scripts/run-conformance.sh",
+    "factories/{{factory_id}}/conformance/fixtures"
+  ],
+  "runs_dir": "{{runs_dir}}"
+}

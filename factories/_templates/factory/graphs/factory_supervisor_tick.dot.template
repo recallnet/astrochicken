@@ -1,0 +1,28 @@
+digraph factory_supervisor_tick {
+  start [shape=Mdiamond label="Start tick"]
+  done [shape=Msquare recovery_sink_type="terminal" label="Done"]
+
+  // Template contract:
+  // - Any non-healable failure branch must emit a named packet before destructive cleanup.
+  // - Durable, automation-consumed handoffs must use a registered packet family.
+  // - Failure edges should converge to a supervisor-owned packet recovery sink with a packet ref.
+  // - Template packet builders should output packet_path, packet_id, packet_type, and schema_version.
+  // - Example recovery sink:
+  //   recovery_wait [type="wait.human" recovery_owner="supervisor" recovery_sink_type="wait" label="Supervisor packet recovery"]
+
+  // FREEFORM-VS-PACKET BOUNDARY
+  // Allowed freeform: ephemeral agent messaging, local reasoning notes, conversational summaries not consumed by automation.
+  // Must packetize: durable automation-consumed exchanges, cross-tick handoffs, ownership transfers,
+  //   recovery artifacts another operator/LLM depends on, any artifact required to continue after crash/retry.
+
+  // LLM node template — uncomment and customize when adding an LLM-calling node.
+  // Required benchmark attributes (see docs/langfuse-kpis.md for field semantics):
+  //   my_llm_node [class="coder"
+  //                benchmark_job_id="{{factory_id}}.<job_semantic_name>"
+  //                prompt_version="YYYY-MM-DD.r1"
+  //                role_version="1.0.0"
+  //                skill_id="<skill_name>"
+  //                label="..."]
+
+  start -> done
+}
