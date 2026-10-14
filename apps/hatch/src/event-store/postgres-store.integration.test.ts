@@ -1,4 +1,3 @@
-import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import net from "node:net";
@@ -21,6 +20,8 @@ import {
 	setLifecycleProjectionEmitter,
 } from "../pipeline/run.js";
 
+import { createComposeCommand, waitForComposePostgres } from "../../../../scripts/test/helpers/compose-command.ts";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "../../../..");
 const composePath = path.resolve(
@@ -28,17 +29,6 @@ const composePath = path.resolve(
 	"packages/factory-ops/config/postgres/canonical-event-store.compose.yml",
 );
 
-function runShell(command: string, env: NodeJS.ProcessEnv = {}): string {
-	const result = spawnSync("/bin/zsh", ["-lc", command], {
-		cwd: repoRoot,
-		encoding: "utf8",
-		env: { ...process.env, ...env },
-	});
-	if (result.status !== 0) {
-		throw new Error(result.stderr || result.stdout || `command failed: ${command}`);
-	}
-	return String(result.stdout || "");
-}
 
 async function allocatePort(): Promise<number> {
 	return await new Promise((resolve, reject) => {
@@ -65,6 +55,7 @@ describe("canonical postgres event store", () => {
 	const envPath = path.join(stateRoot, "postgres.env");
 	const composeProject = `commit01_${randomUUID().slice(0, 8)}`;
 	let connectionString = "";
+	const compose = createComposeCommand({ repoRoot, composePath, project: composeProject, envPath });
 
 	beforeAll(async () => {
 		const password = "astrochicken";
@@ -79,25 +70,14 @@ describe("canonical postgres event store", () => {
 			`POSTGRES_PORT=${port}`,
 		].join("\n");
 		writeFileSync(envPath, `${envText}\n`);
-		runShell(
-			`docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} up -d postgres`,
-		);
-		runShell(`
-      for i in {1..30}; do
-        # Require TCP readiness; the initialization-only Unix socket stops before normal startup.
-        if docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} exec -T postgres pg_isready -h 127.0.0.1 -U ${user} -d ${db} >/dev/null 2>&1; then
-          exit 0
-        fi
-        sleep 1
-      done
-      exit 1
-    `);
+		compose("up", "-d", "postgres");
+		await waitForComposePostgres(compose, user, db);
 		connectionString = `postgres://${user}:${password}@127.0.0.1:${port}/${db}`;
 	});
 
 	afterAll(() => {
 		try {
-			runShell(`docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} down -v`);
+			compose("down", "-v");
 		} finally {
 			rmSync(stateRoot, { recursive: true, force: true });
 		}
