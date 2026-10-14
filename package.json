@@ -74,6 +74,7 @@
 		"@recallnet/codecontext-eslint-plugin": "^0.2.2",
 		"@recallnet/codecontext-parser": "^0.2.2",
 		"@recallnet/docs-governance-preset": "0.2.8",
+		"@resvg/resvg-wasm": "2.6.2",
 		"@sinclair/typebox": "^0.34.52",
 		"@typescript-eslint/parser": "^8.71.2",
 		"@viz-js/viz": "^3.31.0",
@@ -86,7 +87,6 @@
 		"jscpd": "4.0.7",
 		"knip": "^5.88.1",
 		"pg": "^8.23.1",
-		"sharp": "^0.34.5",
 		"turbo": "^2.11.8",
 		"typescript": "^5.9.3",
 		"zod": "^4.6.7"
@@ -103,7 +103,6 @@
 			"ajv@>=7.0.0-alpha.0 <8.18.0": "^8.20.0",
 			"yaml@>=2.0.0 <2.8.3": "^2.9.1",
 			"handlebars@>=3.0.0 <=4.7.9": "^4.7.10",
-			"sharp@<0.35.5": "^0.35.5",
 			"@opentelemetry/core@<2.8.0": "^2.8.0",
 			"basic-ftp@<=6.2.0": "^6.2.1",
 			"tinypool@<2.1.2": "^2.1.2"

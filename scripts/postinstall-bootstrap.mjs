@@ -45,7 +45,7 @@ export const REQUIRED_ROOT_DEPENDENCY_LINKS = [
   { dependency: "eslint-plugin-boundaries", packagePath: [] },
   { dependency: "eslint-plugin-import-x", packagePath: [] },
   { dependency: "globals", packagePath: [] },
-  { dependency: "sharp", packagePath: [] },
+  { dependency: "@resvg/resvg-wasm", packagePath: [] },
   { dependency: "typescript", packagePath: [] },
   // @context:regression !critical Repo-wide workflow governance gates render
   // diagram assets from fresh worktrees during pre-commit. The root package

@@ -36,3 +36,11 @@ test("renderDotToPng ignores Hatch @import directives before rasterizing", async
 
   assert.equal(png.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
 });
+
+test("renderDotToPng preserves portable text pixels without host font discovery", async () => {
+  const { createHash } = await import("node:crypto");
+  const png = await renderDotToPng('digraph portable { start [label="Portable text: café Ω"]; start -> done }');
+  // Same fixture is run on macOS and Linux; changes require reviewing the image,
+  // bundled font, and pinned WASM renderer rather than accepting host defaults.
+  assert.equal(createHash("sha256").update(png).digest("hex"), "730579c913014a2676b8e789b2f05f18a70db956c016951f8d83db6e71425ab4");
+});
