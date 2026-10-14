@@ -1,9 +1,12 @@
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { setTimeout } from "node:timers/promises";
+
+const fixtureStorageOverride = fileURLToPath(new URL("./postgres-fixture.compose.yml", import.meta.url));
 
 export function createComposeCommand({ repoRoot, composePath, project, envPath, spawn = spawnSync }) {
   return (...args) => {
-    const result = spawn("docker", ["compose", "-p", project, "-f", composePath, "--env-file", envPath, ...args], {
+    const result = spawn("docker", ["compose", "-p", project, "-f", composePath, "-f", fixtureStorageOverride, "--env-file", envPath, ...args], {
       cwd: repoRoot,
       encoding: "utf8",
       env: { ...process.env },

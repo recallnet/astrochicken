@@ -1,0 +1,18 @@
+# Disposable fixture storage must not create postgres-owned files in a test
+# runner's temporary directory. Compose scopes these volumes to its unique project.
+services:
+  postgres:
+    volumes:
+      - type: volume
+        source: fixture_data
+        target: /var/lib/postgresql/data
+      - type: volume
+        source: fixture_backups
+        target: /backups
+      - type: volume
+        source: fixture_restore
+        target: /restore
+volumes:
+  fixture_data: {}
+  fixture_backups: {}
+  fixture_restore: {}
