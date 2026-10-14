@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -10,7 +11,7 @@ test("resolveGitHubProjectionTarget integrates factory-ops command ownership wit
     repo: "example-org/example-trading",
     ghExec: (args) => {
       calls.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
     factoryId: "example-trading",
     runId: "run-1536",

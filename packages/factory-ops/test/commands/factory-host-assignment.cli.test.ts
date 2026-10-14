@@ -1,64 +1,33 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { makeHostRegistryRow as registryRow, writeInstallationManifest as writeManifest, writeHostRegistry as writeRegistry, makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+
+import { existsSync, readFileSync, rmSync } from "node:fs";
+
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
-const factoryRoot = join(repoRoot, "factories/mothership");
 
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
+const factoryRoot = join(repoRoot, "factories/mothership");
 
 function runCli(args, { expectStatus = 0, env = process.env } = {}) {
   // Always clear mutation-context env var so the CLI does not inherit the live
   // factory's path policy, which would reject isolated test temp-dir paths.
   const safeEnv = { ...env };
   delete safeEnv["HATCH_FACTORY_MUTATION_CONTEXT_JSON"];
-  const run = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: safeEnv,
-  });
+  const run = spawnOpsCli([
+      ...args
+    ], {
+      env: safeEnv
+    });
   assert.equal(run.status, expectStatus, `stderr=${run.stderr}\nstdout=${run.stdout}`);
   const stdout = String(run.stdout || "").trim();
   return {
     ...run,
     payload: stdout ? JSON.parse(stdout) : {},
-  };
-}
-
-function writeRegistry(root, rows = []) {
-  const registryPath = join(root, "factory-registry.json");
-  writeFileSync(registryPath, `${JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: rows,
-  }, null, 2)}\n`);
-  return registryPath;
-}
-
-function writeManifest(root, payload = {}) {
-  mkdirSync(root, { recursive: true });
-  const path = join(root, "installation.json");
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
-  return path;
-}
-
-function registryRow() {
-  return {
-    instance_id: "mothership",
-    kind_id: "mothership",
-    target_repo: "recallnet/astrochicken",
-    status: "active",
-    assigned_host_id: "unassigned",
-    installation_manifest_path: "",
-    graphs: [],
-    daemonStatus: { status: "stopped" },
   };
 }
 

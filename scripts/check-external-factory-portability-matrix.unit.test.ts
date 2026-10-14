@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const scriptPath = join(scriptsDir, "check-external-factory-portability-matrix.mjs");
+const scriptPath = join(scriptsDir, "check-external-factory-portability-matrix.ts");
 const scriptSource = readFileSync(scriptPath, "utf8");
 
 test("external factory portability matrix targets only the intended Vitest contract files", () => {

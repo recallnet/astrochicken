@@ -36,8 +36,10 @@ function defaultImportWorkflowSource(repoRoot, relativePath) {
   return import(pathToFileURL(path.join(repoRoot, relativePath)).href);
 }
 
-function isWorkflowSourceModulePath(filePath = "") {
-  return /\/workflows\/.+\.workflow-source\.mjs$/.test(String(filePath || "").trim());
+export function isWorkflowSourceModulePath(filePath = "") {
+  // @context:regression Discovery is scoped to authoring roots. Nested fixtures
+  // contain intentionally invalid workflows and must never become runtime owners.
+  return /^(?:factories|packages)\/[^/]+\/workflows\/.+\.workflow-source\.mjs$/.test(String(filePath || "").trim());
 }
 
 function isGovernedExecutionGraphPath(filePath = "") {
@@ -268,7 +270,7 @@ export async function analyzeWorkflowSourceContract({
     if (!sourceText) continue;
     const parsed = dotParser(sourceText);
     const declaredSource = String(parsed?.attrs?.workflow_source || "").trim();
-    if (declaredSource) {
+    if (declaredSource && isWorkflowSourceModulePath(declaredSource)) {
       runtimeGraphsBySource.set(declaredSource, { filePath, parsed });
       runtimeGraphsWithSource.add(filePath);
     }

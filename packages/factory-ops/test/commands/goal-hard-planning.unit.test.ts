@@ -1,25 +1,13 @@
+import { makeFinalInstantiationGoal, makePrerequisiteGoalA, makeReusableGapAnalysis } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  HARD_PLAN_PACKET_SCHEMA_VERSION,
-  HARD_PLAN_PACKET_TYPE,
-  attachPlanningArtifacts,
-  determineGoalRequestType,
-  markGoalPlanned,
-  persistHardPlanningArtifact,
-  validatePlanningArtifact,
-} from "../../src/commands/goal-hard-planning.ts";
+import { HARD_PLAN_PACKET_SCHEMA_VERSION, HARD_PLAN_PACKET_TYPE, attachPlanningArtifacts, determineGoalRequestType, markGoalPlanned, persistHardPlanningArtifact, validatePlanningArtifact } from "../../src/commands/goal-hard-planning.ts";
 import { classifyGoalExecutionPath, readGoalExecutionPath } from "../../src/commands/goal-execution-path.ts";
-import {
-  FACTORY_REQUEST_GOAL_GRAPH_SCHEMA_VERSION,
-  buildFactoryRequestGoalGraph,
-  normalizeFactoryRequestGoalGraph,
-  parseOptionalObject as parseFactoryRequestGoalGraphObject,
-} from "../../src/commands/goal-hard-planning-factory-request-goal-graph.ts";
+import { FACTORY_REQUEST_GOAL_GRAPH_SCHEMA_VERSION, buildFactoryRequestGoalGraph, normalizeFactoryRequestGoalGraph, parseOptionalObject as parseFactoryRequestGoalGraphObject } from "../../src/commands/goal-hard-planning-factory-request-goal-graph.ts";
 
 test("factory-request goal-graph module exports deterministic schema constants and helpers", () => {
   assert.equal(FACTORY_REQUEST_GOAL_GRAPH_SCHEMA_VERSION, "factory_request_goal_graph/v1");
@@ -507,19 +495,7 @@ test("validatePlanningArtifact fails closed when factory_request goal graph is m
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
   }, null, 2));
 
   assert.throws(
@@ -557,35 +533,13 @@ test("validatePlanningArtifact fails closed when factory_request goal graph edge
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
     factory_request_goal_graph: {
       schema_version: "factory_request_goal_graph/v1",
       prerequisite_goals: [
-        {
-          goal_id: "prereq_a",
-          goal_kind: "prerequisite",
-          title: "Prerequisite A",
-          issue_set_id: "set_prereq_a",
-        },
+        makePrerequisiteGoalA(),
       ],
-      final_instantiation_goal: {
-        goal_id: "final_inst",
-        goal_kind: "final_instantiation",
-        title: "Final instantiation",
-        issue_set_id: "set_final",
-      },
+      final_instantiation_goal: makeFinalInstantiationGoal(),
       goal_edges: [
         {
           from_goal_id: "prereq_a",
@@ -644,35 +598,13 @@ test("validatePlanningArtifact fails closed when factory_request goal graph cont
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
     factory_request_goal_graph: {
       schema_version: "factory_request_goal_graph/v1",
       prerequisite_goals: [
-        {
-          goal_id: "prereq_a",
-          goal_kind: "prerequisite",
-          title: "Prerequisite A",
-          issue_set_id: "set_prereq_a",
-        },
+        makePrerequisiteGoalA(),
       ],
-      final_instantiation_goal: {
-        goal_id: "final_inst",
-        goal_kind: "final_instantiation",
-        title: "Final instantiation",
-        issue_set_id: "set_final",
-      },
+      final_instantiation_goal: makeFinalInstantiationGoal(),
       goal_edges: [
         {
           from_goal_id: "prereq_a",
@@ -731,35 +663,13 @@ test("validatePlanningArtifact fails closed when final goal has outgoing edges",
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
     factory_request_goal_graph: {
       schema_version: "factory_request_goal_graph/v1",
       prerequisite_goals: [
-        {
-          goal_id: "prereq_a",
-          goal_kind: "prerequisite",
-          title: "Prerequisite A",
-          issue_set_id: "set_prereq_a",
-        },
+        makePrerequisiteGoalA(),
       ],
-      final_instantiation_goal: {
-        goal_id: "final_inst",
-        goal_kind: "final_instantiation",
-        title: "Final instantiation",
-        issue_set_id: "set_final",
-      },
+      final_instantiation_goal: makeFinalInstantiationGoal(),
       goal_edges: [
         {
           from_goal_id: "final_inst",
@@ -818,28 +728,11 @@ test("validatePlanningArtifact fails closed when factory_request goal graph omit
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
     factory_request_goal_graph: {
       schema_version: "factory_request_goal_graph/v1",
       prerequisite_goals: [
-        {
-          goal_id: "prereq_a",
-          goal_kind: "prerequisite",
-          title: "Prerequisite A",
-          issue_set_id: "set_prereq_a",
-        },
+        makePrerequisiteGoalA(),
       ],
       goal_edges: [],
       goal_issue_sets: [
@@ -888,35 +781,13 @@ test("validatePlanningArtifact fails closed when factory_request goal graph intr
         factory_request_bucket: "reusable_policy_profile_gaps",
       },
     ],
-    factory_request_plan: {
-      reusable_capability_gaps: [{ feature_id: "F-1", name: "Reusable capability" }],
-      reusable_policy_profile_gaps: [{ feature_id: "F-2", name: "Reusable policy/profile" }],
-      factory_instance_wiring: [],
-      domain_specific_residues: [],
-      raw_bucket_text: {
-        reusable_capability_gaps: ["shared capability"],
-        reusable_policy_profile_gaps: ["shared policy"],
-        factory_instance_wiring: [],
-        domain_specific_residues: [],
-      },
-      normalization_warnings: [],
-    },
+    factory_request_plan: makeReusableGapAnalysis(),
     factory_request_goal_graph: {
       schema_version: "factory_request_goal_graph/v1",
       prerequisite_goals: [
-        {
-          goal_id: "prereq_a",
-          goal_kind: "prerequisite",
-          title: "Prerequisite A",
-          issue_set_id: "set_prereq_a",
-        },
+        makePrerequisiteGoalA(),
       ],
-      final_instantiation_goal: {
-        goal_id: "final_inst",
-        goal_kind: "final_instantiation",
-        title: "Final instantiation",
-        issue_set_id: "set_final",
-      },
+      final_instantiation_goal: makeFinalInstantiationGoal(),
       goal_edges: [
         {
           from_goal_id: "prereq_a",

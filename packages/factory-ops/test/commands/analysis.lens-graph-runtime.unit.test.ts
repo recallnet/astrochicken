@@ -1,3 +1,6 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
+import { reconcileNoLensCandidates } from "../helpers/ops-domain-fixtures.ts";
+import { makeEmptyLensCollection } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { promises as fsPromises } from "node:fs";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
@@ -6,16 +9,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test, { afterEach } from "node:test";
 
-import {
-  resetAnalysisLensGraphRuntimeForTest,
-  runAnalysisLensFinalize,
-  runAnalysisLensPrepare,
-  setAnalysisLensGraphRuntimeForTest,
-} from "../../src/commands/analysis/lens-graph-runtime.ts";
-import {
-  createDailyLensCollectedFixture,
-  DAILY_LENS_REQUIRED_DATASET_IDS,
-} from "../shared/helpers/daily-lens-manifest.ts";
+import { resetAnalysisLensGraphRuntimeForTest, runAnalysisLensFinalize, runAnalysisLensPrepare, setAnalysisLensGraphRuntimeForTest } from "../../src/commands/analysis/lens-graph-runtime.ts";
+import { createDailyLensCollectedFixture, DAILY_LENS_REQUIRED_DATASET_IDS } from "../shared/helpers/daily-lens-manifest.ts";
 
 const tempDirs = [];
 
@@ -221,12 +216,7 @@ test("analysis lens-finalize renders artifacts, publishes the report issue, and 
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2188\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2188\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -349,15 +339,7 @@ test("analysis lens-finalize rejects pending_agent_analysis stub instead of publ
 
   const bundleDir = path.dirname(bundlePath);
   mkdirSync(bundleDir, { recursive: true });
-  writeFileSync(bundlePath, `${JSON.stringify({
-    base: {
-      langfuse: { meta: {} },
-      github: { meta: {} },
-      git: { meta: {} },
-      hatch_runs: { meta: {} },
-      supervisor: { meta: {} },
-    },
-  }, null, 2)}\n`, "utf8");
+  writeFileSync(bundlePath, `${JSON.stringify(makeEmptyLensCollection(), null, 2)}\n`, "utf8");
   writeFileSync(analysisPath, `${JSON.stringify({
     status: "pending_agent_analysis",
     bundle_manifest_path: path.join(runtimeDir, "bundle-manifest.json"),
@@ -393,12 +375,7 @@ test("analysis lens-finalize materializes agent result into analysis file before
     },
     ghFn: (args) => {
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2192\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2192\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -406,26 +383,11 @@ test("analysis lens-finalize materializes agent result into analysis file before
       slackCalls.push(payload);
       return { ok: true, delivered: true, status: "delivered" };
     },
-    runAnalysisLensFollowupCandidates: async () => ({
-      ok: true,
-      created_count: 0,
-      updated_count: 0,
-      reused_count: 0,
-      reconciled_count: 0,
-      candidates: [],
-    }),
+    runAnalysisLensFollowupCandidates: reconcileNoLensCandidates,
   });
 
   mkdirSync(path.dirname(bundlePath), { recursive: true });
-  writeFileSync(bundlePath, `${JSON.stringify({
-    base: {
-      langfuse: { meta: {} },
-      github: { meta: {} },
-      git: { meta: {} },
-      hatch_runs: { meta: {} },
-      supervisor: { meta: {} },
-    },
-  }, null, 2)}\n`, "utf8");
+  writeFileSync(bundlePath, `${JSON.stringify(makeEmptyLensCollection(), null, 2)}\n`, "utf8");
   writeFileSync(analysisPath, `${JSON.stringify({
     status: "pending_agent_analysis",
     bundle_manifest_path: path.join(runtimeDir, "bundle-manifest.json"),
@@ -482,12 +444,7 @@ test("analysis lens-finalize fails closed when follow-up candidate generation fa
     },
     ghFn: (args) => {
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2191\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2191\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -498,15 +455,7 @@ test("analysis lens-finalize fails closed when follow-up candidate generation fa
 
   const bundleDir = path.dirname(bundlePath);
   mkdirSync(bundleDir, { recursive: true });
-  writeFileSync(bundlePath, `${JSON.stringify({
-    base: {
-      langfuse: { meta: {} },
-      github: { meta: {} },
-      git: { meta: {} },
-      hatch_runs: { meta: {} },
-      supervisor: { meta: {} },
-    },
-  }, null, 2)}\n`, "utf8");
+  writeFileSync(bundlePath, `${JSON.stringify(makeEmptyLensCollection(), null, 2)}\n`, "utf8");
   writeFileSync(analysisPath, `${JSON.stringify({
     focus_choices: {
       prioritized_elevations: ["factory_instance"],
@@ -556,23 +505,11 @@ test("analysis lens-finalize publishes actual findings when report_body is missi
     },
     ghFn: (args) => {
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2300\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2300\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
-    runAnalysisLensFollowupCandidates: async () => ({
-      ok: true,
-      created_count: 0,
-      updated_count: 0,
-      reused_count: 0,
-      reconciled_count: 0,
-      candidates: [],
-    }),
+    runAnalysisLensFollowupCandidates: reconcileNoLensCandidates,
   });
 
   mkdirSync(path.dirname(bundlePath), { recursive: true });

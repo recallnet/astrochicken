@@ -1,14 +1,11 @@
+import { makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { mkdtempSync, readdirSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readdirSync, rmSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
 import { readLeaseRecord, resolveLeaseRecordPath, writeLeaseRecord } from "../../src/lib/host-lease-store.ts";
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
 
 test("writeLeaseRecord persists canonical lease contract and readLeaseRecord returns it", () => {
   const root = makeTmpDir("host-lease-store-");

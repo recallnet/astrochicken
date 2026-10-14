@@ -1,3 +1,4 @@
+import { createMemoryFileReader } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -157,14 +158,7 @@ test("collectRunsArtifacts reads run artifacts and reports guard incidents", asy
     throw error;
   };
 
-  const readFileFn = async (targetPath) => {
-    if (!files.has(targetPath)) {
-      const error = new Error("missing");
-      error.code = "ENOENT";
-      throw error;
-    }
-    return files.get(targetPath);
-  };
+  const readFileFn = createMemoryFileReader(files);
 
   const payload = await collectRunsArtifacts({
     windowStart: WINDOW_START,
@@ -277,14 +271,7 @@ test("collectRunsArtifacts reports accurate total_runs scoped to mtime-eligible 
     throw error;
   };
 
-  const readFileFn = async (targetPath) => {
-    if (!files.has(targetPath)) {
-      const error = new Error("missing");
-      error.code = "ENOENT";
-      throw error;
-    }
-    return files.get(targetPath);
-  };
+  const readFileFn = createMemoryFileReader(files);
 
   const statFn = async (targetPath) => {
     if (targetPath.includes("run-a") || targetPath.includes("run-b")) return { mtimeMs: IN_WINDOW_MTIME.getTime() };
@@ -321,14 +308,7 @@ test("collectRunsArtifacts gracefully handles stat failures by including the dir
     throw error;
   };
 
-  const readFileFn = async (targetPath) => {
-    if (!files.has(targetPath)) {
-      const error = new Error("missing");
-      error.code = "ENOENT";
-      throw error;
-    }
-    return files.get(targetPath);
-  };
+  const readFileFn = createMemoryFileReader(files);
 
   const statFn = async () => {
     throw new Error("permission denied");

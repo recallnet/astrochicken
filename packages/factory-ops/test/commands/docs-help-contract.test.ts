@@ -1,5 +1,6 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -7,21 +8,21 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 const waveIssueGraphPath = join(repoRoot, "docs/contracts/workflow-ir/mothership/goal_issue_execute.dot");
 
 const goalIssueCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/goal-issue.ts"), "utf8");
 const goalRunCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/goal-run.ts"), "utf8");
 const judgeCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/judge.ts"), "utf8");
 const factoryCmd = [
-  "factory-status-cmds.mjs",
-  "factory-host-cmds.mjs",
-  "factory-control-cmds.mjs",
-  "factory-lease-cmds.mjs",
-  "factory-release-cmds.mjs",
-  "factory-service-profile-cmds.mjs",
-  "factory-fleet-triage-cmds.mjs",
-  "factory-fleet-triage-queues.mjs",
+  "factory-status-cmds.ts",
+  "factory-host-cmds.ts",
+  "factory-control-cmds.ts",
+  "factory-lease-cmds.ts",
+  "factory-release-cmds.ts",
+  "factory-service-profile-cmds.ts",
+  "factory-fleet-triage-cmds.ts",
+  "factory-fleet-triage-queues.ts",
 ].map((f) => readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands", f), "utf8")).join("\n");
 const factoryReviewMetricsCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/factory-dashboard.ts"), "utf8");
 const factoryDashboardCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/factory-dashboard.ts"), "utf8");
@@ -37,10 +38,10 @@ const mergeCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/comma
 const artifactCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/artifact.ts"), "utf8");
 const skillCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/skill.ts"), "utf8");
 const releaseCmd = [
-  "release.mjs",
-  "release-context-cmds.mjs",
-  "release-delivery-cmds.mjs",
-  "release-policy-cmds.mjs",
+  "release.ts",
+  "release-context-cmds.ts",
+  "release-delivery-cmds.ts",
+  "release-policy-cmds.ts",
 ].map((f) => readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands", f), "utf8")).join("\n");
 const triageCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/triage.ts"), "utf8");
 const supervisorCmd = readFileSync(join(repoRoot, "packages/factory-ops/src/cli/commands/supervisor.ts"), "utf8");
@@ -255,11 +256,12 @@ test("ops CLI usage documents factory lease command set", () => {
 });
 
 test("factory CLI help output advertises publish-control-plane-manifest recovery command", () => {
-  const run = spawnSync("node", [opsCliPath, "factory", "--help"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: opsCliEnv,
-  });
+  const run = spawnOpsCli([
+      "factory",
+      "--help"
+    ], {
+      env: opsCliEnv
+    });
   const output = `${run.stdout || ""}\n${run.stderr || ""}`;
   assert.match(output, /factory publish-control-plane-manifest/);
   assert.match(output, /factory dashboard/);

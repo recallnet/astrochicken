@@ -4,35 +4,16 @@
   "no_rescope_rule": "The Phase 1 target set can change only by updating this checked-in classification contract and regenerating the Phase 1 burn-down inventory in the same change.",
   "phase1_target_frozen": true,
   "summary": {
-    "active_targets": 1,
-    "phase1_targets": 1,
+    "active_targets": 0,
+    "phase1_targets": 0,
     "out_of_scope_targets": 0,
     "real_owner_graphs": 0,
     "wrapper_delegators": 0,
     "diagnostics": 0
   },
-  "phase1_targets": [
-    {
-      "file": "packages/factory-ops/src/commands/goal-final-state-review.ts",
-      "surface": "command_thinness",
-      "owner_id": "factory-ops",
-      "owner_path": "packages/factory-ops/src/commands/goal-final-state-review.ts",
-      "determinism_classification": "deterministic_internal_transport",
-      "rationale": "Goal final-state review reconciliation logic calls github-adapter and canonical event projections; transport is deterministic but command file is thick"
-    }
-  ],
+  "phase1_targets": [],
   "out_of_scope_targets": [],
-  "owner_partitions": [
-    {
-      "owner_id": "factory-ops",
-      "count": 1
-    }
-  ],
-  "surface_partitions": [
-    {
-      "surface": "command_thinness",
-      "count": 1
-    }
-  ],
+  "owner_partitions": [],
+  "surface_partitions": [],
   "diagnostics": []
 }

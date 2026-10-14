@@ -12,7 +12,10 @@
   "destinations": {
     "platform_incidents": {
       "repo": "recallnet/astrochicken",
-      "labels": ["managed-factory-bug", "factory:example-scanner"]
+      "labels": [
+        "managed-factory-bug",
+        "factory:example-scanner"
+      ]
     }
   },
   "tracking_issue": 2409,
@@ -62,5 +65,9 @@
     "example-scanner.local.fan_in.dynamic"
   ],
   "max_concurrent_waves": 1,
-  "max_goal_runs_per_tick": 1
+  "max_goal_runs_per_tick": 1,
+  "conformance": {
+    "smoke_graph": "factories/_shared/conformance/factory_supervisor_tick.dot",
+    "entrypoint": "factories/_shared/conformance/run-conformance.sh"
+  }
 }

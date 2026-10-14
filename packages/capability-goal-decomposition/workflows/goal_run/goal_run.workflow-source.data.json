@@ -606,7 +606,7 @@
         "label": "Execute easy goal directly",
         "fail_open": "true",
         "inherit_context": "true",
-        "pipeline": "factories/mothership/graphs/goal_execute.dot",
+        "pipeline": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
         "recovery_owner": "supervisor",
         "trust_domain": "${trust_domain}",
         "trust_role": "${trust_role}.pipeline"

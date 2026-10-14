@@ -1,25 +1,27 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
-import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
+import test from "node:test";
 
 function runCountFeatureObjects(rawB64 = "") {
-  return spawnSync("node", [opsCliPath, "common", "count-feature-objects", "--raw-b64", rawB64], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  return spawnOpsCli([
+      "common",
+      "count-feature-objects",
+      "--raw-b64",
+      rawB64
+    ]);
 }
 
 function runFallbackJson(rawB64 = "", goalNumber = "1729") {
-  return spawnSync("node", [opsCliPath, "common", "fallback-json", "--raw-b64", rawB64, "--goal-number", goalNumber], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  return spawnOpsCli([
+      "common",
+      "fallback-json",
+      "--raw-b64",
+      rawB64,
+      "--goal-number",
+      goalNumber
+    ]);
 }
 
 test("normalize_features behavioral gate: count-feature-objects returns 3 for plain JSON array b64", () => {

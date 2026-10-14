@@ -23,9 +23,9 @@ describe("ACTIVE_INTENTS_GRAPH_BASENAMES", () => {
     assert.ok(ACTIVE_INTENTS_GRAPH_BASENAMES.length > 0);
   });
 
-  it("all entries end with .dot", () => {
+  it("all entries end with .workflow-source.mjs", () => {
     for (const name of ACTIVE_INTENTS_GRAPH_BASENAMES) {
-      assert.ok(name.endsWith(".dot"), `"${name}" should end with .dot`);
+      assert.ok(name.endsWith(".workflow-source.mjs"), `"${name}" should end with .workflow-source.mjs`);
     }
   });
 
@@ -42,9 +42,9 @@ describe("ACTIVE_INTENTS_GRAPH_BASENAMES", () => {
 
   it("contains the expected basenames", () => {
     const names = new Set(ACTIVE_INTENTS_GRAPH_BASENAMES);
-    assert.ok(names.has("factory_supervisor_tick.dot"));
-    assert.ok(names.has("goal_execute.dot"));
-    assert.ok(names.has("goal_issue_execute.dot"));
+    assert.ok(names.has("factory_supervisor_tick.workflow-source.mjs"));
+    assert.ok(names.has("goal_execute.workflow-source.mjs"));
+    assert.ok(names.has("goal_issue_execute.workflow-source.mjs"));
   });
 });
 
@@ -61,15 +61,16 @@ describe("ACTIVE_INTENTS_GRAPH_PATHS", () => {
     );
   });
 
-  it("all entries end with .dot", () => {
+  it("all entries end with .workflow-source.mjs", () => {
     for (const p of ACTIVE_INTENTS_GRAPH_PATHS) {
-      assert.ok(p.endsWith(".dot"), `"${p}" should end with .dot`);
+      assert.ok(p.endsWith(".workflow-source.mjs"), `"${p}" should end with .workflow-source.mjs`);
     }
   });
 
   it("includes the mothership graph paths derived from basenames", () => {
     for (const name of ACTIVE_INTENTS_GRAPH_BASENAMES) {
-      const expected = `factories/mothership/graphs/${name}`;
+      const family = name.startsWith("factory_supervisor_tick.") ? "dispatch-control" : "goal-execution";
+      const expected = `factories/mothership/workflows/${family}/${name}`;
       assert.ok(
         ACTIVE_INTENTS_GRAPH_PATHS.includes(expected),
         `paths should contain "${expected}"`
@@ -114,7 +115,7 @@ describe("listActiveIntentGraphPaths", () => {
   });
 
   it("returns default paths when graphsDir is explicitly the default", () => {
-    const result = listActiveIntentGraphPaths({ graphsDir: "factories/mothership/graphs" });
+    const result = listActiveIntentGraphPaths({ graphsDir: "factories/mothership/workflows" });
     assert.deepEqual(result, [...ACTIVE_INTENTS_GRAPH_PATHS]);
   });
 

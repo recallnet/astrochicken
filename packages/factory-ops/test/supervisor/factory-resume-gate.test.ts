@@ -16,6 +16,49 @@ import {
   ensureResumeReady,
 } from "../../src/commands/factory-resume-gate.ts";
 
+function resumeManifestFixture(controller, includeFactoryId = true) {
+  return {
+      ok: true,
+      manifest: {
+        release: { tag: "v1.3.0" },
+        rollout: { controller: controller },
+        compatibility_matrix: { required_factory_release_floor: "1.2.0" },
+        artifacts: [{
+          source_repo: "example/external-factory",
+          source_issue: 1068,
+          ...(includeFactoryId ? { factory_id: "external/issue_worker" } : {}),
+          required_factory_release: "1.2.0",
+          linkage: {
+            schema_version: "factory_link.v1",
+            source_repo: "example/external-factory",
+            source_issue: 1068,
+            control_plane_repo: "recallnet/astrochicken",
+            control_plane_goal: 3002,
+            signature_hash: "sha256:ready",
+            factory_id: "external/issue_worker",
+            required_factory_release: "1.2.0",
+            status: "blocked_on_goal",
+          },
+        }],
+      },
+      selected_channel: "stable",
+      source: "test",
+      manifest_ref: "main",
+      manifest_path: ".hatch/releases/stable/release-manifest.json",
+    };
+}
+
+function readyResumeGateFixture({ localFactoryRelease, requiredFactoryRelease }) {
+  return {
+      ok: true,
+      can_resume: true,
+      reason: "ready_to_resume",
+      goal: { number: 3002, state: "CLOSED", url: "https://example/3002", title: "Goal" },
+      local_factory_release: localFactoryRelease,
+      required_factory_release: requiredFactoryRelease,
+    };
+}
+
 test("loadResumePolicy accepts inline JSON string", () => {
   const out = loadResumePolicy({ policyJson: "{\"control_plane_repo\":\"recallnet/astrochicken\",\"rollout\":{\"default_channel\":\"stable\"}}" });
   assert.equal(out.rollout.default_channel, "stable");
@@ -37,43 +80,8 @@ test("ensureResumeReady blocks stable resume while release remains in canary", (
     localFactoryRelease: "1.3.0",
     manifestPath: ".hatch/releases/stable/release-manifest.json",
     manifestRef: "main",
-    fetchManifestFn: () => ({
-      ok: true,
-      manifest: {
-        release: { tag: "v1.3.0" },
-        rollout: { controller: { status: "canary_in_progress", stage: "canary", resume_blocked: false, canary_factory_ids: ["external/issue_worker"] } },
-        compatibility_matrix: { required_factory_release_floor: "1.2.0" },
-        artifacts: [{
-          source_repo: "example/external-factory",
-          source_issue: 1068,
-          factory_id: "external/issue_worker",
-          required_factory_release: "1.2.0",
-          linkage: {
-            schema_version: "factory_link.v1",
-            source_repo: "example/external-factory",
-            source_issue: 1068,
-            control_plane_repo: "recallnet/astrochicken",
-            control_plane_goal: 3002,
-            signature_hash: "sha256:ready",
-            factory_id: "external/issue_worker",
-            required_factory_release: "1.2.0",
-            status: "blocked_on_goal",
-          },
-        }],
-      },
-      selected_channel: "stable",
-      source: "test",
-      manifest_ref: "main",
-      manifest_path: ".hatch/releases/stable/release-manifest.json",
-    }),
-    checkResumeGateFn: ({ localFactoryRelease, requiredFactoryRelease }) => ({
-      ok: true,
-      can_resume: true,
-      reason: "ready_to_resume",
-      goal: { number: 3002, state: "CLOSED", url: "https://example/3002", title: "Goal" },
-      local_factory_release: localFactoryRelease,
-      required_factory_release: requiredFactoryRelease,
-    }),
+    fetchManifestFn: () => resumeManifestFixture({ status: "canary_in_progress", stage: "canary", resume_blocked: false, canary_factory_ids: ["external/issue_worker"] }),
+    checkResumeGateFn: readyResumeGateFixture,
   });
 
   assert.equal(out.ok, true);
@@ -92,43 +100,8 @@ test("ensureResumeReady blocks rolled-back release without self-update", () => {
     selfUpdateCommand: "echo should-not-run",
     manifestPath: ".hatch/releases/stable/release-manifest.json",
     manifestRef: "main",
-    fetchManifestFn: () => ({
-      ok: true,
-      manifest: {
-        release: { tag: "v1.3.0" },
-        rollout: { controller: { status: "rolled_back", stage: "rollback", resume_blocked: true, rollback_reason: "factory_status_failed_runs", canary_factory_ids: ["external/issue_worker"] } },
-        compatibility_matrix: { required_factory_release_floor: "1.2.0" },
-        artifacts: [{
-          source_repo: "example/external-factory",
-          source_issue: 1068,
-          factory_id: "external/issue_worker",
-          required_factory_release: "1.2.0",
-          linkage: {
-            schema_version: "factory_link.v1",
-            source_repo: "example/external-factory",
-            source_issue: 1068,
-            control_plane_repo: "recallnet/astrochicken",
-            control_plane_goal: 3002,
-            signature_hash: "sha256:ready",
-            factory_id: "external/issue_worker",
-            required_factory_release: "1.2.0",
-            status: "blocked_on_goal",
-          },
-        }],
-      },
-      selected_channel: "stable",
-      source: "test",
-      manifest_ref: "main",
-      manifest_path: ".hatch/releases/stable/release-manifest.json",
-    }),
-    checkResumeGateFn: ({ localFactoryRelease, requiredFactoryRelease }) => ({
-      ok: true,
-      can_resume: true,
-      reason: "ready_to_resume",
-      goal: { number: 3002, state: "CLOSED", url: "https://example/3002", title: "Goal" },
-      local_factory_release: localFactoryRelease,
-      required_factory_release: requiredFactoryRelease,
-    }),
+    fetchManifestFn: () => resumeManifestFixture({ status: "rolled_back", stage: "rollback", resume_blocked: true, rollback_reason: "factory_status_failed_runs", canary_factory_ids: ["external/issue_worker"] }),
+    checkResumeGateFn: readyResumeGateFixture,
   });
 
   assert.equal(out.ok, true);
@@ -317,14 +290,7 @@ test("ensureResumeReady defaults to canonical manifest mode when stable manifest
       manifest_ref: "",
       manifest_path: manifestPath,
     }),
-    checkResumeGateFn: ({ localFactoryRelease, requiredFactoryRelease }) => ({
-      ok: true,
-      can_resume: true,
-      reason: "ready_to_resume",
-      goal: { number: 3002, state: "CLOSED", url: "https://example/3002", title: "Goal" },
-      local_factory_release: localFactoryRelease,
-      required_factory_release: requiredFactoryRelease,
-    }),
+    checkResumeGateFn: readyResumeGateFixture,
     checkResumeGateFromArtifactLinkFn: () => {
       throw new Error("artifact linkage fallback should not run when canonical manifest mode is defaulted");
     },
@@ -632,42 +598,8 @@ test("ensureResumeReady reports initial stable resume-ready path without self-up
     localFactoryRelease: "1.3.0",
     manifestPath: ".hatch/releases/stable/release-manifest.json",
     manifestRef: "main",
-    fetchManifestFn: () => ({
-      ok: true,
-      manifest: {
-        release: { tag: "v1.3.0" },
-        rollout: { controller: { status: "promoted", stage: "general", channel: "stable", pinned_release_id: "v1.3.0", resume_blocked: false, canary_factory_ids: [] } },
-        compatibility_matrix: { required_factory_release_floor: "1.2.0" },
-        artifacts: [{
-          source_repo: "example/external-factory",
-          source_issue: 1068,
-          required_factory_release: "1.2.0",
-          linkage: {
-            schema_version: "factory_link.v1",
-            source_repo: "example/external-factory",
-            source_issue: 1068,
-            control_plane_repo: "recallnet/astrochicken",
-            control_plane_goal: 3002,
-            signature_hash: "sha256:ready",
-            factory_id: "external/issue_worker",
-            required_factory_release: "1.2.0",
-            status: "blocked_on_goal",
-          },
-        }],
-      },
-      selected_channel: "stable",
-      source: "test",
-      manifest_ref: "main",
-      manifest_path: ".hatch/releases/stable/release-manifest.json",
-    }),
-    checkResumeGateFn: ({ localFactoryRelease, requiredFactoryRelease }) => ({
-      ok: true,
-      can_resume: true,
-      reason: "ready_to_resume",
-      goal: { number: 3002, state: "CLOSED", url: "https://example/3002", title: "Goal" },
-      local_factory_release: localFactoryRelease,
-      required_factory_release: requiredFactoryRelease,
-    }),
+    fetchManifestFn: () => resumeManifestFixture({ status: "promoted", stage: "general", channel: "stable", pinned_release_id: "v1.3.0", resume_blocked: false, canary_factory_ids: [] }, false),
+    checkResumeGateFn: readyResumeGateFixture,
   });
 
   assert.equal(out.ok, true);

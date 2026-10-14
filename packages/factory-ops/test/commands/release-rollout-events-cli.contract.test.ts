@@ -1,16 +1,13 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+
 
 import { RELEASE_ROLLOUT_EVENT_SCHEMA_VERSION } from "../../src/commands/release-rollout-controller.ts";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 function writeManifestFixture({ events = [] } = {}) {
   const root = mkdtempSync(join(tmpdir(), "release-rollout-events-"));
@@ -70,17 +67,13 @@ test("release rollout-events --json emits rollout event array with required fiel
     ],
   });
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "rollout-events",
-    "--json",
-    "--manifest-path",
-    manifestPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "rollout-events",
+      "--json",
+      "--manifest-path",
+      manifestPath
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const payload = JSON.parse(run.stdout || "[]");
@@ -101,47 +94,35 @@ test("release rollout-events --json emits rollout event array with required fiel
 test("release rollout-events prints [] for empty event logs in json mode", () => {
   const manifestPath = writeManifestFixture({ events: [] });
 
-  const jsonRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "rollout-events",
-    "--json",
-    "--manifest-path",
-    manifestPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const jsonRun = spawnOpsCli([
+      "release",
+      "rollout-events",
+      "--json",
+      "--manifest-path",
+      manifestPath
+    ]);
 
   assert.equal(jsonRun.status, 0, jsonRun.stderr || jsonRun.stdout);
   assert.deepEqual(JSON.parse(jsonRun.stdout || "[]"), []);
 
-  const humanRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "rollout-events",
-    "--manifest-path",
-    manifestPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const humanRun = spawnOpsCli([
+      "release",
+      "rollout-events",
+      "--manifest-path",
+      manifestPath
+    ]);
 
   assert.equal(humanRun.status, 0, humanRun.stderr || humanRun.stdout);
   assert.match(humanRun.stdout, /No rollout events/);
 });
 
 test("release rollout-events fails clearly when manifest path is missing", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "rollout-events",
-    "--manifest-path",
-    "/tmp/does-not-exist-release-manifest.json",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "rollout-events",
+      "--manifest-path",
+      "/tmp/does-not-exist-release-manifest.json"
+    ]);
 
   assert.equal(run.status, 1);
   assert.match(run.stderr, /release rollout-events failed:/);

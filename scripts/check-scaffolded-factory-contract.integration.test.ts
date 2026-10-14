@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import test from "node:test";
+import test, { before, after } from "node:test";
+import { createCanonicalEventStoreFixture } from "../packages/factory-ops/test/supervisor/factory-status-postgres-fixture.ts";
 import { fileURLToPath } from "node:url";
 
 import { ensureHatchBuild } from "./lib/ensure-hatch-build.ts";
@@ -11,7 +12,19 @@ import { scaffoldFactoryFixture } from "./lib/scaffold-factory-fixture.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptsDir, "..");
-const contractScriptPath = join(repoRoot, "scripts", "check-scaffolded-factory-contract.mjs");
+const contractScriptPath = join(repoRoot, "scripts", "check-scaffolded-factory-contract.ts");
+
+const eventStoreFixture = createCanonicalEventStoreFixture();
+const previousEventStoreUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+before(async () => {
+  await eventStoreFixture.setup();
+  process.env.HATCH_CANONICAL_EVENT_STORE_URL = eventStoreFixture.connectionString;
+});
+after(() => {
+  if (previousEventStoreUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+  else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousEventStoreUrl;
+  eventStoreFixture.teardown();
+});
 
 const FACTORY_CONTEXT_ENV_KEYS = [
   "HATCH_FACTORY_ROOT",
@@ -86,6 +99,15 @@ test("check-scaffolded-factory-contract forwards --factory-root/--repo-root to f
   try {
     seedWorkspace(tempRoot);
     const scaffoldResult = await scaffoldFactory(tempRoot);
+    // Exercise real health forwarding with a bounded local workflow and isolated
+    // event store; a generated factory must not contact example GitHub targets.
+    const smokeGraph = join(scaffoldResult.factoryRoot, "conformance", "factory_supervisor_tick.dot");
+    mkdirSync(dirname(smokeGraph), { recursive: true });
+    cpSync(join(repoRoot, "factories/_shared/conformance/factory_supervisor_tick.dot"), smokeGraph);
+    const configPath = join(scaffoldResult.factoryRoot, "factory.config.json");
+    const config = JSON.parse(readFileSync(configPath, "utf8"));
+    config.conformance = { ...config.conformance, smoke_graph: smokeGraph };
+    writeFileSync(configPath, JSON.stringify(config, null, 2) + "\n");
 
     const run = spawnSync(
       "node",
@@ -100,7 +122,7 @@ test("check-scaffolded-factory-contract forwards --factory-root/--repo-root to f
         cwd: repoRoot,
         env: {
           ...buildIsolatedFactoryContextEnv(),
-          HATCH_FACTORY_GITHUB_TOKEN: process.env.HATCH_FACTORY_GITHUB_TOKEN || "test-token",
+          HATCH_FACTORY_GITHUB_TOKEN: "test-token",
         },
         encoding: "utf8",
       },

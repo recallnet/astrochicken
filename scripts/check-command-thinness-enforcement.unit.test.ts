@@ -7,25 +7,31 @@ import test from "node:test";
 
 import { analyzeCommandThinnessEnforcement } from "./check-command-thinness-enforcement.ts";
 
-test("command thinness enforcement ignores legacy command surfaces", () => {
-  const result = analyzeCommandThinnessEnforcement({
-    files: ["packages/factory-ops/src/cli/commands/other.ts"],
-    manifest: {
-      schema_version: "active_surface_manifest/v1",
-      graph_families: [
+function commandManifestFixture(overrides) {
+  return {
+    schema_version: "active_surface_manifest/v1",
+    graph_families: [
         {
           id: "graphs",
           classification: "historical_or_test_only",
           include: ["scripts/test/fixtures/**/*.dot"],
         },
       ],
-      runtime_surfaces: [
+    runtime_surfaces: [
         {
           id: "runtime_tests",
           classification: "test_only",
           include: ["packages/**/*.test.mjs"],
         },
       ],
+    ...overrides,
+  };
+}
+
+test("command thinness enforcement ignores legacy command surfaces", () => {
+  const result = analyzeCommandThinnessEnforcement({
+    files: ["packages/factory-ops/src/cli/commands/other.ts"],
+    manifest: commandManifestFixture({
       command_surfaces: [
         {
           id: "legacy_cli",
@@ -33,7 +39,7 @@ test("command thinness enforcement ignores legacy command surfaces", () => {
           include: ["packages/factory-ops/src/cli/commands/**/*.mjs"],
         },
       ],
-    },
+    }),
     readFile() {
       return `${"x\n".repeat(900)}`;
     },
@@ -46,22 +52,7 @@ test("command thinness enforcement ignores legacy command surfaces", () => {
 test("command thinness enforcement ignores external/operator CLI files", () => {
   const result = analyzeCommandThinnessEnforcement({
     files: ["packages/factory-ops/src/cli/commands/release-delivery-cmds.ts"],
-    manifest: {
-      schema_version: "active_surface_manifest/v1",
-      graph_families: [
-        {
-          id: "graphs",
-          classification: "historical_or_test_only",
-          include: ["scripts/test/fixtures/**/*.dot"],
-        },
-      ],
-      runtime_surfaces: [
-        {
-          id: "runtime_tests",
-          classification: "test_only",
-          include: ["packages/**/*.test.mjs"],
-        },
-      ],
+    manifest: commandManifestFixture({
       command_surfaces: [
         {
           id: "operator_cli",
@@ -69,7 +60,7 @@ test("command thinness enforcement ignores external/operator CLI files", () => {
           include: ["packages/factory-ops/src/cli/commands/**/*.mjs"],
         },
       ],
-    },
+    }),
     readFile() {
       return `${"x\n".repeat(401)}`;
     },
@@ -82,22 +73,7 @@ test("command thinness enforcement ignores external/operator CLI files", () => {
 test("command thinness enforcement ignores operator support surfaces", () => {
   const result = analyzeCommandThinnessEnforcement({
     files: ["packages/factory-ops/src/commands/factory-subscribe.ts"],
-    manifest: {
-      schema_version: "active_surface_manifest/v1",
-      graph_families: [
-        {
-          id: "graphs",
-          classification: "historical_or_test_only",
-          include: ["scripts/test/fixtures/**/*.dot"],
-        },
-      ],
-      runtime_surfaces: [
-        {
-          id: "runtime_tests",
-          classification: "test_only",
-          include: ["packages/**/*.test.mjs"],
-        },
-      ],
+    manifest: commandManifestFixture({
       command_surfaces: [
         {
           id: "operator_support",
@@ -105,7 +81,7 @@ test("command thinness enforcement ignores operator support surfaces", () => {
           include: ["packages/factory-ops/src/commands/factory-subscribe.ts"],
         },
       ],
-    },
+    }),
     readFile() {
       return `${"x\n".repeat(900)}`;
     },
@@ -118,22 +94,7 @@ test("command thinness enforcement ignores operator support surfaces", () => {
 test("command thinness enforcement fails oversized active deterministic owner files", () => {
   const result = analyzeCommandThinnessEnforcement({
     files: ["packages/factory-ops/src/commands/release-build-report-context.ts"],
-    manifest: {
-      schema_version: "active_surface_manifest/v1",
-      graph_families: [
-        {
-          id: "graphs",
-          classification: "historical_or_test_only",
-          include: ["scripts/test/fixtures/**/*.dot"],
-        },
-      ],
-      runtime_surfaces: [
-        {
-          id: "runtime_tests",
-          classification: "test_only",
-          include: ["packages/**/*.test.mjs"],
-        },
-      ],
+    manifest: commandManifestFixture({
       command_surfaces: [
         {
           id: "owner_commands",
@@ -141,7 +102,7 @@ test("command thinness enforcement fails oversized active deterministic owner fi
           include: ["packages/factory-ops/src/commands/release-build-report-context.ts"],
         },
       ],
-    },
+    }),
     readFile() {
       return `${"x\n".repeat(401)}`;
     },
@@ -186,7 +147,7 @@ test("command thinness enforcement CLI supports --all-tracked", () => {
   const gitAdd = spawnSync("git", ["add", "."], { cwd: repoDir, encoding: "utf8" });
   assert.equal(gitAdd.status, 0, gitAdd.stderr || gitAdd.stdout);
 
-  const scriptPath = join(process.cwd(), "scripts", "check-command-thinness-enforcement.mjs");
+  const scriptPath = join(process.cwd(), "scripts", "check-command-thinness-enforcement.ts");
   const run = spawnSync("node", [scriptPath, "--all-tracked"], {
     cwd: repoDir,
     encoding: "utf8",

@@ -3,6 +3,15 @@ import assert from "node:assert/strict";
 import { createTestAdapter } from "../../github-adapter/src/test-adapter.ts";
 import { blockReadyWaveIssue } from "../src/commands/wave-block-ready.ts";
 
+function blockFixtureWave(overrides) {
+  return blockReadyWaveIssue({
+    listMilestoneOpenIssuesFn: () => [],
+    syncBlockedByFn: () => ({ ok: true }),
+    releaseReadyWaveClaimFn: () => ({ ok: true }),
+    ...overrides,
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -54,13 +63,11 @@ test("blockReadyWaveIssue returns error on non-finite issue number", () => {
 
 test("blockReadyWaveIssue treats negative issue number as truthy (passes guard but gh fails)", () => {
   const { fn } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: -5,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
   // -5 passes the truthiness guard (Number(-5) is truthy)
   assert.equal(out.issue_number, -5);
@@ -73,7 +80,7 @@ test("blockReadyWaveIssue treats negative issue number as truthy (passes guard b
 
 test("blockReadyWaveIssue succeeds with all operations ok", () => {
   const { fn, calls } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "goal-1-wave-1",
@@ -84,8 +91,7 @@ test("blockReadyWaveIssue succeeds with all operations ok", () => {
       { number: 100, title: "Wave Ready: goal-1-wave-1" },
       { number: 101, title: "Feature A" },
     ],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -101,7 +107,7 @@ test("blockReadyWaveIssue succeeds with all operations ok", () => {
 
 test("blockReadyWaveIssue filters out wave marker issues from blockers", () => {
   const { fn } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "goal-1-wave-1",
@@ -110,8 +116,7 @@ test("blockReadyWaveIssue filters out wave marker issues from blockers", () => {
       { number: 100, title: "Wave Ready: goal-1-wave-1" },
       { number: 101, title: "Wave Ready: goal-1-wave-2" },
     ],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.deepEqual(out.blocked_by, []);
@@ -120,14 +125,12 @@ test("blockReadyWaveIssue filters out wave marker issues from blockers", () => {
 
 test("blockReadyWaveIssue sets blocked_without_relationship when no blockers found", () => {
   const { fn } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "goal-1-wave-1",
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.blocked_without_relationship, true);
@@ -137,7 +140,7 @@ test("blockReadyWaveIssue sets blocked_without_relationship when no blockers fou
 test("blockReadyWaveIssue correctly collects multiple blockers from milestone issues", () => {
   const { fn } = mockGh();
   const syncCalls = [];
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "recallnet/astrochicken",
     readyIssueNumber: "506",
     milestoneTitle: "goal-205-wave-2",
@@ -152,7 +155,7 @@ test("blockReadyWaveIssue correctly collects multiple blockers from milestone is
     ],
     execGh: fn,
     syncBlockedByFn: (payload) => { syncCalls.push(payload); return { ok: true }; },
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -173,7 +176,7 @@ test("blockReadyWaveIssue reads milestone issues through adapter when provided",
     },
   });
 
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "goal-1-wave-1",
@@ -182,8 +185,7 @@ test("blockReadyWaveIssue reads milestone issues through adapter when provided",
     listMilestoneOpenIssuesFn: () => {
       throw new Error("listMilestoneOpenIssuesFn must not be called when adapter is provided");
     },
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -197,14 +199,12 @@ test("blockReadyWaveIssue reads milestone issues through adapter when provided",
 
 test("blockReadyWaveIssue uses judge_failed reason text", () => {
   const { fn, calls } = mockGh();
-  blockReadyWaveIssue({
+  blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     reason: "judge_failed",
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   const commentCall = calls.find((c) => c[0] === "issue" && c[1] === "comment");
@@ -215,14 +215,12 @@ test("blockReadyWaveIssue uses judge_failed reason text", () => {
 
 test("blockReadyWaveIssue uses no_merge_candidates reason text", () => {
   const { fn, calls } = mockGh();
-  blockReadyWaveIssue({
+  blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     reason: "no_merge_candidates",
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   const commentCall = calls.find((c) => c[0] === "issue" && c[1] === "comment");
@@ -236,13 +234,11 @@ test("blockReadyWaveIssue uses no_merge_candidates reason text", () => {
 
 test("blockReadyWaveIssue records label edit failure", () => {
   const { fn } = mockGh({ labelOk: false });
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, false);
@@ -251,12 +247,11 @@ test("blockReadyWaveIssue records label edit failure", () => {
 
 test("blockReadyWaveIssue records lease release failure", () => {
   const { fn } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
+
     releaseReadyWaveClaimFn: () => ({ ok: false }),
   });
 
@@ -266,13 +261,11 @@ test("blockReadyWaveIssue records lease release failure", () => {
 
 test("blockReadyWaveIssue records comment failure", () => {
   const { fn } = mockGh({ commentOk: false });
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, false);
@@ -281,12 +274,11 @@ test("blockReadyWaveIssue records comment failure", () => {
 
 test("blockReadyWaveIssue records all failures when everything fails", () => {
   const { fn } = mockGh({ labelOk: false, commentOk: false });
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
+
     releaseReadyWaveClaimFn: () => ({ ok: false }),
   });
 
@@ -299,14 +291,12 @@ test("blockReadyWaveIssue records all failures when everything fails", () => {
 
 test("blockReadyWaveIssue handles empty milestone gracefully", () => {
   const { fn } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "",
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -319,15 +309,13 @@ test("blockReadyWaveIssue handles empty milestone gracefully", () => {
 
 test("blockReadyWaveIssue closes the issue after stripping labels", () => {
   const { fn, calls } = mockGh();
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     milestoneTitle: "goal-1-wave-1",
     reason: "no_merge_candidates",
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -338,13 +326,11 @@ test("blockReadyWaveIssue closes the issue after stripping labels", () => {
 
 test("blockReadyWaveIssue records close failure", () => {
   const { fn } = mockGh({ closeOk: false });
-  const out = blockReadyWaveIssue({
+  const out = blockFixtureWave({
     repo: "r/r",
     readyIssueNumber: 100,
     execGh: fn,
-    listMilestoneOpenIssuesFn: () => [],
-    syncBlockedByFn: () => ({ ok: true }),
-    releaseReadyWaveClaimFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, false);

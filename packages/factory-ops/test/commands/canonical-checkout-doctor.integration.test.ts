@@ -74,8 +74,16 @@ function createFixtureRepo() {
     path.join(repoRoot, "apps", "hatch", "dist", "cli.js"),
     "#!/usr/bin/env node\nif (process.argv.includes('--help')) process.stdout.write('help\\n');\n",
   );
-  writeFileSync(path.join(repoRoot, "package.json"), "{\n  \"name\": \"fixture\"\n}\n");
+  writeJson(path.join(repoRoot, "package.json"), { name: "fixture", type: "module" });
+  writeJson(path.join(repoRoot, "apps", "hatch", "package.json"), { name: "hatch-fixture", type: "module" });
+  // The real startup probe also imports the provider dependency from Hatch's
+  // package root. Keep this fixture self-contained through mirror/worktree repair.
+  const providerRoot = path.join(repoRoot, "apps", "hatch", "node_modules", "@mariozechner", "pi-ai");
+  writeJson(path.join(providerRoot, "package.json"), { name: "@mariozechner/pi-ai", type: "module" });
+  mkdirSync(path.join(providerRoot, "dist", "providers"), { recursive: true });
+  writeFileSync(path.join(providerRoot, "dist", "providers", "azure-openai-responses.js"), "export const fixtureProvider = true;\n");
   runGit(repoRoot, ["add", "."]);
+  runGit(repoRoot, ["add", "--force", path.relative(repoRoot, providerRoot)]);
   runGit(repoRoot, ["commit", "-m", "fixture"]);
 
   return { root, repoRoot, canonicalPath, homeDir, hostBaseDir };
@@ -117,8 +125,11 @@ test("canonical doctor repair recreates missing canonical checkout and relinks h
       homeDir: fixture.homeDir,
     });
 
-    assert.equal(out.ok, true, JSON.stringify(out, null, 2));
+    const deadendPacket = out.packet ? JSON.parse(readFileSync(out.packet.packet_path, "utf8")) : null;
+    assert.equal(out.ok, true, JSON.stringify({ ...out, deadend_detail: deadendPacket?.resource_refs }, null, 2));
     assert.equal(out.status, "repaired");
+    assert.equal(out.runtime.probes.every((probe) => probe.ok), true);
+    assert.equal(out.runtime.probes.find((probe) => probe.id === "pi_ai_azure_openai_provider")?.ok, true);
     assert.equal(readCurrentBranch(fixture.canonicalPath), "main");
     const linkPath = path.join(fixture.homeDir, ".local", "share", "pnpm", "hatch-ops");
     assert.equal(lstatSync(linkPath).isSymbolicLink(), true);

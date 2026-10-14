@@ -23,7 +23,7 @@ import {
   runOpsCliJson,
   seedScenario,
   sha256,
-} from "./helpers/command-test-helpers.mjs";
+} from "./helpers/command-test-helpers.ts";
 
 const waveDefaults = {
   judgeKind: "wave_execution_post_merge",

@@ -10,7 +10,7 @@ import { analyzeTestBoundaries } from "./check-test-boundaries.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "..");
-const scriptPath = join(repoRoot, "scripts", "check-test-boundaries.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-test-boundaries.ts");
 
 function write(repoRoot, relativePath, content) {
   const absolute = join(repoRoot, relativePath);

@@ -27,7 +27,26 @@ function baseConfig(args: { workDir: string; eventBus: EventBus; runsDir: string
 	};
 }
 
-function dynamicFanNode(id: string, templatePath: string, maxConcurrency = "1"): Node {
+function fanOutHandler(workDir: string, runsDir: string, eventBus: EventBus) {
+	return new DynamicFanOutHandler(baseConfig({ workDir, runsDir, eventBus }));
+}
+
+function pipelineExecutor(handler: DynamicFanOutHandler) {
+	return handler as unknown as {
+		pipelineHandler: {
+			execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
+		};
+	};
+}
+
+function collectingEventBus() {
+	const bus = new EventBus();
+	const emitted: Event[] = [];
+	bus.on((event) => emitted.push(event));
+	return { bus, emitted };
+}
+
+function dynamicFanNode(id: string, templatePath: string, maxConcurrency = "1", attrs: Node["attrs"] = {}): Node {
 	return {
 		id,
 		attrs: {
@@ -36,6 +55,7 @@ function dynamicFanNode(id: string, templatePath: string, maxConcurrency = "1"):
 			item_key: "item",
 			template: templatePath,
 			max_concurrency: maxConcurrency,
+			...attrs,
 		},
 	};
 }
@@ -58,11 +78,9 @@ describe("DynamicFanOutHandler telemetry", () => {
 		const childPath = join(root, "child.dot");
 		writeFileSync(childPath, `digraph child { start [shape=Mdiamond] done [shape=Msquare] start -> done }`);
 
-		const bus = new EventBus();
-		const emitted: Event[] = [];
-		bus.on((event) => emitted.push(event));
+		const { bus, emitted } = collectingEventBus();
 
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
+		const handler = fanOutHandler(root, testRunsDir, bus);
 		let fanOutSeen = false;
 		let childCalls = 0;
 		const internal = handler as unknown as { pipelineHandler: { execute: DynamicFanOutHandler["execute"] } };
@@ -103,11 +121,9 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("returns failed outcome with normalized reason and emits failure metadata when a child fails", async () => {
 		const missingTemplatePath = join(root, "missing-child.dot");
-		const bus = new EventBus();
-		const emitted: Event[] = [];
-		bus.on((event) => emitted.push(event));
+		const { bus, emitted } = collectingEventBus();
 
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
+		const handler = fanOutHandler(root, testRunsDir, bus);
 		const node = dynamicFanNode("fan_dynamic_fail", missingTemplatePath, "1");
 		const ctx = new Context({ items: JSON.stringify(["a"]), __run_id: "run-1282-fail" });
 
@@ -129,12 +145,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 		const settledItems: string[] = [];
 		bus.on((event) => emitted.push(event));
 
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 		const delays: Record<string, number> = {
 			"slow-fail": 40,
 			"fast-fail": 5,
@@ -206,11 +218,9 @@ describe("DynamicFanOutHandler telemetry", () => {
 			}`,
 		);
 
-		const bus = new EventBus();
-		const emitted: Event[] = [];
-		bus.on((event) => emitted.push(event));
+		const { bus, emitted } = collectingEventBus();
 
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
+		const handler = fanOutHandler(root, testRunsDir, bus);
 		const node = dynamicFanNode("fan_dynamic_abort", childPath, "1");
 		const ctx = new Context({ items: JSON.stringify(["a"]), __run_id: "run-fan-abort" });
 		const ac = new AbortController();
@@ -231,12 +241,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("uses an immutable parent snapshot so later children cannot read sibling exports", async () => {
 		const bus = new EventBus();
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 
 		let observedSiblingExport = "";
 		internal.pipelineHandler.execute = async (_signal, _childNode, childCtx) => {
@@ -271,12 +277,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 	it("aggregates child exports deterministically by input index regardless of completion timing", async () => {
 		const runWithDelays = async (delays: Record<string, number>) => {
 			const bus = new EventBus();
-			const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-			const internal = handler as unknown as {
-				pipelineHandler: {
-					execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-				};
-			};
+			const handler = fanOutHandler(root, testRunsDir, bus);
+			const internal = pipelineExecutor(handler);
 			internal.pipelineHandler.execute = async (_signal, _childNode, childCtx) => {
 				const item = childCtx.get("item");
 				await new Promise((resolve) => setTimeout(resolve, delays[item] ?? 0));
@@ -316,12 +318,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("does not leak successful child exports when any child fails", async () => {
 		const bus = new EventBus();
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 		internal.pipelineHandler.execute = async (_signal, childNode, childCtx) => {
 			const item = childCtx.get("item");
 			if (item === "ok") {
@@ -360,12 +358,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("passes the selected object item into child context under item_key without mutating sibling input", async () => {
 		const bus = new EventBus();
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 
 		const seen: Array<{
 			feature: string;
@@ -388,18 +382,11 @@ describe("DynamicFanOutHandler telemetry", () => {
 			};
 		};
 
-		const node: Node = {
-			id: "fan_feature_payload",
-			attrs: {
-				type: "fan_out.dynamic",
-				source_key: "items",
-				item_key: "feature",
-				template: join(root, "unused-child.dot"),
-				max_concurrency: "1",
-				output_key: "issue_url",
-				export_keys: "issue_url",
-			},
-		};
+		const node = dynamicFanNode("fan_feature_payload", join(root, "unused-child.dot"), "1", {
+			item_key: "feature",
+			output_key: "issue_url",
+			export_keys: "issue_url",
+		});
 		const features = [
 			{ id: "F-1", name: "First real feature", slug: "first-real-feature" },
 			{ id: "F-2", name: "Second real feature", slug: "second-real-feature" },
@@ -430,12 +417,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("prefers exported key over terminal output when output_key matches an export", async () => {
 		const bus = new EventBus();
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 		internal.pipelineHandler.execute = async (_signal, _childNode, childCtx) => {
 			const item = childCtx.get("item");
 			return {
@@ -447,18 +430,11 @@ describe("DynamicFanOutHandler telemetry", () => {
 			};
 		};
 
-		const node: Node = {
-			id: "fan_export_priority",
-			attrs: {
-				type: "fan_out.dynamic",
-				source_key: "items",
-				item_key: "item",
-				template: join(root, "unused-child.dot"),
-				max_concurrency: "1",
-				output_key: "issue_url",
-				export_keys: "issue_url",
-			},
-		};
+		const node = dynamicFanNode("fan_export_priority", join(root, "unused-child.dot"), "1", {
+			item_key: "item",
+			output_key: "issue_url",
+			export_keys: "issue_url",
+		});
 		const ctx = new Context({ items: JSON.stringify(["first", "second"]) });
 
 		const outcome = await handler.execute(new AbortController().signal, node, ctx, "input");
@@ -476,12 +452,8 @@ describe("DynamicFanOutHandler telemetry", () => {
 
 	it("fails deterministically on invalid child export keys without returning parent export updates", async () => {
 		const bus = new EventBus();
-		const handler = new DynamicFanOutHandler(baseConfig({ workDir: root, eventBus: bus, runsDir: testRunsDir }));
-		const internal = handler as unknown as {
-			pipelineHandler: {
-				execute: (signal: AbortSignal, node: Node, ctx: Context, input: string) => Promise<any>;
-			};
-		};
+		const handler = fanOutHandler(root, testRunsDir, bus);
+		const internal = pipelineExecutor(handler);
 		internal.pipelineHandler.execute = async (_signal, _childNode, childCtx) => {
 			const item = childCtx.get("item");
 			if (item === "invalid-first") {

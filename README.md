@@ -1,5 +1,7 @@
 # Astrochicken
 
+Astrochicken is an experimental software-factory reference implementation. It is preserved for study, not offered as a maintained hosted service. Its tests and recorded operation do not establish reliable autonomous delivery or reduced engineering cost.
+
 Astrochicken runs software factories. A factory is a control loop that reads goals from GitHub issues, decomposes them into implementation issues, dispatches coding agents into isolated git worktrees, reviews the results, and merges what passes. Hatch, the runtime at the center of the repo, executes workflow graphs written in DOT. LLM nodes propose changes. Deterministic nodes run the tests and decide what moves forward.
 
 State lives in GitHub (issues, labels, milestones, pull requests) and in a Postgres event store, so a crashed process picks up where it left off on the next tick.
@@ -26,7 +28,7 @@ State lives in GitHub (issues, labels, milestones, pull requests) and in a Postg
 
 ## Requirements
 
-- Node `>=22.6.0` (see `engines` in `package.json`)
+- Node `>=22.18.0` (see `engines` in `package.json`)
 - pnpm `10.32.1` (see `packageManager`)
 - git and the GitHub CLI (`gh`) for anything that touches a repo
 - Postgres for the canonical event store when running a factory. A compose file lives at `packages/factory-ops/config/postgres/canonical-event-store.compose.yml`. The runtime reads `HATCH_CANONICAL_EVENT_STORE_URL`; `.envrc` shows the local wiring.
@@ -35,7 +37,7 @@ State lives in GitHub (issues, labels, milestones, pull requests) and in a Postg
 ## Build
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 pnpm build
 ```
 
@@ -68,6 +70,14 @@ Operator commands live in `hatch-ops`:
 ```bash
 node packages/factory-ops/src/cli.ts factory status -h
 ```
+
+## Operating boundaries
+
+Factory graphs can run shell commands and coding agents, push code, merge pull requests, and mutate GitHub issues. Run only graphs and repositories you trust, using isolated development infrastructure and credentials scoped to those repositories. The supplied `mothership` configuration records Recall's original deployment; review and replace its repository, host, and telemetry settings before running a factory. Do not start it against the original organization as part of setup.
+
+The HTTP server and operator tools are privileged control surfaces. Hostless server addresses bind to loopback by default. Explicit remote bindings remain unauthenticated; place them behind authenticated private networking. The included local Postgres credentials are development defaults, not credentials for a hosted service.
+
+Historical failures included broken observability, split GitHub/database lifecycle state, and unbounded merge-resolution sessions. The implementation is useful to study those tradeoffs; it is not a security boundary for untrusted agents.
 
 ## How a factory works
 

@@ -21,7 +21,7 @@ test("classifyActiveSurfaceFiles matches files against the canonical manifest wi
       {
         id: "factory_graphs",
         classification: "active_factory",
-        include: ["factories/mothership/graphs/*.dot"],
+        include: ["factories/demo/graphs/*.dot"],
       },
     ],
     runtime_surfaces: [
@@ -49,7 +49,7 @@ test("classifyActiveSurfaceFiles matches files against the canonical manifest wi
   const result = classifyActiveSurfaceFiles({
     manifest,
     files: [
-      "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+      "factories/demo/graphs/example.dot",
       "apps/hatch/src/pipeline/engine.ts",
       "apps/hatch/src/pipeline/engine.test.ts",
       "packages/factory-ops/src/commands/release-manifest.ts",
@@ -57,7 +57,7 @@ test("classifyActiveSurfaceFiles matches files against the canonical manifest wi
   });
 
   assert.equal(result.diagnostics.length, 0);
-  assert.equal(result.classificationByFile.get("factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs")?.classification, "active_factory");
+  assert.equal(result.classificationByFile.get("factories/demo/graphs/example.dot")?.classification, "active_factory");
   assert.equal(result.classificationByFile.get("apps/hatch/src/pipeline/engine.ts")?.classification, "hot_path");
   assert.equal(result.classificationByFile.get("apps/hatch/src/pipeline/engine.test.ts")?.classification, "test_only");
   assert.equal(result.classificationByFile.get("packages/factory-ops/src/commands/release-manifest.ts")?.classification, "active_deterministic_owner");
@@ -260,4 +260,21 @@ test("CLI ignores tracked files that have been deleted from the working tree", (
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.doesNotMatch(run.stdout, /deleted\.dot/);
+});
+
+
+test("canonical manifest classifies shared Hatch test fixtures without excluding the engine", () => {
+  const helpers = [
+    "apps/hatch/src/pipeline/test/capability-manifest-support.ts",
+    "apps/hatch/src/pipeline/test/codergen-agent-mocks.ts",
+  ];
+  const result = classifyActiveSurfaceFiles({
+    manifest: loadActiveSurfaceManifest(),
+    files: [...helpers, "apps/hatch/src/pipeline/engine.ts"],
+  });
+  assert.deepEqual(result.diagnostics, []);
+  for (const helper of helpers) {
+    assert.equal(result.classificationByFile.get(helper)?.classification, "test_only");
+  }
+  assert.equal(result.classificationByFile.get("apps/hatch/src/pipeline/engine.ts")?.classification, "hot_path");
 });

@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, chmodSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -63,6 +67,12 @@ function runManagedShell({ mode = "active", controlAction = "none" } = {}) {
   writeFileSync(join(sandboxFactoryRoot, "kind.json"), readFileSync(kindPath, "utf8"));
   writeFileSync(join(sandboxFactoryStateRoot, "instance.json"), readFileSync(instancePath, "utf8"));
   writeFileSync(factoryConfigPath, JSON.stringify({
+    schema: "hatch.factory.config.v1",
+    provider: "openai",
+    model: "gpt-5",
+    skills: { supervisor: join(repoRoot, "packages/factory-skills/skills/runtime/supervisor_review/SKILL.md") },
+    pipeline: { supervisor_tick: localShellGraphPath },
+    trust: { domain: "brainstorm.local", roles: ["brainstorm.local.tool", "brainstorm.local.pipeline"] },
     factory_id: "brainstorm",
     kind_id: "brainstorm",
     instance_id: "fac_01TEST",
@@ -307,7 +317,6 @@ printf '[]'
       HATCH_FACTORY_ROOT: sandboxFactoryRoot,
       HATCH_FACTORY_CONFIG_PATH: factoryConfigPath,
       HATCH_RUNS_DIR: join(sandbox, "runs"),
-      HATCH_TARGET_REPO: "example-org/brainstorm-lab",
       HATCH_TARGET_REPO: "example-org/brainstorm-lab",
       FACTORY_REPO: sandbox,
     },

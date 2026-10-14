@@ -5,6 +5,10 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./graph-source-loader": {
+      "types": "./src/graph-source-loader.d.ts",
+      "import": "./src/graph-source-loader.ts"
+    },
     "./daily-lens-collector": "./src/daily-lens-collector.ts",
     "./issue-url-normalization": "./src/issue-url-normalization.ts",
     "./workspace-package-manager": "./src/workspace-package-manager.ts",
@@ -70,6 +74,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "zod": "^4.3.6"
+    "zod": "^4.6.7"
   }
 }

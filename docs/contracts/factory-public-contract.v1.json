@@ -126,10 +126,10 @@
         "scenarios.root",
         "runs_dir",
         "trust.domain",
-        "trust.roles"
+        "trust.roles",
+        "target_repo"
       ],
       "optional": [
-        "target_repo",
         "dispatch.latency_slo_seconds",
         "pipeline.maintenance_interval_seconds",
         "backend.type",

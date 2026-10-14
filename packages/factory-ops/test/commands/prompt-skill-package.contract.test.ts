@@ -1,10 +1,7 @@
+import { readFixtureText as read } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import test from "node:test";
 
-function read(path) {
-  return readFileSync(path, "utf8");
-}
+import test from "node:test";
 
 test("active prompt loaders use canonical factory-prompts package paths", () => {
   const supervisorDot = read("docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot");

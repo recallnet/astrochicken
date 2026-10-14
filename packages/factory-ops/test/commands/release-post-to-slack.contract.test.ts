@@ -1,5 +1,7 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { createSuccessfulSlackFetch } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -11,7 +13,7 @@ import { postReleaseToSlack } from "../../src/commands/release-post-to-slack.ts"
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
 const fixturesDir = join(repoRoot, "packages/factory-ops/test/commands/fixtures/release");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 function fixtureJson(name) {
   return JSON.parse(readFileSync(join(fixturesDir, name), "utf8"));
@@ -139,14 +141,7 @@ test("postReleaseToSlack uses FACTORY_SLACK_WEBHOOK_URL when flag is absent", as
     context,
     payload: { blocks: [], text: "hello" },
     env: { FACTORY_SLACK_WEBHOOK_URL: "https://hooks.slack.test/factory-env" },
-    fetchFn: async (url) => {
-      calls.push(url);
-      return {
-        ok: true,
-        status: 200,
-        text: async () => "ok",
-      };
-    },
+    fetchFn: createSuccessfulSlackFetch(calls),
   });
 
   assert.equal(result.ok, true);
@@ -164,14 +159,7 @@ test("postReleaseToSlack uses factoryConfigWebhookUrl when flag/env are absent",
     payload: { blocks: [], text: "hello" },
     env: {},
     factoryConfigWebhookUrl: "https://hooks.slack.test/factory-config",
-    fetchFn: async (url) => {
-      calls.push(url);
-      return {
-        ok: true,
-        status: 200,
-        text: async () => "ok",
-      };
-    },
+    fetchFn: createSuccessfulSlackFetch(calls),
   });
 
   assert.equal(result.ok, true);
@@ -190,14 +178,7 @@ test("postReleaseToSlack resolves ${ENV_VAR} placeholders from factoryConfigWebh
     payload: { blocks: [], text: "hello" },
     env: { MOTHERSHIP_SLACK_WEBHOOK_URL: "https://hooks.slack.test/mothership-config-env" },
     factoryConfigWebhookUrl: "${MOTHERSHIP_SLACK_WEBHOOK_URL}",
-    fetchFn: async (url) => {
-      calls.push(url);
-      return {
-        ok: true,
-        status: 200,
-        text: async () => "ok",
-      };
-    },
+    fetchFn: createSuccessfulSlackFetch(calls),
   });
 
   assert.equal(result.ok, true);
@@ -216,14 +197,7 @@ test("postReleaseToSlack webhook precedence is flag > env > factory config", asy
     webhookUrl: "https://hooks.slack.test/from-flag",
     env: { FACTORY_SLACK_WEBHOOK_URL: "https://hooks.slack.test/from-env" },
     factoryConfigWebhookUrl: "https://hooks.slack.test/from-config",
-    fetchFn: async (url) => {
-      calls.push(url);
-      return {
-        ok: true,
-        status: 200,
-        text: async () => "ok",
-      };
-    },
+    fetchFn: createSuccessfulSlackFetch(calls),
   });
 
   assert.equal(result.ok, true);
@@ -321,34 +295,26 @@ test("release post-to-slack CLI supports raw and base64 transports with parity",
   const context = fixtureJson("report-context.zero-goals.json");
   const payload = { blocks: [], text: "noop" };
 
-  const rawRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context",
-    JSON.stringify(context),
-    "--payload",
-    JSON.stringify(payload),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const rawRun = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context",
+      JSON.stringify(context),
+      "--payload",
+      JSON.stringify(payload)
+    ]);
 
   assert.equal(rawRun.status, 0, rawRun.stderr || rawRun.stdout);
   const rawOut = JSON.parse(rawRun.stdout || "{}");
 
-  const b64Run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context-b64",
-    Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
-    "--payload-b64",
-    Buffer.from(JSON.stringify(payload), "utf8").toString("base64"),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const b64Run = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context-b64",
+      Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
+      "--payload-b64",
+      Buffer.from(JSON.stringify(payload), "utf8").toString("base64")
+    ]);
 
   assert.equal(b64Run.status, 0, b64Run.stderr || b64Run.stdout);
   const b64Out = JSON.parse(b64Run.stdout || "{}");
@@ -365,20 +331,16 @@ test("release post-to-slack CLI resolves webhook from explicit config path", () 
   const configPath = join(tempRoot, "factory.config.json");
   writeFileSync(configPath, JSON.stringify({ slack_webhook_url: "http://127.0.0.1:9/from-config" }, null, 2));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context",
-    JSON.stringify(context),
-    "--payload",
-    JSON.stringify(payload),
-    "--config-path",
-    configPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context",
+      JSON.stringify(context),
+      "--payload",
+      JSON.stringify(payload),
+      "--config-path",
+      configPath
+    ]);
 
   assert.equal(run.status, 0, "config-only path should resolve webhook and attempt delivery");
   const output = JSON.parse(run.stdout || "{}");
@@ -395,24 +357,21 @@ test("release post-to-slack resolves ${ENV_VAR} webhook from explicit config pat
   const configPath = join(tempRoot, "factory.config.json");
   writeFileSync(configPath, JSON.stringify({ slack_webhook_url: "${MOTHERSHIP_SLACK_WEBHOOK_URL}" }, null, 2));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context",
-    JSON.stringify(context),
-    "--payload",
-    JSON.stringify(payload),
-    "--config-path",
-    configPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
+  const run = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context",
+      JSON.stringify(context),
+      "--payload",
+      JSON.stringify(payload),
+      "--config-path",
+      configPath
+    ], {
+      env: {
       ...process.env,
       MOTHERSHIP_SLACK_WEBHOOK_URL: "http://127.0.0.1:9/from-mothership-config-env",
-    },
-  });
+    }
+    });
 
   assert.equal(run.status, 0, "config placeholder path should resolve webhook and attempt delivery");
   const output = JSON.parse(run.stdout || "{}");
@@ -426,20 +385,16 @@ test("release post-to-slack CLI gives deterministic error for invalid explicit -
   const context = fixtureJson("report-context.zero-goals.json");
   const payload = { blocks: [], text: "noop" };
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context",
-    JSON.stringify(context),
-    "--payload",
-    JSON.stringify(payload),
-    "--config-path",
-    "does/not/exist/factory.config.json",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context",
+      JSON.stringify(context),
+      "--payload",
+      JSON.stringify(payload),
+      "--config-path",
+      "does/not/exist/factory.config.json"
+    ]);
 
   assert.equal(run.status, 1);
   assert.equal((run.stdout || "").trim(), "");
@@ -465,23 +420,20 @@ test("release post-to-slack resolves webhook from HATCH_FACTORY_CONFIG_PATH cont
     slack_webhook_url: "http://127.0.0.1:9/from-example-trading-config",
   }, null, 2));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "post-to-slack",
-    "--context",
-    JSON.stringify(context),
-    "--payload",
-    JSON.stringify(payload),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
+  const run = spawnOpsCli([
+      "release",
+      "post-to-slack",
+      "--context",
+      JSON.stringify(context),
+      "--payload",
+      JSON.stringify(payload)
+    ], {
+      env: {
       ...process.env,
       HATCH_FACTORY_ROOT: factoryRoot,
       HATCH_FACTORY_CONFIG_PATH: configPath,
-    },
-  });
+    }
+    });
 
   assert.equal(run.status, 0, "runtime-context config should resolve webhook and attempt delivery");
   const output = JSON.parse(run.stdout || "{}");

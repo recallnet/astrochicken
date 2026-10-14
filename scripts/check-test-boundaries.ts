@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
 const PROD_SOURCE_LITERAL =
-  /^(?:(?:packages|apps)\/[^"'`]*\/src\/[^"'`]+|factories\/(?:mothership|example-trading|research)\/graphs\/[^"'`]+)$/;
+  /^(?:(?:packages|apps)\/[^"'`]*\/src\/[^"'`]+|factories\/[^/]+\/(?:graphs|workflows)\/[^"'`]+|packages\/[^/]+\/workflows\/[^"'`]+|docs\/contracts\/workflow-ir\/[^"'`]+)$/;
 const STATIC_SOURCE_ASSERTION_PATTERN =
   /\bassert\.(?:match|doesNotMatch)\s*\(|\.toMatch\s*\(|\.toContain\s*\(/;
 

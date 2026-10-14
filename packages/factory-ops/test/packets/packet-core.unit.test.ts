@@ -274,6 +274,7 @@ test("packet-core: listPersistedPackets discovers durable open packets by family
   const packet = buildRemediationPacket({
     packetType: "judge_context_contract_recovery",
     intent: "Repair failed judge context contract",
+    resourceRefs: { repo },
     operatorPrompt: "Start from the packet and rerun the judge context build/validate chain.",
     expectedPostconditions: ["Judge context recovery packet remains executable by the supervisor."],
     factoryId: "mothership",
@@ -450,6 +451,7 @@ test("remediation packet: supports operator prompt, resource refs, and durable p
   const packet = buildRemediationPacket({
     packetType: "judge_context_contract_recovery",
     intent: "Repair failed judge context contract",
+    resourceRefs: { repo },
     operatorPrompt: "Start with the packet and rerun the judge context build/validate chain.",
     expectedPostconditions: ["Judge context recovery packet remains executable by the supervisor."],
     resourceRefs: {
@@ -482,6 +484,7 @@ test("remediation packet: canonical checkout recovery persists as a factory pack
   const packet = buildRemediationPacket({
     packetType: "canonical_checkout_recovery",
     intent: "Recover canonical checkout",
+    resourceRefs: { repo },
     inspectionCommands: ["git worktree list --porcelain"],
     executionCommands: ["hatch-ops doctor repair-canonical-checkout"],
     verifyCommands: ["hatch-ops doctor canonical-checkout"],

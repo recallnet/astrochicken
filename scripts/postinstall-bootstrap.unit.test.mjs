@@ -51,6 +51,20 @@ test("runPostinstallBootstrap replaces pre-existing regular bin files with canon
   assert.equal(readlinkSync(path.join(binDir, "hatch-ops")), path.join("..", "..", "scripts", "bin", "hatch-ops"));
 });
 
+test("declared workspace package bins preserve the canonical root launcher across bootstraps", () => {
+  const repoRoot = makeTempRepo();
+  writeFileSync(path.join(repoRoot, "package.json"), JSON.stringify({ dependencies: { hatch: "workspace:*" } }));
+  writeFileSync(path.join(repoRoot, "apps", "hatch", "package.json"), JSON.stringify({ name: "hatch", bin: { hatch: "dist/cli.js" } }));
+  mkdirSync(path.join(repoRoot, "apps", "hatch", "dist"), { recursive: true });
+  writeFileSync(path.join(repoRoot, "apps", "hatch", "dist", "cli.js"), "#!/usr/bin/env node\n");
+  mkdirSync(path.join(repoRoot, "node_modules"), { recursive: true });
+  symlinkSync("../apps/hatch", path.join(repoRoot, "node_modules", "hatch"));
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    runPostinstallBootstrap(repoRoot);
+    assert.equal(readlinkSync(path.join(repoRoot, "node_modules", ".bin", "hatch")), path.join("..", "..", "scripts", "bin", "hatch"));
+  }
+});
+
 test("runPostinstallBootstrap creates root workspace links for shared hatch packages used by scripts", () => {
   const repoRoot = makeTempRepo();
   mkdirSync(path.join(repoRoot, "packages", "eslint-config"), { recursive: true });

@@ -1,15 +1,8 @@
+import { makeExternalArtifactFeedbackContext } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  extractArtifactFromBody,
-  sanitizeString,
-  validateArtifactContract,
-  safeObj,
-  computeSignature,
-  buildLinkagePayload,
-  buildLinkageComment,
-} from "../../src/commands/artifact-ingest.ts";
+import { extractArtifactFromBody, sanitizeString, validateArtifactContract, safeObj, computeSignature, buildLinkagePayload, buildLinkageComment } from "../../src/commands/artifact-ingest.ts";
 
 test("extractArtifactFromBody parses fenced json", () => {
   const body = "prefix\n```json\n{\n  \"summary\": \"x\",\n  \"kind\": \"blocker\"\n}\n```\nsuffix";
@@ -92,29 +85,13 @@ test("computeSignature is deterministic and honors explicit signature_hash", () 
 });
 
 test("buildLinkagePayload/comment produce factory_link.v1 contract", () => {
-  const payload = buildLinkagePayload({
-    controlPlaneRepo: "recallnet/astrochicken",
-    sourceRepo: "example/external-factory",
-    sourceIssueNumber: 10,
-    signature: "sha256:abc",
-    goalNumber: 500,
-    factoryId: "external/issue_worker",
-    requiredFactoryRelease: "1.2.3",
-  });
+  const payload = buildLinkagePayload(makeExternalArtifactFeedbackContext());
 
   assert.equal(payload.schema_version, "factory_link.v1");
   assert.equal(payload.control_plane_goal, 500);
   assert.equal(payload.required_factory_release, "1.2.3");
 
-  const comment = buildLinkageComment({
-    controlPlaneRepo: "recallnet/astrochicken",
-    sourceRepo: "example/external-factory",
-    sourceIssueNumber: 10,
-    signature: "sha256:abc",
-    goalNumber: 500,
-    factoryId: "external/issue_worker",
-    requiredFactoryRelease: "1.2.3",
-  });
+  const comment = buildLinkageComment(makeExternalArtifactFeedbackContext());
   assert.match(comment, /factory_link\.v1/);
   assert.match(comment, /required_factory_release/);
 });

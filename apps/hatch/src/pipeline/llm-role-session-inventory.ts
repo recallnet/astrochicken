@@ -5,6 +5,8 @@ import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { nodeClass, nodeHandlerType, nodeLLMModel, nodeLLMProvider, nodePrompt, nodeTrustRole, type Node } from "./graph.js";
+import { loadGraphSource } from "./graph-source.js";
+
 import { parseWithAst } from "./parse.js";
 import { applyGraphStylesheetImports } from "./stylesheet-imports.js";
 
@@ -87,7 +89,7 @@ export function collectLlmRoleSessionInventory(args?: {
 		}
 		visited.add(graphFile);
 
-		const source = readFileSync(graphFile, "utf-8");
+		const source = loadGraphSource(graphFile, repoRootPath).sourceText;
 		const parsed = parseWithAst(source);
 		applyGraphStylesheetImports({
 			graph: parsed.graph,

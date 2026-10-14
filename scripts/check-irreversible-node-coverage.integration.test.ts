@@ -10,7 +10,7 @@ import { analyzeIrreversibleNodeCoverage } from "./check-irreversible-node-cover
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "..");
-const scriptPath = join(repoRoot, "scripts", "check-irreversible-node-coverage.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-irreversible-node-coverage.ts");
 
 function write(root, relativePath, content) {
   const absolute = join(root, relativePath);

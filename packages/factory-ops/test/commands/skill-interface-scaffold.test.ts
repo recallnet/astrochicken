@@ -1,20 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { makeSkillContractRequirements } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-import {
-  scaffoldSkillInterface,
-  validateSkillInterfaceAtPath,
-  validateSkillInterfaceDocument,
-} from "../../src/commands/skill-interface-scaffold.ts";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+import { scaffoldSkillInterface, validateSkillInterfaceAtPath, validateSkillInterfaceDocument } from "../../src/commands/skill-interface-scaffold.ts";
 
 const REQUIRED_JUDGE_CONTEXT_INPUTS = [
   "judge_context_path",
@@ -106,16 +100,7 @@ test("validateSkillInterfaceDocument rejects missing judge context inputs", () =
   const out = validateSkillInterfaceDocument({
     interfaceDoc: invalid,
     skillName: "judge_missing",
-    sharedSchema: {
-      required_top_level_keys: ["name", "version", "description", "output_schema", "tools", "safety"],
-      required_tool_keys: ["allowed", "forbidden"],
-      required_safety_keys: [
-        "may_modify_tests",
-        "may_create_files",
-        "may_delete_files",
-        "may_run_destructive_commands",
-      ],
-    },
+    sharedSchema: makeSkillContractRequirements(),
   });
 
   assert.equal(out.ok, false);
@@ -130,16 +115,7 @@ test("validateSkillInterfaceDocument rejects non-string entries in tools arrays"
   const out = validateSkillInterfaceDocument({
     interfaceDoc: invalid,
     skillName: "tool_type_violation",
-    sharedSchema: {
-      required_top_level_keys: ["name", "version", "description", "output_schema", "tools", "safety"],
-      required_tool_keys: ["allowed", "forbidden"],
-      required_safety_keys: [
-        "may_modify_tests",
-        "may_create_files",
-        "may_delete_files",
-        "may_run_destructive_commands",
-      ],
-    },
+    sharedSchema: makeSkillContractRequirements(),
   });
 
   assert.equal(out.ok, false);
@@ -164,16 +140,7 @@ test("validateSkillInterfaceDocument rejects non-string entries in pi_coding_age
   const out = validateSkillInterfaceDocument({
     interfaceDoc: invalid,
     skillName: "integration_type_violation",
-    sharedSchema: {
-      required_top_level_keys: ["name", "version", "description", "output_schema", "tools", "safety"],
-      required_tool_keys: ["allowed", "forbidden"],
-      required_safety_keys: [
-        "may_modify_tests",
-        "may_create_files",
-        "may_delete_files",
-        "may_run_destructive_commands",
-      ],
-    },
+    sharedSchema: makeSkillContractRequirements(),
   });
 
   assert.equal(out.ok, false);
@@ -229,8 +196,8 @@ test("scaffoldSkillInterface writes interface/current/readme and validateSkillIn
 
   const generatedReadme = readFileSync(join(skillsRoot, "skill_router", "README.md"), "utf8");
   assert.match(generatedReadme, /^## Integrate Into a Factory Pipeline$/m);
-  assert.match(generatedReadme, /node packages\/factory-ops\/src\/cli\.mjs skill scaffold-interface/);
-  assert.match(generatedReadme, /node packages\/factory-ops\/src\/cli\.mjs skill validate-interface/);
+  assert.match(generatedReadme, /node packages\/factory-ops\/src\/cli\.ts skill scaffold-interface/);
+  assert.match(generatedReadme, /node packages\/factory-ops\/src\/cli\.ts skill validate-interface/);
   assert.match(generatedReadme, /^## Required Section Checklist$/m);
 
   const validated = validateSkillInterfaceAtPath({
@@ -262,10 +229,7 @@ test("scaffoldSkillInterface surfaces warnings for existing interfaces missing j
 test("hatch-ops skill scaffold-interface CLI creates files and returns machine-readable JSON", () => {
   const { skillsRoot } = createSkillsRootFixture({ includePiMetadata: true });
 
-  const run = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const run = spawnOpsCli([
       "skill",
       "scaffold-interface",
       "--skill-name",
@@ -275,10 +239,8 @@ test("hatch-ops skill scaffold-interface CLI creates files and returns machine-r
       "--owner",
       "qa-team",
       "--dry-run",
-      "false",
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      "false"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "{}");
@@ -302,10 +264,7 @@ test("hatch-ops skill scaffold-interface CLI creates files and returns machine-r
 test("hatch-ops skill validate-interface CLI validates generated scaffold end-to-end", () => {
   const { skillsRoot } = createSkillsRootFixture({ includePiMetadata: true });
 
-  const scaffoldRun = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const scaffoldRun = spawnOpsCli([
       "skill",
       "scaffold-interface",
       "--skill-name",
@@ -313,25 +272,18 @@ test("hatch-ops skill validate-interface CLI validates generated scaffold end-to
       "--skills-root",
       skillsRoot,
       "--dry-run",
-      "false",
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      "false"
+    ]);
   assert.equal(scaffoldRun.status, 0, scaffoldRun.stderr || scaffoldRun.stdout);
 
-  const validateRun = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const validateRun = spawnOpsCli([
       "skill",
       "validate-interface",
       "--skill-name",
       "cli_validate_skill",
       "--skills-root",
-      skillsRoot,
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      skillsRoot
+    ]);
 
   assert.equal(validateRun.status, 0, validateRun.stderr || validateRun.stdout);
 
@@ -345,10 +297,7 @@ test("hatch-ops skill validate-interface CLI validates generated scaffold end-to
 test("hatch-ops skill validate-interface CLI fails for invalid generated interface", () => {
   const { skillsRoot } = createSkillsRootFixture({ includePiMetadata: true });
 
-  const scaffoldRun = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const scaffoldRun = spawnOpsCli([
       "skill",
       "scaffold-interface",
       "--skill-name",
@@ -356,10 +305,8 @@ test("hatch-ops skill validate-interface CLI fails for invalid generated interfa
       "--skills-root",
       skillsRoot,
       "--dry-run",
-      "false",
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      "false"
+    ]);
   assert.equal(scaffoldRun.status, 0, scaffoldRun.stderr || scaffoldRun.stdout);
 
   const brokenInterfacePath = join(skillsRoot, "cli_invalid_skill", "interface.json");
@@ -367,19 +314,14 @@ test("hatch-ops skill validate-interface CLI fails for invalid generated interfa
   brokenDoc.name = "wrong_name";
   writeFileSync(brokenInterfacePath, `${JSON.stringify(brokenDoc, null, 2)}\n`, "utf8");
 
-  const validateRun = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const validateRun = spawnOpsCli([
       "skill",
       "validate-interface",
       "--skill-name",
       "cli_invalid_skill",
       "--skills-root",
-      skillsRoot,
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      skillsRoot
+    ]);
 
   assert.equal(validateRun.status, 1);
   const out = JSON.parse(validateRun.stdout || "{}");

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "managed-supervisor-shell",
+  "familyId": "runtime",
+  "title": "Managed Supervisor Shell",
+  "description": "Structural shell-contract fixture migrated from its existing DOT graph.",
+  "sourcePath": "scripts/test/fixtures/managed-supervisor-shell-contract/invalid-enum-drift/packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "runtimeGraphPath": "scripts/test/fixtures/managed-supervisor-shell-contract/invalid-enum-drift/docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "managed_supervisor"
+  },
+  "sourceMap": {
+    "graphName": "managed-supervisor-shell",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "start",
+        "runtimeNodeId": "start"
+      },
+      {
+        "sourceNodeId": "blocker_gate",
+        "runtimeNodeId": "blocker_gate"
+      },
+      {
+        "sourceNodeId": "invoke_domain_graph",
+        "runtimeNodeId": "invoke_domain_graph"
+      },
+      {
+        "sourceNodeId": "emit_shell_telemetry",
+        "runtimeNodeId": "emit_shell_telemetry"
+      },
+      {
+        "sourceNodeId": "finish",
+        "runtimeNodeId": "finish"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "start",
+      "kind": "start",
+      "title": "Start",
+      "dotAttributes": {
+        "shape": "Mdiamond",
+        "label": "Start"
+      }
+    },
+    {
+      "id": "blocker_gate",
+      "kind": "llm_prompt",
+      "title": "Blocker gate",
+      "dotAttributes": {
+        "label": "Blocker gate"
+      }
+    },
+    {
+      "id": "invoke_domain_graph",
+      "kind": "llm_prompt",
+      "title": "Invoke domain graph",
+      "dotAttributes": {
+        "label": "Invoke domain graph"
+      }
+    },
+    {
+      "id": "emit_shell_telemetry",
+      "kind": "llm_prompt",
+      "title": "Emit telemetry",
+      "dotAttributes": {
+        "label": "Emit telemetry"
+      }
+    },
+    {
+      "id": "finish",
+      "kind": "terminal",
+      "title": "Exit",
+      "dotAttributes": {
+        "shape": "Msquare",
+        "label": "Exit"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "blocker_gate"
+    },
+    {
+      "from": "blocker_gate",
+      "to": "invoke_domain_graph"
+    },
+    {
+      "from": "invoke_domain_graph",
+      "to": "emit_shell_telemetry"
+    },
+    {
+      "from": "emit_shell_telemetry",
+      "to": "finish"
+    }
+  ]
+}

@@ -1,43 +1,11 @@
+import { makeHostRegistryRow as baseRegistryRow, writeInstallationManifest as writeManifest, writeHostRegistry as writeRegistry, makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, readFileSync, rmSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
 import { assignHostToInstance, describeHostAssignment } from "../../src/commands/factory-host-assignment.ts";
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
-
-function writeRegistry(root, rows = []) {
-  const registryPath = join(root, "factory-registry.json");
-  writeFileSync(registryPath, `${JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: rows,
-  }, null, 2)}\n`);
-  return registryPath;
-}
-
-function writeManifest(root, payload = {}) {
-  mkdirSync(root, { recursive: true });
-  const path = join(root, "installation.json");
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
-  return path;
-}
-
-function baseRegistryRow() {
-  return {
-    instance_id: "mothership",
-    kind_id: "mothership",
-    target_repo: "recallnet/astrochicken",
-    status: "active",
-    assigned_host_id: "unassigned",
-    installation_manifest_path: "",
-    graphs: [],
-    daemonStatus: { status: "stopped" },
-  };
-}
 
 function baseManifest(hostId = "host_alpha") {
   return {

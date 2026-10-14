@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { validateManagedObservabilityBoundary } from "./check-managed-observability-boundary.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-managed-observability-boundary.mjs");
+const checkerPath = join(scriptsDir, "check-managed-observability-boundary.ts");
 
 function readFixture(pathParts) {
   return readFileSync(join(process.cwd(), ...pathParts), "utf8");

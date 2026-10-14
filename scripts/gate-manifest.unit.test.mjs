@@ -16,7 +16,7 @@ test("active surface manifest gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-active-surface-manifest.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-active-surface-manifest.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-active-surface-manifest");
 });
@@ -26,7 +26,7 @@ test("active surface inventory gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-active-surface-inventory.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-active-surface-inventory.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-active-surface-inventory");
 });
@@ -36,7 +36,7 @@ test("typed action graph transport gate enforces all active graphs", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-internal-cli-transport.mjs", "--fail-active-graphs", "--active-graphs-only"]);
+  assert.deepEqual(gate.args, ["scripts/check-internal-cli-transport.ts", "--fail-active-graphs", "--active-graphs-only"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-internal-cli-transport");
 });
@@ -46,7 +46,7 @@ test("active owner command thinness gate is active in every quality profile", ()
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-command-thinness-enforcement.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-command-thinness-enforcement.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-command-thinness-enforcement");
 });
@@ -56,7 +56,7 @@ test("repo-wide runtime internal CLI gate is active in every quality profile", (
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-runtime-internal-cli-enforcement.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-runtime-internal-cli-enforcement.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-runtime-internal-cli-enforcement");
 });
@@ -66,7 +66,7 @@ test("release slice structured IO gate is active in every quality profile", () =
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-structured-io-enforcement.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-structured-io-enforcement.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-structured-io-enforcement");
 });
@@ -76,7 +76,7 @@ test("release slice shared ownership gate is active in every quality profile", (
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-shared-ownership-enforcement.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-shared-ownership-enforcement.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-shared-ownership-enforcement");
 });
@@ -86,7 +86,7 @@ test("phase1 gate readiness gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-phase1-gate-readiness.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-phase1-gate-readiness.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-phase1-gate-readiness");
 });
@@ -96,7 +96,7 @@ test("phase1 ownership mapping gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-phase1-ownership-map.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-phase1-ownership-map.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-phase1-ownership-map");
 });
@@ -106,7 +106,7 @@ test("phase1 burndown finalization gate is active in every quality profile", () 
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-phase1-burndown-finalization.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-phase1-burndown-finalization.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-phase1-burndown-finalization");
 });
@@ -116,7 +116,7 @@ test("otel taxonomy contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-otel-taxonomy-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-otel-taxonomy-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-otel-taxonomy-contract");
 });
@@ -136,7 +136,7 @@ test("canonical event emitter ownership gate is active in every quality profile"
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-canonical-event-emitter-ownership.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-canonical-event-emitter-ownership.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-canonical-event-emitter-ownership");
 });
@@ -146,7 +146,7 @@ test("github adapter boundary gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-github-adapter-boundary.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-github-adapter-boundary.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-github-adapter-boundary");
   assert.equal(gate.runtime.stagedFileList, true);
@@ -157,7 +157,7 @@ test("github truth-read boundary gate is active in every quality profile", () =>
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-github-truth-read-boundary.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-github-truth-read-boundary.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-github-truth-read-boundary");
   assert.equal(gate.runtime.allTracked, true);
@@ -177,7 +177,7 @@ test("reactor collector contract gate is active in every quality profile", () =>
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-reactor-collector-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-reactor-collector-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-reactor-collector-contract");
 });
@@ -187,7 +187,7 @@ test("boundary schema contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-boundary-schema-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-boundary-schema-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-boundary-schema-contract");
 });
@@ -197,7 +197,7 @@ test("sync OpenAPI contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-sync-openapi-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-sync-openapi-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-sync-openapi-contract");
 });
@@ -207,7 +207,7 @@ test("asyncapi contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-asyncapi-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-asyncapi-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-asyncapi-contract");
 });
@@ -217,7 +217,7 @@ test("capability contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-capability-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-capability-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-capability-contract");
 });
@@ -227,7 +227,7 @@ test("capability output contract gate is active in every quality profile", () =>
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-capability-output-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-capability-output-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-capability-output-contract");
 });
@@ -237,7 +237,7 @@ test("capability manifest contract gate is active in every quality profile", () 
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-capability-manifest-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-capability-manifest-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-capability-manifest-contract");
 });
@@ -267,7 +267,7 @@ test("factory composition contract gate is active in every quality profile", () 
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-factory-composition-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-factory-composition-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-factory-composition-contract");
 });
@@ -277,7 +277,7 @@ test("governed execution dot input gate is active in every quality profile", () 
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-governed-execution-dot-input-forbidden.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-governed-execution-dot-input-forbidden.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-governed-execution-dot-input-forbidden");
 });
@@ -287,7 +287,7 @@ test("generated governed dot-only gate is active in every quality profile", () =
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-generated-governed-dot-only.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-generated-governed-dot-only.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-generated-governed-dot-only");
 });
@@ -297,27 +297,27 @@ test("lineage governance contract gate is active in every quality profile", () =
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-lineage-governance-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-lineage-governance-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-lineage-governance-contract");
 });
 
 for (const [id, script] of [
-  ["governed_output_path_only", "scripts/check-governed-output-path-only.mjs"],
-  ["capability_output_producer_discovery_fail_closed", "scripts/check-capability-output-producer-discovery-fail-closed.mjs"],
-  ["capability_output_contract_runtime_parity", "scripts/check-capability-output-contract-runtime-parity.mjs"],
+  ["governed_output_path_only", "scripts/check-governed-output-path-only.ts"],
+  ["capability_output_producer_discovery_fail_closed", "scripts/check-capability-output-producer-discovery-fail-closed.ts"],
+  ["capability_output_contract_runtime_parity", "scripts/check-capability-output-contract-runtime-parity.ts"],
   ["workflow_ir_claim_truth", "scripts/check-workflow-ir-claim-truth.mjs"],
   ["workflow_ir_publish_or_plan_exclusive", "scripts/check-workflow-ir-publish-or-plan-exclusive.mjs"],
-  ["no_handwritten_dot_for_migrated_families", "scripts/check-no-handwritten-dot-for-migrated-families.mjs"],
-  ["factory_local_dot_scope_guard", "scripts/check-factory-local-dot-scope-guard.mjs"],
-  ["factory_execution_glue_forbidden", "scripts/check-factory-execution-glue-forbidden.mjs"],
-  ["factory_composition_binding_truth", "scripts/check-factory-composition-binding-truth.mjs"],
+  ["no_handwritten_dot_for_migrated_families", "scripts/check-no-handwritten-dot-for-migrated-families.ts"],
+  ["factory_local_dot_scope_guard", "scripts/check-factory-local-dot-scope-guard.ts"],
+  ["factory_execution_glue_forbidden", "scripts/check-factory-execution-glue-forbidden.ts"],
+  ["factory_composition_binding_truth", "scripts/check-factory-composition-binding-truth.ts"],
   ["thin_factory_end_state_guard", "scripts/check-thin-factory-end-state-guard.mjs"],
-  ["lineage_supported_class_truth", "scripts/check-lineage-supported-class-truth.mjs"],
-  ["lineage_projection_presence", "scripts/check-lineage-projection-presence.mjs"],
-  ["lineage_hot_path_isolation", "scripts/check-lineage-hot-path-isolation.mjs"],
-  ["governed_surface_totality", "scripts/check-governed-surface-totality.mjs"],
-  ["claim_to_gate_mapping", "scripts/check-claim-to-gate-mapping.mjs"],
+  ["lineage_supported_class_truth", "scripts/check-lineage-supported-class-truth.ts"],
+  ["lineage_projection_presence", "scripts/check-lineage-projection-presence.ts"],
+  ["lineage_hot_path_isolation", "scripts/check-lineage-hot-path-isolation.ts"],
+  ["governed_surface_totality", "scripts/check-governed-surface-totality.ts"],
+  ["claim_to_gate_mapping", "scripts/check-claim-to-gate-mapping.ts"],
 ]) {
   test(`${id} gate is active in every quality profile`, () => {
     const gate = GATE_MANIFEST.find((entry) => entry.id === id);
@@ -331,7 +331,7 @@ for (const [id, script] of [
 
 for (const [id, script] of [
   ["workflow_ir_runtime_parity_e2e", "scripts/check-workflow-ir-runtime-parity-e2e.mjs"],
-  ["runtime_conformance_matrix", "scripts/check-runtime-conformance-matrix.mjs"],
+  ["runtime_conformance_matrix", "scripts/check-runtime-conformance-matrix.ts"],
 ]) {
   test(`${id} gate is active only in the full quality profile`, () => {
     const gate = GATE_MANIFEST.find((entry) => entry.id === id);
@@ -348,7 +348,7 @@ test("cloudevents contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-cloudevents-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-cloudevents-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-cloudevents-contract");
 });
@@ -358,7 +358,7 @@ test("oci artifact contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-oci-artifact-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-oci-artifact-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-oci-artifact-contract");
 });
@@ -368,7 +368,7 @@ test("artifact trust contract gate is active in every quality profile", () => {
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-artifact-trust-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-artifact-trust-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-artifact-trust-contract");
 });
@@ -378,7 +378,7 @@ test("dispatch latency SLO contract gate is active in every quality profile", ()
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-dispatch-latency-slo-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-dispatch-latency-slo-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-dispatch-latency-slo-contract");
 });
@@ -388,7 +388,7 @@ test("reactor dispatch contract gate is active in every quality profile", () => 
 
   assert.ok(gate);
   assert.equal(gate.command, "node");
-  assert.deepEqual(gate.args, ["scripts/check-reactor-dispatch-contract.mjs"]);
+  assert.deepEqual(gate.args, ["scripts/check-reactor-dispatch-contract.ts"]);
   assert.deepEqual(gate.profiles, ["fast", "strict", "full"]);
   assert.equal(gate.failureTarget, "check-reactor-dispatch-contract");
 });

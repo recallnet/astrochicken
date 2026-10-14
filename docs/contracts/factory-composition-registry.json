@@ -3,6 +3,14 @@
   "factories": [
     {
       "composition_model": "thin_composition",
+      "factory_id": "brainstorm",
+      "local_graph_bindings": 0,
+      "manifest_path": "factories/brainstorm/inventory/factory-composition-manifest.v1.json",
+      "private_execution_glue_paths": 0,
+      "shared_graph_bindings": 1
+    },
+    {
+      "composition_model": "thin_composition",
       "factory_id": "example-scanner",
       "local_graph_bindings": 0,
       "manifest_path": "factories/example-scanner/inventory/factory-composition-manifest.v1.json",
@@ -11,19 +19,11 @@
     },
     {
       "composition_model": "thin_composition",
-      "factory_id": "brainstorm",
+      "factory_id": "example-trading",
       "local_graph_bindings": 0,
-      "manifest_path": "factories/brainstorm/inventory/factory-composition-manifest.v1.json",
+      "manifest_path": "factories/example-trading/inventory/factory-composition-manifest.v1.json",
       "private_execution_glue_paths": 0,
-      "shared_graph_bindings": 1
-    },
-    {
-      "composition_model": "control_plane",
-      "factory_id": "mothership",
-      "local_graph_bindings": 0,
-      "manifest_path": "factories/mothership/inventory/factory-composition-manifest.v1.json",
-      "private_execution_glue_paths": 0,
-      "shared_graph_bindings": 3
+      "shared_graph_bindings": 8
     },
     {
       "composition_model": "thin_composition",
@@ -34,12 +34,12 @@
       "shared_graph_bindings": 6
     },
     {
-      "composition_model": "thin_composition",
-      "factory_id": "example-trading",
+      "composition_model": "control_plane",
+      "factory_id": "mothership",
       "local_graph_bindings": 0,
-      "manifest_path": "factories/example-trading/inventory/factory-composition-manifest.v1.json",
+      "manifest_path": "factories/mothership/inventory/factory-composition-manifest.v1.json",
       "private_execution_glue_paths": 0,
-      "shared_graph_bindings": 8
+      "shared_graph_bindings": 3
     }
   ],
   "schema_version": "factory_composition_registry/v1",

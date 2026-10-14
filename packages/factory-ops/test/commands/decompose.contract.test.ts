@@ -79,11 +79,12 @@ function parseDotNodes(dot = "") {
   return nodes;
 }
 
+// @context:regression Canonical DOT rendering may compress multiple edges into a chain.
 function parseDotEdges(dot = "") {
   const edges = [];
-  const regex = /([A-Za-z0-9_]+)\s*->\s*([A-Za-z0-9_]+)/g;
-  for (const match of String(dot || "").matchAll(regex)) {
-    edges.push([match[1], match[2]]);
+  for (const match of String(dot).matchAll(/^\s*([A-Za-z0-9_]+(?:\s*->\s*[A-Za-z0-9_]+)+)/gm)) {
+    const nodes = match[1].split(/\s*->\s*/);
+    for (let i = 1; i < nodes.length; i += 1) edges.push([nodes[i - 1], nodes[i]]);
   }
   return edges;
 }
@@ -314,7 +315,13 @@ test("goal_run preserves automatic handoff from decomposition through determinis
   const dot = readFileSync(goalRunDotPath, "utf8");
   assert.match(dot, /intake_decompose\s*->\s*append_rationale_feature/);
   assert.match(dot, /append_rationale_feature\s*->\s*issues/);
-  assert.match(dot, /issues\s*->\s*encode_goal_issue_b64/);
+  assert.match(dot, /issues\s*->\s*count_approved_features/);
+  assert.match(dot, /count_approved_features\s*->\s*count_issues/);
+  assert.match(dot, /count_issues\s*->\s*decomposition_feature_gate/);
+  assert.match(dot, /decomposition_feature_gate -> decomposition_issue_gate \[condition="approved_feature_count!=0"\]/);
+  assert.match(dot, /decomposition_issue_gate -> encode_goal_issue_b64 \[condition="issue_count!=0"\]/);
+  assert.match(dot, /decomposition_feature_gate -> keep_open \[condition="approved_feature_count=0"\]/);
+  assert.match(dot, /decomposition_issue_gate -> keep_open \[condition="issue_count=0"\]/);
   assert.match(dot, /persist_decomposition_packet\s*->\s*normalize_issue_index/);
   assert.match(dot, /normalize_issue_index\s*->\s*zip_feature_map/);
   assert.match(dot, /zip_feature_map\s*->\s*resolve_deps/);
@@ -327,12 +334,14 @@ test("goal_run routes hard goals to planning-only graph until planning_state=app
   const dot = readFileSync(goalRunDotPath, "utf8");
   const hardPlanDot = readFileSync("docs/contracts/workflow-ir/capability-goal-decomposition/goal_hard_plan.dot", "utf8");
 
-  assert.match(dot, /hard_planning_gate\s*\[shape=diamond label="Hard planning approved\?"\]/);
+  assert.match(dot, /hard_planning_gate\s*\[shape="diamond" label="Hard planning approved\?"\]/);
   assert.match(dot, /easy_execution_gate\s*->\s*hard_planning_gate\s*\[condition="goal_execution_path=hard"\]/);
   assert.match(dot, /hard_planning_gate\s*->\s*hard_plan\s*\[condition="planning_state!=approved"\]/);
   assert.match(dot, /hard_planning_gate\s*->\s*materialize_hard_plan\s*\[condition="planning_state=approved"\]/);
-  assert.match(dot, /hard_plan\s*->\s*hard_planning_hold_done\s*->\s*done/);
-  assert.match(dot, /materialize_hard_plan\s*->\s*approved_hard_plan_resume\s*->\s*encode_goal_issue_b64/);
+  assert.match(dot, /hard_plan\s*->\s*hard_planning_hold_done/);
+  assert.match(dot, /hard_planning_hold_done\s*->\s*done/);
+  assert.match(dot, /materialize_hard_plan\s*->\s*approved_hard_plan_resume/);
+  assert.match(dot, /approved_hard_plan_resume\s*->\s*encode_goal_issue_b64/);
   assert.match(dot, /approved_hard_plan_resume\s*\[type="tool"/);
   assert.match(dot, /approved_hard_plan_resume[\s\S]*outputs="approved,decompose_attempt_number,decompose_parse_status,decompose_parse_source"/);
   assert.match(dot, /materialize_hard_plan[\s\S]*action_id="goal\.materialize_approved_plan"/);
@@ -354,7 +363,19 @@ test("goal_execute resolves canonical execution-path metadata before building ex
   assert.match(dot, /resolve_execution_path[\s\S]*(?:action_id="software\.resolve_goal_execution_path"[\s\S]*action_repo="\$\{repo\}"[\s\S]*action_goal_issue_number="\$\{goal_issue_number\}"[\s\S]*action_goal_execution_paths="\$\{goal_execution_paths\}"[\s\S]*action_factory_id="\$\{factory_id\}"|goal execution-path resolve --repo-root '\$\{repo\}' --goal-issue-number '\$\{goal_issue_number\}' --goal-execution-paths '\$\{goal_execution_paths\}' --factory-id '\$\{factory_id\}')/);
   assert.match(dot, /outputs="goal_execution_path,goal_routing_state,goal_execution_path_version,classification_version,goal_execution_path_packet_id,goal_execution_path_packet_path"/);
   assert.match(dot, /seed_state -> resolve_execution_path -> build_execution_plan/);
-  assert.match(dot, /build_execution_plan[\s\S]*(?:action_id="software\.build_goal_execution_plan"[\s\S]*action_repo="\$\{gh_repo\}"[\s\S]*action_goal_number="\$\{goal_issue_number\}"[\s\S]*action_completed_issues="\$\{completed_issues\}"[\s\S]*action_direct_execution="\$\{goal_execution_mode\}"[\s\S]*action_direct_execution_path="\$\{goal_execution_path\}"[\s\S]*action_goal_routing_state="\$\{goal_routing_state\}"[\s\S]*action_goal_execution_path_version="\$\{goal_execution_path_version\}"[\s\S]*action_goal_execution_path_packet_id="\$\{goal_execution_path_packet_id\}"|goal build-execution-plan --repo '\$\{gh_repo\}' --goal-number '\$\{goal_issue_number\}' --completed '\$\{completed_issues\}' --direct-execution '\$\{goal_execution_mode\}' --direct-execution-path '\$\{goal_execution_path\}' --goal-routing-state '\$\{goal_routing_state\}' --goal-execution-path-version '\$\{goal_execution_path_version\}' --goal-execution-path-packet-id '\$\{goal_execution_path_packet_id\}')/);
+  const executionPlanNode = parseDotNodes(dot).get("build_execution_plan");
+  assert.ok(executionPlanNode, "build_execution_plan must exist");
+  for (const [key, value] of Object.entries({
+    action_id: "software.build_goal_execution_plan",
+    action_repo: "${gh_repo}",
+    action_goal_number: "${goal_issue_number}",
+    action_completed_issues: "${completed_issues}",
+    action_direct_execution: "${goal_execution_mode}",
+    action_direct_execution_path: "${goal_execution_path}",
+    action_goal_routing_state: "${goal_routing_state}",
+    action_goal_execution_path_version: "${goal_execution_path_version}",
+    action_goal_execution_path_packet_id: "${goal_execution_path_packet_id}",
+  })) assert.ok(executionPlanNode.raw.includes(`${key}="${value}"`), `build_execution_plan requires ${key}`);
 
   const goalRunDot = readFileSync(goalRunDotPath, "utf8");
   assert.match(goalRunDot, /resolve_hard_goal_state\s*\[type="tool"/);

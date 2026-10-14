@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { existsSync, readFileSync } from "node:fs";
 import { performance } from "node:perf_hooks";
 
 import { callOffThread, terminateDispatcher } from "../../src/lib/offthread-dispatcher.ts";
@@ -82,18 +83,33 @@ test("terminateDispatcher cleans up worker and resolves pending calls with null"
   await terminateDispatcher();
 });
 
-test("callOffThread isolates fleet and detail work on separate lanes", async () => {
+test("callOffThread keeps a warm detail lane responsive during fleet dispatch", async () => {
   try {
+    // Measure active-lane dispatch, excluding cold TypeScript worker startup.
+    await Promise.all([
+      callOffThread("ping", {}, { lane: "fleet" }),
+      callOffThread("ping", {}, { lane: "detail" }),
+    ]);
     const startedAt = performance.now();
     const slow = callOffThread("sleep", { ms: 250, value: "fleet" }, { lane: "fleet" });
     const fast = callOffThread("ping", { lane: "detail" }, { lane: "detail" });
     const fastResult = await fast;
     const fastElapsed = performance.now() - startedAt;
     assert.equal(fastResult.pong, true);
-    assert.equal(fastElapsed < 150, true, `detail lane should not wait behind fleet lane (${fastElapsed}ms)`);
+    assert.equal(fastElapsed < 150, true, `warm detail lane should respond within 150ms (${fastElapsed}ms)`);
     const slowResult = await slow;
     assert.equal(slowResult.value, "fleet");
   } finally {
     await terminateDispatcher();
+  }
+});
+
+test("worker lazy imports resolve to available source modules", () => {
+  const workerUrl = new URL("../../src/lib/offthread-dispatcher-worker.ts", import.meta.url);
+  const worker = readFileSync(workerUrl, "utf8");
+  const imports = [...worker.matchAll(/import\("([^"]+)"\)/g)].map((match) => match[1]);
+  assert.ok(imports.length > 0);
+  for (const specifier of imports) {
+    assert.equal(existsSync(new URL(specifier, workerUrl)), true, `missing worker dependency: ${specifier}`);
   }
 });

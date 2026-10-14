@@ -1,32 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { createRecordingGhFixture, runRecordingOpsCliResult as runCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import test from "node:test";
 
 function makeGhStub() {
-  const root = mkdtempSync(join(tmpdir(), "goal-hard-plan-gh-"));
-  const statePath = join(root, "state.json");
-  const ghPath = join(root, "gh");
-
-  writeFileSync(statePath, JSON.stringify({ calls: [] }, null, 2), "utf8");
-  writeFileSync(
-    ghPath,
-    `#!/usr/bin/env node
-const fs = require("node:fs");
-const statePath = process.env.HATCH_TEST_GH_STATE_PATH;
-const args = process.argv.slice(2);
-const state = JSON.parse(fs.readFileSync(statePath, "utf8"));
-state.calls.push(args);
-fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
-
-const apiPath = String(args[1] || "");
+  return createRecordingGhFixture("goal-hard-plan-gh-", `const apiPath = String(args[1] || "");
 const method = String(args[3] || "");
 
 if (args[0] === "api" && apiPath.includes("/comments?") && method !== "POST" && method !== "PATCH") {
@@ -72,38 +54,7 @@ if (args[0] === "issue" && args[1] === "comment") {
 
 process.stderr.write("unexpected gh args: " + args.join(" "));
 process.exit(1);
-`,
-    "utf8",
-  );
-  chmodSync(ghPath, 0o755);
-
-  return {
-    binDir: root,
-    statePath,
-    cleanup() {
-      rmSync(root, { recursive: true, force: true });
-    },
-  };
-}
-
-function runCli(args = [], { binDir, statePath, expectedStatus = 0, extraEnv = {} } = {}) {
-  const out = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
-      ...process.env,
-      PATH: `${binDir}:${process.env.PATH || ""}`,
-      HATCH_TEST_GH_STATE_PATH: statePath,
-      ...extraEnv,
-    },
-  });
-
-  assert.equal(out.status, expectedStatus, `stderr=${out.stderr}\nstdout=${out.stdout}`);
-  return {
-    json: JSON.parse(String(out.stdout || "{}").trim() || "{}"),
-    stdout: String(out.stdout || ""),
-    stderr: String(out.stderr || ""),
-  };
+`);
 }
 
 test("goal hard-plan attach CLI persists packet and creates deterministic marker comment", () => {
@@ -160,21 +111,17 @@ test("goal hard-plan attach CLI persists packet and creates deterministic marker
 });
 
 test("goal hard-plan inspect CLI reports missing attachment deterministically", () => {
-  const out = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "hard-plan",
-    "inspect",
-    "--repo-root",
-    mkdtempSync(join(tmpdir(), "goal-hard-plan-inspect-")),
-    "--goal",
-    "2200",
-    "--factory-id",
-    "mothership",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const out = spawnOpsCli([
+      "goal",
+      "hard-plan",
+      "inspect",
+      "--repo-root",
+      mkdtempSync(join(tmpdir(), "goal-hard-plan-inspect-")),
+      "--goal",
+      "2200",
+      "--factory-id",
+      "mothership"
+    ]);
 
   assert.equal(out.status, 0, `stderr=${out.stderr}\nstdout=${out.stdout}`);
   const payload = JSON.parse(String(out.stdout || "{}").trim() || "{}");
@@ -258,16 +205,12 @@ test("goal validate-planning-artifact CLI fails on factory_request packet that b
     },
   }, null, 2), "utf8");
 
-  const out = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "validate-planning-artifact",
-    "--packet-path",
-    packetPath,
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const out = spawnOpsCli([
+      "goal",
+      "validate-planning-artifact",
+      "--packet-path",
+      packetPath
+    ]);
 
   assert.equal(out.status, 1, `stderr=${out.stderr}\nstdout=${out.stdout}`);
   assert.match(String(out.stderr || ""), /invalid_planning_artifact:.*bypassed_reuse_analysis/);
@@ -518,38 +461,34 @@ test("goal persist-hard-plan-artifact CLI persists explicit factory_request_goal
     ],
   };
 
-  const out = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "persist-hard-plan-artifact",
-    "--repo-root",
-    repoRootTmp,
-    "--goal-issue-number",
-    "2401",
-    "--goal-issue",
-    JSON.stringify(goalIssue),
-    "--goal-context",
-    JSON.stringify(goalContext),
-    "--approved-features",
-    JSON.stringify(approvedFeatures),
-    "--factory-request-goal-graph",
-    JSON.stringify(factoryRequestGoalGraph),
-    "--factory-id",
-    "mothership",
-    "--run-id",
-    "run-cli-persist-goal-graph",
-    "--pipeline",
-    "goal_hard_plan",
-    "--node-id",
-    "persist_hard_plan_packet",
-    "--target-repo",
-    "recallnet/astrochicken",
-    "--control-plane-repo",
-    "recallnet/astrochicken",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const out = spawnOpsCli([
+      "goal",
+      "persist-hard-plan-artifact",
+      "--repo-root",
+      repoRootTmp,
+      "--goal-issue-number",
+      "2401",
+      "--goal-issue",
+      JSON.stringify(goalIssue),
+      "--goal-context",
+      JSON.stringify(goalContext),
+      "--approved-features",
+      JSON.stringify(approvedFeatures),
+      "--factory-request-goal-graph",
+      JSON.stringify(factoryRequestGoalGraph),
+      "--factory-id",
+      "mothership",
+      "--run-id",
+      "run-cli-persist-goal-graph",
+      "--pipeline",
+      "goal_hard_plan",
+      "--node-id",
+      "persist_hard_plan_packet",
+      "--target-repo",
+      "recallnet/astrochicken",
+      "--control-plane-repo",
+      "recallnet/astrochicken"
+    ]);
 
   assert.equal(out.status, 0, `stderr=${out.stderr}\nstdout=${out.stdout}`);
   const payload = JSON.parse(String(out.stdout || "{}").trim() || "{}");

@@ -123,141 +123,26 @@ describe("runFactoryConformanceCommand", () => {
 		expect(stdoutCapture.read()).toBe("");
 	});
 
-	it("expands dependent phases for graph_validate selection", async () => {
+	it.each([
+		{"name": "expands dependent phases for graph_validate selection", "phase": "graph_validate", "phases": ["config_schema", "policy_pack_conformance", "graph_validate"]},
+		{"name": "expands benchmark_telemetry phase with config_schema dependency", "phase": "benchmark_telemetry", "phases": ["config_schema", "benchmark_telemetry"]},
+		{"name": "expands intent_stack phase with config_schema dependency", "phase": "intent_stack", "phases": ["config_schema", "intent_stack"]},
+		{"name": "expands skill_loading phase with config_schema dependency", "phase": "skill_loading", "phases": ["config_schema", "skill_loading"]},
+		{"name": "expands scenario_root phase with config_schema dependency", "phase": "scenario_root", "phases": ["config_schema", "scenario_root"]},
+	])("$name", async ({ phase, phases }) => {
 		const stdoutCapture = createStreamCapture();
 		const stderrCapture = createStreamCapture();
 		const code = await runFactoryConformanceCommand([
 			"--factory-root",
 			"factories/mothership",
 			"--phase",
-			"graph_validate",
+			phase,
 		], {
 			cwd: process.cwd(),
 			stdout: stdoutCapture.stream,
 			stderr: stderrCapture.stream,
 			runHarness: async (options) => {
-				expect(options.phases).toEqual(["config_schema", "policy_pack_conformance", "graph_validate"]);
-				return {
-					ok: true,
-					factory_root: options.factoryRoot,
-					repo_root: options.repoRoot || process.cwd(),
-					phases: [],
-					failed_phase: "",
-					first_failure: null,
-				};
-			},
-		});
-
-		expect(code).toBe(0);
-		expect(stdoutCapture.read()).toBe("");
-		expect(stderrCapture.read()).toContain("factory_conformance result=ok failed_phase=");
-	});
-
-
-	it("expands benchmark_telemetry phase with config_schema dependency", async () => {
-		const stdoutCapture = createStreamCapture();
-		const stderrCapture = createStreamCapture();
-		const code = await runFactoryConformanceCommand([
-			"--factory-root",
-			"factories/mothership",
-			"--phase",
-			"benchmark_telemetry",
-		], {
-			cwd: process.cwd(),
-			stdout: stdoutCapture.stream,
-			stderr: stderrCapture.stream,
-			runHarness: async (options) => {
-				expect(options.phases).toEqual(["config_schema", "benchmark_telemetry"]);
-				return {
-					ok: true,
-					factory_root: options.factoryRoot,
-					repo_root: options.repoRoot || process.cwd(),
-					phases: [],
-					failed_phase: "",
-					first_failure: null,
-				};
-			},
-		});
-
-		expect(code).toBe(0);
-		expect(stdoutCapture.read()).toBe("");
-		expect(stderrCapture.read()).toContain("factory_conformance result=ok failed_phase=");
-	});
-
-	it("expands intent_stack phase with config_schema dependency", async () => {
-		const stdoutCapture = createStreamCapture();
-		const stderrCapture = createStreamCapture();
-		const code = await runFactoryConformanceCommand([
-			"--factory-root",
-			"factories/mothership",
-			"--phase",
-			"intent_stack",
-		], {
-			cwd: process.cwd(),
-			stdout: stdoutCapture.stream,
-			stderr: stderrCapture.stream,
-			runHarness: async (options) => {
-				expect(options.phases).toEqual(["config_schema", "intent_stack"]);
-				return {
-					ok: true,
-					factory_root: options.factoryRoot,
-					repo_root: options.repoRoot || process.cwd(),
-					phases: [],
-					failed_phase: "",
-					first_failure: null,
-				};
-			},
-		});
-
-		expect(code).toBe(0);
-		expect(stdoutCapture.read()).toBe("");
-		expect(stderrCapture.read()).toContain("factory_conformance result=ok failed_phase=");
-	});
-
-	it("expands skill_loading phase with config_schema dependency", async () => {
-		const stdoutCapture = createStreamCapture();
-		const stderrCapture = createStreamCapture();
-		const code = await runFactoryConformanceCommand([
-			"--factory-root",
-			"factories/mothership",
-			"--phase",
-			"skill_loading",
-		], {
-			cwd: process.cwd(),
-			stdout: stdoutCapture.stream,
-			stderr: stderrCapture.stream,
-			runHarness: async (options) => {
-				expect(options.phases).toEqual(["config_schema", "skill_loading"]);
-				return {
-					ok: true,
-					factory_root: options.factoryRoot,
-					repo_root: options.repoRoot || process.cwd(),
-					phases: [],
-					failed_phase: "",
-					first_failure: null,
-				};
-			},
-		});
-
-		expect(code).toBe(0);
-		expect(stdoutCapture.read()).toBe("");
-		expect(stderrCapture.read()).toContain("factory_conformance result=ok failed_phase=");
-	});
-
-	it("expands scenario_root phase with config_schema dependency", async () => {
-		const stdoutCapture = createStreamCapture();
-		const stderrCapture = createStreamCapture();
-		const code = await runFactoryConformanceCommand([
-			"--factory-root",
-			"factories/mothership",
-			"--phase",
-			"scenario_root",
-		], {
-			cwd: process.cwd(),
-			stdout: stdoutCapture.stream,
-			stderr: stderrCapture.stream,
-			runHarness: async (options) => {
-				expect(options.phases).toEqual(["config_schema", "scenario_root"]);
+				expect(options.phases).toEqual(phases);
 				return {
 					ok: true,
 					factory_root: options.factoryRoot,

@@ -41,12 +41,12 @@ supervisor visibility, and continuation-sufficient recovery.
 
 - `config/testing/spec-registry.json`
 - `config/testing/subsystem-ownership.json`
-- `packages/factory-ops/src/lib/packet-core.mjs`
+- `packages/factory-ops/src/lib/packet-core.ts`
 
 ## Test Surfaces
 
-- `packages/factory-ops/test/packets/packet-takeover-cold-start.contract.test.mjs`
-- `packages/factory-ops/test/supervisor/supervisor-state-snapshot-merge-conflict.unit.test.mjs`
+- `packages/factory-ops/test/packets/packet-takeover-cold-start.contract.test.ts`
+- `packages/factory-ops/test/supervisor/supervisor-state-snapshot-merge-conflict.unit.test.ts`
 
 ## Merge Blockers
 

@@ -1,3 +1,9 @@
+import { beforeEach } from "node:test";
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+beforeEach(async () => { await eventStoreFixture.resetProjections(); });
+
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, readFileSync } from "node:fs";
@@ -38,7 +44,7 @@ test("factory fleet-status CLI command wiring includes required flags", () => {
 
 test("factory fleet-tui CLI command wiring includes required flags", () => {
   const source = readFileSync("packages/factory-ops/src/cli/commands/factory-status-cmds.ts", "utf8");
-  assert.match(source, /import\s+\{\s*factoryFleetBootstrapSnapshot\s*\}\s+from\s+"..\/..\/commands\/factory-fleet-status\.mjs";/);
+  assert.match(source, /const \{ factoryFleetBootstrapSnapshot, factoryFleetStatus \} = await import\("\.\.\/\.\.\/commands\/factory-fleet-status\.ts"\)/);
   assert.match(source, /class FactoryFleetTuiCommand/);
   assert.match(source, /FactoryFleetTuiCommand[\s\S]*static paths = \[\["factory", "fleet-tui"\]\]/);
   assert.match(source, /FactoryFleetTuiCommand[\s\S]*Option\.String\("--registry-path", "factory-registry\.json"\)/);

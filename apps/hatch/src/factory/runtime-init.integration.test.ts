@@ -109,7 +109,7 @@ describe("factory runtime init surfaces", () => {
       instanceId: "fac_01JQ7M8JABCDEFG",
       targetRepo: "example-org/example-trading",
       controlPlaneRepo: "recallnet/astrochicken",
-      dispatchGraphPath: "factories/example-trading/graphs/factory_supervisor_tick.dot",
+      dispatchGraphPath: "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
     });
 
     expect(out.path).toBe(registryPath);

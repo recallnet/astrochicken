@@ -13,19 +13,13 @@ import {
 import { resolveGitHubProjectionTarget } from "../lib/github-projection-target.ts";
 import { repairCanonicalGoalCloseProjection } from "../lib/goal-close-projection-repair.ts";
 import {
+  canAutoCloseGoal,
   projectGoalFinalState,
   readAllRunStatesFromRunsDir,
 } from "../lib/goal-final-state-projection.ts";
 
 const DIRECT_SUCCESS_RESULTS = new Set(["merged", "success", "completed", "close", "closed"]), TERMINAL_RUN_STATUSES = new Set(["completed", "failed", "suspended", "guarded", "guarded_terminal", "blocked", "terminal"]);
-export function canAutoCloseGoal({
-  hasSubIssues = false,
-  anyOpenSubIssues = false,
-}) {
-  if (!hasSubIssues) return false;
-  if (anyOpenSubIssues) return false;
-  return true;
-}
+export { canAutoCloseGoal } from "../lib/goal-final-state-projection.ts";
 
 function normalizeGoalNumber(value = "") {
   const match = String(value ?? "").match(/\d+/);

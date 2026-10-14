@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const scriptPath = join(scriptsDir, "check-scaffolded-factory-contract.mjs");
+const scriptPath = join(scriptsDir, "check-scaffolded-factory-contract.ts");
 const scriptSource = readFileSync(scriptPath, "utf8");
 
 test("scaffolded factory contract targets only the intended Hatch Vitest contract files", () => {

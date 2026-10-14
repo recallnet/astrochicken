@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { emitResult, parseArgs } from "./check-harness.ts";
 
 const repoRoot = resolve(fileURLToPath(new URL("../..", import.meta.url)));
-const harnessModuleUrl = pathToFileURL(join(repoRoot, "scripts", "lib", "check-harness.mjs")).href;
+const harnessModuleUrl = pathToFileURL(join(repoRoot, "scripts", "lib", "check-harness.ts")).href;
 
 function captureWrites(run) {
   const writes = { stdout: "", stderr: "" };

@@ -14,7 +14,7 @@ import {
 import { baselineFixtureCommit, initFixtureRepo } from "./test/helpers/git-fixture.mjs";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const scriptPath = join(repoRoot, "scripts", "check-context-propagation-contract.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-context-propagation-contract.ts");
 
 function toNulBuffer(paths) {
   if (!paths.length) {

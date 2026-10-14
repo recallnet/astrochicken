@@ -30,11 +30,14 @@ function createSnapshotGhPaginatedFn({ timeoutMs = DEFAULT_SNAPSHOT_GH_TIMEOUT_M
 
 export function resolveSnapshotGitHubReaders({
   ghJsonFn,
+  ghPaginatedFn,
   listGoalSubIssuesFn = listGoalSubIssues,
   env = process.env,
 } = {}) {
   const snapshotGhTimeoutMs = resolveSnapshotGhTimeoutMs(env);
-  const ghPaginatedFn = createSnapshotGhPaginatedFn({ timeoutMs: snapshotGhTimeoutMs });
+  const resolvedGhPaginatedFn = typeof ghPaginatedFn === "function"
+    ? ghPaginatedFn
+    : createSnapshotGhPaginatedFn({ timeoutMs: snapshotGhTimeoutMs });
   const resolvedGhJsonFn = typeof ghJsonFn === "function"
     ? ghJsonFn
     : createSnapshotGhJsonFn({ timeoutMs: snapshotGhTimeoutMs });
@@ -42,11 +45,11 @@ export function resolveSnapshotGitHubReaders({
     ? listGoalSubIssuesFn
     : ((args = {}) => listGoalSubIssues({
       ...args,
-      ghPaginatedFn,
+      ghPaginatedFn: resolvedGhPaginatedFn,
     }));
   return {
     ghJsonFn: resolvedGhJsonFn,
-    ghPaginatedFn,
+    ghPaginatedFn: resolvedGhPaginatedFn,
     listGoalSubIssuesFn: resolvedListGoalSubIssuesFn,
   };
 }

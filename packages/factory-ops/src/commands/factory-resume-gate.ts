@@ -12,7 +12,7 @@ import {
   isReleaseSatisfied,
 } from "./artifact-linkage.ts";
 import { validateReleaseManifestContract } from "./release-manifest.ts";
-import { trim, parseJson } from "../lib/cli-helpers.ts";
+import { ghJson, trim, parseJson } from "../lib/cli-helpers.ts";
 import { evaluateManifestRolloutGate } from "../lib/release-rollout-gate.ts";
 import { validateResumePolicy } from "../lib/resume-policy-schema.ts";
 

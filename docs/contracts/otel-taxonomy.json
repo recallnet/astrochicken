@@ -2,7 +2,7 @@
   "schema_version": "otel_taxonomy_report/v1",
   "summary": {
     "required_correlation_attributes": 5,
-    "allowed_attribute_keys": 53,
+    "allowed_attribute_keys": 54,
     "governed_emitter_files": 8,
     "governed_emitters": 27,
     "direct_bypass_files": 0,
@@ -38,6 +38,7 @@
       "fallback_node",
       "fixed_count",
       "health_state",
+      "target_repo",
       "host_id",
       "incident_classification",
       "incident_crash_type",

@@ -11,7 +11,7 @@ written: "2026-03-20"
 # OTel Taxonomy
 
 - Required correlation attributes: `factory_id`, `run_id`, `workflow_id`, `capability_id`, `owner`
-- Allowed custom attribute keys: 53
+- Allowed custom attribute keys: 54
 - Governed emitter files: 8
 - Governed emitter calls: 27
 - Direct bypass files: 0

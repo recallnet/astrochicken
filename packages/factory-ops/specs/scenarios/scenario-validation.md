@@ -42,14 +42,14 @@ behavior, and fail-closed validation semantics for scenario authoring.
 
 - `config/testing/spec-registry.json`
 - `config/testing/subsystem-ownership.json`
-- `packages/factory-ops/src/commands/scenario-validate-scope.mjs`
-- `packages/factory-ops/src/commands/scenario-validate-payload.mjs`
+- `packages/factory-ops/src/commands/scenario-validate-scope.ts`
+- `packages/factory-ops/src/commands/scenario-validate-payload.ts`
 
 ## Test Surfaces
 
-- `packages/factory-ops/test/scenarios/scenario-validate-scope.unit.test.mjs`
-- `packages/factory-ops/test/scenarios/write-scenarios.contract.test.mjs`
-- `packages/factory-ops/test/scenarios/write-scenario-item.contract.test.mjs`
+- `packages/factory-ops/test/scenarios/scenario-validate-scope.unit.test.ts`
+- `packages/factory-ops/test/scenarios/write-scenarios.contract.test.ts`
+- `packages/factory-ops/test/scenarios/write-scenario-item.contract.test.ts`
 
 ## Merge Blockers
 

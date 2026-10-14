@@ -9,6 +9,7 @@ import {
   normalizeDestinationRepos,
   normalizeRepoSlug,
 } from "./factory-repo-roles.ts";
+import { resolvePhysicalPath } from "./filesystem-path.ts";
 
 const DEFAULT_CONTRACT_URL: URL = new URL("../../../docs/contracts/managed-factory-mutation-policy.json", import.meta.url);
 
@@ -74,20 +75,21 @@ export function isLocalFilesystemPath(targetPath: string = "", { instanceId = ""
   const resolvedTarget: string = resolvePathWithHome(targetPath, { homeDirectory });
   if (!normalizedInstanceId || !resolvedTarget) return false;
 
-  const absoluteTarget: string = path.resolve(cwd, resolvedTarget);
-  const allowedRepoScopedRoot: string = path.resolve(cwd, ".hatch", normalizedInstanceId);
-  const allowedHostScopedRoot: string = path.resolve(homeDirectory, ".hatch-hosts", "installations", normalizedInstanceId);
+  try {
+    const absoluteTarget = resolvePhysicalPath(resolvedTarget, { baseDir: cwd });
+    const allowedRepoScopedRoot = resolvePhysicalPath(`.hatch${path.sep}${normalizedInstanceId}`, { baseDir: cwd });
+    const allowedHostScopedRoot = resolvePhysicalPath(`${homeDirectory}${path.sep}.hatch-hosts${path.sep}installations${path.sep}${normalizedInstanceId}`, { baseDir: cwd });
 
-  if (isWithinPath(absoluteTarget, allowedRepoScopedRoot)
-    || isWithinPath(absoluteTarget, allowedHostScopedRoot)) return true;
+    if (isWithinPath(absoluteTarget, allowedRepoScopedRoot)
+      || isWithinPath(absoluteTarget, allowedHostScopedRoot)) return true;
 
-  // Disposable worktree roots (e.g. ../.hatch-worktrees/wave/) are factory-scoped
-  // but live outside .hatch/<instanceId>/.  Allow them when explicitly approved.
-  const roots: string[] = Array.isArray(approvedWorktreeRoots) ? approvedWorktreeRoots : [];
-  return roots.some((root: string) => {
-    const absRoot: string = path.resolve(cwd, root);
-    return isWithinPath(absoluteTarget, absRoot);
-  });
+    // Disposable worktree roots may be outside .hatch/<instanceId> but must
+    // contain the physical target, not merely its symlink spelling.
+    const roots: string[] = Array.isArray(approvedWorktreeRoots) ? approvedWorktreeRoots : [];
+    return roots.some((root: string) => isWithinPath(absoluteTarget, resolvePhysicalPath(root, { baseDir: cwd })));
+  } catch {
+    return false;
+  }
 }
 
 export function isTargetRepo(targetRepo: string = "", context: Record<string, unknown> = {}): boolean {
@@ -299,7 +301,10 @@ function normalizeMutationContext(mutationContext: Record<string, unknown> = {})
   return {
     raw,
     keyPresence,
-    targetRepo: normalizeRepoSlug(String(raw.target_repo ?? raw.targetRepo ?? raw.repo_slug ?? raw.repoSlug ?? "")),
+    // @context:security !critical Factory identity and the requested mutation repo
+    // must remain separate, or every repo compares equal to its own allowlist.
+    factoryTargetRepo: roleContext.targetRepo,
+    targetRepo: normalizeRepoSlug(String(raw.repo_slug ?? raw.repoSlug ?? raw.target_repo ?? raw.targetRepo ?? "")),
     controlPlaneRepo: roleContext.controlPlaneRepo || normalizeRepoSlug(rawControlPlaneRepo),
     destinationRepos,
     instanceId: trim(raw.instance_id ?? raw.instanceId ?? ""),
@@ -308,7 +313,6 @@ function normalizeMutationContext(mutationContext: Record<string, unknown> = {})
     operation: trim(raw.operation || ""),
     targetPath: trim(raw.target_path ?? raw.targetPath ?? ""),
     targetBranch: trim(raw.target_branch ?? raw.targetBranch ?? ""),
-    boundaryHint: trim(raw.boundary || ""),
     flags: isObject(raw.flags) ? { ...raw.flags } : {},
     issueLabels: parseLabels(raw.issue_labels ?? raw.issueLabels ?? []),
     declaredDestinationLabels: parseLabels(raw.declared_destination_labels ?? raw.declaredDestinationLabels ?? []),
@@ -318,12 +322,11 @@ function normalizeMutationContext(mutationContext: Record<string, unknown> = {})
 }
 
 function resolveBoundary(context: Record<string, unknown> = {}): string {
-  if (REQUIRED_BOUNDARIES.includes(context.boundaryHint as string)) return context.boundaryHint as string;
 
   const operation: string = trim(context.operation);
   if (operation.startsWith("fs:")) return "local_filesystem";
   if (!context.targetRepo && isPathLike(context.targetPath as string)) return "local_filesystem";
-  if (isTargetRepo(context.targetRepo as string, context)) return "target_repo";
+  if (isTargetRepo(context.targetRepo as string, { targetRepo: context.factoryTargetRepo })) return "target_repo";
   if (isControlPlane(context.targetRepo as string, context)) return "control_plane_repo";
   if (isDestination(context.targetRepo as string, context)) return "destination_repo";
   return "unknown";

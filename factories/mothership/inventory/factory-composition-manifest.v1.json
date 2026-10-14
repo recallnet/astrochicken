@@ -3,8 +3,8 @@
     "canonicalCheckoutPath": "${HATCH_CANONICAL_CHECKOUT_PATH}",
     "runsDir": ".hatch/mothership/runs",
     "scheduledGraphs": [
-      "factories/mothership/graphs/daily_lens_publish.dot",
-      "factories/mothership/graphs/daily_release_report.dot"
+      "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
+      "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs"
     ],
     "trustDomain": "mothership.local",
     "trustRoles": [
@@ -26,7 +26,7 @@
   },
   "compositionModel": "control_plane",
   "configPath": "factories/mothership/factory.config.json",
-  "dispatchGraphPath": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+  "dispatchGraphPath": "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs",
   "factoryId": "mothership",
   "graphBindings": [
     {

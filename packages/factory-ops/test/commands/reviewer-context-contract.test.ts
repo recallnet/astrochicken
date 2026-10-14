@@ -6,16 +6,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 
-import {
-  REVIEWER_CONTEXT_REQUIRED_KEYS,
-  REVIEWER_CONTEXT_PACKET_TYPE,
-  REVIEWER_CONTEXT_SCHEMA_VERSION,
-  REVIEW_CONTEXT_PRIMARY_REASON_CODE,
-  buildAndPersistReviewerContextContract,
-  buildReviewerContextContract,
-  validateReviewContextCompleteness,
-  validateReviewerContextContract,
-} from "../../src/commands/reviewer-context-contract.ts";
+import { REVIEWER_CONTEXT_REQUIRED_KEYS, REVIEWER_CONTEXT_PACKET_TYPE, REVIEWER_CONTEXT_SCHEMA_VERSION, REVIEW_CONTEXT_PRIMARY_REASON_CODE, buildAndPersistReviewerContextContract, buildReviewerContextContract, validateReviewContextCompleteness, validateReviewerContextContract } from "../../src/commands/reviewer-context-contract.ts";
 
 
 function fixture(relativePath) {
@@ -195,10 +186,7 @@ test("validateReviewContextCompleteness passes for complete valid context artifa
 });
 
 test("buildReviewerContextContract emits required keys and deterministic ordering", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   writeFileSync(join(repo, "a.txt"), "a\n", "utf8");
   writeFileSync(join(repo, "b.txt"), "b\n", "utf8");
@@ -244,10 +232,7 @@ test("buildReviewerContextContract emits required keys and deterministic orderin
 });
 
 test("buildReviewerContextContract carries optional builder notes from review evidence", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "462.json");
   writeJson(evidencePath, {
@@ -275,10 +260,7 @@ test("buildReviewerContextContract carries optional builder notes from review ev
 });
 
 test("buildReviewerContextContract policy merge: no repo override keeps global values", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "461.json");
   writeJson(evidencePath, {
@@ -317,10 +299,7 @@ test("buildReviewerContextContract policy merge: no repo override keeps global v
 });
 
 test("buildReviewerContextContract policy merge: repo overrides exact conflicting keys", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "461.json");
   writeJson(evidencePath, {
@@ -361,10 +340,7 @@ test("buildReviewerContextContract policy merge: repo overrides exact conflictin
 });
 
 test("buildReviewerContextContract handles malformed/missing issue fields deterministically", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "missing-fields.json");
   writeJson(evidencePath, {
@@ -390,10 +366,7 @@ test("buildReviewerContextContract handles malformed/missing issue fields determ
 });
 
 test("buildReviewerContextContract preserves empty issue_changed_files fixture", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidence = fixture("empty-issue-changed-files.evidence.json");
   const evidencePath = join(repo, ".hatch", "review", "empty-issue-files.json");
@@ -408,10 +381,7 @@ test("buildReviewerContextContract preserves empty issue_changed_files fixture",
 });
 
 test("buildReviewerContextContract preserves issue-scoped emptiness when snapshot diff is empty", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "fallback.json");
   writeJson(evidencePath, {
@@ -582,10 +552,7 @@ test("buildReviewerContextContract enforces snapshot_sha scoped commit subjects 
 // writeReviewEvidence test removed — goal-issue-state.mjs was deleted in goal migration.
 
 test("reviewer context contract remains deterministic when empty issue scope scenario stays missing", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidencePath = join(repo, ".hatch", "review", "judge-context-scenarios-missing.json");
   writeJson(evidencePath, {
@@ -616,10 +583,7 @@ test("reviewer context contract remains deterministic when empty issue scope sce
 });
 
 test("buildAndPersistReviewerContextContract writes context artifact with deterministic hash", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const evidence = fixture("valid.evidence.json");
   const evidencePath = join(repo, ".hatch", "review", "461.json");
@@ -642,10 +606,7 @@ test("buildAndPersistReviewerContextContract writes context artifact with determ
 });
 
 test("buildAndPersistReviewerContextContract falls back to default review evidence path when flag is missing", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
+  const repo = initReviewerBaseRepo();
 
   const issueNumber = "777";
   const evidence = fixture("valid.evidence.json");
@@ -672,29 +633,7 @@ test("buildAndPersistReviewerContextContract falls back to default review eviden
 });
 
 test("validateReviewContextCompleteness fails when policy source becomes stale after build", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-
-  const evidence = fixture("valid.evidence.json");
-  const evidencePath = join(repo, ".hatch", "review", "461.json");
-  writeJson(evidencePath, { ...evidence, worktree_dir: repo });
-
-  const globalPolicyPath = join(repo, "global-policy.json");
-  const repoPolicyPath = join(repo, "repo-policy.json");
-  writePolicyJson(globalPolicyPath, { review: { qa_required: true } });
-  writePolicyJson(repoPolicyPath, { review: { qa_required: false } });
-
-  const built = buildAndPersistReviewerContextContract({
-    reviewEvidencePath: evidencePath,
-    worktreeDir: repo,
-    issueNumber: "461",
-    branch: "wave/461",
-    skillPolicyPath: globalPolicyPath,
-    repoPolicyPath,
-  });
-  assert.equal(built.review_context_valid, "true");
+  const { repoPolicyPath, built } = buildPolicySourceFixture();
 
   writePolicyJson(repoPolicyPath, { review: { qa_required: true } });
 
@@ -713,10 +652,55 @@ test("validateReviewContextCompleteness fails when policy source becomes stale a
 });
 
 test("validateReviewContextCompleteness fails when repo policy source is missing", () => {
+  const { repoPolicyPath, built } = buildPolicySourceFixture();
+
+  rmSync(repoPolicyPath);
+
+  const out = validateReviewContextCompleteness({
+    reviewContextPath: built.review_context_path,
+    reviewContextSha256: built.review_context_sha256,
+    reviewContextValid: built.review_context_valid,
+    reviewContextError: built.review_context_error,
+  });
+
+  assert.equal(out.review_context_gate_pass, "false");
+  assert.equal(out.disposition, "reject");
+  assert.equal(out.recommended_transition, "revise");
+  assert.deepEqual(out.reason_codes, [REVIEW_CONTEXT_PRIMARY_REASON_CODE]);
+  assert.equal(out.review_context_error, "review_context_policy_source_missing");
+});
+
+test("buildAndPersistReviewerContextContract fails deterministically when repo policy source cannot load", () => {
+  const repo = initReviewerBaseRepo();
+
+  const evidence = fixture("valid.evidence.json");
+  const evidencePath = join(repo, ".hatch", "review", "461.json");
+  writeJson(evidencePath, { ...evidence, worktree_dir: repo });
+
+  const out = buildAndPersistReviewerContextContract({
+    reviewEvidencePath: evidencePath,
+    worktreeDir: repo,
+    issueNumber: "461",
+    branch: "wave/461",
+    repoPolicyPath: join(repo, "missing-repo-policy.md"),
+  });
+
+  assert.equal(out.review_context_valid, "false");
+  assert.equal(out.review_context_path, "");
+  assert.equal(out.review_context_sha256, "");
+  assert.equal(out.review_context_error, "repo_policy_policy_not_found");
+});
+
+function initReviewerBaseRepo() {
   const repo = initRepo();
   writeFileSync(join(repo, "README.md"), "base\n", "utf8");
   sh(["git", "add", "README.md"], repo);
   sh(["git", "commit", "-m", "base"], repo);
+  return repo;
+}
+
+function buildPolicySourceFixture() {
+  const repo = initReviewerBaseRepo();
 
   const evidence = fixture("valid.evidence.json");
   const evidencePath = join(repo, ".hatch", "review", "461.json");
@@ -737,42 +721,5 @@ test("validateReviewContextCompleteness fails when repo policy source is missing
   });
   assert.equal(built.review_context_valid, "true");
 
-  rmSync(repoPolicyPath);
-
-  const out = validateReviewContextCompleteness({
-    reviewContextPath: built.review_context_path,
-    reviewContextSha256: built.review_context_sha256,
-    reviewContextValid: built.review_context_valid,
-    reviewContextError: built.review_context_error,
-  });
-
-  assert.equal(out.review_context_gate_pass, "false");
-  assert.equal(out.disposition, "reject");
-  assert.equal(out.recommended_transition, "revise");
-  assert.deepEqual(out.reason_codes, [REVIEW_CONTEXT_PRIMARY_REASON_CODE]);
-  assert.equal(out.review_context_error, "review_context_policy_source_missing");
-});
-
-test("buildAndPersistReviewerContextContract fails deterministically when repo policy source cannot load", () => {
-  const repo = initRepo();
-  writeFileSync(join(repo, "README.md"), "base\n", "utf8");
-  sh(["git", "add", "README.md"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-
-  const evidence = fixture("valid.evidence.json");
-  const evidencePath = join(repo, ".hatch", "review", "461.json");
-  writeJson(evidencePath, { ...evidence, worktree_dir: repo });
-
-  const out = buildAndPersistReviewerContextContract({
-    reviewEvidencePath: evidencePath,
-    worktreeDir: repo,
-    issueNumber: "461",
-    branch: "wave/461",
-    repoPolicyPath: join(repo, "missing-repo-policy.md"),
-  });
-
-  assert.equal(out.review_context_valid, "false");
-  assert.equal(out.review_context_path, "");
-  assert.equal(out.review_context_sha256, "");
-  assert.equal(out.review_context_error, "repo_policy_policy_not_found");
-});
+  return { repoPolicyPath, built };
+}

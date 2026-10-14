@@ -14,7 +14,7 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { syncWorkspaceBins } from "./sync-workspace-bins.mjs";
+import { syncWorkspaceBins, WORKSPACE_BIN_ENTRIES } from "./sync-workspace-bins.mjs";
 
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const defaultRepoRoot = path.resolve(scriptsDir, "..");
@@ -254,6 +254,7 @@ function normalizePackageBinEntries(packageJson) {
 export function ensureRuntimePackageBins(repoRoot = defaultRepoRoot) {
   const rootDependencyMap = readPackageDependencies(repoRoot, []);
   const rootBinDir = path.resolve(repoRoot, "node_modules", ".bin");
+  const workspaceLaunchers = new Set(WORKSPACE_BIN_ENTRIES.map(({ name }) => name));
   for (const dependency of Object.keys(rootDependencyMap)) {
     const packageLinkPath = path.resolve(repoRoot, "node_modules", dependency);
     if (!existsSync(packageLinkPath)) continue;
@@ -262,6 +263,9 @@ export function ensureRuntimePackageBins(repoRoot = defaultRepoRoot) {
     if (binEntries.length === 0) continue;
     mkdirSync(rootBinDir, { recursive: true });
     for (const [binName, relativeBinPath] of binEntries) {
+      // @context:regression Keep root launchers owned by syncWorkspaceBins;
+      // alternating shell and JavaScript targets races concurrent executions.
+      if (workspaceLaunchers.has(binName)) continue;
       const binTarget = path.resolve(packageLinkPath, relativeBinPath);
       if (!existsSync(binTarget)) continue;
       const binLinkPath = path.resolve(rootBinDir, binName);

@@ -84,7 +84,8 @@ describe("canonical postgres event store", () => {
 		);
 		runShell(`
       for i in {1..30}; do
-        if docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} exec -T postgres pg_isready -U ${user} -d ${db} >/dev/null 2>&1; then
+        # Require TCP readiness; the initialization-only Unix socket stops before normal startup.
+        if docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} exec -T postgres pg_isready -h 127.0.0.1 -U ${user} -d ${db} >/dev/null 2>&1; then
           exit 0
         fi
         sleep 1

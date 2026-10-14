@@ -1,7 +1,7 @@
 {
 	"name": "hatch",
 	"version": "0.1.0",
-	"description": "AI pipeline runner — DOT graphs for multi-step AI workflows",
+	"description": "AI pipeline runner \u2014 DOT graphs for multi-step AI workflows",
 	"type": "module",
 	"bin": {
 		"hatch": "dist/cli.js"
@@ -42,28 +42,31 @@
 	"dependencies": {
 		"@hatch/capability-artifact-ingestion": "workspace:*",
 		"@hatch/capability-brainstorming": "workspace:*",
+		"@hatch/capability-coding": "workspace:*",
 		"@hatch/capability-goal-decomposition": "workspace:*",
+		"@hatch/capability-merge": "workspace:*",
+		"@hatch/capability-product-judge": "workspace:*",
+		"@hatch/capability-release-reporting": "workspace:*",
 		"@hatch/capability-software-development": "workspace:*",
 		"@hatch/factory-core": "workspace:*",
-		"@hatch/capability-release-reporting": "workspace:*",
-		"@mariozechner/pi-ai": "^0.56.2",
-		"@mariozechner/pi-coding-agent": "^0.56.2",
+		"@mariozechner/pi-ai": "^0.56.3",
+		"@mariozechner/pi-coding-agent": "^0.56.3",
 		"@recallnet/factory-telemetry": "workspace:*",
-		"langfuse": "^3.38.6",
-		"pg": "^8.16.3",
-		"pi-messenger": "^0.13.0",
-		"zod": "^4.3.6"
+		"langfuse": "^3.39.2",
+		"pg": "^8.23.1",
+		"pi-messenger": "^0.13.2",
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
 		"@hatch/tsconfig": "workspace:*",
-		"@types/node": "^22.0.0",
-		"@types/pg": "^8.15.6",
-		"@vitest/coverage-v8": "^3.2.4",
-		"typescript": "^5.7.3",
-		"vitest": "^3.2.4"
+		"@types/node": "^22.20.5",
+		"@types/pg": "^8.23.1",
+		"@vitest/coverage-v8": "^4.1.11",
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.11"
 	},
 	"engines": {
-		"node": ">=20.0.0"
+		"node": ">=22.18.0"
 	},
 	"license": "MIT"
 }

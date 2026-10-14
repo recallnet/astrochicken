@@ -12,7 +12,7 @@ import {
 } from "./check-shared-surface-ownership.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-shared-surface-ownership.mjs");
+const checkerPath = join(scriptsDir, "check-shared-surface-ownership.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {

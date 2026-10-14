@@ -36,6 +36,7 @@ export function buildStateSnapshot({
   manifestFetchCmd = "",
   skipRecoverySweep = false,
   ghJsonFn,
+  ghPaginatedFn,
   backendAdapter,
   listGoalSubIssuesFn,
   recoverySweepFn = reconcileRuntimeRecoverySweep,
@@ -46,6 +47,7 @@ export function buildStateSnapshot({
   const snapshotErrors = [];
   const snapshotGithubReaders = resolveSnapshotGitHubReaders({
     ghJsonFn,
+    ghPaginatedFn,
     listGoalSubIssuesFn,
   });
   ghJsonFn = snapshotGithubReaders.ghJsonFn;

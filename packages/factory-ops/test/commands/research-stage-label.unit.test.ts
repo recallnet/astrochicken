@@ -1,10 +1,8 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  setResearchApprovalLabel,
-  setResearchStageLabel,
-} from "../../src/commands/research-stage-label.ts";
+import { setResearchApprovalLabel, setResearchStageLabel } from "../../src/commands/research-stage-label.ts";
 
 test("setResearchStageLabel validates required args", () => {
   const missingRepo = setResearchStageLabel({
@@ -46,7 +44,7 @@ test("setResearchStageLabel removes prior stage labels and applies new stage lab
     }),
     ghExec: (args) => {
       calls.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
   });
 
@@ -91,7 +89,7 @@ test("setResearchApprovalLabel applies approved label and posts structured comme
     },
     ghExec: (args) => {
       calls.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
   });
 
@@ -126,7 +124,7 @@ test("setResearchApprovalLabel writes pending label when approval_state=pending"
     },
     ghExec: (args) => {
       calls.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
   });
 

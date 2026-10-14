@@ -1,24 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-import {
-  buildDispositionComment,
-  buildFixedInVersionComment,
-  postDispositionFeedback,
-  postFixedInVersionArtifactFeedback,
-  shouldSkipDispositionFeedback,
-  shouldSkipFixedInVersionFeedback,
-} from "../../src/commands/artifact-feedback.ts";
+
+import { buildDispositionComment, buildFixedInVersionComment, postDispositionFeedback, postFixedInVersionArtifactFeedback, shouldSkipDispositionFeedback, shouldSkipFixedInVersionFeedback } from "../../src/commands/artifact-feedback.ts";
 import { parseControlPlaneBlocker } from "../../src/lib/control-plane-blocker.ts";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 function makeGhMock(dir, fixturePath) {
   mkdirSync(dir, { recursive: true });
@@ -400,16 +390,15 @@ test("artifact emit-disposition-feedback CLI emits JSON summary and dry-run supp
   process.env.ARTIFACT_FEEDBACK_CALLS_PATH = callsPath;
 
   try {
-    const run = spawnSync("node", [
-      opsCliPath,
+    const run = spawnOpsCli([
       "artifact",
       "emit-disposition-feedback",
       "--control-plane-repo",
       "recallnet/astrochicken",
       "--manifest-path",
       manifestPath,
-      "--dry-run",
-    ], { cwd: repoRoot, encoding: "utf8" });
+      "--dry-run"
+    ]);
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(run.stdout || "{}");
@@ -471,15 +460,14 @@ test("artifact emit-disposition-feedback CLI exits non-zero when any entry fails
   process.env.ARTIFACT_FEEDBACK_CALLS_PATH = callsPath;
 
   try {
-    const run = spawnSync("node", [
-      opsCliPath,
+    const run = spawnOpsCli([
       "artifact",
       "emit-disposition-feedback",
       "--control-plane-repo",
       "recallnet/astrochicken",
       "--manifest-path",
-      manifestPath,
-    ], { cwd: repoRoot, encoding: "utf8" });
+      manifestPath
+    ]);
 
     assert.equal(run.status, 1, run.stderr || run.stdout);
     const out = JSON.parse(run.stdout || "{}");

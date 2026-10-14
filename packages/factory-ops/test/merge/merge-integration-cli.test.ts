@@ -1,15 +1,18 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
+
+import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 function runCli(args) {
-  return spawnSync("node", [opsCliPath, ...args], { cwd: repoRoot, encoding: "utf8" });
+  return spawnOpsCli([
+      ...args
+    ]);
 }
 
 test("merge run-integration no-op path is deterministic and successful", () => {

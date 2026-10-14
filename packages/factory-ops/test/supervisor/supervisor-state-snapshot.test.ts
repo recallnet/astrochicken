@@ -1,3 +1,9 @@
+import { beforeEach } from "node:test";
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+beforeEach(async () => { await eventStoreFixture.resetEvents(); });
+
 import assert from "node:assert/strict";
 import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -362,7 +368,7 @@ test("buildStateSnapshot skips closed fallback bug history query when there are 
   );
 });
 
-test("buildStateSnapshot surfaces durable recovery packets as supervisor action items", () => {
+test("buildStateSnapshot surfaces durable recovery packets as supervisor action items", async () => {
   const runsDir = mkdtempSync(join(tmpdir(), "snapshot-recovery-packets-"));
   const packetDir = join(
     runsDir,
@@ -375,6 +381,7 @@ test("buildStateSnapshot surfaces durable recovery packets as supervisor action 
     schema_version: "remediation_packet/v1",
     packet_type: "judge_context_contract_recovery",
     packet_id: "judge_context_contract_recovery_abc",
+    packet_state: "open",
     created_at: "2026-03-10T00:00:00.000Z",
     factory_id: "mothership",
     run_id: "run-judge-1",
@@ -403,17 +410,19 @@ test("buildStateSnapshot surfaces durable recovery packets as supervisor action 
     operator_prompt: "Start with the packet and restore the judge context contract.",
   }, null, 2));
 
+  await eventStoreFixture.seedPacketFile({ packetPath: join(packetDir, "judge_context_contract_recovery_abc.json") });
   const out = JSON.parse(buildStateSnapshot({
     repo: "recallnet/astrochicken",
     factoryId: "mothership",
     ghJsonFn: makeGhStub(),
+    ghPaginatedFn: () => [],
     recoverySweepFn: () => ({ stale_runs: [] }),
     nowMs: Date.parse("2026-03-10T01:00:00.000Z"),
     runsDir,
   }));
 
   const item = (out.action_items || []).find((entry) => entry.type === "recovery_packet");
-  assert.ok(item, "expected durable recovery packet action item");
+  assert.ok(item, `expected durable recovery packet action item: ${JSON.stringify(out.snapshot_errors)}`);
   assert.match(String(item.problem || ""), /judge_context_contract_recovery/);
   assert.equal(item.diagnostics?.packet_storage_class, "factory_run_packet");
   assert.equal(item.remediation_packet?.packet_type, "judge_context_contract_recovery");
@@ -878,6 +887,7 @@ test("buildStateSnapshot routes non-local CLI runtime crashes to durable packet-
     controlPlaneRepo: "recallnet/astrochicken",
     factoryId: "external/factory_supervisor",
     ghJsonFn,
+    ghPaginatedFn: () => [],
     recoverySweepFn,
     scanCliCrashesFn,
     nowMs: 1_700_000_000_000,
@@ -887,12 +897,19 @@ test("buildStateSnapshot routes non-local CLI runtime crashes to durable packet-
   const crashPacketItem = (out.persisted_packet_action_items || []).find(
     (item) => String(item?.remediation_packet?.packet_type || "") === "remote_cli_runtime_crash",
   );
-  assert.ok(crashPacketItem, "expected persisted remote_cli_runtime_crash action item");
+  assert.ok(crashPacketItem, `expected persisted remote_cli_runtime_crash action item: ${JSON.stringify(out.snapshot_errors)}`);
   assert.equal(String(crashPacketItem?.source || ""), "persisted_packet");
   assert.equal(Boolean(crashPacketItem?.packet_preferred), true);
   assert.equal(String(crashPacketItem?.remediation_packet?.handoff_kind || ""), "supervisor_recovery");
   assert.equal(String(crashPacketItem?.remediation_packet?.factory_id || ""), "external/factory_supervisor");
   assert.equal(String(crashPacketItem?.remediation_packet?.run_id || ""), "r-remote");
+  assert.deepEqual(crashPacketItem.remediation_packet.resource_refs, {
+    run_id: "r-remote",
+    pipeline: "factories/external/graphs/factory_supervisor_tick.dot",
+    node_id: "supervisor_review",
+    file_path: "/tmp/missing.mjs",
+  });
+  assert.deepEqual(out.snapshot_errors, []);
   assert.ok(
     crashPacketItem?.remediation_packet?.execution_commands?.some((cmd) => String(cmd).includes("supervisor emit-bug")),
     "remote crash packet must use supervisor emit-bug command",
@@ -1010,6 +1027,7 @@ test("buildStateSnapshot reports only truly unlabeled issues", () => {
 
   const out = JSON.parse(buildStateSnapshot({
     repo: "recallnet/astrochicken",
+    ghPaginatedFn: () => [],
     ghJsonFn,
     recoverySweepFn,
     nowMs: 1_700_000_000_000,
@@ -1114,6 +1132,7 @@ test("buildStateSnapshot uses a single unified fetch for all open issues", () =>
   let issueListCalls = 0;
   const out = JSON.parse(buildStateSnapshot({
     repo: "recallnet/astrochicken",
+    ghPaginatedFn: () => [],
     ghJsonFn: (args, fallback = []) => {
       const cmd = Array.isArray(args) ? args.join(" ") : "";
       if (cmd.includes("issue list") && cmd.includes("--state open") && cmd.includes("--limit 500")) {
@@ -1134,4 +1153,19 @@ test("buildStateSnapshot uses a single unified fetch for all open issues", () =>
 
   assert.ok(Array.isArray(out.action_items));
   assert.equal(issueListCalls, 1, "should make exactly 1 issue list call (unified fetch)");
+});
+
+test("buildStateSnapshot propagates explicit paginated reads to goal expansion and milestones", () => {
+  const calls = [];
+  const out = JSON.parse(buildStateSnapshot({
+    repo: "example/project",
+    ghJsonFn: makeGhStub({ goals: [{ number: 7, title: "Goal: pagination fixture", labels: [{ name: "goal" }] }] }),
+    ghPaginatedFn: (apiPath) => { calls.push(apiPath); return []; },
+    recoverySweepFn: () => ({ stale_runs: [] }),
+    scanCliCrashesFn: () => [],
+    runsDir: mkdtempSync(join(tmpdir(), "snapshot-pagination-")),
+  }));
+  assert.ok(Array.isArray(out.action_items));
+  assert.ok(calls.includes("repos/example/project/issues/7/sub_issues?per_page=100"));
+  assert.ok(calls.includes("repos/example/project/milestones?state=all&per_page=100"));
 });

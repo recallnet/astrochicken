@@ -58,6 +58,18 @@ printf '%s' '[]'
   return { binDir, mode };
 }
 
+function stubCliOptions(binDir, mode) {
+  return {
+    cwd: repoRoot,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      HATCH_TEST_GH_MODE: mode,
+      PATH: `${binDir}:${process.env.PATH || ""}`,
+    },
+  };
+}
+
 function runOpenBugGateCliWithStub({ mode }) {
   const { binDir } = makeGhStubBin(mode);
   try {
@@ -69,15 +81,7 @@ function runOpenBugGateCliWithStub({ mode }) {
       "--control-plane-repo", "recallnet/astrochicken",
       "--label", "managed-factory-bug",
       "--bug-label", "factory:example-trading",
-    ], {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        HATCH_TEST_GH_MODE: mode,
-        PATH: `${binDir}:${process.env.PATH || ""}`,
-      },
-    });
+    ], stubCliOptions(binDir, mode));
   } finally {
     rmSync(binDir, { recursive: true, force: true });
   }
@@ -155,15 +159,7 @@ test("supervisor open-bug-gate CLI accepts repeatable --label and --bug-label fl
       "--control-plane-repo", "recallnet/astrochicken",
       "--label", "managed-factory-bug",
       "--bug-label", "factory:example-trading",
-    ], {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        HATCH_TEST_GH_MODE: "open_bugs",
-        PATH: `${binDir}:${process.env.PATH || ""}`,
-      },
-    });
+    ], stubCliOptions(binDir, "open_bugs"));
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(String(run.stdout || "{}"));
@@ -187,15 +183,7 @@ test("supervisor open-bug-gate CLI supports JSON array label expansion", () => {
       "--repo", "example-org/example-trading",
       "--control-plane-repo", "recallnet/astrochicken",
       "--label", '["managed-factory-bug","factory:example-trading"]',
-    ], {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        HATCH_TEST_GH_MODE: "open_bugs",
-        PATH: `${binDir}:${process.env.PATH || ""}`,
-      },
-    });
+    ], stubCliOptions(binDir, "open_bugs"));
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(String(run.stdout || "{}"));
@@ -317,15 +305,7 @@ test("supervisor state-snapshot CLI ingests fallback_defect artifacts via --runs
       "--factory-id", "mothership",
       "--runs-dir", runsDir,
       "--skip-recovery-sweep",
-    ], {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        HATCH_TEST_GH_MODE: "open_bugs",
-        PATH: `${binDir}:${process.env.PATH || ""}`,
-      },
-    });
+    ], stubCliOptions(binDir, "open_bugs"));
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(String(run.stdout || "{}"));
@@ -378,15 +358,7 @@ test("supervisor run --op state-snapshot ingests fallback_defect artifacts via -
       "--factory-id", "mothership",
       "--runs-dir", runsDir,
       "--skip-recovery-sweep",
-    ], {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        HATCH_TEST_GH_MODE: "open_bugs",
-        PATH: `${binDir}:${process.env.PATH || ""}`,
-      },
-    });
+    ], stubCliOptions(binDir, "open_bugs"));
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(String(run.stdout || "{}"));

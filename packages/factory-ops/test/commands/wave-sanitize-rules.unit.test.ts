@@ -1,22 +1,8 @@
+import { makeActiveMilestoneLeaseSnapshot } from "../helpers/ops-domain-fixtures.ts";
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import {
-  hasLabel,
-  issueNumber,
-  isWaveMarker,
-  milestoneTitleFor,
-  isOpenIssue,
-  buildEmptyPlan,
-  summarizePlan,
-  planRollup,
-  collectActiveWaveLeases,
-  downgradeOrphanedLeases,
-  planWaveReadyNormalization,
-  planStaleWorktreeCleanupActions,
-  planWaveOrphanStateRepair,
-  WAVE_ORPHAN_REPAIR_SCHEMA_VERSION,
-} from "../../src/commands/wave-sanitize-rules.ts";
+import { hasLabel, issueNumber, isWaveMarker, milestoneTitleFor, isOpenIssue, buildEmptyPlan, summarizePlan, planRollup, collectActiveWaveLeases, downgradeOrphanedLeases, planWaveReadyNormalization, planStaleWorktreeCleanupActions, planWaveOrphanStateRepair, WAVE_ORPHAN_REPAIR_SCHEMA_VERSION } from "../../src/commands/wave-sanitize-rules.ts";
 
 // ---------------------------------------------------------------------------
 // hasLabel
@@ -420,13 +406,7 @@ describe("collectActiveWaveLeases", () => {
 // ---------------------------------------------------------------------------
 describe("downgradeOrphanedLeases", () => {
   it("downgrades leases with no matching run (missing)", () => {
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const result = downgradeOrphanedLeases({ activeLeases, runStatuses: new Map() });
     assert.equal(result.active_lease_count, 0);
     assert.equal(result.stale_candidate_count, 1);
@@ -434,13 +414,7 @@ describe("downgradeOrphanedLeases", () => {
   });
 
   it("downgrades leases with completed run", () => {
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "completed"]]);
     const result = downgradeOrphanedLeases({ activeLeases, runStatuses: statuses });
     assert.equal(result.active_lease_count, 0);
@@ -448,26 +422,14 @@ describe("downgradeOrphanedLeases", () => {
   });
 
   it("downgrades leases with failed run", () => {
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "failed"]]);
     const result = downgradeOrphanedLeases({ activeLeases, runStatuses: statuses });
     assert.equal(result.stale_candidates[0].status, "orphaned_run_failed");
   });
 
   it("keeps leases with active run status", () => {
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "running"]]);
     const result = downgradeOrphanedLeases({ activeLeases, runStatuses: statuses });
     assert.equal(result.active_lease_count, 1);
@@ -476,13 +438,7 @@ describe("downgradeOrphanedLeases", () => {
 
   it("downgrades leases with stale heartbeat (zombie detection)", () => {
     const NOW = Date.parse("2026-03-23T12:00:00Z");
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "running"]]);
     const metadata = new Map([["run-1", { status: "running", heartbeatAt: "2026-03-23T11:00:00Z" }]]);
     const result = downgradeOrphanedLeases({
@@ -498,13 +454,7 @@ describe("downgradeOrphanedLeases", () => {
 
   it("keeps lease if heartbeat is fresh", () => {
     const NOW = Date.parse("2026-03-23T12:00:00Z");
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "running"]]);
     const metadata = new Map([["run-1", { status: "running", heartbeatAt: "2026-03-23T11:55:00Z" }]]);
     const result = downgradeOrphanedLeases({
@@ -547,13 +497,7 @@ describe("downgradeOrphanedLeases", () => {
   });
 
   it("handles guarded_terminal status", () => {
-    const activeLeases = {
-      active_leases: [{ run_id: "run-1", milestone_title: "S1" }],
-      stale_candidates: [],
-      active_milestones: ["S1"],
-      active_lease_count: 1,
-      stale_candidate_count: 0,
-    };
+    const activeLeases = makeActiveMilestoneLeaseSnapshot();
     const statuses = new Map([["run-1", "guarded_terminal"]]);
     const result = downgradeOrphanedLeases({ activeLeases, runStatuses: statuses });
     assert.equal(result.stale_candidates[0].status, "orphaned_run_guarded_terminal");

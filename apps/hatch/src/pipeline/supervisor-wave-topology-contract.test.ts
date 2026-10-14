@@ -24,7 +24,7 @@ describe("mothership dispatch ownership topology contract", () => {
 	it("moves executable-goal dispatch into the narrow reactor graph", () => {
 		const graph = parse(readFileSync(DISPATCH_REACTOR_DOT, "utf8"));
 
-		expect(graph.nodes.artifact_ingest?.attrs.pipeline).toBe("docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot");
+		expect(graph.nodes.artifact_ingest?.attrs.pipeline).toBe("packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs");
 		expect(graph.nodes.auto_ready_artifact_goals?.attrs.action_id).toBe("goal.auto_ready_artifacts");
 		expect(graph.nodes.sanitize_goal_duplicates?.attrs.action_id).toBe("goal.sanitize_duplicates");
 		expect(graph.nodes.sweep_completed_goals?.attrs.action_id).toBe("goal.sweep_completed");
@@ -34,7 +34,7 @@ describe("mothership dispatch ownership topology contract", () => {
 		expect(graph.nodes.goal_execute_gate?.attrs.shape).toBe("diamond");
 		expect(graph.nodes.stamp_factory_contract_hash?.attrs.action_id).toBe("factory.stamp_contract_hash");
 		expect(graph.nodes.spawn_goal_execute?.attrs.type).toBe("fan_out.detached");
-		expect(graph.nodes.spawn_goal_execute?.attrs.template).toBe("docs/contracts/workflow-ir/mothership/goal_execute.dot");
+		expect(graph.nodes.spawn_goal_execute?.attrs.template).toBe("factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs");
 		expect(graph.edges.some((edge) => edge.from === "goal_execute_gate" && edge.to === "stamp_factory_contract_hash" && edge.attrs.condition === "count!=0")).toBe(true);
 		expect(graph.edges.some((edge) => edge.from === "goal_execute_gate" && edge.to === "done" && edge.attrs.condition === "count=0")).toBe(true);
 		expect(graph.edges.some((edge) => edge.from === "stamp_factory_contract_hash" && edge.to === "spawn_goal_execute")).toBe(true);

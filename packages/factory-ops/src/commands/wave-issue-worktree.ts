@@ -1,6 +1,7 @@
 import { existsSync, lstatSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
+import { resolveIssueMetadataRepo } from "./wave-issue-review.ts";
 import { run, resolvePath } from "./wave-issue-shared.ts";
 import { resolveCanonicalCheckoutPath } from "../lib/canonical-worktree.ts";
 import { trim } from "../lib/cli-helpers.ts";
@@ -81,6 +82,9 @@ export function revertToSnapshot({ worktreeDir = "", snapshotSha = "" } = {}) {
   if (!sha) return { reverted: "false", reason: "no_snapshot_sha" };
   const guard = guardGitMutation({
     operation: "reset_hard",
+    // @context:security Resolve the actual checkout remote, never the factory
+    // owner retained in the ambient mutation context. Unknown remotes fail closed.
+    repoSlug: resolveIssueMetadataRepo({ worktreeDir: wd }),
     targetPath: wd,
     canonicalCheckoutPath: resolveCanonicalCheckoutPath(),
   });
@@ -230,6 +234,9 @@ export function resetStaleBranch({ worktreeDir } = {}) {
   const wd = String(worktreeDir || ".").trim();
   const guard = guardGitMutation({
     operation: "reset_hard",
+    // @context:security Resolve the actual checkout remote, never the factory
+    // owner retained in the ambient mutation context. Unknown remotes fail closed.
+    repoSlug: resolveIssueMetadataRepo({ worktreeDir: wd }),
     targetPath: wd,
     canonicalCheckoutPath: resolveCanonicalCheckoutPath(),
   });

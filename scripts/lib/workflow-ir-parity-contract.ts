@@ -5,6 +5,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { renderDotToPng } from "./workflow-diagram-png.ts";
+import { isWorkflowSourceModulePath } from "./workflow-source-contract.ts";
 import {
   deriveWorkflowDiagramPngPath,
   deriveWorkflowRuntimeDotPath,
@@ -67,10 +68,6 @@ function readPath(readFile, repoRoot, relativePath) {
 
 function defaultImportWorkflowSource(repoRoot, relativePath) {
   return import(pathToFileURL(path.join(repoRoot, relativePath)).href);
-}
-
-function isWorkflowSourceModulePath(filePath = "") {
-  return /\/workflows\/.+\.workflow-source\.mjs$/.test(trim(filePath));
 }
 
 function deriveOutputPath(factoryId = "", workflowId = "") {

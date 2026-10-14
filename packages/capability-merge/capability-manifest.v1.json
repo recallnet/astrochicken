@@ -44,7 +44,8 @@
     "./graphs/*": "./graphs/*",
     "./manifest": "./capability-manifest.v1.json",
     "./prompts/*": "./prompts/*",
-    "./skills/*": "./skills/*"
+    "./skills/*": "./skills/*",
+    "./workflows/*": "./workflows/*"
   },
   "manifestPath": "packages/capability-merge/capability-manifest.v1.json",
   "nonGoals": [],
@@ -108,7 +109,8 @@
     "capability-manifest.v1.json",
     "graphs",
     "prompts",
-    "skills"
+    "skills",
+    "workflows"
   ],
   "requiredContextKeys": [
     "branch",

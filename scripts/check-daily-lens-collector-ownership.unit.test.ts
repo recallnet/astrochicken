@@ -12,7 +12,7 @@ import {
 } from "./check-daily-lens-collector-ownership.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-daily-lens-collector-ownership.mjs");
+const checkerPath = join(scriptsDir, "check-daily-lens-collector-ownership.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeFile(path, content = "export {};") {

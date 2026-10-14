@@ -51,7 +51,7 @@ handoff.
 
 ## Test Surfaces
 
-- `packages/factory-ops/test/supervisor/supervisor-tick.contract.test.mjs`
+- `packages/factory-ops/test/supervisor/supervisor-tick.contract.test.ts`
 - `apps/hatch/src/pipeline/supervisor-fast-route-contract.test.ts`
 
 ## Merge Blockers

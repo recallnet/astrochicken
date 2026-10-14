@@ -1,18 +1,11 @@
+import { makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  SERVICE_PROFILE_KEYS,
-  loadFactoryRegistry,
-  saveFactoryRegistry,
-} from "../../src/lib/factory-registry.ts";
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
+import { SERVICE_PROFILE_KEYS, loadFactoryRegistry, saveFactoryRegistry } from "../../src/lib/factory-registry.ts";
 
 test("loadFactoryRegistry injects default service profile metadata", () => {
   const root = makeTmpDir("factory-registry-defaults-");

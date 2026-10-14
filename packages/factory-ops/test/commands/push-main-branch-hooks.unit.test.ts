@@ -1,5 +1,6 @@
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -9,12 +10,6 @@ import { pushMainBranch } from "../../src/commands/merge-item-ops.ts";
 import { withInjectedGitFailure } from "../shared/helpers/failure-injection.ts";
 
 // ── Helpers ───────────────────────────────────────────────────
-
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
 
 function initRepoWithBareRemote() {
   const remote = mkdtempSync(join(tmpdir(), "taxi-push-remote-"));

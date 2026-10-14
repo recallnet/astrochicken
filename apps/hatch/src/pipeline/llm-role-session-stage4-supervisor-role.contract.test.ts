@@ -3,6 +3,8 @@ import { join, resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { resolveEffectiveModelPolicyForFactoryConfig } from "../factory/model-policy.js";
+
 import { nodeClass, nodeHandlerType, nodeLLMModel, nodeLLMProvider, nodeTrustRole, type Graph } from "./graph.js";
 import { parseWithAst } from "./parse.js";
 import { applyGraphStylesheetImports } from "./stylesheet-imports.js";
@@ -41,10 +43,10 @@ describe("Stage 4 supervisor role unification surface", () => {
 			model: "anthropic/claude-sonnet-4.6",
 		},
 		{
-			graphPath: "factories/example-trading/graphs/domain_example_trading.dot",
-			factoryTrustRole: "example-trading.local.stack.manager_loop",
-			provider: "openrouter",
-			model: "openai/gpt-5.3-codex",
+			graphPath: "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
+			factoryTrustRole: "manager.supervisor",
+			provider: "",
+			model: "",
 		},
 	];
 
@@ -99,14 +101,30 @@ describe("Stage 4 supervisor role unification surface", () => {
 				expect(String(node.attrs.system_prompt_source || "")).toBe("supervisor_system_prompt");
 				expect(String(node.attrs.task_prompt_source || "")).toBe(taskPromptSource);
 				expect(String(node.attrs.prompt_source || "")).toBe(taskPromptSource);
-				expect(String(node.attrs.prompt_input_keys || "")).toBe(expectedKeys.join(","));
+				// @context:regression Shared runtime has no deleted instance-specific rules pack.
+				const runtimeKeys = testCase.graphPath.includes("factory-runtime/")
+					? expectedKeys.filter((key) => key !== "supervisor_rules_content")
+					: expectedKeys;
+				expect(String(node.attrs.prompt_input_keys || "")).toBe(runtimeKeys.join(","));
 				expect(String(node.attrs.prompt || "")).toContain("${supervisor_system_prompt}");
 				expect(String(node.attrs.prompt || "")).toContain(`\${${taskPromptSource}}`);
-				for (const key of expectedKeys) {
+				for (const key of runtimeKeys) {
 					expect(String(node.attrs.prompt || ""), `${testCase.graphPath}::${nodeId} prompt must reference ${key}`).toContain(`\${${key}}`);
 				}
 			}
 		}
+	});
+
+	it("resolves shared-runtime instance model and trust policy from the factory configuration", () => {
+		const factoryConfigPath = join(REPO_ROOT, "factories/example-trading/factory.config.json");
+		const policy = resolveEffectiveModelPolicyForFactoryConfig({ factoryConfigPath, env: {} });
+		expect(policy).toBeDefined();
+		expect(policy?.defaultProvider).toBe("openrouter");
+		expect(policy?.defaultModel).toBe("openai/gpt-5.3-codex");
+		expect(policy?.allowedModels).toContain("openai/gpt-5.3-codex");
+		const config = JSON.parse(readFileSync(factoryConfigPath, "utf8"));
+		expect(config.trust.domain).toBe("example-trading.local");
+		expect(config.trust.roles).toContain("example-trading.local.stack.manager_loop");
 	});
 
 	it("assigns distinct supervisor skill ids for bug-fast vs review while keeping the shared supervisor session", () => {
@@ -128,7 +146,7 @@ describe("Stage 4 supervisor role unification surface", () => {
 			expect(dot).toContain('output_key="supervisor_review_task_prompt"');
 			expect(dot).toContain('prompt="cat packages/factory-prompts/prompts/supervisor/bug_fast.md"');
 			expect(dot).toContain('prompt="cat packages/factory-prompts/prompts/supervisor/review.md"');
-			if (graphPath.includes("example-trading")) {
+			if (graphPath.includes("factory-runtime/")) {
 				expect(dot).toMatch(/fast_route_telemetry_open -> supervisor_review_bug_fast/);
 				expect(dot).toMatch(/action_item_gate -> supervisor_review \[condition="has_action_items=true"\]/);
 			} else {

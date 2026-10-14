@@ -1,16 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
+
+
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+
 
 import { fallbackJsonPair, fallbackJson, inspectJson, countJsonItems, countFeatureObjects, resolveBootstrapAcceptanceCriteria } from "../../src/commands/common-resolve-default.ts";
 import { buildFallbackFeatures } from "../../src/commands/goal-build-fallback-features.ts";
 import { zipFeaturesToIssues } from "../../src/commands/triage-zip-features.ts";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 const goal213Issue = {
   number: 213,
   title: "Goal: Judge Reliability Contract (scenario selection + verdict determinism)",
@@ -60,7 +58,9 @@ function normalizeApprovedPath({ approvedFeaturesRaw = "[]", goalIssueRaw = "{}"
 }
 
 function runOpsCli(args = []) {
-  const run = spawnSync("node", [opsCliPath, ...args], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      ...args
+    ]);
   assert.equal(run.status, 0, run.stderr || run.stdout);
   return String(run.stdout || "").trim();
 }
@@ -118,6 +118,8 @@ function runGoal321FallbackFlowViaCli({ approvedFeaturesRaw = "[]", proposedFeat
     "compute-close-condition",
     "--issue-count",
     issueCount,
+    "--approved-feature-count",
+    featureCount,
   ]);
 
   return { normalized, triage, featureCount, issueCount, shouldClose };
@@ -698,7 +700,7 @@ test("goal #321 CLI fallback flow keeps malformed/empty decomposition determinis
   assert.equal(empty.featureCount, "1");
   assert.equal(malformed.issueCount, "1");
   assert.equal(empty.issueCount, "1");
-  // Close condition: issues > 0
+  // Close only after every approved fallback feature has a materialized issue.
   assert.equal(malformed.shouldClose, "true");
   assert.equal(empty.shouldClose, "true");
 
@@ -793,15 +795,14 @@ test("goal build-fallback-features accepts quote-safe --goal-issue-b64 payload",
   };
   const encoded = b64(JSON.stringify(goalIssue));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "320",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "320"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -817,25 +818,23 @@ test("goal build-fallback-features respects --goal-number override and remains d
   };
   const encoded = b64(JSON.stringify(goalIssue));
 
-  const runA = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "321",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const runA = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "321"
+    ]);
 
-  const runB = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "321",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const runB = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "321"
+    ]);
 
   assert.equal(runA.status, 0, runA.stderr || runA.stdout);
   assert.equal(runB.status, 0, runB.stderr || runB.stdout);
@@ -856,15 +855,14 @@ test("goal build-fallback-features canonicalizes zero-padded --goal-number for d
   };
   const encoded = b64(JSON.stringify(goalIssue));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "00321",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "00321"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -882,13 +880,12 @@ test("goal build-fallback-features canonicalizes zero-padded goal issue number f
   };
   const encoded = b64(JSON.stringify(goalIssue));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -906,15 +903,14 @@ test("goal build-fallback-features ignores malformed --goal-number override and 
   };
   const encoded = b64(JSON.stringify(goalIssue));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "goal-321",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "goal-321"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -925,15 +921,14 @@ test("goal build-fallback-features ignores malformed --goal-number override and 
 });
 
 test("goal build-fallback-features uses --goal-number hint for deterministic goal #214 continuity when payload is malformed", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "{broken",
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "{broken",
+      "--goal-number",
+      "214"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "[]");
@@ -943,15 +938,14 @@ test("goal build-fallback-features uses --goal-number hint for deterministic goa
 });
 
 test("goal build-fallback-features goal #214 scaffold is triage-ready for downstream write_issues/triage handoff", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "{broken",
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "{broken",
+      "--goal-number",
+      "214"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(countJsonItems(run.stdout || "[]"), "1");
@@ -977,15 +971,14 @@ test("goal build-fallback-features prioritizes --goal-number #214 over conflicti
     body: "Fallback continuity should still route to goal #214 when context goal number is authoritative.",
   }));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue-b64",
-    encoded,
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue-b64",
+      encoded,
+      "--goal-number",
+      "214"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "[]");
@@ -996,25 +989,23 @@ test("goal build-fallback-features prioritizes --goal-number #214 over conflicti
 });
 
 test("goal build-fallback-features yields identical goal #214 scaffold for malformed and empty payloads when goal-number hint is provided", () => {
-  const runMalformed = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "{broken",
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const runMalformed = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "{broken",
+      "--goal-number",
+      "214"
+    ]);
 
-  const runEmpty = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "{}",
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const runEmpty = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "{}",
+      "--goal-number",
+      "214"
+    ]);
 
   assert.equal(runMalformed.status, 0, runMalformed.stderr || runMalformed.stdout);
   assert.equal(runEmpty.status, 0, runEmpty.stderr || runEmpty.stdout);
@@ -1027,15 +1018,14 @@ test("goal build-fallback-features yields identical goal #214 scaffold for malfo
 });
 
 test("goal build-fallback-features accepts --goal-number fallback when goal issue payload is malformed", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "{broken",
-    "--goal-number",
-    "353",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "{broken",
+      "--goal-number",
+      "353"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -1044,13 +1034,12 @@ test("goal build-fallback-features accepts --goal-number fallback when goal issu
 });
 
 test("goal build-fallback-features derives malformed raw goal hint for deterministic goal #321 routing", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "build-fallback-features",
-    "--goal-issue",
-    "Malformed payload references goal-321 continuity",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-issue",
+      "Malformed payload references goal-321 continuity"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout);
@@ -1062,13 +1051,12 @@ test("goal build-fallback-features derives malformed raw goal hint for determini
 
 test("common inspect-json accepts --raw-b64 for objectless decomposition payloads", () => {
   const payload = JSON.stringify(["can't", null, 17]);
-  const run = spawnSync("node", [
-    opsCliPath,
-    "common",
-    "inspect-json",
-    "--raw-b64",
-    b64(payload),
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "common",
+      "inspect-json",
+      "--raw-b64",
+      b64(payload)
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "{}");
@@ -1079,15 +1067,14 @@ test("common inspect-json accepts --raw-b64 for objectless decomposition payload
 test("common fallback-json-pair accepts b64 payload transport with apostrophes", () => {
   const primary = "{broken";
   const secondary = JSON.stringify([{ id: "F-2", name: "Don't break transport" }]);
-  const run = spawnSync("node", [
-    opsCliPath,
-    "common",
-    "fallback-json-pair",
-    "--primary-b64",
-    b64(primary),
-    "--secondary-b64",
-    b64(secondary),
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "common",
+      "fallback-json-pair",
+      "--primary-b64",
+      b64(primary),
+      "--secondary-b64",
+      b64(secondary)
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout.trim(), '[{"id":"F-2","name":"Don\'t break transport"}]');
@@ -1095,15 +1082,14 @@ test("common fallback-json-pair accepts b64 payload transport with apostrophes",
 
 test("common fallback-json via --raw-b64 enforces deterministic goal #214 continuity defaults", () => {
   const partial = JSON.stringify([{ id: "F-1", acceptance_criteria: ["A single executable feature issue is created from fallback decomposition output."] }]);
-  const run = spawnSync("node", [
-    opsCliPath,
-    "common",
-    "fallback-json",
-    "--raw-b64",
-    b64(partial),
-    "--goal-number",
-    "214",
-  ], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      "common",
+      "fallback-json",
+      "--raw-b64",
+      b64(partial),
+      "--goal-number",
+      "214"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "[]");

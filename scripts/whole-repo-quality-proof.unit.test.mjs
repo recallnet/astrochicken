@@ -16,7 +16,7 @@ function writeFile(path, content = "export {};\n") {
   writeFileSync(path, content);
 }
 
-function createFixtureRepo() {
+function createFixtureRepo({ legacyNames = false, conflictingGuardAlias = false } = {}) {
   const repoRoot = mkdtempSync(join(tmpdir(), "whole-repo-quality-proof-"));
 
   writeJson(join(repoRoot, "config", "testing", "package-test-manifests", "apps-hatch.json"), {
@@ -25,8 +25,9 @@ function createFixtureRepo() {
     package_path: "apps/hatch",
     default_suite: "default",
     suites: [
-      { name: "default", runner: "vitest", working_directory: "apps/hatch", entrypoints: ["apps/hatch/src"], command: "vitest --run" },
-      { name: "test:guard-gates", runner: "vitest", working_directory: "apps/hatch", entrypoints: ["apps/hatch/src"], command: "vitest --run" },
+      { name: "default", runner: "vitest", working_directory: "apps/hatch", entrypoints: ["src"], command: "vitest --run" },
+      { name: legacyNames ? "test:guard-gates" : "guard-gates", runner: "vitest", working_directory: "apps/hatch", entrypoints: ["src"], command: "vitest --run" },
+      ...(conflictingGuardAlias ? [{ name: "guard-gates", runner: "vitest", working_directory: "apps/hatch", entrypoints: ["src"], command: "vitest --run" }] : []),
     ],
   });
   writeJson(join(repoRoot, "config", "testing", "package-test-manifests", "packages-factory-ops.json"), {
@@ -36,7 +37,7 @@ function createFixtureRepo() {
     default_suite: "default",
     suites: [
       { name: "default", runner: "node:test", working_directory: ".", entrypoints: ["packages/factory-ops/test"], command: "node --test" },
-      { name: "test:wave-claim-gates", runner: "node:test", working_directory: ".", entrypoints: ["packages/factory-ops/test"], command: "node --test" },
+      { name: legacyNames ? "test:wave-claim-gates" : "wave-claim-gates", runner: "node:test", working_directory: ".", entrypoints: ["packages/factory-ops/test"], command: "node --test" },
     ],
   });
   writeJson(join(repoRoot, "config", "testing", "package-test-manifests", "packages-factory-telemetry.json"), {
@@ -45,7 +46,7 @@ function createFixtureRepo() {
     package_path: "packages/factory-telemetry",
     default_suite: "default",
     suites: [
-      { name: "default", runner: "vitest", working_directory: "packages/factory-telemetry", entrypoints: ["packages/factory-telemetry/src"], command: "vitest --run" },
+      { name: "default", runner: "vitest", working_directory: "packages/factory-telemetry", entrypoints: ["src"], command: "vitest --run" },
     ],
   });
 
@@ -121,4 +122,39 @@ test("buildWholeRepoQualityProof fails closed when a spec surface is not covered
 
   assert.equal(result.ok, false);
   assert.match(result.diagnostics.join("\n"), /unproven test surface for spec factory-ops\.supervisor\.example/);
+});
+
+
+test("package-qualified default suites prove only the packages actually executed", () => {
+  const repoRoot = createFixtureRepo();
+  const hatchOnly = buildWholeRepoQualityProof({ repoRoot, executedSuiteNames: ["hatch#default"] });
+  assert.equal(hatchOnly.ok, false);
+  assert.deepEqual(hatchOnly.specs.find((spec) => spec.id === "hatch.runtime.example").provingSuites, ["hatch#default"]);
+  assert.match(hatchOnly.diagnostics.join("\n"), /unproven test surface for spec factory-ops/);
+  assert.deepEqual(hatchOnly.packages.find((pkg) => pkg.packageName === "@hatch/factory-ops").executedSuites, []);
+  const both = buildWholeRepoQualityProof({ repoRoot, executedSuiteNames: ["hatch#default", "@hatch/factory-ops#default"] });
+  assert.equal(both.ok, true, both.diagnostics.join("\n"));
+});
+
+test("ambiguous default and unknown suite identities fail closed", () => {
+  const repoRoot = createFixtureRepo();
+  for (const name of ["default", "test:not-declared", "hatch#not-declared"]) {
+    const result = buildWholeRepoQualityProof({ repoRoot, executedSuiteNames: [name] });
+    assert.equal(result.ok, false);
+    assert.match(result.diagnostics.join("\n"), name === "default" ? /ambiguous executed suite/ : /executed suite is not declared/);
+    assert.equal(result.specs.every((spec) => spec.provingSuites.length === 0), true);
+  }
+});
+
+test("legacy prefixed manifest names remain valid aliases", () => {
+  const result = buildWholeRepoQualityProof({ repoRoot: createFixtureRepo({ legacyNames: true }), executedSuiteNames: ["test:guard-gates", "test:wave-claim-gates"] });
+  assert.equal(result.ok, true, result.diagnostics.join("\n"));
+});
+
+
+test("a root test alias cannot choose between conflicting legacy and canonical suites", () => {
+  const result = buildWholeRepoQualityProof({ repoRoot: createFixtureRepo({ legacyNames: true, conflictingGuardAlias: true }), executedSuiteNames: ["test:guard-gates"] });
+  assert.equal(result.ok, false);
+  assert.match(result.diagnostics.join("\n"), /ambiguous executed suite/);
+  assert.equal(result.specs.every((spec) => spec.provingSuites.length === 0), true);
 });

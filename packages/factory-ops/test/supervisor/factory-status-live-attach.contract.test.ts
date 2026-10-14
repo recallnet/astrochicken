@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -12,7 +16,7 @@ function writeRun(runsDir, id, state) {
   writeFileSync(join(dir, "state.json"), JSON.stringify(state, null, 2));
 }
 
-test("factoryActiveSummary projects deterministic live attach metadata", () => {
+test("factoryActiveSummary projects deterministic live attach metadata", async () => {
   const runsDir = mkdtempSync(join(tmpdir(), "factory-active-summary-live-attach-"));
 
   writeRun(runsDir, "supervisor-run", {
@@ -36,6 +40,7 @@ test("factoryActiveSummary projects deterministic live attach metadata", () => {
     updatedAt: new Date().toISOString(),
   });
 
+  await eventStoreFixture.seedRuns({ runsDir });
   const summary = factoryActiveSummary({
     runsDir,
     context: { factory_id: "mothership" },

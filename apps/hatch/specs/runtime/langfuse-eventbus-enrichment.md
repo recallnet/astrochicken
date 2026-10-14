@@ -46,7 +46,7 @@ handler-level Langfuse emissions.
 ## Test Surfaces
 
 - `apps/hatch/src/pipeline/telemetry/langfuse-eventbus-enrichment.contract.test.ts`
-- `apps/hatch/src/pipeline/handler/langfuse-instrumentation.test.ts`
+- `apps/hatch/src/pipeline/guard-langfuse-metadata.test.ts`
 
 ## Merge Blockers
 

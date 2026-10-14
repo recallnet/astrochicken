@@ -26,6 +26,35 @@ function tickStatus({ runsDir = ".hatch/runs", context = {}, now = Date.now() } 
   return buildTickProjectionFromStates({ allStates: readStateMap(runsDir), runsDir, context, now });
 }
 
+function tickHistoryFixture() {
+  return [
+      {
+        id: "completed123",
+        status: "completed",
+        stage: "done",
+        stageLabel: "Done",
+        progress: "[23/23]",
+        startedAt: "2026-01-01T00:00:00.000Z",
+        elapsed: "45s",
+        goalCount: "",
+        child: null,
+        blocked_control_plane: [],
+      },
+      {
+        id: "failed123",
+        status: "failed",
+        stage: "review",
+        stageLabel: "Review",
+        progress: "[18/23]",
+        startedAt: "2025-12-31T23:58:00.000Z",
+        elapsed: "5m",
+        goalCount: "",
+        child: null,
+        blocked_control_plane: [],
+      },
+  ];
+}
+
 test("tickStatus returns empty when no runs exist", () => {
   const out = tickStatus({ runsDir: "/nonexistent" });
   assert.ok(out.error || (out.ticks && out.ticks.length === 0));
@@ -376,30 +405,7 @@ test("formatTickStatus prints CURRENT and LAST tick sections when latest tick is
         },
         blocked_control_plane: [],
       },
-      {
-        id: "completed123",
-        status: "completed",
-        stage: "done",
-        stageLabel: "Done",
-        progress: "[23/23]",
-        startedAt: "2026-01-01T00:00:00.000Z",
-        elapsed: "45s",
-        goalCount: "",
-        child: null,
-        blocked_control_plane: [],
-      },
-      {
-        id: "failed123",
-        status: "failed",
-        stage: "review",
-        stageLabel: "Review",
-        progress: "[18/23]",
-        startedAt: "2025-12-31T23:58:00.000Z",
-        elapsed: "5m",
-        goalCount: "",
-        child: null,
-        blocked_control_plane: [],
-      },
+      ...tickHistoryFixture(),
     ],
   });
 
@@ -426,30 +432,7 @@ test("formatTickStatus labels third tick deterministically when latest is runnin
         child: null,
         blocked_control_plane: [],
       },
-      {
-        id: "completed123",
-        status: "completed",
-        stage: "done",
-        stageLabel: "Done",
-        progress: "[23/23]",
-        startedAt: "2026-01-01T00:00:00.000Z",
-        elapsed: "45s",
-        goalCount: "",
-        child: null,
-        blocked_control_plane: [],
-      },
-      {
-        id: "failed123",
-        status: "failed",
-        stage: "review",
-        stageLabel: "Review",
-        progress: "[18/23]",
-        startedAt: "2025-12-31T23:58:00.000Z",
-        elapsed: "5m",
-        goalCount: "",
-        child: null,
-        blocked_control_plane: [],
-      },
+      ...tickHistoryFixture(),
     ],
   });
 

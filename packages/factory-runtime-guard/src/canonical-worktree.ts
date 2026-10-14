@@ -1,6 +1,7 @@
 import path from "node:path";
 
 import { trim } from "./cli-helpers.ts";
+import { resolvePhysicalPath } from "./filesystem-path.ts";
 
 export const DEFAULT_DISPOSABLE_WORKTREE_KINDS: readonly string[] = Object.freeze(["wave", "merge", "proposal"]);
 
@@ -13,7 +14,7 @@ function interpolateEnvTemplate(raw: string = "", env: Record<string, string | u
 function normalizeAbsolute(candidatePath: string = "", { baseDir = process.cwd() }: { baseDir?: string } = {}): string {
   const normalized: string = trim(candidatePath);
   if (!normalized) return "";
-  return path.resolve(baseDir, normalized);
+  return resolvePhysicalPath(normalized, { baseDir });
 }
 
 export function resolveCanonicalCheckoutPath({
@@ -91,7 +92,8 @@ export function classifyManagedWorktreePath({
 
   for (const root of approvedRoots) {
     if (!root) continue;
-    if (absolutePath === root || absolutePath.startsWith(`${root}${path.sep}`)) {
+    const physicalRoot = normalizeAbsolute(root);
+    if (!canonical && !repoRootMatch && (absolutePath === physicalRoot || absolutePath.startsWith(`${physicalRoot}${path.sep}`))) {
       approvedDisposable = true;
       disposableKind = path.basename(root);
       break;

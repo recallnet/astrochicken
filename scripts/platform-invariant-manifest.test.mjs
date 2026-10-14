@@ -7,6 +7,7 @@ import {
   RELEASE_QUALITY_TRIGGER_GLOBS,
   isReleaseQualityTriggerPath,
   resolvePlatformInvariantMatches,
+  matchesPlatformInvariantPattern,
   resolveReleaseQualityGatePlan,
 } from "./lib/platform-invariant-manifest.ts";
 
@@ -151,7 +152,7 @@ test("factory env contract surfaces map to factory_env_contracts invariant", () 
 
 test("provisioning drift contract paths map to provisioning_drift invariant", () => {
   const scriptMatches = resolvePlatformInvariantMatches([
-    "scripts/check-provisioning-drift.mjs",
+    "scripts/check-provisioning-drift.ts",
   ]);
   assert.deepEqual(scriptMatches.map((entry) => entry.id), ["cli_context_portability", "provisioning_drift"]);
 
@@ -165,7 +166,7 @@ test("managed supervisor shell contract paths map to managed_supervisor_shell_co
   const sharedShellMatches = resolvePlatformInvariantMatches([
     "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
   ]);
-  assert.deepEqual(sharedShellMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-telemetry-contract"]);
+  assert.deepEqual(sharedShellMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-mutation-boundaries", "managed-factory-telemetry-contract"]);
 
   const lifecycleEnumMatches = resolvePlatformInvariantMatches([
     "packages/factory-ops/src/lib/external-factory-control-state.ts",
@@ -175,14 +176,14 @@ test("managed supervisor shell contract paths map to managed_supervisor_shell_co
   const supervisorTickMatches = resolvePlatformInvariantMatches([
     "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
   ]);
-  assert.deepEqual(supervisorTickMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]);
+  assert.deepEqual(supervisorTickMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-mutation-boundaries", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]);
 });
 
 test("managed factory mutation boundary paths map to managed-factory-mutation-boundaries invariant", () => {
   const managedGraphMatches = resolvePlatformInvariantMatches([
     "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
   ]);
-  assert.deepEqual(managedGraphMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]);
+  assert.deepEqual(managedGraphMatches.map((entry) => entry.id), ["managed_supervisor_shell_contract", "managed-factory-mutation-boundaries", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]);
 
   const managedGoldenMatches = resolvePlatformInvariantMatches([
     "scripts/test/golden/managed-boundary-violation.dot",
@@ -234,7 +235,7 @@ test("cli portability regression surfaces map to cli_context_portability invaria
   assert.deepEqual(opsContextMatches.map((entry) => entry.id), ["cli_context_portability", "supervisor_recovery"]);
 
   const gateMatches = resolvePlatformInvariantMatches([
-    "scripts/check-cli-context-portability.mjs",
+    "scripts/check-cli-context-portability.ts",
   ]);
   assert.deepEqual(gateMatches.map((entry) => entry.id), ["cli_context_portability"]);
 });
@@ -247,6 +248,7 @@ test("managed shared factory surfaces map to shared-surface + external-consumpti
     "factory_shared_surfaces",
     "factory_shared_surface_consumption",
     "factory_shared_surface_manifest",
+    "factory_label_contract",
   ]);
 });
 
@@ -262,4 +264,9 @@ test("shared-surface manifest snapshot path maps to manifest invariant", () => {
     "docs/contracts/shared-surface-manifest.json",
   ]);
   assert.deepEqual(matches.map((entry) => entry.id), ["factory_shared_surface_manifest"]);
+});
+
+test("nested wildcard ownership globs cover canonical workflow data", () => {
+ assert.equal(matchesPlatformInvariantPattern("factories/mothership/workflows/wave-execution/wave_execute.workflow-source.data.json", "factories/*/workflows/**"), true);
+ assert.equal(matchesPlatformInvariantPattern("scripts/test/fixtures/mothership/workflows/demo.mjs", "factories/*/workflows/**"), false);
 });

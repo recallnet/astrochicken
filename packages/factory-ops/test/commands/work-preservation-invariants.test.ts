@@ -1,3 +1,4 @@
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync } from "node:fs";
@@ -6,12 +7,6 @@ import { join } from "node:path";
 import test from "node:test";
 
 import { attemptDeterministicMerge, buildConflictPacket, verifyConflictResolution } from "../../src/commands/merge-item-ops.ts";
-
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
 
 function initRepo() {
   const repo = mkdtempSync(join(tmpdir(), "taxi-invariant-"));

@@ -1,3 +1,4 @@
+import { appendCanonicalFixtureEvents as appendRunEvents } from "./canonical-parity.fixture.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -30,49 +31,6 @@ function createRunsDir(prefix = "snapshot-packet-first-") {
   return runsDir;
 }
 
-async function appendRunEvents(connectionString, events) {
-  const { Pool } = await import("pg");
-  const pool = new Pool({ connectionString });
-  try {
-    const client = await pool.connect();
-    try {
-      await client.query("begin");
-      const next = await client.query("select nextval('canonical_event_commit_seq')");
-      const commitCursor = Number(next.rows[0]?.nextval || 0);
-      for (const [index, event] of events.entries()) {
-        await client.query(
-          `insert into factory_events (
-            event_id, commit_cursor, batch_offset, schema, event_family, event_version,
-            factory_id, run_id, emitter, emitted_at, event_origin, provenance, payload
-          ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13::jsonb)`,
-          [
-            event.event_id,
-            commitCursor,
-            index,
-            event.schema,
-            event.event_family,
-            event.event_version,
-            event.factory_id,
-            event.run_id || null,
-            event.emitter,
-            event.emitted_at,
-            event.event_origin || "runtime",
-            JSON.stringify(event.provenance || {}),
-            JSON.stringify(event.payload || {}),
-          ],
-        );
-      }
-      await client.query("commit");
-    } catch (error) {
-      await client.query("rollback").catch(() => {});
-      throw error;
-    } finally {
-      client.release();
-    }
-  } finally {
-    await pool.end();
-  }
-}
 
 async function writeDurablePacket({
   runsDir,
@@ -259,8 +217,8 @@ test("packet-first snapshot keeps total_open_durable_packets scoped to upfront s
   }));
 
   assert.equal(out.packet_coverage_summary.total_open_durable_packets, 0);
-  assert.equal(out.packet_coverage_summary.covered_by_packet, 0);
-  assert.equal(out.packet_coverage_summary.covered_by_synthesis_only, 1);
+  assert.equal(out.packet_coverage_summary.covered_by_packet, 1);
+  assert.equal(out.packet_coverage_summary.covered_by_synthesis_only, 0);
 });
 
 test("packet-first snapshot reports empty persisted packet arrays when no durable packets exist", () => {
@@ -446,6 +404,7 @@ test("packet-first snapshot hides merge_conflict_packet for closed issue numbers
     const out = JSON.parse(buildStateSnapshot({
       repo: "recallnet/astrochicken",
       factoryId: "mothership-packet-closed-issue-merge",
+      ghPaginatedFn: () => [],
       ghJsonFn: (_args, fallback = []) => {
         if (Array.isArray(fallback)) {
           return [{

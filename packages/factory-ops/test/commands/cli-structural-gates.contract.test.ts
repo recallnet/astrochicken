@@ -49,8 +49,8 @@ const helpersSrc = readFileSync(HELPERS_PATH, "utf8");
 const pkg = JSON.parse(readFileSync(PKG_PATH, "utf8"));
 
 /**
- * Commands imported directly in index.mjs from ../commands/** are not represented
- * in src/cli/commands/*.mjs domain files, but they are still registered CLI paths.
+ * Commands imported directly in index.ts from ../commands/** are not represented
+ * in src/cli/commands/*.ts domain files, but they are still registered CLI paths.
  * Include them in DOT command-path gates.
  */
 const directIndexCommandPaths = [];
@@ -218,7 +218,7 @@ function extractDotCliInvocations(dotSource, fileName) {
 
   // Pattern 1: node packages/factory-ops/src/cli.ts <domain> run --op <action>
   const re1 =
-    /node\s+packages\/factory-ops\/src\/cli\.mjs\s+(\w[\w-]*)\s+run\s+--op\s+([\w-]+)/g;
+    /node\s+packages\/factory-ops\/src\/cli\.ts\s+(\w[\w-]*)\s+run\s+--op\s+([\w-]+)/g;
   let m;
   while ((m = re1.exec(dotSource)) !== null) {
     const afterAction = dotSource.substring(m.index + m[0].length);
@@ -284,7 +284,7 @@ for (const f of cmdFiles) {
   for (const flag of flags) allFlags.push({ flag, file: f });
 }
 
-/** Registered domain import names from index.mjs */
+/** Registered domain import names from index.ts */
 const registeredImports = [];
 const importRe = /import\s*\{\s*(\w+)\s*\}\s*from\s*"\.\/commands\/([^"]+)"/g;
 let im;
@@ -304,7 +304,7 @@ if (allCommandsBlock) {
 }
 
 /** Factory barrel imports/spreads for split domain files */
-const factoryBarrelSrc = cmdSources["factory.ts"] || cmdSources["factory.mjs"] || "";
+const factoryBarrelSrc = cmdSources["factory.ts"] || cmdSources["factory.ts"] || "";
 const factoryRegisteredImports = [];
 const factoryImportRe = /import\s*\{\s*(\w+)\s*\}\s*from\s*"\.\/([^"]+)"/g;
 let fim;
@@ -323,19 +323,19 @@ if (factoryCommandsBlock) {
 }
 
 const FACTORY_SPLIT_DOMAIN_FILES = new Set([
-  "factory-status-cmds.mjs",
-  "factory-host-cmds.mjs",
-  "factory-control-cmds.mjs",
-  "factory-lease-cmds.mjs",
-  "factory-release-cmds.mjs",
-  "factory-service-profile-cmds.mjs",
-  "factory-scheduled-jobs-status.mjs",
-  "factory-fleet-triage-cmds.mjs",
-  "factory-fleet-triage-queues.mjs",
+  "factory-status-cmds.ts",
+  "factory-host-cmds.ts",
+  "factory-control-cmds.ts",
+  "factory-lease-cmds.ts",
+  "factory-release-cmds.ts",
+  "factory-service-profile-cmds.ts",
+  "factory-scheduled-jobs-status.ts",
+  "factory-fleet-triage-cmds.ts",
+  "factory-fleet-triage-queues.ts",
 ]);
 
-/** Goal barrel imports/spreads for split domain files (goal-hard-plan.mjs etc.) */
-const goalBarrelSrc = cmdSources["goal.mjs"] || "";
+/** Goal barrel imports/spreads for split domain files (goal-hard-plan.ts etc.) */
+const goalBarrelSrc = cmdSources["goal.ts"] || "";
 const goalRegisteredImports = [];
 const goalImportRe = /import\s*\{\s*(\w+)\s*\}\s*from\s*"\.\/([^"]+)"/g;
 let gim;
@@ -354,13 +354,13 @@ if (goalCommandsBlock) {
 }
 
 const GOAL_SPLIT_DOMAIN_FILES = new Set([
-  "goal-hard-plan.mjs",
-  "goal-hard-planning-cli.mjs",
-  "goal-rationale-cli.mjs",
+  "goal-hard-plan.ts",
+  "goal-hard-planning-cli.ts",
+  "goal-rationale-cli.ts",
 ]);
 
 /** Release barrel imports/spreads for split domain files */
-const releaseBarrelSrc = cmdSources["release.mjs"] || "";
+const releaseBarrelSrc = cmdSources["release.ts"] || "";
 const releaseRegisteredImports = [];
 const releaseImportRe = /import\s*\{\s*(\w+)\s*\}\s*from\s*"\.\/([^"]+)"/g;
 let rim;
@@ -379,9 +379,9 @@ if (releaseCommandsBlock) {
 }
 
 const RELEASE_SPLIT_DOMAIN_FILES = new Set([
-  "release-context-cmds.mjs",
-  "release-delivery-cmds.mjs",
-  "release-policy-cmds.mjs",
+  "release-context-cmds.ts",
+  "release-delivery-cmds.ts",
+  "release-policy-cmds.ts",
 ]);
 
 // ===========================================================================
@@ -410,7 +410,7 @@ test("Gate 1: every Command class is included in its domain export array", async
       assert.ok(arrayName, `${f} must have an exported commands array`);
     });
 
-    if (f === "factory.mjs" || f === "release.mjs") {
+    if (f === "factory.ts" || f === "release.ts") {
       await t.test(`${f}: barrel entries are spread command groups`, () => {
         for (const entry of entries) {
           assert.match(
@@ -445,23 +445,23 @@ test("Gate 1: every Command class is included in its domain export array", async
   }
 });
 
-test("Gate 1b: every domain file is imported and spread in index.mjs", async (t) => {
+test("Gate 1b: every domain file is imported and spread in index.ts", async (t) => {
   for (const f of cmdFiles) {
     if (FACTORY_SPLIT_DOMAIN_FILES.has(f)) {
       const { name: arrayName } = exportsByFile[f];
       if (!arrayName) continue;
 
-      await t.test(`${f}: ${arrayName} is imported in factory.mjs`, () => {
+      await t.test(`${f}: ${arrayName} is imported in factory.ts`, () => {
         const imported = factoryRegisteredImports.some(
           (ri) => ri.exportName === arrayName && ri.file === f,
         );
-        assert.ok(imported, `${arrayName} from ${f} is not imported in factory.mjs`);
+        assert.ok(imported, `${arrayName} from ${f} is not imported in factory.ts`);
       });
 
       await t.test(`${f}: ${arrayName} is spread into factoryCommands`, () => {
         assert.ok(
           factorySpreadEntries.includes(arrayName),
-          `${arrayName} is not spread into factoryCommands in factory.mjs`,
+          `${arrayName} is not spread into factoryCommands in factory.ts`,
         );
       });
       continue;
@@ -471,17 +471,17 @@ test("Gate 1b: every domain file is imported and spread in index.mjs", async (t)
       const { name: arrayName } = exportsByFile[f];
       if (!arrayName) continue;
 
-      await t.test(`${f}: ${arrayName} is imported in goal.mjs`, () => {
+      await t.test(`${f}: ${arrayName} is imported in goal.ts`, () => {
         const imported = goalRegisteredImports.some(
           (ri) => ri.exportName === arrayName && ri.file === f,
         );
-        assert.ok(imported, `${arrayName} from ${f} is not imported in goal.mjs`);
+        assert.ok(imported, `${arrayName} from ${f} is not imported in goal.ts`);
       });
 
       await t.test(`${f}: ${arrayName} is spread into goalCommands`, () => {
         assert.ok(
           goalSpreadEntries.includes(arrayName),
-          `${arrayName} is not spread into goalCommands in goal.mjs`,
+          `${arrayName} is not spread into goalCommands in goal.ts`,
         );
       });
       continue;
@@ -491,17 +491,17 @@ test("Gate 1b: every domain file is imported and spread in index.mjs", async (t)
       const { name: arrayName } = exportsByFile[f];
       if (!arrayName) continue;
 
-      await t.test(`${f}: ${arrayName} is imported in release.mjs`, () => {
+      await t.test(`${f}: ${arrayName} is imported in release.ts`, () => {
         const imported = releaseRegisteredImports.some(
           (ri) => ri.exportName === arrayName && ri.file === f,
         );
-        assert.ok(imported, `${arrayName} from ${f} is not imported in release.mjs`);
+        assert.ok(imported, `${arrayName} from ${f} is not imported in release.ts`);
       });
 
       await t.test(`${f}: ${arrayName} is spread into releaseCommands`, () => {
         assert.ok(
           releaseSpreadEntries.includes(arrayName),
-          `${arrayName} is not spread into releaseCommands in release.mjs`,
+          `${arrayName} is not spread into releaseCommands in release.ts`,
         );
       });
       continue;
@@ -510,15 +510,15 @@ test("Gate 1b: every domain file is imported and spread in index.mjs", async (t)
     const { name: arrayName } = exportsByFile[f];
     if (!arrayName) continue;
 
-    await t.test(`${f}: ${arrayName} is imported in index.mjs`, () => {
+    await t.test(`${f}: ${arrayName} is imported in index.ts`, () => {
       const imported = registeredImports.some((ri) => ri.exportName === arrayName);
-      assert.ok(imported, `${arrayName} from ${f} is not imported in index.mjs`);
+      assert.ok(imported, `${arrayName} from ${f} is not imported in index.ts`);
     });
 
     await t.test(`${f}: ${arrayName} is spread into allCommands`, () => {
       assert.ok(
         spreadEntries.includes(arrayName),
-        `${arrayName} is not spread into allCommands in index.mjs`,
+        `${arrayName} is not spread into allCommands in index.ts`,
       );
     });
   }
@@ -613,27 +613,27 @@ test("Gate 4: every command has a static usage description", async (t) => {
 // ===========================================================================
 
 test("Gate 5: command files only import clipanion and helpers at top level", async (t) => {
-  // Allowed top-level imports: clipanion, ../helpers.mjs
+  // Allowed top-level imports: clipanion, ../helpers.ts
   const ALLOWED_TOP_LEVEL = new Set([
     "clipanion",
-    "../helpers.mjs",
-    "../factory-command-helpers.mjs",
-    "./factory-status-cmds.mjs",
-    "./factory-host-cmds.mjs",
-    "./factory-control-cmds.mjs",
-    "./factory-lease-cmds.mjs",
-    "./factory-release-cmds.mjs",
-    "./factory-service-profile-cmds.mjs",
-    "./factory-scheduled-jobs-status.mjs",
-    "./factory-fleet-triage-cmds.mjs",
-    "./factory-fleet-triage-queues.mjs",
-    "./goal-hard-plan.mjs",
-    "./goal-hard-planning-cli.mjs",
-    "./goal-rationale-cli.mjs",
-    "../release-command-helpers.mjs",
-    "./release-context-cmds.mjs",
-    "./release-delivery-cmds.mjs",
-    "./release-policy-cmds.mjs",
+    "../helpers.ts",
+    "../factory-command-helpers.ts",
+    "./factory-status-cmds.ts",
+    "./factory-host-cmds.ts",
+    "./factory-control-cmds.ts",
+    "./factory-lease-cmds.ts",
+    "./factory-release-cmds.ts",
+    "./factory-service-profile-cmds.ts",
+    "./factory-scheduled-jobs-status.ts",
+    "./factory-fleet-triage-cmds.ts",
+    "./factory-fleet-triage-queues.ts",
+    "./goal-hard-plan.ts",
+    "./goal-hard-planning-cli.ts",
+    "./goal-rationale-cli.ts",
+    "../release-command-helpers.ts",
+    "./release-context-cmds.ts",
+    "./release-delivery-cmds.ts",
+    "./release-policy-cmds.ts",
   ]);
 
   for (const f of cmdFiles) {
@@ -650,7 +650,7 @@ test("Gate 5: command files only import clipanion and helpers at top level", asy
 });
 
 test("Gate 5b: every command defers business logic to execute()", async (t) => {
-  const BARREL_FILES = new Set(["factory.mjs", "release.mjs"]);
+  const BARREL_FILES = new Set(["factory.ts", "release.ts"]);
   for (const f of cmdFiles) {
     if (BARREL_FILES.has(f)) {
       await t.test(`${f}: barrel file has no command classes`, () => {
@@ -694,7 +694,7 @@ test("Gate 6: no dead npm dependencies in ops package.json", async (t) => {
       const fullPath = join(dir, entry.name);
       if (entry.isDirectory()) {
         scanDir(fullPath);
-      } else if (entry.name.endsWith(".mjs")) {
+      } else if ((entry.name.endsWith(".mjs") || entry.name.endsWith(".ts"))) {
         const content = readFileSync(fullPath, "utf8");
         // Static imports
         const staticRe = /(?:import|from)\s+["']([^"'./][^"']*)["']/g;
@@ -842,7 +842,7 @@ test("Gate 8: CLI structural counts match expected (drift detection)", async (t)
     assert.equal(
       registeredImports.length,
       spreadEntries.length,
-      `index.mjs imports ${registeredImports.length} domains but spreads ${spreadEntries.length}`,
+      `index.ts imports ${registeredImports.length} domains but spreads ${spreadEntries.length}`,
     );
   });
 });

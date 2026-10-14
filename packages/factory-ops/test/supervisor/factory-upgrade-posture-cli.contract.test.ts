@@ -15,6 +15,36 @@ function writeJson(path, payload) {
   writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
 }
 
+function writeReleasePolicy(root, canaryRuntimeVersion) {
+  writeJson(join(root, "factories", "mothership", "policy-pack", "v1", "release-policy.json"), {
+      shared: {
+        default_channel: "stable",
+        channels: {
+          stable: {
+            required_checks: ["build"],
+            runtime_version_target: ">=1.0.0",
+            kind_version_target: ">=1.0.0",
+          },
+          canary: {
+            required_checks: ["build"],
+            runtime_version_target: canaryRuntimeVersion,
+            kind_version_target: ">=1.0.0",
+          },
+          pinned: {
+            required_checks: ["build"],
+            runtime_version_target: "1.0.0",
+            kind_version_target: "1.0.0",
+          },
+        },
+      },
+      factory: {
+        preferred_channel: "stable",
+        freeze_windows: [],
+        post_merge_notifications: [],
+      },
+    })
+}
+
 test("factory upgrade-posture inspect --json prints posture fields", () => {
   const root = mkdtempSync(join(tmpdir(), "factory-upgrade-posture-cli-inspect-"));
   try {
@@ -45,33 +75,7 @@ test("factory upgrade-posture inspect --json prints posture fields", () => {
       runtime_artifact_ref: "https://example/runtime-v1.0.0.tgz",
     });
 
-    writeJson(join(root, "factories", "mothership", "policy-pack", "v1", "release-policy.json"), {
-      shared: {
-        default_channel: "stable",
-        channels: {
-          stable: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.0.0",
-            kind_version_target: ">=1.0.0",
-          },
-          canary: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.0.0",
-            kind_version_target: ">=1.0.0",
-          },
-          pinned: {
-            required_checks: ["build"],
-            runtime_version_target: "1.0.0",
-            kind_version_target: "1.0.0",
-          },
-        },
-      },
-      factory: {
-        preferred_channel: "stable",
-        freeze_windows: [],
-        post_merge_notifications: [],
-      },
-    });
+    writeReleasePolicy(root, ">=1.0.0");
 
     const run = spawnSync("node", [
       opsCliPath,
@@ -130,33 +134,7 @@ test("factory upgrade-posture cohort --json updates selected instance", () => {
       ],
     });
 
-    writeJson(join(root, "factories", "mothership", "policy-pack", "v1", "release-policy.json"), {
-      shared: {
-        default_channel: "stable",
-        channels: {
-          stable: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.0.0",
-            kind_version_target: ">=1.0.0",
-          },
-          canary: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.1.0",
-            kind_version_target: ">=1.0.0",
-          },
-          pinned: {
-            required_checks: ["build"],
-            runtime_version_target: "1.0.0",
-            kind_version_target: "1.0.0",
-          },
-        },
-      },
-      factory: {
-        preferred_channel: "stable",
-        freeze_windows: [],
-        post_merge_notifications: [],
-      },
-    });
+    writeReleasePolicy(root, ">=1.1.0");
 
     const run = spawnSync("node", [
       opsCliPath,
@@ -209,33 +187,7 @@ test("factory upgrade-posture cohort fails when pinned target conflicts with all
       ],
     });
 
-    writeJson(join(root, "factories", "mothership", "policy-pack", "v1", "release-policy.json"), {
-      shared: {
-        default_channel: "stable",
-        channels: {
-          stable: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.0.0",
-            kind_version_target: ">=1.0.0",
-          },
-          canary: {
-            required_checks: ["build"],
-            runtime_version_target: ">=1.1.0",
-            kind_version_target: ">=1.0.0",
-          },
-          pinned: {
-            required_checks: ["build"],
-            runtime_version_target: "1.0.0",
-            kind_version_target: "1.0.0",
-          },
-        },
-      },
-      factory: {
-        preferred_channel: "stable",
-        freeze_windows: [],
-        post_merge_notifications: [],
-      },
-    });
+    writeReleasePolicy(root, ">=1.1.0");
 
     const run = spawnSync("node", [
       opsCliPath,

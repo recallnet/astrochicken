@@ -1,3 +1,5 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
+import { assertWorkflowEdgeChain as assertEdgeChain, runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync } from "node:fs";
@@ -5,34 +7,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  rebaseBranchOnMain,
-  buildConflictPacket,
-  verifyConflictResolution,
-  emitResolutionFailure,
-} from "../../src/commands/merge-item-ops.ts";
-import {
-  resolveMergeWorktreeDir,
-  setupMergeWorktree,
-} from "../../src/commands/merge-worktree.ts";
+import { rebaseBranchOnMain, buildConflictPacket, verifyConflictResolution, emitResolutionFailure } from "../../src/commands/merge-item-ops.ts";
+import { resolveMergeWorktreeDir, setupMergeWorktree } from "../../src/commands/merge-worktree.ts";
 
 // ── Helpers ────────────────────────────────────────────────────
 
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
-
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "taxi-conflict-chain-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("taxi-conflict-chain-");
 }
 
 /** Create a repo with a worktree checked out at a wave branch. */
@@ -109,7 +90,7 @@ test("graph: conflict-resolution chain finalizes pending merge commits determini
 test("graph: full edge chain stamps llm provenance before conflict resolution", () => {
   const dot = readFileSync(dotPath, "utf8");
   assert.match(dot, /rebase_gate -> set_resolution_source_llm \[condition="rebase_status!=ready"\]/);
-  assert.match(dot, /set_resolution_source_llm -> build_conflict_packet -> resolve_conflict -> finalize_merge_commit -> finalize_gate/);
+  assertEdgeChain(dot, ["set_resolution_source_llm", "build_conflict_packet", "resolve_conflict", "finalize_merge_commit", "finalize_gate"]);
   assert.match(dot, /finalize_gate -> verify_resolution \[condition="finalize_status=ok"\]/);
   assert.match(dot, /finalize_gate -> retry_resolve_conflict \[condition="finalize_status!=ok"\]/);
   assert.match(dot, /retry_resolve_conflict -> verify_resolution/);
@@ -141,7 +122,7 @@ test("graph: resolve_conflict uses merge_resolver role class with timeout", () =
   const sharedRoles = readFileSync("factories/_shared/roles.stylesheet", "utf8");
   assert.match(dot, /resolve_conflict[^\]]*class="merge_resolver"/);
   assert.match(sharedRoles, /\.merge_resolver[\s\S]*type = "stack\.manager_loop"/);
-  assert.match(dot, /resolve_conflict[^\]]*timeout="90m"/);
+  assert.match(dot, /resolve_conflict[^\]]*timeout="45m"/);
 });
 
 test("graph: rebase_gate routes to deterministic resolver provenance on ready", () => {
@@ -440,7 +421,7 @@ test("graph: post_merge_resolution_gate routes through set_wave_merged on resolv
 });
 
 test("cli: hatch-ops merge run-count command is registered and exposes recurrence-key flag", () => {
-  const cliPath = join(process.cwd(), "packages", "factory-ops", "src", "cli.mjs");
+  const cliPath = join(process.cwd(), "packages", "factory-ops", "src", "cli.ts");
   const out = spawnSync("node", [cliPath, "merge", "run-count", "--help"], {
     cwd: process.cwd(),
     encoding: "utf8",

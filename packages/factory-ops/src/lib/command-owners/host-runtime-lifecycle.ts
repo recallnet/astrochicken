@@ -58,7 +58,7 @@ function resolvePackageRoot() {
 }
 
 function resolveRuntimeEntrypoint() {
-  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "host-runtime.mjs");
+  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "host-runtime.ts");
 }
 
 export function resolveHostRuntimeVersion({ packageRoot = resolvePackageRoot() } = {}) {
@@ -693,7 +693,7 @@ export function doctorHostRuntime({
   const listed = listHostInstallations({ paths });
 
   const blockingInstallationDiagnostics = listed.diagnostics.filter((entry) => !entry.startsWith("missing_lease_record:"));
-  const signatureEvidence = evaluateStoredRuntimeSignatureEvidence(manifest);
+  let signatureEvidence = evaluateStoredRuntimeSignatureEvidence(manifest);
   let runtimeSignatureStatus = trim(manifest.runtime_signature_status);
   let runtimeSignatureError = trim(manifest.runtime_signature_error);
 
@@ -707,6 +707,16 @@ export function doctorHostRuntime({
     });
     runtimeSignatureStatus = liveVerification.ok ? "verified" : "invalid";
     runtimeSignatureError = trim(liveVerification.errorCode || liveVerification.error);
+    // @context:security Failed cryptographic verification overrides a stored
+    // "verified" marker; reporting invalid while authorizing startup is unsafe.
+    if (!liveVerification.ok) {
+      signatureEvidence = {
+        ...signatureEvidence,
+        ok: false,
+        errorCode: runtimeSignatureError || FACTORY_OPS_ERROR_CODES.host_runtime_signature_invalid,
+        message: runtimeSignatureError || FACTORY_OPS_ERROR_CODES.host_runtime_signature_invalid,
+      };
+    }
   }
 
   checks.push({ id: "host_id", ok: Boolean(hostId), detail: hostId || "missing_host_id" });

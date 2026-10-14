@@ -1,5 +1,6 @@
+import { readFixtureText as readText, readFixtureJson as readJson } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -14,14 +15,6 @@ const manifestPath = join(factoryRoot, "inventory/factory-composition-manifest.v
 const readmePath = join(factoryRoot, "README.md");
 const registryPath = join(repoRoot, "factory-registry.json");
 
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
-}
-
-function readText(path) {
-  return readFileSync(path, "utf8");
-}
-
 test("example-scanner bundle stays config-first and routes entirely through shared managed graphs", () => {
   const config = readJson(configPath);
   const kind = readJson(kindPath);
@@ -33,12 +26,12 @@ test("example-scanner bundle stays config-first and routes entirely through shar
   assert.equal(config.control_plane_repo, "recallnet/astrochicken");
   assert.equal(config.managed, true);
   assert.equal(config.workspace_mode, "checkout");
-  assert.equal(config.dispatch?.graph, "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot");
-  assert.equal(config.pipeline?.supervisor_tick, "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot");
+  assert.equal(config.dispatch?.graph, "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs");
+  assert.equal(config.pipeline?.supervisor_tick, "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs");
   assert.equal(config.scenarios?.root, "packages/factory-runtime/scenarios/managed_software_delivery");
   assert.equal(config.canonical_checkout_path, "${HATCH_CANONICAL_CHECKOUT_PATH}");
-  assert.equal(kind.shared_supervisor_shell, "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot");
-  assert.equal(kind.domain_graph, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
+  assert.equal(kind.shared_supervisor_shell, "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs");
+  assert.equal(kind.domain_graph, "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs");
   assert.equal(instance.instance_id, "example-scanner");
   assert.equal(instance.kind_id, "example-scanner");
   assert.equal(instance.target_repo?.full_name, "example-org/example-scanner");
@@ -63,7 +56,7 @@ test("example-scanner registry inventory points at shared runtime graphs", () =>
 
   assert.ok(factory, "factory-registry.json must include example-scanner factory entry");
   assert.ok(instance, "factory-registry.json must include example-scanner instance entry");
-  assert.equal(factory.target_repo, "example-org/example-scanner");
+  assert.equal(factory.repo, "example-org/example-scanner");
   assert.equal(instance.target_repo, "example-org/example-scanner");
   assert.equal(instance.installation_manifest_path, ".hatch/hosts/example-scanner/installation.json");
   assert.equal(manifest.artifactDefaults.canonicalCheckoutPath, "${HATCH_CANONICAL_CHECKOUT_PATH}");
@@ -73,14 +66,14 @@ test("example-scanner registry inventory points at shared runtime graphs", () =>
   );
 
   const factoryGraphPaths = (factory.graphs || []).map((entry) => entry.path);
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-software-development/goal_execute.dot"));
+  assert.ok(factoryGraphPaths.includes("packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"));
 
   const instanceGraphPaths = (instance.graphs || []).map((entry) => entry.path);
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot"));
+  assert.ok(instanceGraphPaths.includes("packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"));
 });
 
 test("example-scanner matches example-trading managed runtime contracts except for repo-specific knobs", () => {
@@ -105,8 +98,8 @@ test("example-scanner README states the thin-factory contract explicitly", () =>
   const readme = readText(readmePath);
 
   assert.match(readme, /This factory intentionally owns config and intent only/i);
-  assert.match(readme, /packages\/factory-runtime\/graphs\/managed_supervisor\.dot/);
-  assert.match(readme, /packages\/factory-runtime\/graphs\/managed_software_delivery_domain\.dot/);
+  assert.match(readme, /packages\/factory-runtime\/workflows\/managed_supervisor\/managed_supervisor\.workflow-source\.mjs/);
+  assert.match(readme, /packages\/factory-runtime\/workflows\/managed_software_delivery_domain\/managed_software_delivery_domain\.workflow-source\.mjs/);
   assert.doesNotMatch(readme, /graphs\/domain_example_scanner\.dot/);
   assert.doesNotMatch(readme, /skills\/supervisor_rules\.md/);
 });

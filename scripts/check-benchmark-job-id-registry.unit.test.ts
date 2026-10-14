@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { runBenchmarkJobIdRegistryCheck } from "./check-benchmark-job-id-registry.ts";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const scriptPath = join(repoRoot, "scripts", "check-benchmark-job-id-registry.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-benchmark-job-id-registry.ts");
 
 function fixtureDir() {
 	const root = mkdtempSync(join(tmpdir(), "benchmark-job-id-registry-"));

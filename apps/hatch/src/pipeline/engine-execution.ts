@@ -251,21 +251,31 @@ export async function executeNodeWithRetries(params: ExecuteNodeParams): Promise
 		try {
 			let outcome: Outcome;
 			if (timeoutMs > 0) {
-				outcome = await Promise.race([
-					handler.execute(nodeSignal, node, context, input, executionControls),
-					new Promise<never>((_, reject) => {
-						nodeSignal.addEventListener(
-							"abort",
-							() => {
-								const failureSignals: ExecutionFailureSignals = timeoutTriggered
-									? { timeoutTriggered: true, abortTriggered: false }
-									: { timeoutTriggered: false, abortTriggered: abortTriggered || Boolean(signal?.aborted) };
-								reject(createAbortCauseError(node.id, timeoutMs, failureSignals));
-							},
-							{ once: true },
-						);
-					}),
-				]);
+				const abortError = () => {
+					const failureSignals: ExecutionFailureSignals = timeoutTriggered
+						? { timeoutTriggered: true, abortTriggered: false }
+						: { timeoutTriggered: false, abortTriggered: abortTriggered || Boolean(signal?.aborted) };
+					return createAbortCauseError(node.id, timeoutMs, failureSignals);
+				};
+				if (nodeSignal.aborted) throw abortError();
+				// Subscribe before invoking the handler: it may synchronously abort
+				// the parent and otherwise leave the cancellation race unresolved.
+				let abortListener!: () => void;
+				const cancellation = new Promise<never>((_, reject) => {
+					abortListener = () => reject(abortError());
+					nodeSignal.addEventListener("abort", abortListener, { once: true });
+				});
+				try {
+					outcome = await Promise.race([
+						Promise.resolve().then(() => {
+							if (nodeSignal.aborted) throw abortError();
+							return handler.execute(nodeSignal, node, context, input, executionControls);
+						}),
+						cancellation,
+					]);
+				} finally {
+					nodeSignal.removeEventListener("abort", abortListener);
+				}
 			} else {
 				outcome = await handler.execute(nodeSignal, node, context, input, executionControls);
 			}

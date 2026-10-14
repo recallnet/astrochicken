@@ -16,7 +16,7 @@ const researchCmd = readFileSync("packages/factory-ops/src/cli/commands/research
 
 test("cli defers goal-build-fallback-features import to command execution", () => {
   assert.match(goalCmd, /GoalBuildFallbackFeaturesCommand/);
-  assert.match(goalCmd, /await import\("\.\.\/\.\.\/commands\/goal-build-fallback-features\.ts")/);
+  assert.match(goalCmd, /await import\("\.\.\/\.\.\/commands\/goal-build-fallback-features\.ts"\)/);
   assert.match(goalCmd, /static paths = \[\["goal", "build-fallback-features"\]\]/);
 });
 
@@ -25,11 +25,11 @@ test("cli defers goal hard-plan imports to command execution", () => {
   assert.match(goalHardPlanCmd, /GoalHardPlanInspectCommand/);
   assert.match(goalHardPlanCmd, /static paths = \[\["goal", "hard-plan", "attach"\]\]/);
   assert.match(goalHardPlanCmd, /static paths = \[\["goal", "hard-plan", "inspect"\]\]/);
-  assert.match(goalHardPlanCmd, /await import\("\.\.\/\.\.\/commands\/goal-hard-plan-packet\.ts")/);
+  assert.match(goalHardPlanCmd, /await import\("\.\.\/\.\.\/commands\/goal-hard-plan-packet\.ts"\)/);
   assert.match(goalCmd, /\.\.\.goalHardPlanCommands/);
   assert.match(goalCmd, /GoalHardStateInspectCommand/);
   assert.match(goalCmd, /static paths = \[\["goal", "hard-state"\]\]/);
-  assert.match(goalCmd, /await import\("\.\.\/\.\.\/commands\/goal-hard-state\.ts")/);
+  assert.match(goalCmd, /await import\("\.\.\/\.\.\/commands\/goal-hard-state\.ts"\)/);
 });
 
 test("cli wires supervisor validate-main-branch command", () => {
@@ -41,45 +41,45 @@ test("cli wires supervisor validate-main-branch command", () => {
 test("cli wires supervisor external-factory-lifecycle command lazily", () => {
   assert.match(supervisorCmd, /SupervisorExternalFactoryLifecycleCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "external-factory-lifecycle"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-external-factory-lifecycle\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-external-factory-lifecycle\.ts"\)/);
 });
 
 test("cli wires managed supervisor shell commands lazily", () => {
   assert.match(supervisorCmd, /SupervisorManagedLoadContextCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-load-context"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-load-context\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-load-context\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedControlGateCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-control-gate"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-control-gate\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-control-gate\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedActionItemGateCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-action-item-gate"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-action-item-gate\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-action-item-gate\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedIntakeSelectorCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-intake-selector"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-intake-selector\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-intake-selector\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedHealthClassifierCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-health-classifier"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-health-classifier\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-health-classifier\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedFailureClassifierCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-failure-classifier"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-failure-classifier\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-failure-classifier\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedEmitRunSummaryCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-emit-run-summary"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-emit-run-summary\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-emit-run-summary\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedPersistStateCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-persist-state"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-persist-state\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-persist-state\.ts"\)/);
 
   assert.match(supervisorCmd, /SupervisorManagedDomainContractCommand/);
   assert.match(supervisorCmd, /static paths = \[\["supervisor", "managed-domain-contract"\]\]/);
-  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-domain-contract\.ts")/);
+  assert.match(supervisorCmd, /await import\("\.\.\/\.\.\/commands\/supervisor-managed-domain-contract\.ts"\)/);
 
 });
 
@@ -103,7 +103,7 @@ test("cli wires merge resolve-context/worktree rebase and push/verify routes", (
 test("cli defers insight command imports to command execution", () => {
   assert.match(insightCmd, /InsightFailuresCommand/);
   assert.match(insightCmd, /static paths = \[\["insight", "failures"\]\]/);
-  assert.match(insightCmd, /await import\("\.\.\/\.\.\/lib\/insight-projection\.ts")/);
+  assert.match(insightCmd, /await import\("\.\.\/\.\.\/lib\/insight-projection\.ts"\)/);
 
   assert.match(insightCmd, /InsightRetriesCommand/);
   assert.match(insightCmd, /static paths = \[\["insight", "retries"\]\]/);
@@ -114,7 +114,7 @@ test("cli defers insight command imports to command execution", () => {
 
 test("cli defers skill scaffold/validate imports to command execution", () => {
   assert.match(skillCmd, /SkillScaffoldInterfaceCommand/);
-  assert.match(skillCmd, /await import\("\.\.\/\.\.\/commands\/skill-interface-scaffold\.ts")/);
+  assert.match(skillCmd, /await import\("\.\.\/\.\.\/commands\/skill-interface-scaffold\.ts"\)/);
   assert.match(skillCmd, /static paths = \[\["skill", "scaffold-interface"\]\]/);
 
   assert.match(skillCmd, /SkillValidateInterfaceCommand/);
@@ -124,48 +124,48 @@ test("cli defers skill scaffold/validate imports to command execution", () => {
 test("cli wires factory session-tail command lazily", () => {
   assert.match(factoryCmd, /FactorySessionTailCommand/);
   assert.match(factoryCmd, /static paths = \[\["factory", "session-tail"\]\]/);
-  assert.match(factoryCmd, /await import\("\.\.\/\.\.\/commands\/factory-session-tail\.ts")/);
+  assert.match(factoryCmd, /await import\("\.\.\/\.\.\/commands\/factory-session-tail\.ts"\)/);
 });
 
 test("cli wires factory session command lazily", () => {
   assert.match(factoryCmd, /FactorySessionNodeCommand/);
   assert.match(factoryCmd, /static paths = \[\["factory", "session"\]\]/);
-  assert.match(factoryCmd, /await import\("\.\.\/\.\.\/commands\/factory-session-node\.ts")/);
+  assert.match(factoryCmd, /await import\("\.\.\/\.\.\/commands\/factory-session-node\.ts"\)/);
   assert.match(factoryCmd, /--node is required\. Use --node <node-id>/);
 });
 
 test("cli wires factory session-browser command lazily", () => {
   assert.match(factoryCmd, /FactorySessionBrowserCommand/);
   assert.match(factoryCmd, /static paths = \[\["factory", "session-browser"\]\]/);
-  assert.match(factoryCmd, /await import\("\.\.\/factory-session-browser-tui\.ts")/);
+  assert.match(factoryCmd, /await import\("\.\.\/factory-session-browser-tui\.ts"\)/);
 });
 
 test("cli wires factory generate-instance-id command lazily", () => {
   assert.match(factoryControlCmd, /FactoryGenerateInstanceIdCommand/);
   assert.match(factoryControlCmd, /static paths = \[\["factory", "generate-instance-id"\]\]/);
-  assert.match(factoryControlCmd, /await import\("\.\.\/\.\.\/commands\/factory-generate-instance-id\.ts")/);
+  assert.match(factoryControlCmd, /await import\("\.\.\/\.\.\/commands\/factory-generate-instance-id\.ts"\)/);
 });
 
 test("cli wires artifact emit-disposition-feedback command lazily", () => {
   assert.match(artifactCmd, /ArtifactEmitDispositionFeedbackCommand/);
   assert.match(artifactCmd, /static paths = \[\["artifact", "emit-disposition-feedback"\]\]/);
-  assert.match(artifactCmd, /await import\("\.\.\/\.\.\/commands\/artifact-feedback\.ts")/);
+  assert.match(artifactCmd, /await import\("\.\.\/\.\.\/commands\/artifact-feedback\.ts"\)/);
 });
 
 test("cli wires research approve/stage-label/approval-label/status commands lazily", () => {
   assert.match(researchCmd, /ResearchApproveStageCommand/);
   assert.match(researchCmd, /static paths = \[\["research", "approve-stage"\]\]/);
-  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-approve-stage\.ts")/);
+  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-approve-stage\.ts"\)/);
 
   assert.match(researchCmd, /ResearchSetStageLabelCommand/);
   assert.match(researchCmd, /static paths = \[\["research", "set-stage-label"\]\]/);
-  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-stage-label\.ts")/);
+  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-stage-label\.ts"\)/);
 
   assert.match(researchCmd, /ResearchSetApprovalLabelCommand/);
   assert.match(researchCmd, /static paths = \[\["research", "set-approval-label"\]\]/);
-  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-stage-label\.ts")/);
+  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-stage-label\.ts"\)/);
 
   assert.match(researchCmd, /ResearchStatusCommand/);
   assert.match(researchCmd, /static paths = \[\["research", "status"\]\]/);
-  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-status\.ts")/);
+  assert.match(researchCmd, /await import\("\.\.\/\.\.\/commands\/research-status\.ts"\)/);
 });

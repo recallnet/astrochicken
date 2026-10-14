@@ -1,5 +1,6 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { readFileSync } from "node:fs";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -7,21 +8,11 @@ import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  DEFAULT_LLM_ROUTE_INVENTORY_PATH,
-  buildLlmRouteManifest,
-  diffLlmRouteManifests,
-  inspectLlmRoute,
-  loadLlmRouteInventory,
-  renderLlmRouteDiff,
-  renderLlmRouteInspect,
-  renderLlmRouteList,
-  resolveLlmRouteInventoryPath,
-} from "../../src/commands/llm-route-manifest.ts";
+import { DEFAULT_LLM_ROUTE_INVENTORY_PATH, buildLlmRouteManifest, diffLlmRouteManifests, inspectLlmRoute, loadLlmRouteInventory, renderLlmRouteDiff, renderLlmRouteInspect, renderLlmRouteList, resolveLlmRouteInventoryPath } from "../../src/commands/llm-route-manifest.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 const inventoryPath = join(repoRoot, "factories/mothership/inventory/llm-role-session-baseline.json");
 const inventory = JSON.parse(readFileSync(inventoryPath, "utf8"));
 const opsCliEnv = {
@@ -34,11 +25,11 @@ const opsCliEnv = {
 };
 
 function runOpsCli(args) {
-  return spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: opsCliEnv,
-  });
+  return spawnOpsCli([
+      ...args
+    ], {
+      env: opsCliEnv
+    });
 }
 
 test("inventory path helpers resolve the canonical default inventory", () => {
@@ -87,7 +78,7 @@ test("renderLlmRouteList exposes stable route rows", () => {
   const output = renderLlmRouteList(manifest);
   assert.match(output, /PATH_ID/);
   assert.match(output, /mothership\.supervisor\.review/);
-  assert.match(output, /factories\/mothership\/graphs\/factory_supervisor_tick\.dot/);
+  assert.match(output, /factories\/mothership\/workflows\/dispatch-control\/factory_supervisor_tick\.workflow-source\.mjs/);
 });
 
 test("CLI lists LLM routes from the checked-in inventory", () => {

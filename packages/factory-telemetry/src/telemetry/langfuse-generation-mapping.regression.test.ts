@@ -16,11 +16,11 @@ const {
 	}));
 	const flushAsyncMock = vi.fn(async () => {});
 	const shutdownAsyncMock = vi.fn(async () => {});
-	const langfuseCtorMock = vi.fn(() => ({
+	const langfuseCtorMock = vi.fn(function () { return {
 		trace: traceMock,
 		flushAsync: flushAsyncMock,
 		shutdownAsync: shutdownAsyncMock,
-	}));
+	}; });
 	return {
 		langfuseCtorMock,
 		traceMock,

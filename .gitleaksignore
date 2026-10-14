@@ -1,0 +1,6 @@
+# Graph output-key names are workflow variables, not API credentials.
+94b1e56d2605ac69d61e04f2d2b212a3a2f6a399:docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot:generic-api-key:14
+94b1e56d2605ac69d61e04f2d2b212a3a2f6a399:docs/contracts/workflow-ir/mothership/wave_dispatch.dot:generic-api-key:16
+94b1e56d2605ac69d61e04f2d2b212a3a2f6a399:factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.data.json:generic-api-key:263
+94b1e56d2605ac69d61e04f2d2b212a3a2f6a399:packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.data.json:generic-api-key:235
+94b1e56d2605ac69d61e04f2d2b212a3a2f6a399:packages/factory-ops/test/wave-dispatch-contract.contract.test.ts:generic-api-key:19

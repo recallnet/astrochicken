@@ -1,7 +1,8 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
+
+import { type CapabilityManifestContract, createCapabilityManifestFixture } from "./test/capability-manifest-support.js";
 
 interface CapabilityOwnedStage {
 	stage: string;
@@ -9,63 +10,19 @@ interface CapabilityOwnedStage {
 	scope: string;
 }
 
-interface CapabilityContract {
-	entrypoints: { kind: string; path: string }[];
-	skillPaths: string[];
+interface CapabilityContract extends CapabilityManifestContract {
 	ownedStages?: CapabilityOwnedStage[];
-	requiredContextKeys: string[];
-	requiredRoles: string[];
-	requiredHandlers: string[];
 	exportedContextKeys: Record<string, string[]>;
 	roleSessionAssumptions: Record<string, unknown>;
 	nonGoals: string[];
 }
 
 const CAPABILITY_ROOT = resolve(import.meta.dirname, "../../../../packages/capability-software-development");
-const CAPABILITY_CONTRACT_PATH = join(CAPABILITY_ROOT, "capability-manifest.v1.json");
 
-function loadContract(): CapabilityContract {
-	const raw = readFileSync(CAPABILITY_CONTRACT_PATH, "utf8");
-	return JSON.parse(raw) as CapabilityContract;
-}
-
-function declaredGraphs(contract: CapabilityContract): string[] {
-	return contract.entrypoints.filter((entrypoint) => entrypoint.kind === "graph").map((entrypoint) => entrypoint.path);
-}
-
-function collectDotFiles(dir: string): string[] {
-	const entries = readdirSync(dir, { withFileTypes: true });
-	const files: string[] = [];
-	for (const entry of entries) {
-		const fullPath = join(dir, entry.name);
-		if (entry.isDirectory()) {
-			files.push(...collectDotFiles(fullPath));
-			continue;
-		}
-		if (entry.isFile() && entry.name.endsWith(".dot")) {
-			files.push(relative(CAPABILITY_ROOT, fullPath).replaceAll("\\", "/"));
-		}
-	}
-	return files.sort();
-}
+const { loadContract, declaredGraphs, registerFilesystemContract } = createCapabilityManifestFixture<CapabilityContract>(CAPABILITY_ROOT);
 
 describe("@hatch/capability-software-development manifest contract", () => {
-	it("every declared graph path exists on disk", () => {
-		const contract = loadContract();
-		for (const graphPath of declaredGraphs(contract)) {
-			const fullPath = join(CAPABILITY_ROOT, graphPath);
-			expect(existsSync(fullPath), `declared graph missing: ${graphPath}`).toBe(true);
-		}
-	});
-
-	it("has no undeclared .dot files in graphs/", () => {
-		const contract = loadContract();
-		const graphDotFiles = collectDotFiles(join(CAPABILITY_ROOT, "graphs"));
-		expect(graphDotFiles.length).toBeGreaterThan(0);
-		for (const dotPath of graphDotFiles) {
-			expect(declaredGraphs(contract)).toContain(dotPath);
-		}
-	});
+	registerFilesystemContract({ checkSkills: false });
 
 	it("requiredContextKeys include execution portability contract keys", () => {
 		const contract = loadContract();
@@ -98,20 +55,20 @@ describe("@hatch/capability-software-development manifest contract", () => {
 
 	it("exportedContextKeys include execution outputs for extracted graphs", () => {
 		const contract = loadContract();
-		const executionExports = contract.exportedContextKeys["graphs/goal_execute.dot"] || [];
+		const executionExports = contract.exportedContextKeys["workflows/goal_execute/goal_execute.workflow-source.mjs"] || [];
 		expect(executionExports).toContain("goal_terminal_path");
 		expect(executionExports).toContain("impl_results");
 		expect(executionExports).toContain("merge_candidates");
 		expect(executionExports).toContain("merged_results");
 
-		const issueExecutionExports = contract.exportedContextKeys["graphs/goal_issue_execute.dot"] || [];
+		const issueExecutionExports = contract.exportedContextKeys["workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"] || [];
 		expect(issueExecutionExports).toContain("impl_result");
 	});
 
 	it("extracted shared graphs are declared in manifest", () => {
 		const contract = loadContract();
-		expect(declaredGraphs(contract)).toContain("graphs/goal_execute.dot");
-		expect(declaredGraphs(contract)).toContain("graphs/goal_issue_execute.dot");
+		expect(declaredGraphs(contract)).toContain("workflows/goal_execute/goal_execute.workflow-source.mjs");
+		expect(declaredGraphs(contract)).toContain("workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs");
 	});
 
 	it("declares owned software-development stages and entrypoints", () => {
@@ -122,19 +79,19 @@ describe("@hatch/capability-software-development manifest contract", () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					stage: "coding_worktree_execution",
-					entrypoint: "graphs/goal_issue_execute.dot",
+					entrypoint: "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
 				}),
 				expect.objectContaining({
 					stage: "judge_review",
-					entrypoint: "graphs/goal_issue_execute.dot",
+					entrypoint: "workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
 				}),
 				expect.objectContaining({
 					stage: "merge_preparation_and_execution",
-					entrypoint: "graphs/goal_execute.dot",
+					entrypoint: "workflows/goal_execute/goal_execute.workflow-source.mjs",
 				}),
 				expect.objectContaining({
 					stage: "failure_routing",
-					entrypoint: "graphs/goal_execute.dot",
+					entrypoint: "workflows/goal_execute/goal_execute.workflow-source.mjs",
 				}),
 			]),
 		);

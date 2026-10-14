@@ -48,7 +48,7 @@ test("pre-merge quality workflow enforces full repo QA before merge", () => {
 
   assert.match(
     workflow,
-    /- name:\s*Run checked-in factory health\s+run:\s*pnpm --silent factory:health:ci -- --strict/m,
+    /- name:\s*Run checked-in factory health\s+env:\s+HATCH_CANONICAL_EVENT_STORE_URL: postgres:\/\/astrochicken:astrochicken@127\.0\.0\.1:55432\/astrochicken_factory\s+NODE_OPTIONS: --experimental-strip-types\s+run:\s*pnpm --silent factory:health:ci -- --strict/m,
   );
   assert.equal((workflow.match(/continue-on-error:\s*true/g) ?? []).length, 0);
   assert.equal(/baseline:refresh|--update-baseline|\|\|\s*true/u.test(workflow), false);
@@ -84,4 +84,10 @@ test("gate manifest wires duplication_scan into full profile only", () => {
   assert.equal(deadCodeGate.qualityCategory, "mandatory");
   assert.equal(deadCodeGate.profiles.includes("fast"), true);
   assert.equal(deadCodeGate.profiles.includes("full"), true);
+});
+
+test("strict checked-in factory health has an isolated CI event store", () => {
+  const workflow = readFileSync(workflowPath, "utf8");
+  assert.match(workflow, /image:\s*postgres:18/);
+  assert.match(workflow, /HATCH_CANONICAL_EVENT_STORE_URL:\s*postgres:\/\/astrochicken:astrochicken@127\.0\.0\.1:55432\/astrochicken_factory/);
 });

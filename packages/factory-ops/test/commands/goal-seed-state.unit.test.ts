@@ -1,3 +1,4 @@
+import { writeFixtureRunState as writeRunState } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
@@ -5,12 +6,6 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 import { seedGoalState } from "../../src/commands/goal-seed-state.ts";
-
-function writeRunState(runsDir, runId, state) {
-  const dir = join(runsDir, runId);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, "state.json"), JSON.stringify(state), "utf8");
-}
 
 test("seedGoalState returns empty arrays when no repo or goalNumber", () => {
   const out = seedGoalState();
@@ -73,13 +68,11 @@ test("seedGoalState does not resume open issues from prior goal_execute runs", (
   mkdirSync(runsDir, { recursive: true });
 
   // Prior completed goal_execute run that approved issues 100 and 101
-  writeRunState(runsDir, "run-aaa", {
+  writeGoalHistoryRun(runsDir, "run-aaa", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100","101"]'
   });
 
   // All sub-issues still open (not yet merged)
@@ -89,12 +82,7 @@ test("seedGoalState does not resume open issues from prior goal_execute runs", (
     { number: 102, title: "C", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   // Open issues must remain executable even if a prior run recorded them.
   assert.deepEqual(out.completed_issues, []);
@@ -109,23 +97,19 @@ test("seedGoalState ignores open issues recorded across multiple prior runs", ()
   mkdirSync(runsDir, { recursive: true });
 
   // Run 1 approved 100, 101
-  writeRunState(runsDir, "run-aaa", {
+  writeGoalHistoryRun(runsDir, "run-aaa", {
     status: "failed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100","101"]'
   });
 
   // Run 2 approved 101, 102 (101 overlaps)
-  writeRunState(runsDir, "run-bbb", {
+  writeGoalHistoryRun(runsDir, "run-bbb", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["101","102"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["101","102"]'
   });
 
   const mockListSubIssues = () => [
@@ -135,12 +119,7 @@ test("seedGoalState ignores open issues recorded across multiple prior runs", ()
     { number: 103, title: "D", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.deepEqual(out.completed_issues, []);
   assert.equal(out.plan_index, 0);
@@ -152,25 +131,18 @@ test("seedGoalState ignores runs for different goals", () => {
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-other", {
+  writeGoalHistoryRun(runsDir, "run-other", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "99",
-      completed_issues: '["200","201"]',
-    },
+    goalNumber: "99",
+    completed_issues: '["200","201"]'
   });
 
   const mockListSubIssues = () => [
     { number: 100, title: "A", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.deepEqual(out.completed_issues, []);
   assert.equal(out.plan_index, 0);
@@ -182,25 +154,18 @@ test("seedGoalState ignores still-running runs", () => {
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-active", {
+  writeGoalHistoryRun(runsDir, "run-active", {
     status: "running",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100"]'
   });
 
   const mockListSubIssues = () => [
     { number: 100, title: "A", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   // Running runs should NOT be used for resume — their completed_issues are in-flux
   assert.deepEqual(out.completed_issues, []);
@@ -213,13 +178,11 @@ test("seedGoalState keeps only currently closed issues when prior runs include o
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-aaa", {
+  writeGoalHistoryRun(runsDir, "run-aaa", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100","101"]'
   });
 
   // Issue 100 is now closed (merged), 101 still open
@@ -229,12 +192,7 @@ test("seedGoalState keeps only currently closed issues when prior runs include o
     { number: 102, title: "C", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.deepEqual(out.completed_issues, ["100"]);
   assert.equal(out.plan_index, 0);
@@ -246,26 +204,19 @@ test("seedGoalState does not seed open sub-issues as completed from prior runs",
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-prior", {
+  writeGoalHistoryRun(runsDir, "run-prior", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101","102"]',
-      processed_issues: '["100","101","102"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100","101","102"]',
+    processed_issues: '["100","101","102"]'
   });
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: () => [
+  const out = seedFixtureGoal(runsDir, () => [
       { number: 100, title: "Closed feature", state: "closed" },
       { number: 101, title: "Still open feature", state: "open" },
       { number: 102, title: "Still open feature", state: "open" },
-    ],
-  });
+    ]);
 
   assert.deepEqual(out.completed_issues, ["100"]);
   assert.deepEqual(out.processed_issues, ["100"]);
@@ -287,25 +238,18 @@ test("seedGoalState handles missing/corrupt run state files gracefully", () => {
   writeFileSync(join(corruptDir, "state.json"), "not json", "utf8");
 
   // Valid run
-  writeRunState(runsDir, "run-good", {
+  writeGoalHistoryRun(runsDir, "run-good", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100"]'
   });
 
   const mockListSubIssues = () => [
     { number: 100, title: "A", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.deepEqual(out.completed_issues, []);
   assert.equal(out.plan_index, 0);
@@ -318,17 +262,15 @@ test("seedGoalState does not seed impl_results or completion from open prior-run
   mkdirSync(runsDir, { recursive: true });
 
   // Prior failed run that had impl_results with approved issues
-  writeRunState(runsDir, "run-aaa", {
+  writeGoalHistoryRun(runsDir, "run-aaa", {
     status: "failed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101"]',
-      impl_results: JSON.stringify([
+    goalNumber: "50",
+    completed_issues: '["100","101"]',
+    impl_results: JSON.stringify([
         { issue_number: "100", branch: "goal/50", worktree_dir: "/tmp/wt", review_failed: "false" },
         { issue_number: "101", branch: "goal/50", worktree_dir: "/tmp/wt", review_failed: "false" },
-      ]),
-    },
+      ])
   });
 
   // All sub-issues still open (not yet merged to main)
@@ -337,12 +279,7 @@ test("seedGoalState does not seed impl_results or completion from open prior-run
     { number: 101, title: "B", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.deepEqual(out.completed_issues, []);
   assert.equal(out.impl_results, "[]");
@@ -356,31 +293,27 @@ test("seedGoalState ignores prior impl_results when all recorded issues are stil
   mkdirSync(runsDir, { recursive: true });
 
   // Older run with fewer issues
-  writeRunState(runsDir, "run-old", {
+  writeGoalHistoryRun(runsDir, "run-old", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100"]',
-      impl_results: JSON.stringify([
+    goalNumber: "50",
+    completed_issues: '["100"]',
+    impl_results: JSON.stringify([
         { issue_number: "100", branch: "goal/50", review_failed: "false" },
-      ]),
-    },
+      ])
   });
 
   // Newer run with more issues
-  writeRunState(runsDir, "run-new", {
+  writeGoalHistoryRun(runsDir, "run-new", {
     status: "failed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101","102"]',
-      impl_results: JSON.stringify([
+    goalNumber: "50",
+    completed_issues: '["100","101","102"]',
+    impl_results: JSON.stringify([
         { issue_number: "100", branch: "goal/50", review_failed: "false" },
         { issue_number: "101", branch: "goal/50", review_failed: "false" },
         { issue_number: "102", branch: "goal/50", review_failed: "false" },
-      ]),
-    },
+      ])
   });
 
   const mockListSubIssues = () => [
@@ -389,12 +322,7 @@ test("seedGoalState ignores prior impl_results when all recorded issues are stil
     { number: 102, title: "C", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.equal(out.impl_results, "[]");
   assert.equal(out.plan_index, 0);
@@ -406,25 +334,18 @@ test("seedGoalState returns empty impl_results when no prior runs have it", () =
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-aaa", {
+  writeGoalHistoryRun(runsDir, "run-aaa", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100"]',
-    },
+    goalNumber: "50",
+    completed_issues: '["100"]'
   });
 
   const mockListSubIssues = () => [
     { number: 100, title: "A", state: "open" },
   ];
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: mockListSubIssues,
-  });
+  const out = seedFixtureGoal(runsDir, mockListSubIssues);
 
   assert.equal(out.impl_results, "[]");
   assert.equal(out.plan_index, 0);
@@ -455,45 +376,36 @@ test("seedGoalState seeds processed issues only for currently closed issues", ()
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-earlier", {
+  writeGoalHistoryRun(runsDir, "run-earlier", {
     status: "failed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100"]',
-      processed_issues: '["100"]',
-      impl_results: JSON.stringify([
+    goalNumber: "50",
+    completed_issues: '["100"]',
+    processed_issues: '["100"]',
+    impl_results: JSON.stringify([
         { issue_number: "100", review_failed: "true", review_notes: "revise" },
-      ]),
-    },
+      ])
   });
 
-  writeRunState(runsDir, "run-furthest", {
+  writeGoalHistoryRun(runsDir, "run-furthest", {
     status: "guarded",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "50",
-      completed_issues: '["100","101"]',
-      processed_issues: '["100","101","102"]',
-      impl_results: JSON.stringify([
+    goalNumber: "50",
+    completed_issues: '["100","101"]',
+    processed_issues: '["100","101","102"]',
+    impl_results: JSON.stringify([
         { issue_number: "100", review_failed: "false" },
         { issue_number: "101", review_failed: "false" },
         { issue_number: "102", review_failed: "true", review_notes: "timed out" },
-      ]),
-    },
+      ])
   });
 
-  const out = seedGoalState({
-    repo: "o/r",
-    goalNumber: "50",
-    runsDir,
-    listSubIssuesFn: () => [
+  const out = seedFixtureGoal(runsDir, () => [
       { number: 100, title: "A", state: "open" },
       { number: 101, title: "B", state: "open" },
       { number: 102, title: "C", state: "open" },
       { number: 103, title: "D", state: "open" },
-    ],
-  });
+    ]);
 
   assert.deepEqual(out.completed_issues, []);
   assert.deepEqual(out.processed_issues, []);
@@ -507,19 +419,17 @@ test("seedGoalState excludes failed issues from processed_issues so they are re-
   const runsDir = join(tmp, "runs");
   mkdirSync(runsDir, { recursive: true });
 
-  writeRunState(runsDir, "run-prior", {
+  writeGoalHistoryRun(runsDir, "run-prior", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "2320",
-      completed_issues: '["2417","2418"]',
-      processed_issues: '["2416","2417","2418"]',
-      impl_results: JSON.stringify([
+    goalNumber: "2320",
+    completed_issues: '["2417","2418"]',
+    processed_issues: '["2416","2417","2418"]',
+    impl_results: JSON.stringify([
         { issue_number: "2416", review_failed: "true", review_notes: "Missing impl_result payload" },
         { issue_number: "2417", review_failed: "false", review_notes: "Approved" },
         { issue_number: "2418", review_failed: "false", review_notes: "Approved" },
-      ]),
-    },
+      ])
   });
 
   const out = seedGoalState({
@@ -549,21 +459,19 @@ test("seedGoalState never seeds impl_results from prior runs", () => {
   // If their stale impl_results are carried forward, split_results will
   // re-extract them as review_failures and handle_review_failures will
   // post duplicate comments, inflating the quarantine counter every cycle.
-  writeRunState(runsDir, "run-prior", {
+  writeGoalHistoryRun(runsDir, "run-prior", {
     status: "completed",
     pipeline: "goal_execute.dot",
-    context: {
-      goal_issue_number: "1214",
-      completed_issues: '["1356","1358","1360"]',
-      processed_issues: '["1355","1356","1357","1358","1360"]',
-      impl_results: JSON.stringify([
+    goalNumber: "1214",
+    completed_issues: '["1356","1358","1360"]',
+    processed_issues: '["1355","1356","1357","1358","1360"]',
+    impl_results: JSON.stringify([
         { issue_number: "1355", review_failed: "true", review_notes: "Review failed after 0/3 attempts." },
         { issue_number: "1356", review_failed: "false", review_notes: "Approved (attempt 1/3)." },
         { issue_number: "1357", review_failed: "true", review_notes: "Review failed after 0/3 attempts." },
         { issue_number: "1358", review_failed: "false", review_notes: "Approved (attempt 1/3)." },
         { issue_number: "1360", review_failed: "false", review_notes: "Approved (attempt 1/3)." },
-      ]),
-    },
+      ])
   });
 
   const out = seedGoalState({
@@ -583,3 +491,15 @@ test("seedGoalState never seeds impl_results from prior runs", () => {
 
   rmSync(tmp, { recursive: true, force: true });
 });
+
+function writeGoalHistoryRun(runsDir, runId, { status, pipeline, goalNumber, ...context }) {
+  writeRunState(runsDir, runId, {
+    status,
+    pipeline,
+    context: { goal_issue_number: goalNumber, ...context },
+  });
+}
+
+function seedFixtureGoal(runsDir, listSubIssuesFn) {
+  return seedGoalState({ repo: "o/r", goalNumber: "50", runsDir, listSubIssuesFn });
+}

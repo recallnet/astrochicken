@@ -1,14 +1,10 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { chmodSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 function writeRun(runsDir, runId, state) {
   const runPath = join(runsDir, runId);
@@ -17,14 +13,14 @@ function writeRun(runsDir, runId, state) {
 }
 
 function runCli(args = [], expectedStatus = 0, env = {}) {
-  const out = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
+  const out = spawnOpsCli([
+      ...args
+    ], {
+      env: {
       ...process.env,
       ...env,
-    },
-  });
+    }
+    });
   assert.equal(out.status, expectedStatus, `stderr=${out.stderr}\nstdout=${out.stdout}`);
   const payload = JSON.parse(String(out.stdout || "{}").trim() || "{}");
   return payload;

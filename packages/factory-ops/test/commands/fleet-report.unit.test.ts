@@ -1,19 +1,8 @@
+import { makeInstalledHostCapacity } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  FLEET_REPORT_SCHEMA,
-  FLEET_REPORT_VIEWS,
-  computeBacklogAge,
-  computeFailureRates,
-  computeHostPressure,
-  computeModelCost,
-  computeThroughput,
-  computeTimeToResolution,
-  computeVersionDrift,
-  fleetReport,
-  formatFleetReportHuman,
-} from "../../src/commands/fleet-report.ts";
+import { FLEET_REPORT_SCHEMA, FLEET_REPORT_VIEWS, computeBacklogAge, computeFailureRates, computeHostPressure, computeModelCost, computeThroughput, computeTimeToResolution, computeVersionDrift, fleetReport, formatFleetReportHuman } from "../../src/commands/fleet-report.ts";
 
 function sampleEvents() {
   return [
@@ -213,15 +202,7 @@ test("computeHostPressure reports deterministic fallback when host status absent
   assert.equal(fallback.by_host[0].status, "unknown");
 
   const payload = computeHostPressure({
-    hostStatus: {
-      hostId: "host-a",
-      status: "installed",
-      installationCount: 3,
-      host_active_slots: 2,
-      host_max_active_slots: 4,
-      host_capacity_pressure: 0.5,
-      host_pending_installations: 1,
-    },
+    hostStatus: makeInstalledHostCapacity(),
     events: sampleEvents(),
   });
   assert.equal(payload.totals.host_count, 1);
@@ -245,15 +226,7 @@ test("fleetReport emits schema envelope, window filtering, and per-view payload"
       generated_at: "2026-03-16T00:05:00.000Z",
       factories: sampleReleaseRows(),
     },
-    host_status: {
-      hostId: "host-a",
-      status: "installed",
-      installationCount: 3,
-      host_active_slots: 2,
-      host_max_active_slots: 4,
-      host_capacity_pressure: 0.5,
-      host_pending_installations: 1,
-    },
+    host_status: makeInstalledHostCapacity(),
   };
 
   const report = await fleetReport({
@@ -311,15 +284,7 @@ for (const view of [
           generated_at: "2026-03-16T00:05:00.000Z",
           factories: sampleReleaseRows(),
         },
-        host_status: {
-          hostId: "host-a",
-          status: "installed",
-          installationCount: 3,
-          host_active_slots: 2,
-          host_max_active_slots: 4,
-          host_capacity_pressure: 0.5,
-          host_pending_installations: 1,
-        },
+        host_status: makeInstalledHostCapacity(),
       },
     });
 

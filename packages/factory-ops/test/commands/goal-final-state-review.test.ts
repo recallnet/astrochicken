@@ -1,11 +1,24 @@
+import { makeCompletedGoal1789Summary } from "../helpers/ops-domain-fixtures.ts";
+import { before, after } from "node:test";
+import { createCanonicalEventStoreFixture } from "../supervisor/factory-status-postgres-fixture.ts";
+
+// Canonical lifecycle reads use a disposable database, never a host service.
+const eventStoreFixture = createCanonicalEventStoreFixture();
+const previousEventStoreUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+before(async () => {
+  await eventStoreFixture.setup();
+  process.env.HATCH_CANONICAL_EVENT_STORE_URL = eventStoreFixture.connectionString;
+});
+after(() => {
+  if (previousEventStoreUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+  else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousEventStoreUrl;
+  eventStoreFixture.teardown();
+});
+
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  canAutoCloseGoal,
-  listActiveGoalRuns,
-  reconcileGoalFinalState,
-} from "../../src/commands/goal-final-state-review.ts";
+import { canAutoCloseGoal, listActiveGoalRuns, reconcileGoalFinalState } from "../../src/commands/goal-final-state-review.ts";
 
 function makeIssueSource(goal = null) {
   return {
@@ -365,16 +378,7 @@ test("reconcileGoalFinalState treats canonically closed goals as already finaliz
     runsDir: "/tmp/test-runs",
     factoryId: "example-trading",
     readAllRunStatesFn: () => new Map(),
-    projectGoalFinalStateFn: () => makeCanonicalGoalProjection({
-      goal_number: "1789",
-      total_sub_issue_count: 2,
-      closed_sub_issue_numbers: ["1791", "1792"],
-      open_sub_issue_numbers: [],
-      has_sub_issues: true,
-      any_open_sub_issues: false,
-      goal_close_status: "closed",
-      goal_close_reason: "completed",
-    }),
+    projectGoalFinalStateFn: () => makeCanonicalGoalProjection(makeCompletedGoal1789Summary()),
     readGoalIssueFn: () => ({ number: 1789, state: "CLOSED" }),
     githubProjectionTarget: makeProjectionTarget(ghCalls),
   });
@@ -395,16 +399,7 @@ test("reconcileGoalFinalState repairs GitHub projection when canonical goal clos
     runsDir: "/tmp/test-runs",
     factoryId: "example-trading",
     readAllRunStatesFn: () => new Map(),
-    projectGoalFinalStateFn: () => makeCanonicalGoalProjection({
-      goal_number: "1789",
-      total_sub_issue_count: 2,
-      closed_sub_issue_numbers: ["1791", "1792"],
-      open_sub_issue_numbers: [],
-      has_sub_issues: true,
-      any_open_sub_issues: false,
-      goal_close_status: "closed",
-      goal_close_reason: "completed",
-    }),
+    projectGoalFinalStateFn: () => makeCanonicalGoalProjection(makeCompletedGoal1789Summary()),
     readGoalIssueFn: () => ({ number: 1789, state: "OPEN" }),
     githubProjectionTarget: makeProjectionTarget(ghCalls),
   });
@@ -425,16 +420,7 @@ test("reconcileGoalFinalState fails closed when canonical goal close projection 
     runsDir: "/tmp/test-runs",
     factoryId: "example-trading",
     readAllRunStatesFn: () => new Map(),
-    projectGoalFinalStateFn: () => makeCanonicalGoalProjection({
-      goal_number: "1789",
-      total_sub_issue_count: 2,
-      closed_sub_issue_numbers: ["1791", "1792"],
-      open_sub_issue_numbers: [],
-      has_sub_issues: true,
-      any_open_sub_issues: false,
-      goal_close_status: "closed",
-      goal_close_reason: "completed",
-    }),
+    projectGoalFinalStateFn: () => makeCanonicalGoalProjection(makeCompletedGoal1789Summary()),
     readGoalIssueFn: () => ({ number: 1789, state: "OPEN" }),
     githubProjectionTarget: makeProjectionTarget(ghCalls, { closeOk: false }),
   });

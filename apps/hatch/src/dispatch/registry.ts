@@ -26,6 +26,7 @@ export interface FactoryRegistryInstanceDocument {
 	instance_id: string;
 	kind_id: string;
 	target_repo: string;
+	control_plane_repo?: string;
 	status: string;
 	assigned_host_id: string;
 	installation_manifest_path?: string;
@@ -127,6 +128,7 @@ const INSTANCE_KEYS = new Set([
 	"instance_id",
 	"kind_id",
 	"target_repo",
+	"control_plane_repo",
 	"status",
 	"assigned_host_id",
 	"installation_manifest_path",
@@ -332,6 +334,10 @@ export function validateFactoryRegistryDocument(value: unknown): FactoryRegistry
 		const targetRepo = requireString(instance, "target_repo", issues, `${pathPrefix}.target_repo`);
 		if (targetRepo && !looksLikeRepoOrPath(targetRepo)) {
 			issues.push({ path: `${pathPrefix}.target_repo`, message: "must be an owner/repo or local path" });
+		}
+		const controlPlaneRepo = optionalString(instance, "control_plane_repo", issues, `${pathPrefix}.control_plane_repo`);
+		if (controlPlaneRepo && !looksLikeRepoOrPath(controlPlaneRepo)) {
+			issues.push({ path: `${pathPrefix}.control_plane_repo`, message: "must be an owner/repo or local path" });
 		}
 		requireString(instance, "status", issues, `${pathPrefix}.status`);
 		requireString(instance, "assigned_host_id", issues, `${pathPrefix}.assigned_host_id`);

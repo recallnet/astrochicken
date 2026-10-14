@@ -1,20 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 
 import { parseJson } from "../cli-helpers.ts";
+import { resolveMergeTelemetryFilePath } from "../merge-resolution-telemetry-path.ts";
 
 function trim(value) {
   return String(value ?? "").trim();
-}
-
-// Imported inline to avoid circular dependency with merge-item-ops.
-function resolveMergeTelemetryFilePath({ factoryId = "", runsDir = "" } = {}) {
-  const resolvedFactoryId = trim(factoryId);
-  const resolvedRunsDir = trim(runsDir);
-  const dir = resolvedRunsDir || `.hatch/${resolvedFactoryId}/runs`;
-  return {
-    factoryId: resolvedFactoryId,
-    filePath: `${dir}/.merge-resolution-failures.jsonl`,
-  };
 }
 
 export function countResolutionFailures({

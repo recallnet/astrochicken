@@ -1,18 +1,11 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
+
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
 
 function writeRegistry(root, { serviceTier = "gold", channel = "stable", runtime = ">=1.2.0 <2.0.0" } = {}) {
   const registryPath = join(root, "factory-registry.json");
@@ -45,10 +38,9 @@ function writeProfile(root, payload) {
 }
 
 function runCli(args, { expectStatus = 0 } = {}) {
-  const run = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      ...args
+    ]);
   assert.equal(run.status, expectStatus, `stderr=${run.stderr}\nstdout=${run.stdout}`);
   return run;
 }

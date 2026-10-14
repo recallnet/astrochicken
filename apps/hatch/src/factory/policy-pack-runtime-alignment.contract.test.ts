@@ -6,10 +6,12 @@
  * deleted goal-issue-state.mjs module. The module was removed as part of the
  * wave→goal migration. The policy-pack self-consistency checks remain.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
+
+import { resolveEffectiveModelPolicyForFactoryConfig } from "./model-policy.js";
 
 const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
 
@@ -35,10 +37,6 @@ describe("policy-pack runtime alignment contract", () => {
 			root: resolve(REPO_ROOT, "factories/mothership/policy-pack/v1"),
 		},
 		{
-			name: "factories/example-trading/policy-pack/v1",
-			root: resolve(REPO_ROOT, "factories/example-trading/policy-pack/v1"),
-		},
-		{
 			name: "factories/brainstorm/policy-pack/v1",
 			root: resolve(REPO_ROOT, "factories/brainstorm/policy-pack/v1"),
 		},
@@ -56,6 +54,19 @@ describe("policy-pack runtime alignment contract", () => {
 			expect(policyVal).toBeGreaterThan(0);
 		});
 	}
+
+	// @context:regression Config-only managed instances resolve inline model policy, not a deleted local pack.
+	it("example-trading resolves its inline policy through the shared runtime configuration", () => {
+		const factoryConfigPath = resolve(REPO_ROOT, "factories/example-trading/factory.config.json");
+		const config = JSON.parse(readFileSync(factoryConfigPath, "utf8"));
+		expect(config.policyPack).toBeUndefined();
+		expect(existsSync(resolve(REPO_ROOT, "factories/example-trading/policy-pack"))).toBe(false);
+		expect(config.pipeline.supervisor_tick).toBe("packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs");
+		const policy = resolveEffectiveModelPolicyForFactoryConfig({ factoryConfigPath, env: {} });
+		expect(policy?.defaultProvider).toBe("openrouter");
+		expect(policy?.defaultModel).toBe("openai/gpt-5.3-codex");
+		expect(policy?.policySource.policyVersion).toBe("inline-config");
+	});
 
 	it("block-wait-retry cooldown_minutes is a positive integer across all policy packs", () => {
 		for (const pack of POLICY_PACKS) {

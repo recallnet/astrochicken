@@ -6,7 +6,7 @@ import { delimiter, join } from "node:path";
 import test from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 
-import { buildCommandEnv, createAsyncChildRegistry, runCommand, terminateProcessTree } from "./run-gates.mjs";
+import { buildCommandEnv, createAsyncChildRegistry, runCommand, terminateProcessTree, resolveFullProfileTestSuites } from "./run-gates.mjs";
 
 test("buildCommandEnv prepends local node_modules bin to PATH", () => {
   const cwd = mkdtempSync(join(tmpdir(), "run-gates-env-"));
@@ -143,4 +143,15 @@ test("runCommand fails closed when a gate exceeds its timeout", () => {
   assert.equal(run.timedOut, true);
   assert.equal(run.timeoutMs, 50);
   assert.equal(run.exitStatus, 1);
+});
+
+
+test("full profile executes actual package defaults with unambiguous proof identities", () => {
+  const suites = resolveFullProfileTestSuites();
+  assert.deepEqual(suites.map((suite) => suite.name), ["test:guard-gates", "test:wave-claim-gates", "hatch#default", "@hatch/factory-ops#default", "@recallnet/factory-telemetry#default"]);
+  for (const packageName of ["hatch", "@hatch/factory-ops", "@recallnet/factory-telemetry"]) {
+    const suite = suites.find((entry) => entry.name === `${packageName}#default`);
+    assert.equal(suite.command, "pnpm");
+    assert.deepEqual(suite.args, ["--filter", packageName, "test"]);
+  }
 });

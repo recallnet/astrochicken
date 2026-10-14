@@ -99,9 +99,9 @@ describe("cli workspace bootstrap", () => {
 	it("bootstraps the repo workspace before cmdRun executes the pipeline", async () => {
 		const { cmdRun } = await import("./cli-commands.js");
 		const runPipeline = vi.fn(async () => undefined);
-		const graphDir = path.dirname(path.resolve("factories/example-trading/graphs/factory_supervisor_tick.dot"));
+		const graphDir = path.dirname(path.resolve("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
 
-		await cmdRun(["factories/example-trading/graphs/factory_supervisor_tick.dot"], {
+		await cmdRun(["docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"], {
 			runPipeline,
 			parseGraph: vi.fn(),
 			loadIntentRegistryForFile: vi.fn(),
@@ -119,9 +119,9 @@ describe("cli workspace bootstrap", () => {
 	it("bootstraps the repo workspace before cmdResume executes the pipeline", async () => {
 		const { cmdResume } = await import("./cli-commands.js");
 		const runPipeline = vi.fn(async () => undefined);
-		const graphDir = path.dirname(path.resolve("factories/example-trading/graphs/factory_supervisor_tick.dot"));
+		const graphDir = path.dirname(path.resolve("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
 
-		await cmdResume(["factories/example-trading/graphs/factory_supervisor_tick.dot"], {
+		await cmdResume(["docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"], {
 			runPipeline,
 			parseGraph: vi.fn(),
 			loadIntentRegistryForFile: vi.fn(),
@@ -148,7 +148,7 @@ describe("cli workspace bootstrap", () => {
 		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
 
 		await expect(
-			cmdRun(["factories/example-trading/graphs/factory_supervisor_tick.dot"], {
+			cmdRun(["docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"], {
 				runPipeline,
 				parseGraph: vi.fn(),
 				loadIntentRegistryForFile: vi.fn(),

@@ -208,15 +208,7 @@ describe("runtime lifecycle telemetry agent identity", () => {
 
 		const nonTrustedStart = events.find((event) => event.kind === "stage.start" && event.nodeId === "non_trusted");
 		expect(nonTrustedStart?.data).toEqual(
-			expect.objectContaining({
-				attempt: "1",
-				trust_partition: "builder",
-				trust_domain: "builder",
-				trust_partition_key: "builder/unknown",
-				trust_role: "unknown",
-				handler_type: "codergen",
-				model: "",
-			}),
+			expect.objectContaining(unknownBuilderAttempt()),
 		);
 		expect(nonTrustedStart?.traceId).toMatch(/^builder-\d{6}$/);
 
@@ -229,15 +221,7 @@ describe("runtime lifecycle telemetry agent identity", () => {
 
 		const traceNonTrustedStart = traceEntries.find((entry) => entry.kind === "stage.start" && entry.nodeId === "non_trusted");
 		expect(traceNonTrustedStart?.data).toEqual(
-			expect.objectContaining({
-				attempt: "1",
-				trust_partition: "builder",
-				trust_domain: "builder",
-				trust_partition_key: "builder/unknown",
-				trust_role: "unknown",
-				handler_type: "codergen",
-				model: "",
-			}),
+			expect.objectContaining(unknownBuilderAttempt()),
 		);
 		expect(traceNonTrustedStart?.traceId).toMatch(/^builder-\d{6}$/);
 
@@ -329,15 +313,7 @@ describe("runtime lifecycle telemetry agent identity", () => {
 
 		const errorEvent = events.find((event) => event.kind === "stage.error" && event.nodeId === "non_trusted_fail");
 		expect(errorEvent?.data).toEqual(
-			expect.objectContaining({
-				attempt: "1",
-				trust_partition: "builder",
-				trust_domain: "builder",
-				trust_partition_key: "builder/unknown",
-				trust_role: "unknown",
-				handler_type: "codergen",
-				model: "",
-			}),
+			expect.objectContaining(unknownBuilderAttempt()),
 		);
 		expect(errorEvent?.data?.agent_id).toBeUndefined();
 		expect(errorEvent?.data?.agent_role).toBeUndefined();
@@ -346,7 +322,16 @@ describe("runtime lifecycle telemetry agent identity", () => {
 		const traceEntries = readTraceEntries(tracePath);
 		const traceError = traceEntries.find((entry) => entry.kind === "stage.error" && entry.nodeId === "non_trusted_fail");
 		expect(traceError?.data).toEqual(
-			expect.objectContaining({
+			expect.objectContaining(unknownBuilderAttempt()),
+		);
+		expect(traceError?.data?.agent_id).toBeUndefined();
+		expect(traceError?.data?.agent_role).toBeUndefined();
+		expect(traceError?.traceId).toMatch(/^builder-\d{6}$/);
+	});
+});
+
+function unknownBuilderAttempt() {
+	return {
 				attempt: "1",
 				trust_partition: "builder",
 				trust_domain: "builder",
@@ -354,10 +339,5 @@ describe("runtime lifecycle telemetry agent identity", () => {
 				trust_role: "unknown",
 				handler_type: "codergen",
 				model: "",
-			}),
-		);
-		expect(traceError?.data?.agent_id).toBeUndefined();
-		expect(traceError?.data?.agent_role).toBeUndefined();
-		expect(traceError?.traceId).toMatch(/^builder-\d{6}$/);
-	});
-});
+			};
+}

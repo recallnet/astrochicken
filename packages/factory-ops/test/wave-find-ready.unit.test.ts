@@ -1,3 +1,4 @@
+import { waveClaimFixture } from "./wave-ready-fixtures.test-support.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { pickAndClaimReadyWave, pickReadyWave, rankReadyWaves } from "../src/commands/wave-find-ready.ts";
@@ -34,15 +35,7 @@ test("pickAndClaimReadyWave emits marker only after successful claim", () => {
     { number: 10, title: "Wave Ready: goal-1-wave-1", labels: [{ name: "ready" }], milestone: { title: "goal-1-wave-1" } },
   ];
 
-  const claimAcquire = ({ ownerId }) => ({
-    ok: true,
-    acquired: ownerId === "worker-a",
-    reason: ownerId === "worker-a" ? "claim_acquired" : "active_claim_owned_by_other",
-    claim: {
-      claim_token: "wave_claim_10",
-      lease_expires_at: "2026-01-01T00:20:00.000Z",
-    },
-  });
+  const claimAcquire = ({ ownerId }) => (waveClaimFixture({ claimToken: "wave_claim_10", acquired: ownerId === "worker-a", reason: ownerId === "worker-a" ? "claim_acquired" : "active_claim_owned_by_other" }));
 
   const winner = pickAndClaimReadyWave({
     repo: "recallnet/astrochicken",
@@ -79,15 +72,7 @@ test("pickAndClaimReadyWave continues to next candidate when first ready marker 
     if (Number(issueNumber) === 30) {
       return { ok: true, acquired: false, reason: "active_claim_owned_by_other" };
     }
-    return {
-      ok: true,
-      acquired: true,
-      reason: "claim_acquired",
-      claim: {
-        claim_token: "wave_claim_31",
-        lease_expires_at: "2026-01-01T00:20:00.000Z",
-      },
-    };
+    return waveClaimFixture({ claimToken: "wave_claim_31" });
   };
 
   const out = pickAndClaimReadyWave({
@@ -113,15 +98,7 @@ test("pickAndClaimReadyWave never attempts claim on wave-in-progress markers", (
   const claimedIssues = [];
   const claimAcquire = ({ issueNumber }) => {
     claimedIssues.push(Number(issueNumber));
-    return {
-      ok: true,
-      acquired: true,
-      reason: "claim_acquired",
-      claim: {
-        claim_token: "wave_claim_21",
-        lease_expires_at: "2026-01-01T00:20:00.000Z",
-      },
-    };
+    return waveClaimFixture({ claimToken: "wave_claim_21" });
   };
 
   const out = pickAndClaimReadyWave({
@@ -154,15 +131,7 @@ test("pickAndClaimReadyWave dedupes duplicate markers for the same milestone bef
     workerId: "worker-e",
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: Number(issueNumber) === 50,
-        reason: Number(issueNumber) === 50 ? "claim_acquired" : "active_claim_owned_by_other",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}`, acquired: Number(issueNumber) === 50, reason: Number(issueNumber) === 50 ? "claim_acquired" : "active_claim_owned_by_other" });
     },
   });
 
@@ -183,15 +152,7 @@ test("pickAndClaimReadyWave skips ready marker when milestone already has live r
     activeMilestones: ["goal-6-wave-1"],
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: true,
-        reason: "claim_acquired",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}` });
     },
   });
 
@@ -214,15 +175,7 @@ test("pickAndClaimReadyWave skips claim when prior wave is still open", () => {
     workerId: "worker-g",
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: true,
-        reason: "claim_acquired",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}` });
     },
     getMilestoneOpenIssues: (repo, milestoneTitle) => {
       assert.equal(repo, "recallnet/astrochicken");
@@ -255,15 +208,7 @@ test("pickAndClaimReadyWave claims wave when prior wave has no remaining open is
     workerId: "worker-h",
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: true,
-        reason: "claim_acquired",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}` });
     },
     getMilestoneOpenIssues: () => [],
   });
@@ -287,15 +232,7 @@ test("pickAndClaimReadyWave fails closed when prior-wave query returns null", ()
     workerId: "worker-i",
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: true,
-        reason: "claim_acquired",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}` });
     },
     getMilestoneOpenIssues: () => null,
   });
@@ -358,15 +295,7 @@ test("pickAndClaimReadyWave fails closed when prior-wave query function is not p
     workerId: "worker-j",
     claimAcquire: ({ issueNumber }) => {
       claimedIssues.push(Number(issueNumber));
-      return {
-        ok: true,
-        acquired: true,
-        reason: "claim_acquired",
-        claim: {
-          claim_token: `wave_claim_${issueNumber}`,
-          lease_expires_at: "2026-01-01T00:20:00.000Z",
-        },
-      };
+      return waveClaimFixture({ claimToken: `wave_claim_${issueNumber}` });
     },
     // Explicitly emulate the guard being miswired/missing.
     getMilestoneOpenIssues: null,

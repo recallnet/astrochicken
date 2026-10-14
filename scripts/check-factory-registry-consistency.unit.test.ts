@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { validateFactoryRegistryConsistency } from "./check-factory-registry-consistency.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-factory-registry-consistency.mjs");
+const checkerPath = join(scriptsDir, "check-factory-registry-consistency.ts");
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "managed-factory-registry");
 
 function fixtureRoot(name) {

@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 
-const promptsRoot = "packages/factory-prompts/prompts";
+const promptsRoot = new URL("../prompts/", import.meta.url).pathname;
 
 test("factory prompts package exports prompt trees with markdown content", () => {
   assert.equal(existsSync(promptsRoot), true);

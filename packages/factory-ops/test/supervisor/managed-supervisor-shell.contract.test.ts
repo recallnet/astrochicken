@@ -23,10 +23,7 @@ test("managed supervisor shell graph exists with deterministic shell flow", () =
   assert.match(dot, /classify_blocked_platform -> set_empty_domain_result/);
   assert.match(dot, /upstream_gate -> evaluate_action_items \[condition="has_open_upstream_bugs!=true"\]/);
   assert.match(dot, /evaluate_action_items -> action_item_gate/);
-  assert.match(dot, /action_item_gate -> set_failure_classification_local \[condition="has_action_items=true"\]/);
-  assert.match(dot, /set_failure_classification_local -> set_failure_reason_action_items/);
-  assert.match(dot, /set_failure_reason_action_items -> classify_blocked_local/);
-  assert.match(dot, /classify_blocked_local -> set_empty_domain_result/);
+  assert.match(dot, /action_item_gate -> run_domain_graph \[condition="has_action_items=true"\]/);
   assert.match(dot, /action_item_gate -> select_intake \[condition="has_action_items!=true"\]/);
   assert.match(dot, /select_intake -> intake_gate/);
   assert.match(dot, /intake_gate -> run_domain_graph \[condition="has_issue=true"\]/);
@@ -39,12 +36,11 @@ test("managed supervisor shell graph exists with deterministic shell flow", () =
   assert.match(dot, /emit_run_summary -> done/);
 });
 
-test("managed supervisor blocked and paused paths halt before domain graph", () => {
+test("managed supervisor upstream-blocked and paused paths halt before domain graph", () => {
   const dot = readDot();
   assert.match(dot, /classify_paused -> classify_paused_failure/);
   assert.match(dot, /classify_paused_failure -> set_empty_domain_result/);
   assert.match(dot, /classify_blocked_platform -> set_empty_domain_result/);
-  assert.match(dot, /classify_blocked_local -> set_empty_domain_result/);
   assert.match(dot, /set_empty_domain_result -> persist_lifecycle_state/);
   assert.match(dot, /persist_lifecycle_state -> emit_run_summary/);
 

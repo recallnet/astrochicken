@@ -7,6 +7,20 @@ jobs:
   pre-merge-quality:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    services:
+      event-store:
+        image: postgres:18
+        env:
+          POSTGRES_DB: astrochicken_factory
+          POSTGRES_USER: astrochicken
+          POSTGRES_PASSWORD: astrochicken
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U astrochicken -d astrochicken_factory"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     permissions:
       contents: read
       packages: read
@@ -47,6 +61,7 @@ jobs:
 
       - name: Run checked-in factory health
         env:
+          HATCH_CANONICAL_EVENT_STORE_URL: postgres://astrochicken:astrochicken@127.0.0.1:55432/astrochicken_factory
           NODE_OPTIONS: --experimental-strip-types
         run: pnpm --silent factory:health:ci -- --strict
 

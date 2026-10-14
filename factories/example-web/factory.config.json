@@ -87,8 +87,14 @@
         "catch_up": false,
         "repo": "recallnet/astrochicken",
         "notify_slack": true,
-        "issue_labels": ["daily-release-report"]
+        "issue_labels": [
+          "daily-release-report"
+        ]
       }
     ]
+  },
+  "conformance": {
+    "smoke_graph": "factories/_shared/conformance/factory_supervisor_tick.dot",
+    "entrypoint": "factories/_shared/conformance/run-conformance.sh"
   }
 }

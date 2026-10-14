@@ -115,6 +115,29 @@ function assistantSession() {
 	};
 }
 
+function executeRoutingNode(handler: WorktreeAgentHandler | KnowledgeWorkerHandler, id: string, attrs: Record<string, string>, context: Context) {
+	return handler.execute(new AbortController().signal, { id, attrs: { prompt: "test", ...attrs } } as any, context, "");
+}
+
+function makePolicyHandler(
+ Handler: typeof WorktreeAgentHandler | typeof KnowledgeWorkerHandler,
+ find: any,
+ modelPolicy: EffectiveModelPolicy = policy,
+ defaultModel = "gpt-5.4",
+) {
+ const resourceLoader = Handler === KnowledgeWorkerHandler ? {
+  getExtensions: () => [], getSkills: () => [], getPrompts: () => [],
+  getThemes: () => [], getAgentsFiles: () => [], getSystemPrompt: () => "",
+  getAppendSystemPrompt: () => [], getPathMetadata: () => ({}),
+  extendResources: () => undefined, reload: () => undefined,
+ } : { getAppendSystemPrompt: () => [] };
+ return new Handler({
+  modelRegistry: { find }, authStorage: {}, resourceLoader,
+  defaultModel, defaultProvider: "openai", modelPolicy,
+  workDir: ".", eventBus: new EventBus(),
+ } as any);
+}
+
 describe("worktree handler fallback routing", () => {
 	let fixture: ReturnType<typeof createWorktreeFixture>;
 
@@ -143,51 +166,23 @@ describe("worktree handler fallback routing", () => {
 		createAgentSessionMock.mockResolvedValue({ session: assistantSession() });
 		promptAndExtractTextMock.mockResolvedValue("done");
 
-		const handler = new WorktreeAgentHandler({
-			modelRegistry: { find: modelRegistryFind } as any,
-			authStorage: {} as any,
-			resourceLoader: { getAppendSystemPrompt: () => [] } as any,
-			defaultModel: "gpt-5.4",
-			defaultProvider: "openai",
-			modelPolicy: policy,
-			workDir: ".",
-			eventBus: new EventBus(),
-		} as any);
+		const handler = makePolicyHandler(WorktreeAgentHandler, modelRegistryFind);
 
-		const missingRepoOutcome = await handler.execute(
-			new AbortController().signal,
-			{
-				id: "build-missing-repo",
-				attrs: {
-					type: "agent.worktree",
-					repo: `${fixture.root}/repo-missing`,
-					branch: "wave/missing",
-					prompt: "test",
-				},
-			} as any,
-			new Context({ __run_id: "run-missing" }),
-			"",
-		);
+		const missingRepoOutcome = await executeRoutingNode(handler, "build-missing-repo", {
+			type: "agent.worktree",
+			repo: `${fixture.root}/repo-missing`,
+			branch: "wave/missing",
+		}, new Context({ __run_id: "run-missing" }));
 
 		expect(missingRepoOutcome.status).toBe(StageStatus.Failed);
 		expect(missingRepoOutcome.error).toContain("failed to create worktree");
 		expect(missingRepoOutcome.error).toContain(".git.hatch.lock");
 
-		const outcome = await handler.execute(
-			new AbortController().signal,
-			{
-				id: "build-with-fixture",
-				attrs: {
-					type: "agent.worktree",
-					// Hermetic fixture ensures repo lock-path directories exist.
-					repo: fixture.repoDir,
-					branch: "wave/test",
-					prompt: "test",
-				},
-			} as any,
-			new Context({ __run_id: "run-1" }),
-			"",
-		);
+		const outcome = await executeRoutingNode(handler, "build-with-fixture", {
+			type: "agent.worktree",
+			repo: fixture.repoDir,
+			branch: "wave/test",
+		}, new Context({ __run_id: "run-1" }));
 
 		expect(outcome.status).toBe(StageStatus.Completed);
 		expect(modelRegistryFind.mock.calls.map((call) => call.slice(0, 2))).toEqual([["openai", "gpt-5.4"]]);
@@ -201,32 +196,13 @@ describe("worktree handler fallback routing", () => {
 			.mockResolvedValueOnce({ session: assistantSession() });
 		promptAndExtractTextMock.mockResolvedValue("done");
 
-		const handler = new WorktreeAgentHandler({
-			modelRegistry: { find: modelRegistryFind } as any,
-			authStorage: {} as any,
-			resourceLoader: { getAppendSystemPrompt: () => [] } as any,
-			defaultModel: "gpt-5.4",
-			defaultProvider: "openai",
-			modelPolicy: policy,
-			workDir: ".",
-			eventBus: new EventBus(),
-		} as any);
+		const handler = makePolicyHandler(WorktreeAgentHandler, modelRegistryFind);
 
-		const outcome = await handler.execute(
-			new AbortController().signal,
-			{
-				id: "build",
-				attrs: {
-					type: "agent.worktree",
-					// Hermetic fixture ensures repo lock-path directories exist.
-					repo: fixture.repoDir,
-					branch: "wave/test",
-					prompt: "test",
-				},
-			} as any,
-			new Context({ __run_id: "run-1" }),
-			"",
-		);
+		const outcome = await executeRoutingNode(handler, "build", {
+			type: "agent.worktree",
+			repo: fixture.repoDir,
+			branch: "wave/test",
+		}, new Context({ __run_id: "run-1" }));
 
 		expect(outcome.status).toBe(StageStatus.Completed);
 		expect(modelRegistryFind.mock.calls.map((call) => call.slice(0, 2))).toEqual([
@@ -244,34 +220,11 @@ describe("worktree handler fallback routing", () => {
 			.mockResolvedValueOnce({ session: assistantSession() });
 		promptAndExtractTextMock.mockResolvedValue("kw output");
 
-		const handler = new KnowledgeWorkerHandler({
-			modelRegistry: { find: modelRegistryFind } as any,
-			authStorage: {} as any,
-			resourceLoader: {
-				getExtensions: () => [],
-				getSkills: () => [],
-				getPrompts: () => [],
-				getThemes: () => [],
-				getAgentsFiles: () => [],
-				getSystemPrompt: () => "",
-				getAppendSystemPrompt: () => [],
-				getPathMetadata: () => ({}),
-				extendResources: () => undefined,
-				reload: () => undefined,
-			} as any,
-			defaultModel: "gpt-5.4",
-			defaultProvider: "openai",
-			modelPolicy: policy,
-			workDir: ".",
-			eventBus: new EventBus(),
-		} as any);
+		const handler = makePolicyHandler(KnowledgeWorkerHandler, modelRegistryFind);
 
-		const outcome = await handler.execute(
-			new AbortController().signal,
-			{ id: "research", attrs: { type: "agent.kw", prompt: "test" } } as any,
-			new Context({ __run_id: "run-2" }),
-			"",
-		);
+		const outcome = await executeRoutingNode(handler, "research", {
+			type: "agent.kw",
+		}, new Context({ __run_id: "run-2" }));
 
 		expect(outcome.status).toBe(StageStatus.Completed);
 		expect(modelRegistryFind.mock.calls.map((call) => call.slice(0, 2))).toEqual([
@@ -285,74 +238,27 @@ describe("worktree handler fallback routing", () => {
 	});
 
 	it("agent.worktree fails early when node overrides violate allowed model policy", async () => {
-		const handler = new WorktreeAgentHandler({
-			modelRegistry: { find: vi.fn(() => ({ id: "openai:openai/gpt-5.4" })) } as any,
-			authStorage: {} as any,
-			resourceLoader: { getAppendSystemPrompt: () => [] } as any,
-			defaultModel: "openai/gpt-5.4",
-			defaultProvider: "openai",
-			modelPolicy: restrictivePolicy,
-			workDir: ".",
-			eventBus: new EventBus(),
-		} as any);
+		const handler = makePolicyHandler(WorktreeAgentHandler, vi.fn(() => ({ id: "openai:openai/gpt-5.4" })), restrictivePolicy, "openai/gpt-5.4");
 
 		await expect(
-			handler.execute(
-				new AbortController().signal,
-				{
-					id: "build-disallowed-model",
-					attrs: {
-						type: "agent.worktree",
-						repo: fixture.repoDir,
-						branch: "wave/disallowed-model",
-						prompt: "test",
-						agent_model: "anthropic/claude-opus-4-1",
-					},
-				} as any,
-				new Context({ __run_id: "run-disallowed-model" }),
-				"",
-			),
+			executeRoutingNode(handler, "build-disallowed-model", {
+			type: "agent.worktree",
+			repo: fixture.repoDir,
+			branch: "wave/disallowed-model",
+			agent_model: "anthropic/claude-opus-4-1",
+		}, new Context({ __run_id: "run-disallowed-model" })),
 		).rejects.toThrow(/model-policy.*violates allowed_models/);
 		expect(createAgentSessionMock).not.toHaveBeenCalled();
 	});
 
 	it("agent.kw fails early when node overrides violate provider order policy", async () => {
-		const handler = new KnowledgeWorkerHandler({
-			modelRegistry: { find: vi.fn(() => ({ id: "openai:openai/gpt-5.4" })) } as any,
-			authStorage: {} as any,
-			resourceLoader: {
-				getExtensions: () => [],
-				getSkills: () => [],
-				getPrompts: () => [],
-				getThemes: () => [],
-				getAgentsFiles: () => [],
-				getSystemPrompt: () => "",
-				getAppendSystemPrompt: () => [],
-				getPathMetadata: () => ({}),
-				extendResources: () => undefined,
-				reload: () => undefined,
-			} as any,
-			defaultModel: "openai/gpt-5.4",
-			defaultProvider: "openai",
-			modelPolicy: restrictivePolicy,
-			workDir: ".",
-			eventBus: new EventBus(),
-		} as any);
+		const handler = makePolicyHandler(KnowledgeWorkerHandler, vi.fn(() => ({ id: "openai:openai/gpt-5.4" })), restrictivePolicy, "openai/gpt-5.4");
 
 		await expect(
-			handler.execute(
-				new AbortController().signal,
-				{
-					id: "kw-disallowed-provider",
-					attrs: {
-						type: "agent.kw",
-						prompt: "test",
-						llm_provider: "openrouter",
-					},
-				} as any,
-				new Context({ __run_id: "run-disallowed-provider" }),
-				"",
-			),
+			executeRoutingNode(handler, "kw-disallowed-provider", {
+			type: "agent.kw",
+			llm_provider: "openrouter",
+		}, new Context({ __run_id: "run-disallowed-provider" })),
 		).rejects.toThrow(/model-policy.*violates provider_order/);
 		expect(createAgentSessionMock).not.toHaveBeenCalled();
 	});

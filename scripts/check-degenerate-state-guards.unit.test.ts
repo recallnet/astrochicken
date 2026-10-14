@@ -20,7 +20,7 @@ import {
 } from "./check-degenerate-state-guards.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-degenerate-state-guards.mjs");
+const checkerPath = join(scriptsDir, "check-degenerate-state-guards.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 // Baseline contract markers referenced by scripts/degenerate-state-guard-baseline.json.

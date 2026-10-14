@@ -1,9 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
+
+import { configureFactoryGuardScope, factoryKey, loadFactoryGuardState, resolvePolicy, saveFactoryGuardState } from "./guard-core.js";
+import { acquireLock } from "./lock.js";
+import { configureRunStorageScope, createRunState, runsDir } from "./run.js";
 
 import {
 	recordGuardMetadata,
 	buildBlockedDecision,
 	statusForGuardDecision,
+	resetGuardBudgets,
+	incrementGuardCounter,
 } from "./guard-recovery.js";
 
 import type {
@@ -397,5 +407,83 @@ describe("statusForGuardDecision", () => {
 	it("returns guarded when circuitState is closed", () => {
 		const decision = makeDecision({ circuitState: "closed" });
 		expect(statusForGuardDecision(decision)).toBe("guarded");
+	});
+});
+
+
+describe("durable guard reset authorization", () => {
+	let root: string;
+	let previousRuns: string;
+	let previousLocks: string | undefined;
+	const now = new Date("2026-10-14T20:00:00.000Z");
+	beforeEach(() => {
+		previousRuns = runsDir();
+		previousLocks = process.env.HATCH_LOCK_DIR;
+		root = mkdtempSync(join(tmpdir(), "guard-reset-authorization-"));
+		process.env.HATCH_LOCK_DIR = join(root, "locks");
+		configureFactoryGuardScope({ guardDir: join(root, "guard") });
+	});
+	afterEach(() => {
+		configureFactoryGuardScope();
+		configureRunStorageScope({ runsDir: previousRuns });
+		if (previousLocks === undefined) delete process.env.HATCH_LOCK_DIR;
+		else process.env.HATCH_LOCK_DIR = previousLocks;
+		rmSync(root, { recursive: true, force: true });
+	});
+	function fixtureRun() {
+		const run = createRunState("reset-run", "fixture.dot", { runsDir: join(root, "runs") });
+		run.context = { guard_factory_scope: "reset-fixture", guard_worker_period: "fixture-period", guard_lock_timeout_ms: "1" };
+		run.guard.counters.tool_calls = 5;
+		return run;
+	}
+	it("denies a different run owner without changing the exhausted budget", () => {
+		const run = fixtureRun();
+		const result = resetGuardBudgets({ runState: run, actorId: "another-operator" });
+		expect(result.ok).toBe(false);
+		expect(result.reason).toBe("owner_mismatch");
+		expect(result.artifactPath).toBe("");
+		expect(run.guard.counters.tool_calls).toBe(5);
+		expect(result.runState.counters).not.toBe(run.guard.counters);
+	});
+	it("requires force to reset another factory owner and persists an auditable reset", () => {
+		const run = fixtureRun();
+		const policy = resolvePolicy(run, run.context);
+		const factory = loadFactoryGuardState(policy, "other-factory-owner", now);
+		factory.counters.tool_calls = 8;
+		factory.owner.ownerId = "other-factory-owner";
+		saveFactoryGuardState(policy, factory);
+		const denied = resetGuardBudgets({ runState: run, actorId: run.guard.owner.ownerId, now });
+		expect(denied.reason).toBe("factory_owner_mismatch");
+		expect(denied.factoryState.counters.tool_calls).toBe(8);
+		expect(run.guard.counters.tool_calls).toBe(5);
+		const emit = vi.fn();
+		const reset = resetGuardBudgets({ runState: run, actorId: "operator", force: true, now, eventBus: { emit } as any });
+		expect(reset.ok).toBe(true);
+		expect(reset.reason).toBe("reset_applied");
+		expect(reset.runState.counters.tool_calls).toBe(0);
+		expect(reset.factoryState.counters.tool_calls).toBe(0);
+		expect(reset.runState.owner.ownerId).toBe("operator");
+		expect(reset.runState.resetCount).toBe(1);
+		expect(existsSync(reset.artifactPath)).toBe(true);
+		expect(emit.mock.calls.some(([event]) => event.kind === "guard.reset" && event.data.artifact_path === reset.artifactPath)).toBe(true);
+	});
+	it("fails closed when the factory lease is already held", () => {
+		const run = fixtureRun();
+		const policy = resolvePolicy(run, run.context);
+		const release = acquireLock(`factory-guard-${factoryKey(policy.factoryScope, policy.workerPeriod)}`, 1, { ownerId: "other-worker" });
+		expect(release).not.toBeNull();
+		try {
+			const result = resetGuardBudgets({ runState: run, actorId: "", force: true, now });
+			expect(result.ok).toBe(false);
+			expect(result.reason).toBe("factory_lease_unavailable");
+			expect(run.guard.counters.tool_calls).toBe(5);
+		} finally { release?.(); }
+	});
+	it("leaves budget unchanged for an unrecognized counter", () => {
+		const run = fixtureRun();
+		const decision = incrementGuardCounter({ runState: run, counter: "unsupported" as any });
+		expect(decision.allowed).toBe(true);
+		expect(decision.counter).toBe("");
+		expect(run.guard.counters.tool_calls).toBe(5);
 	});
 });

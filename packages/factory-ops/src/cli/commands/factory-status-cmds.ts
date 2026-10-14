@@ -1,6 +1,5 @@
 import { Command, Option } from "clipanion";
 
-import { factoryFleetBootstrapSnapshot } from "../../commands/factory-fleet-status.ts";
 import {
   resolveRepoOrExit,
   resolveFactoryContextOrExit,
@@ -187,7 +186,7 @@ export class FactoryFleetTuiCommand extends Command {
   refreshMs = Option.String("--refresh-ms", "10000");
 
   async execute() {
-    const { factoryFleetStatus } = await import("../../commands/factory-fleet-status.ts");
+    const { factoryFleetBootstrapSnapshot, factoryFleetStatus } = await import("../../commands/factory-fleet-status.ts");
     const { buildFactoryDashboard } = await import("../../commands/factory-dashboard.ts");
     const { buildFactorySessionBrowserSnapshot } = await import("../../commands/factory-session-browser.ts");
     const { runFactoryFleetTui } = await import("../factory-fleet-tui.ts");

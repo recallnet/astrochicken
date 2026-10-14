@@ -1,5 +1,7 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -9,21 +11,8 @@ import { attemptDeterministicMerge, rebaseBranchOnMain } from "../../src/command
 import { verifyPushRecovery } from "../../src/commands/merge-verify-push-recovery.ts";
 import { resolveMergeWorktreeDir, setupMergeWorktree } from "../../src/commands/merge-worktree.ts";
 
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
-
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "taxi-merge-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("taxi-merge-");
 }
 
 function initRepoWithBareRemote() {

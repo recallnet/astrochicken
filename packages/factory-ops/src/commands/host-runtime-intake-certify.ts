@@ -115,7 +115,7 @@ function readRunState({ manifestPath = "", runId = "", existsSyncFn = existsSync
 }
 
 function resolveHostRuntimeEntrypoint() {
-  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "host-runtime.mjs");
+  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "host-runtime.ts");
 }
 
 function runHostRuntimeOnce({

@@ -1,14 +1,10 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 test("cli wiring includes release build-report-context command", () => {
   const source = readFileSync("packages/factory-ops/src/cli/commands/release-context-cmds.ts", "utf8");
@@ -24,28 +20,24 @@ test("cli wiring includes release build-report-context command", () => {
 test("release_report_flow passes the factory repo_path into build-report-context", () => {
   const dot = readFileSync("docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot", "utf8");
   assert.match(dot, /build_release_report_context \[type="tool" governance="reversible" action_runtime="in_process" action_id="release\.build_report_context"/);
-  assert.match(dot, /action_repo="\$\{gh_repo\}" action_repo_path="\$\{repo_path\}" action_factory_id="\$\{factory_id\}"/);
+  assert.match(dot, /action_repo="\$\{gh_repo\}" action_factory_id="\$\{factory_id\}"[\s\S]*action_repo_path="\$\{repo_path\}"/);
 });
 
 test("release build-report-context returns JSON contract with deterministic defaults", () => {
   const tempRepoPath = mkdtempSync(join(tmpdir(), "release-context-cli-"));
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-report-context",
-    "--repo",
-    "acme/platform",
-    "--repo-path",
-    tempRepoPath,
-    "--factory-id",
-    "mothership",
-    "--now",
-    "2026-03-09T20:00:00.000Z",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "build-report-context",
+      "--repo",
+      "acme/platform",
+      "--repo-path",
+      tempRepoPath,
+      "--factory-id",
+      "mothership",
+      "--now",
+      "2026-03-09T20:00:00.000Z"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const payload = JSON.parse(run.stdout || "{}");
@@ -63,14 +55,10 @@ test("release build-report-context returns JSON contract with deterministic defa
 });
 
 test("release build-report-context exits 1 when --repo is missing", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-report-context",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "build-report-context"
+    ]);
 
   assert.equal(run.status, 1);
   assert.match(run.stderr, /--repo is required/);

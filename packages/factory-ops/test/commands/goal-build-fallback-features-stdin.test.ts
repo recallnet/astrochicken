@@ -1,12 +1,8 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
-import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
+import test from "node:test";
 
 test("goal build-fallback-features accepts stdin payload transport", () => {
   const goalIssue = {
@@ -15,11 +11,14 @@ test("goal build-fallback-features accepts stdin payload transport", () => {
     body: "Ensure fallback works for O'Hare and quoted \"payload\" bodies",
   };
 
-  const run = spawnSync(
-    "node",
-    [opsCliPath, "goal", "build-fallback-features", "--goal-number", "321"],
-    { cwd: repoRoot, encoding: "utf8", input: JSON.stringify(goalIssue) },
-  );
+  const run = spawnOpsCli([
+      "goal",
+      "build-fallback-features",
+      "--goal-number",
+      "321"
+    ], {
+      input: JSON.stringify(goalIssue)
+    });
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const parsed = JSON.parse(run.stdout || "[]");

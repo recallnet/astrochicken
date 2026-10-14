@@ -32,27 +32,26 @@ function reviewerGraph(): ReturnType<typeof parse> {
 	`);
 }
 
+function reviewerEngine(review: Outcome): Engine {
+	const registry = new HandlerRegistry();
+	registry.register("codergen", new StaticNodeOutputHandler({
+		review,
+		approve: { status: StageStatus.Completed, output: "approve" },
+		revise: { status: StageStatus.Completed, output: "revise" },
+	}));
+	return new Engine(reviewerGraph(), registry, { context: new Context() });
+}
+
 describe("reviewer output schema enforcement", () => {
 	it("accepts valid reviewer payload and normalizes canonical shape", async () => {
-		const graph = reviewerGraph();
-		const registry = new HandlerRegistry();
-		registry.register(
-			"codergen",
-			new StaticNodeOutputHandler({
-				review: {
+		const engine = reviewerEngine({
 					status: StageStatus.Completed,
 					output: JSON.stringify({
 						review_verdict: "approve",
 						review_reason_codes: ["approved"],
 						review_notes: "All checks passed.",
 					}),
-				},
-				approve: { status: StageStatus.Completed, output: "approve" },
-				revise: { status: StageStatus.Completed, output: "revise" },
-			}),
-		);
-
-		const engine = new Engine(graph, registry, { context: new Context() });
+				});
 		await engine.run();
 
 		expect(engine.getContext().get("route")).toBe("approve");
@@ -63,18 +62,7 @@ describe("reviewer output schema enforcement", () => {
 	});
 
 	it("rejects malformed reviewer JSON with deterministic diagnostics and routes revise path", async () => {
-		const graph = reviewerGraph();
-		const registry = new HandlerRegistry();
-		registry.register(
-			"codergen",
-			new StaticNodeOutputHandler({
-				review: { status: StageStatus.Completed, output: "not-json" },
-				approve: { status: StageStatus.Completed, output: "approve" },
-				revise: { status: StageStatus.Completed, output: "revise" },
-			}),
-		);
-
-		const engine = new Engine(graph, registry, { context: new Context() });
+		const engine = reviewerEngine({ status: StageStatus.Completed, output: "not-json" });
 		await engine.run();
 
 		expect(engine.getContext().get("route")).toBe("revise");
@@ -84,21 +72,10 @@ describe("reviewer output schema enforcement", () => {
 	});
 
 	it("rejects missing required reviewer keys", async () => {
-		const graph = reviewerGraph();
-		const registry = new HandlerRegistry();
-		registry.register(
-			"codergen",
-			new StaticNodeOutputHandler({
-				review: {
+		const engine = reviewerEngine({
 					status: StageStatus.Completed,
 					output: JSON.stringify({ review_verdict: "revise", review_notes: "Need additional tests." }),
-				},
-				approve: { status: StageStatus.Completed, output: "approve" },
-				revise: { status: StageStatus.Completed, output: "revise" },
-			}),
-		);
-
-		const engine = new Engine(graph, registry, { context: new Context() });
+				});
 		await engine.run();
 
 		expect(engine.getContext().get("route")).toBe("revise");
@@ -108,25 +85,14 @@ describe("reviewer output schema enforcement", () => {
 	});
 
 	it("rejects invalid reviewer verdict enum and unsupported reason code", async () => {
-		const graph = reviewerGraph();
-		const registry = new HandlerRegistry();
-		registry.register(
-			"codergen",
-			new StaticNodeOutputHandler({
-				review: {
+		const engine = reviewerEngine({
 					status: StageStatus.Completed,
 					output: JSON.stringify({
 						review_verdict: "ship",
 						review_reason_codes: ["BOGUS_CODE"],
 						review_notes: "Invalid verdict.",
 					}),
-				},
-				approve: { status: StageStatus.Completed, output: "approve" },
-				revise: { status: StageStatus.Completed, output: "revise" },
-			}),
-		);
-
-		const engine = new Engine(graph, registry, { context: new Context() });
+				});
 		await engine.run();
 
 		expect(engine.getContext().get("route")).toBe("revise");
@@ -137,25 +103,14 @@ describe("reviewer output schema enforcement", () => {
 	});
 
 	it("rejects contradictory payload (approve + non-APPROVED reason code)", async () => {
-		const graph = reviewerGraph();
-		const registry = new HandlerRegistry();
-		registry.register(
-			"codergen",
-			new StaticNodeOutputHandler({
-				review: {
+		const engine = reviewerEngine({
 					status: StageStatus.Completed,
 					output: JSON.stringify({
 						review_verdict: "approve",
 						review_reason_codes: ["QA_EVIDENCE_REQUIRED"],
 						review_notes: "Contradictory approval.",
 					}),
-				},
-				approve: { status: StageStatus.Completed, output: "approve" },
-				revise: { status: StageStatus.Completed, output: "revise" },
-			}),
-		);
-
-		const engine = new Engine(graph, registry, { context: new Context() });
+				});
 		await engine.run();
 
 		expect(engine.getContext().get("route")).toBe("revise");

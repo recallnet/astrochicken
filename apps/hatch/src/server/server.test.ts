@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { once } from "node:events";
+import { request } from "node:http";
 
 import type { AddressInfo } from "node:net";
 
@@ -74,6 +75,42 @@ describe("server validation mode handling", () => {
 		const address = server.address() as AddressInfo;
 		return `http://127.0.0.1:${address.port}`;
 	}
+
+	it("rejects cross-origin browser pipeline submissions", async () => {
+		const base = await startServer();
+		const response = await fetch(`${base}/pipelines`, { method: "POST", headers: { origin: "https://attacker.example", "content-type": "text/plain" }, body: JSON.stringify({ dot: "digraph G { start -> done }" }) });
+		expect(response.status).toBe(403);
+	});
+
+	it("rejects a rebound browser hostname on a loopback listener", async () => {
+		const base = await startServer();
+		const status = await new Promise<number | undefined>((resolve, reject) => {
+			const req = request(`${base}/pipelines`, { method: "POST", headers: { host: "attacker.example", origin: "http://attacker.example", "content-type": "application/json" } }, (response) => { response.resume(); resolve(response.statusCode); });
+			req.on("error", reject);
+			req.end(JSON.stringify({ dot: "digraph G { start -> done }" }));
+		});
+		expect(status).toBe(403);
+	});
+
+	it.each([["attacker.example", 403], ["[invalid", 400]])("rejects untrusted GET Host %s", async (host, expected) => {
+		const base = await startServer();
+		const status = await new Promise<number | undefined>((resolve, reject) => {
+			const req = request(`${base}/health`, { headers: { host } }, (response) => { response.resume(); resolve(response.statusCode); });
+			req.on("error", reject); req.end();
+		});
+		expect(status).toBe(expected);
+	});
+
+	it("binds a hostless address to loopback", async () => {
+		const server = createServer(new HandlerRegistry(), ":0");
+		await once(server, "listening");
+		cleanup = async () => {
+			await new Promise<void>((resolve, reject) => {
+				server.close((error) => error ? reject(error) : resolve());
+			});
+		};
+		expect((server.address() as AddressInfo).address).toBe("127.0.0.1");
+	});
 
 	it("defaults to legacy mode when validation_mode is omitted", async () => {
 		const baseUrl = await startServer();

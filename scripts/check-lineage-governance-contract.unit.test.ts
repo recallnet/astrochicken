@@ -3,6 +3,34 @@ import assert from "node:assert/strict";
 
 import { analyzeLineageGovernanceContract } from "./lib/lineage-governance-contract.ts";
 
+function runClassFixtures(keys) {
+  const classes = {
+    hatch_run_lifecycle: {
+      key: "hatch_run_lifecycle",
+      cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
+      sourcePath: "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
+      producerPaths: ["apps/hatch/src/pipeline/run-lifecycle.ts"],
+    },
+    release_rollout: {
+      key: "release_rollout",
+      cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/release-rollout.v1.json",
+      sourcePath: "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
+      producerPaths: ["packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"],
+    },
+  };
+  return keys.map((key) => classes[key]);
+}
+
+function artifactClassFixtures(keys) {
+  return keys.map((key) => ({
+    key,
+    sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
+    publisherPaths: key === "release_report_bundle"
+      ? ["packages/factory-ops/src/commands/release-emit-narrative-document.ts"]
+      : [],
+  }));
+}
+
 test("lineage governance contract fails when required run or artifact classes are missing from the registry", async () => {
   const result = await analyzeLineageGovernanceContract({
     repoRoot: "/repo",
@@ -14,21 +42,8 @@ test("lineage governance contract fails when required run or artifact classes ar
     readFile() {
       return "";
     },
-    loadRunClasses: async () => ([
-      {
-        key: "hatch_run_lifecycle",
-        cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
-        sourcePath: "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
-        producerPaths: ["apps/hatch/src/pipeline/run-lifecycle.ts"],
-      },
-    ]),
-    loadArtifactClasses: async () => ([
-      {
-        key: "release_report_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: ["packages/factory-ops/src/commands/release-emit-narrative-document.ts"],
-      },
-    ]),
+    loadRunClasses: async () => runClassFixtures(["hatch_run_lifecycle"]),
+    loadArtifactClasses: async () => artifactClassFixtures(["release_report_bundle"]),
   });
 
   assert.equal(result.ok, false);
@@ -46,37 +61,8 @@ test("lineage governance registry counts only artifact classes with actual publi
     readFile() {
       return "";
     },
-    loadRunClasses: async () => ([
-      {
-        key: "hatch_run_lifecycle",
-        cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
-        sourcePath: "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
-        producerPaths: ["apps/hatch/src/pipeline/run-lifecycle.ts"],
-      },
-      {
-        key: "release_rollout",
-        cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/release-rollout.v1.json",
-        sourcePath: "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
-        producerPaths: ["packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"],
-      },
-    ]),
-    loadArtifactClasses: async () => ([
-      {
-        key: "workflow_ir_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "run_snapshot_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "release_report_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: ["packages/factory-ops/src/commands/release-emit-narrative-document.ts"],
-      },
-    ]),
+    loadRunClasses: async () => runClassFixtures(["hatch_run_lifecycle", "release_rollout"]),
+    loadArtifactClasses: async () => artifactClassFixtures(["workflow_ir_bundle", "run_snapshot_bundle", "release_report_bundle"]),
   });
 
   assert.equal(result.ok, false);
@@ -94,7 +80,7 @@ test("lineage governance contract fails when hot-path files depend on governance
       "packages/factory-ops/src/lib/daemon.ts",
     ],
     readFile(filePath) {
-      if (filePath.endsWith("daemon.mjs")) {
+      if (filePath.endsWith("daemon.ts")) {
         return "const client = new MarquezClient();";
       }
       if (filePath.endsWith("run-lifecycle.ts")) {
@@ -102,56 +88,15 @@ test("lineage governance contract fails when hot-path files depend on governance
       }
       return "";
     },
-    loadRunClasses: async () => ([
-      {
-        key: "hatch_run_lifecycle",
-        cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/hatch-run-lifecycle.v1.json",
-        sourcePath: "packages/factory-core/src/hatch-run-lifecycle-asyncapi.ts",
-        producerPaths: ["apps/hatch/src/pipeline/run-lifecycle.ts"],
-      },
-      {
-        key: "release_rollout",
-        cloudEventSurfaceId: "https://recallnet.dev/contracts/cloudevents/release-rollout.v1.json",
-        sourcePath: "packages/factory-ops/src/lib/release-rollout-asyncapi-contract.ts",
-        producerPaths: ["packages/factory-ops/src/lib/command-owners/release-rollout-controller.ts"],
-      },
-    ]),
-    loadArtifactClasses: async () => ([
-      {
-        key: "workflow_ir_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "run_snapshot_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "judge_evidence_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "release_report_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: ["packages/factory-ops/src/commands/release-emit-narrative-document.ts"],
-      },
-      {
-        key: "release_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "telemetry_summary_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
-      {
-        key: "contract_spec_bundle",
-        sourcePath: "packages/factory-ops/src/lib/oci-artifact-taxonomy.ts",
-        publisherPaths: [],
-      },
+    loadRunClasses: async () => runClassFixtures(["hatch_run_lifecycle", "release_rollout"]),
+    loadArtifactClasses: async () => artifactClassFixtures([
+      "workflow_ir_bundle",
+      "run_snapshot_bundle",
+      "judge_evidence_bundle",
+      "release_report_bundle",
+      "release_bundle",
+      "telemetry_summary_bundle",
+      "contract_spec_bundle",
     ]),
   });
 

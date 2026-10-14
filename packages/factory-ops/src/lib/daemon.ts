@@ -18,7 +18,7 @@ import {
   readCanonicalFactoryControlStateSync,
   writeCanonicalFactoryControlStateSync,
 } from "./canonical-control-state.ts";
-import { resolveCanonicalCheckoutPath } from "./canonical-worktree.ts";
+import { isCanonicalCheckout, resolveCanonicalCheckoutPath } from "./canonical-worktree.ts";
 import { parseJson } from "./cli-helpers.ts";
 import {
   evaluateCircuitBreakerCooldown,
@@ -518,20 +518,31 @@ export function evaluateDaemonStartupInvariants({
   repoRoleContext = {},
 } = {}) {
   const branch = trim(currentBranch) || resolveCurrentBranch(repoRoot);
-  const canonical = resolveCanonicalCheckoutPath({
-    configuredPath: canonicalCheckoutPath,
-    config,
-    baseDir: repoRoot,
-  });
-  const repoGuard = guardGitMutation({
-    operation: "status",
-    repoPath: repoRoot,
-    canonicalCheckoutPath: canonical,
-    currentBranch: branch,
-    mutationContext: repoRoleContext?.mutationContext || null,
-    ...repoRoleContext,
-  });
-  const runningFromCanonical = Boolean(canonical) && !repoGuard.blocked && trim(repoRoot) === trim(canonical);
+  let canonical = "";
+  let runningFromCanonical = false;
+  try {
+    canonical = resolveCanonicalCheckoutPath({
+      configuredPath: canonicalCheckoutPath,
+      config,
+      baseDir: repoRoot,
+    });
+    const repoGuard = guardGitMutation({
+      operation: "status",
+      repoPath: repoRoot,
+      canonicalCheckoutPath: canonical,
+      currentBranch: branch,
+      mutationContext: repoRoleContext?.mutationContext || null,
+      ...repoRoleContext,
+    });
+    if (repoGuard.blocked) {
+      return { ok: false, code: repoGuard.reason, branch, canonical_checkout_path: canonical, running_from_canonical: false };
+    }
+    // @context:security Canonical startup restrictions follow physical paths,
+    // including checkout aliases; resolution failures must deny startup.
+    runningFromCanonical = isCanonicalCheckout(repoRoot, { canonicalCheckoutPath: canonical });
+  } catch {
+    return { ok: false, code: "filesystem_path_resolution_failed", branch, canonical_checkout_path: canonical, running_from_canonical: false };
+  }
   if (!runningFromCanonical) {
     return { ok: true, branch, canonical_checkout_path: canonical, running_from_canonical: false };
   }

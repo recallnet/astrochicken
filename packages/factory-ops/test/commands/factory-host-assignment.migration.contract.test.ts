@@ -1,57 +1,19 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { readFixtureJson as readJson, makeHostRegistryRow as baseRegistryRow, writeInstallationManifest as writeManifest, writeHostRegistry as writeRegistry, makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+
+import { readFileSync, rmSync } from "node:fs";
+
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  assignHostToInstance,
-  buildMigrationLeaseRecord,
-  describeHostAssignment,
-  drainHostAssignment,
-  ensureSingleActiveHost,
-  migrateHostAssignment,
-} from "../../src/commands/factory-host-assignment.ts";
+import { assignHostToInstance, buildMigrationLeaseRecord, describeHostAssignment, drainHostAssignment, ensureSingleActiveHost, migrateHostAssignment } from "../../src/commands/factory-host-assignment.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 const factoryRoot = join(repoRoot, "factories/mothership");
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
-
-function writeRegistry(root, rows = []) {
-  const registryPath = join(root, "factory-registry.json");
-  writeFileSync(registryPath, `${JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: rows,
-  }, null, 2)}\n`);
-  return registryPath;
-}
-
-function writeManifest(root, payload = {}) {
-  mkdirSync(root, { recursive: true });
-  const path = join(root, "installation.json");
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
-  return path;
-}
-
-function baseRegistryRow() {
-  return {
-    instance_id: "mothership",
-    kind_id: "mothership",
-    target_repo: "recallnet/astrochicken",
-    status: "active",
-    assigned_host_id: "unassigned",
-    installation_manifest_path: "",
-    graphs: [],
-    daemonStatus: { status: "stopped" },
-  };
-}
 
 function manifestForHost(hostId, runtimeVersion = "9.9.9") {
   return {
@@ -66,19 +28,15 @@ function manifestForHost(hostId, runtimeVersion = "9.9.9") {
   };
 }
 
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
-}
-
 function runCli(args, { expectStatus = 0, env = {} } = {}) {
   const runEnv = { ...process.env, ...env };
   delete runEnv.HATCH_FACTORY_MUTATION_CONTEXT_JSON;
 
-  const run = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: runEnv,
-  });
+  const run = spawnOpsCli([
+      ...args
+    ], {
+      env: runEnv
+    });
   assert.equal(run.status, expectStatus, `stderr=${run.stderr}\nstdout=${run.stdout}`);
   const stdout = String(run.stdout || "").trim();
   return {

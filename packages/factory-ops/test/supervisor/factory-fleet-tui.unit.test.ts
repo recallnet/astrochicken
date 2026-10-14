@@ -28,16 +28,14 @@ function sampleSnapshot() {
     ],
     factories: [
       {
+        ...commonFleetPosture(),
         factory_id: "brainstorm",
         target_repo: "example-org/example-notes",
-        control_plane_repo: "recallnet/astrochicken",
         factory_root: "/tmp/brainstorm",
         runs_dir: "/tmp/.hatch/brainstorm/runs",
         health: "idle",
-        active_waves: [],
         active_issues: [],
         active_work_summary: "waves=none issues=none stage=Done",
-        blocked_reason: "",
         recent_host_activity: {
           count: 1,
           latest_summary: "completed factory_supervisor_tick.dot 4m ago",
@@ -45,23 +43,17 @@ function sampleSnapshot() {
         },
         recent_outcomes: [{ merged_prs: 0, closed_features: 0, merge_commits_main: 0 }],
         daemon_health: { status: "running", running: true },
-        managed_state: { reason: "" },
-        release_state: "ready",
         drift_state: "unknown",
-        rollout_channel: "stable",
-        warnings: [],
       },
       {
+        ...commonFleetPosture(),
         factory_id: "mothership",
         target_repo: "recallnet/astrochicken",
-        control_plane_repo: "recallnet/astrochicken",
         factory_root: "/tmp/mothership",
         runs_dir: "/tmp/.hatch/mothership/runs",
         health: "healthy",
-        active_waves: [],
         active_issues: [2201, 2337],
         active_work_summary: "waves=none issues=2201,2337 stage=Sweeping run/worktree residue",
-        blocked_reason: "",
         recent_host_activity: {
           count: 42,
           latest_summary: "completed factory_supervisor_tick.dot 1m ago",
@@ -69,23 +61,17 @@ function sampleSnapshot() {
         },
         recent_outcomes: [{ merged_prs: 2, closed_features: 6, merge_commits_main: 6 }],
         daemon_health: { status: "running", running: true },
-        managed_state: { reason: "" },
-        release_state: "ready",
         drift_state: "ready",
-        rollout_channel: "stable",
-        warnings: [],
       },
       {
+        ...commonFleetPosture(),
         factory_id: "trading",
         target_repo: "example-org/trading",
-        control_plane_repo: "recallnet/astrochicken",
         factory_root: "/tmp/trading",
         runs_dir: "/tmp/.hatch/trading/runs",
         health: "idle",
-        active_waves: [],
         active_issues: [],
         active_work_summary: "waves=none issues=none stage=run_managed_supervisor_shell",
-        blocked_reason: "",
         gate_reason: "manifest_fetch_failed",
         rollout_status: "blocked",
         recent_host_activity: {
@@ -95,11 +81,7 @@ function sampleSnapshot() {
         },
         recent_outcomes: [{ merged_prs: 0, closed_features: 0, merge_commits_main: 0 }],
         daemon_health: { status: "running", running: true },
-        managed_state: { reason: "" },
-        release_state: "ready",
         drift_state: "unknown",
-        rollout_channel: "stable",
-        warnings: [],
       },
     ],
   };
@@ -170,6 +152,18 @@ function renderApp(props = {}) {
     onAction: () => {},
     ...props,
   }));
+}
+
+function commonFleetPosture() {
+  return {
+    control_plane_repo: "recallnet/astrochicken",
+    active_waves: [],
+    blocked_reason: "",
+    managed_state: { reason: "" },
+    release_state: "ready",
+    rollout_channel: "stable",
+    warnings: [],
+  };
 }
 
 test("buildFleetTuiState filters rows by active view and search", () => {
@@ -417,24 +411,24 @@ test("detail mode recent summary comes from recent outcomes before host activity
     warnings: [],
     factories: [
       {
-        factory_id: "trading",
-        target_repo: "example-org/trading",
         control_plane_repo: "recallnet/astrochicken",
-        factory_root: "/tmp/trading",
-        runs_dir: "/tmp/.hatch/trading/runs",
-        health: "healthy",
         active_waves: [],
         active_issues: [],
         active_work_summary: "waves=none issues=none",
         blocked_reason: "",
         recent_host_activity: { count: 0, latest_summary: "", latest_graph: "" },
+        rollout_channel: "stable",
+        warnings: [],
+        factory_id: "trading",
+        target_repo: "example-org/trading",
+        factory_root: "/tmp/trading",
+        runs_dir: "/tmp/.hatch/trading/runs",
+        health: "healthy",
         recent_outcomes: [{ merged_prs: 2, closed_goals: 1, closed_features: 3, closed_bugs: 0, merge_commits_main: 3 }],
         daemon_health: { status: "stopped", running: false },
         managed_state: { reason: "" },
         release_state: "ready",
         drift_state: "ready",
-        rollout_channel: "stable",
-        warnings: [],
       },
     ],
   };

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test, { afterEach, mock } from "node:test";
@@ -34,6 +34,48 @@ function makeTmpDir(prefix = "daemon-unit-") {
   const dir = mkdtempSync(path.join(tmpdir(), prefix));
   tempDirs.push(dir);
   return dir;
+}
+
+function makeBrainstormRuntime(repoRoot) {
+  return {
+    factoryId: "brainstorm",
+    factoryRoot: repoRoot,
+    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
+    config: { managed: true },
+    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
+    targetRepo: "example-org/brainstorm",
+    targetRepo: "example-org/brainstorm",
+    controlPlaneRepo: "recallnet/astrochicken",
+    runsDir: path.join(repoRoot, ".hatch", "runs"),
+    contextRepoPath: repoRoot,
+    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
+    repoRoleContext: {
+      targetRepo: "example-org/brainstorm",
+      controlPlaneRepo: "recallnet/astrochicken",
+      destinationRepos: [],
+    },
+  };
+}
+
+function makeScannerRuntime(repoRoot) {
+  return {
+    factoryId: "example-scanner",
+    factoryRoot: repoRoot,
+    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
+    config: { managed: true },
+    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
+    targetRepo: "example-org/example-scanner",
+    targetRepo: "example-org/example-scanner",
+    controlPlaneRepo: "recallnet/astrochicken",
+    runsDir: path.join(repoRoot, ".hatch", "runs"),
+    contextRepoPath: repoRoot,
+    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
+    repoRoleContext: {
+      targetRepo: "example-org/example-scanner",
+      controlPlaneRepo: "recallnet/astrochicken",
+      destinationRepos: [],
+    },
+  };
 }
 
 afterEach(() => {
@@ -461,24 +503,7 @@ test("runDaemon skips paused control-state ticks and sleeps idle", async () => {
   const sleepCalls = [];
   const tickCalls = [];
 
-  const runtime = {
-    factoryId: "brainstorm",
-    factoryRoot: repoRoot,
-    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
-    config: { managed: true },
-    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
-    targetRepo: "example-org/brainstorm",
-    targetRepo: "example-org/brainstorm",
-    controlPlaneRepo: "recallnet/astrochicken",
-    runsDir: path.join(repoRoot, ".hatch", "runs"),
-    contextRepoPath: repoRoot,
-    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
-    repoRoleContext: {
-      targetRepo: "example-org/brainstorm",
-      controlPlaneRepo: "recallnet/astrochicken",
-      destinationRepos: [],
-    },
-  };
+  const runtime = makeBrainstormRuntime(repoRoot);
 
   const actions = ["pause", "draining"];
 
@@ -525,24 +550,7 @@ test("runDaemon clears retry action before running tick", async () => {
   const hostBaseDir = makeTmpDir();
   const writes = [];
 
-  const runtime = {
-    factoryId: "brainstorm",
-    factoryRoot: repoRoot,
-    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
-    config: { managed: true },
-    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
-    targetRepo: "example-org/brainstorm",
-    targetRepo: "example-org/brainstorm",
-    controlPlaneRepo: "recallnet/astrochicken",
-    runsDir: path.join(repoRoot, ".hatch", "runs"),
-    contextRepoPath: repoRoot,
-    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
-    repoRoleContext: {
-      targetRepo: "example-org/brainstorm",
-      controlPlaneRepo: "recallnet/astrochicken",
-      destinationRepos: [],
-    },
-  };
+  const runtime = makeBrainstormRuntime(repoRoot);
 
   const out = await runDaemon("brainstorm", {
     repoRoot,
@@ -587,24 +595,7 @@ test("runDaemon trips circuit breaker after threshold failures and resets after 
   const emits = [];
   const transitionSeen = [];
 
-  const runtime = {
-    factoryId: "brainstorm",
-    factoryRoot: repoRoot,
-    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
-    config: { managed: true },
-    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
-    targetRepo: "example-org/brainstorm",
-    targetRepo: "example-org/brainstorm",
-    controlPlaneRepo: "recallnet/astrochicken",
-    runsDir: path.join(repoRoot, ".hatch", "runs"),
-    contextRepoPath: repoRoot,
-    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
-    repoRoleContext: {
-      targetRepo: "example-org/brainstorm",
-      controlPlaneRepo: "recallnet/astrochicken",
-      destinationRepos: [],
-    },
-  };
+  const runtime = makeBrainstormRuntime(repoRoot);
 
   const tickResults = [
     { exitCode: 1, tickIdle: false, runId: "run-1", tickLogPath: path.join(repoRoot, "tick-1.log") },
@@ -922,8 +913,8 @@ test("resolveTickRuntime keeps dispatch and supervisor graphs separate when conf
   const repoRoot = process.cwd();
   const runtime = resolveTickRuntime({ factoryId: "mothership", repoRoot });
 
-  assert.ok(runtime.dispatchGraph.endsWith(path.join("factories", "mothership", "graphs", "factory_dispatch_reactor.dot")));
-  assert.ok(runtime.supervisorGraph.endsWith(path.join("factories", "mothership", "graphs", "factory_supervisor_tick.dot")));
+  assert.ok(runtime.dispatchGraph.endsWith(path.join("factories", "mothership", "workflows", "dispatch-control", "factory_dispatch_reactor.workflow-source.mjs")));
+  assert.ok(runtime.supervisorGraph.endsWith(path.join("factories", "mothership", "workflows", "dispatch-control", "factory_supervisor_tick.workflow-source.mjs")));
   assert.notEqual(runtime.dispatchGraph, runtime.supervisorGraph);
   assert.equal(runtime.dispatchLatencySloSeconds, 15);
   assert.equal(runtime.maintenanceIntervalSeconds, 300);
@@ -1102,24 +1093,7 @@ test("runDaemon skips tick when host intent is disabled and never reads control 
   const sleepCalls = [];
   let controlStateReadCount = 0;
 
-  const runtime = {
-    factoryId: "example-scanner",
-    factoryRoot: repoRoot,
-    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
-    config: { managed: true },
-    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
-    targetRepo: "example-org/example-scanner",
-    targetRepo: "example-org/example-scanner",
-    controlPlaneRepo: "recallnet/astrochicken",
-    runsDir: path.join(repoRoot, ".hatch", "runs"),
-    contextRepoPath: repoRoot,
-    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
-    repoRoleContext: {
-      targetRepo: "example-org/example-scanner",
-      controlPlaneRepo: "recallnet/astrochicken",
-      destinationRepos: [],
-    },
-  };
+  const runtime = makeScannerRuntime(repoRoot);
 
   const out = await runDaemon("example-scanner", {
     repoRoot,
@@ -1155,24 +1129,7 @@ test("runDaemon runs tick normally when host intent is enabled", async () => {
   const hostBaseDir = makeTmpDir();
   const tickCalls = [];
 
-  const runtime = {
-    factoryId: "example-scanner",
-    factoryRoot: repoRoot,
-    factoryConfigPath: path.join(repoRoot, "factory-config.json"),
-    config: { managed: true },
-    canonicalCheckoutPath: path.join(repoRoot, "canonical"),
-    targetRepo: "example-org/example-scanner",
-    targetRepo: "example-org/example-scanner",
-    controlPlaneRepo: "recallnet/astrochicken",
-    runsDir: path.join(repoRoot, ".hatch", "runs"),
-    contextRepoPath: repoRoot,
-    supervisorGraph: path.join(repoRoot, "graphs/supervisor.dot"),
-    repoRoleContext: {
-      targetRepo: "example-org/example-scanner",
-      controlPlaneRepo: "recallnet/astrochicken",
-      destinationRepos: [],
-    },
-  };
+  const runtime = makeScannerRuntime(repoRoot);
 
   const out = await runDaemon("example-scanner", {
     repoRoot,

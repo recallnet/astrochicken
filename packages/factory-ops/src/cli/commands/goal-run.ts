@@ -187,6 +187,8 @@ export class GoalRunBuildMergeResultsCommand extends Command {
   static paths = [["goal-run", "build-merge-results"]];
   mergeCandidates = Option.String("--merge-candidates", "[]");
   mergeStatus = Option.String("--merge-status", "");
+  pushStatus = Option.String("--push-status", "");
+  repo = Option.String("--repo", "");
   mergeNotes = Option.String("--merge-notes", { required: false });
   mergeNotesB64 = Option.String("--merge-notes-b64", { required: false });
   mergeResolver = Option.String("--merge-resolver", "");
@@ -198,6 +200,8 @@ export class GoalRunBuildMergeResultsCommand extends Command {
     this.context.stdout.write(JSON.stringify(buildWaveMergeResults({
       mergeCandidatesRaw: this.mergeCandidates,
       mergeStatus: this.mergeStatus,
+      pushStatus: this.pushStatus,
+      repo: this.repo,
       mergeNotes,
       mergeResolver: this.mergeResolver,
       pathTaken: this.pathTaken,

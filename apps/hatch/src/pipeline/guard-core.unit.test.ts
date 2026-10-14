@@ -1,6 +1,12 @@
+import { mkdtempSync, rmSync, writeFileSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 import {
+	configureFactoryGuardScope,
+	loadFactoryGuardState,
+	saveFactoryGuardState,
 	COUNTER_KEYS,
 	createCounters,
 	normalizeCounterKey,
@@ -376,5 +382,119 @@ describe("resolvePolicy", () => {
 		const policy = resolvePolicy(rs, context);
 		expect(policy.factoryLimits.tool_calls).toBe(500);
 		expect(policy.factoryLimits.llm_calls).toBe(250);
+	});
+	it.each(["-1", "NaN", "Infinity", "not-a-number"])("rejects invalid numeric context and environment limits: %s", (invalid) => {
+		process.env["HATCH_GUARD_RUN_MAX_TOOL_CALLS"] = invalid;
+		const policy = resolvePolicy(makeRunState(), { guard_run_max_tool_calls: invalid });
+		expect(policy.runLimits.tool_calls).toBe(1000);
+	});
+
+	it("uses a valid environment limit when context is invalid, but accepts an explicit zero", () => {
+		process.env["HATCH_GUARD_RUN_MAX_TOOL_CALLS"] = "17";
+		expect(resolvePolicy(makeRunState(), { guard_run_max_tool_calls: "-1" }).runLimits.tool_calls).toBe(17);
+		expect(resolvePolicy(makeRunState(), { guard_run_max_tool_calls: "0" }).runLimits.tool_calls).toBe(0);
+	});
+
+	it("uses environment revision before persisted revision and defaults an empty persisted revision", () => {
+		const run = makeRunState({ guard: makeRunGuardState({ policyRevision: "persisted" }) });
+		process.env["HATCH_GUARD_POLICY_REVISION"] = "environment";
+		expect(resolvePolicy(run, {}).revision).toBe("environment");
+		delete process.env["HATCH_GUARD_POLICY_REVISION"];
+		expect(resolvePolicy(run, {}).revision).toBe("persisted");
+		run.guard.policyRevision = "";
+		expect(resolvePolicy(run, {}).revision).toBe(DEFAULT_POLICY_REVISION);
+	});
+
+	it.each(["factory_id", "factory", "instance_id"])("derives factory scope from %s and ignores default placeholders", (key) => {
+		const run = makeRunState({ context: { [key]: "persisted-factory" } });
+		expect(resolvePolicy(run, { [key]: " request-factory " }).factoryScope).toBe("request-factory");
+		expect(resolvePolicy(run, { [key]: " DEFAULT " }).factoryScope).toBe("persisted-factory");
+	});
+
+	it("falls back through environment identity, persisted scope, and pipeline factory path", () => {
+		const run = makeRunState();
+		process.env["HATCH_INSTANCE_ID"] = "instance";
+		expect(resolvePolicy(run, {}).factoryScope).toBe("instance");
+		process.env["HATCH_FACTORY_ID"] = "factory";
+		expect(resolvePolicy(run, {}).factoryScope).toBe("factory");
+		delete process.env["HATCH_INSTANCE_ID"];
+		delete process.env["HATCH_FACTORY_ID"];
+		run.guard.factoryScope = "persisted";
+		expect(resolvePolicy(run, {}).factoryScope).toBe("persisted");
+		run.guard.factoryScope = "default";
+		run.pipelineFile = "/missing/factories/path-factory/workflow/main.ts";
+		expect(resolvePolicy(run, {}).factoryScope).toBe("path-factory");
+	});
+
+	it("resolves worker period through request, persisted context, and persisted guard", () => {
+		const run = makeRunState({ context: { worker_period: "stored-period" }, guard: makeRunGuardState({ workerPeriod: "guard-period" }) });
+		expect(resolvePolicy(run, { worker_period: "request-period" }).workerPeriod).toBe("request-period");
+		expect(resolvePolicy(run, {}).workerPeriod).toBe("stored-period");
+		run.context = { guard_worker_period: "stored-guard-period" };
+		expect(resolvePolicy(run, {}).workerPeriod).toBe("stored-guard-period");
+		run.context = {};
+		expect(resolvePolicy(run, {}).workerPeriod).toBe("guard-period");
+	});
+
+	it("applies environment scope and worker-period overrides and floors fractional terminal counts", () => {
+		process.env["HATCH_GUARD_FACTORY_SCOPE"] = "env-scope";
+		process.env["HATCH_GUARD_WORKER_PERIOD"] = "env-period";
+		const policy = resolvePolicy(makeRunState(), { guard_terminal_overflow_count: "2.9" });
+		expect(policy.factoryScope).toBe("env-scope");
+		expect(policy.workerPeriod).toBe("env-period");
+		expect(policy.terminalOverflowCount).toBe(2);
+	});
+
+});
+
+
+describe("persisted factory guard boundaries", () => {
+	let dir: string;
+	const now = new Date("2025-01-01T12:00:00Z");
+	let policy: GuardPolicy;
+	beforeEach(() => {
+		dir = mkdtempSync(join(tmpdir(), "guard-core-state-"));
+		configureFactoryGuardScope({ guardDir: dir });
+		policy = resolvePolicy(makeRunState(), { guard_factory_scope: "isolated", guard_worker_period: "test" });
+	});
+	afterEach(() => {
+		configureFactoryGuardScope();
+		rmSync(dir, { recursive: true, force: true });
+	});
+	const freshState = { circuitState: "closed", counters: createCounters(), policyRevision: "guard.v1" };
+	it("initializes missing state with the caller owner and deterministic timestamp", () => {
+		const state = loadFactoryGuardState(policy, "owner", now);
+		expect(state).toMatchObject({ ...freshState, owner: { ownerId: "owner", leaseGeneration: 0 }, updatedAt: now.toISOString() });
+	});
+	it.each(["{broken", "null", "false", "42"])("recovers unsupported persisted state %s with clean counters", (contents) => {
+		writeFileSync(join(dir, "isolated.test.json"), contents);
+		expect(loadFactoryGuardState(policy, "owner", now)).toMatchObject(freshState);
+	});
+	it.each([
+		["open", "open"], ["circuit_open", "open"], ["terminal", "terminal"],
+		["tripped", "terminal"], ["circuit_terminal", "terminal"], ["unknown", "closed"], ["", "closed"],
+	])("normalizes persisted circuit alias %s to %s", (input, expected) => {
+		writeFileSync(join(dir, "isolated.test.json"), JSON.stringify({ circuitState: input }));
+		expect(loadFactoryGuardState(policy, "owner", now).circuitState).toBe(expected);
+	});
+	it("normalizes legacy counter names and invalid numbers without sharing counters", () => {
+		writeFileSync(join(dir, "isolated.test.json"), JSON.stringify({ counters: { toolCalls: "4", llmCalls: "bad", reviewRetryCalls: "2", pipelineTransitionCalls: 3 } }));
+		const state = loadFactoryGuardState(policy, "owner", now);
+		expect(state.counters).toEqual({ tool_calls: 4, llm_calls: 0, review_retry_calls: 2, pipeline_transition_calls: 3 });
+		state.counters.tool_calls = 99;
+		expect(loadFactoryGuardState(policy, "owner", now).counters.tool_calls).toBe(4);
+	});
+	it("preserves canonical persisted fields and owner while rejecting non-string reason codes", () => {
+		const stored = { factoryScope: "stored", workerPeriod: "period", policyRevision: "revision", counters: { tool_calls: 1, llm_calls: 2, review_retry_calls: 3, pipeline_transition_calls: 4 }, reasonCode: 123, overflowCount: "2", resetCount: "3", openedAt: "opened", expiresAt: "expires", terminalAt: "terminal", lastDecisionAt: "decision", lastDecisionType: "deny", owner: { ownerId: "stored-owner", leaseName: "lease", leaseGeneration: "9" }, updatedAt: "updated" };
+		writeFileSync(join(dir, "isolated.test.json"), JSON.stringify(stored));
+		expect(loadFactoryGuardState(policy, "caller", now)).toMatchObject({ ...stored, reasonCode: "", overflowCount: 2, resetCount: 3, owner: { ownerId: "stored-owner", leaseName: "lease", leaseGeneration: 9 } });
+	});
+	it("round trips an atomic state save including a terminal budget reason", () => {
+		const state = loadFactoryGuardState(policy, "owner", now);
+		state.circuitState = "terminal";
+		state.reasonCode = "factory_tool_budget_exceeded";
+		saveFactoryGuardState(policy, state);
+		expect(JSON.parse(readFileSync(join(dir, "isolated.test.json"), "utf8"))).toEqual(state);
+		expect(loadFactoryGuardState(policy, "different-owner", now)).toEqual(state);
 	});
 });

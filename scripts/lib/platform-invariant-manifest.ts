@@ -10,7 +10,7 @@ export function matchesPlatformInvariantPattern(pathValue, pattern) {
 
   if (pattern.endsWith("/**")) {
     const prefix = pattern.slice(0, -3);
-    return pathValue === prefix || pathValue.startsWith(`${prefix}/`);
+    return wildcardPatternToRegex(prefix).test(pathValue) || wildcardPatternToRegex(`${prefix}/*`).test(pathValue);
   }
 
   if (pattern.includes("*")) {
@@ -243,6 +243,7 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
     description: "Managed-factory shared supervisor shell contract remains aligned across DOT shell lifecycle nodes, enum surfaces, and managed kind references.",
     triggerGlobs: Object.freeze([
       "packages/factory-runtime/graphs/*.dot",
+      "packages/factory-runtime/workflows/**",
       "factories/*/kind.json",
       "factories/*/graphs/factory_supervisor_tick.dot",
       "packages/factory-ops/src/lib/external-factory-control-state.ts",
@@ -293,6 +294,9 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
     description: "Managed factory graphs must not mutate control-plane repos, label contracts must include managed labels, and incident fingerprint schema fields stay stable.",
     triggerGlobs: Object.freeze([
       "factories/*/graphs/*.dot",
+      "factories/*/workflows/**",
+      "packages/factory-runtime/workflows/**",
+      "docs/contracts/workflow-ir/mothership/*.dot",
       "docs/contracts/factory-label-contract.json",
       "packages/factory-ops/src/commands/supervisor-artifact.ts",
       "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
@@ -360,6 +364,7 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
       "packages/factory-ops/src/lib/command-owners/release-manifest.ts",
       "packages/factory-ops/src/lib/factory-label-contract.ts",
       "packages/factory-ops/test/factory-label-*.test.mjs",
+      "packages/factory-ops/test/factory-label-*.test.ts",
       "packages/factory-ops/test/supervisor/factory-label-contract.unit.test.ts",
       "scripts/check-factory-label-contract.ts",
       "scripts/check-factory-label-contract.unit.test.ts",
@@ -386,6 +391,8 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
     description: "Supervisor-owned recovery and graph-level remediation invariants hold.",
     triggerGlobs: Object.freeze([
       "factories/mothership/graphs/**",
+      "factories/mothership/workflows/**",
+      "docs/contracts/workflow-ir/mothership/*.dot",
       "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
       "docs/contracts/packet-registry.json",
       "apps/hatch/src/pipeline/graph-recovery-invariants.ts",
@@ -393,12 +400,14 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
       "packages/factory-ops/src/commands/factory-recovery-sweep.ts",
       "packages/factory-ops/src/commands/human-blocker.ts",
       "packages/factory-ops/src/commands/supervisor-*.mjs",
+      "packages/factory-ops/src/commands/supervisor-*.ts",
       "packages/factory-ops/src/lib/command-owners/goal-hard-planning.ts",
       "packages/factory-ops/src/lib/command-owners/judge-context-contract.ts",
       "packages/factory-ops/src/lib/command-owners/judge-evidence-contract.ts",
       "packages/factory-ops/src/lib/command-owners/reviewer-context-contract.ts",
       "packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts",
       "packages/factory-ops/src/lib/*packet*.mjs",
+      "packages/factory-ops/src/lib/*packet*.ts",
       "packages/factory-ops/src/lib/factory-contract-drift.ts",
       "packages/factory-ops/test/packets/goal-decomposition-packet.unit.test.ts",
       "packages/factory-ops/test/supervisor/factory-recovery-sweep.contract.test.ts",
@@ -406,6 +415,8 @@ export const PLATFORM_INVARIANT_MANIFEST = Object.freeze([
       "packages/factory-ops/test/commands/incident-packet.test.ts",
       "packages/factory-ops/test/packets/packet-core.unit.test.ts",
       "packages/factory-ops/test/supervisor/*.test.mjs",
+      "packages/factory-ops/test/supervisor/*.test.ts",
+      "packages/factory-ops/test/supervisor/*.test.ts",
       "packages/factory-ops/test/supervisor/fixtures/state-machines/external-factory-lifecycle.machine.json",
       "scripts/check-goal-packet-contract.ts",
       "scripts/check-graph-recovery-contracts.ts",

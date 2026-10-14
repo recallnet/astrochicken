@@ -338,6 +338,13 @@ if (args[0] === "api" && args.includes("-X") && args.includes("POST") && args.so
   process.exit(0);
 }
 
+if (args[0] === "api" && /^repos\/[^/]+\/[^/]+\/issues\/\d+$/.test(args[1]) && args.includes("--jq") && args.includes(".node_id")) {
+  const issue = args[1].split("/").at(-1);
+  fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
+  process.stdout.write("issue-node-" + issue);
+  process.exit(0);
+}
+
 if (args[0] === "api" && args[1].includes("/issues/") && args.includes("--jq") && args.includes(".id")) {
   const issueMatch = args[1].match(/\/issues\/(\d+)/);
   const issue = issueMatch ? Number(issueMatch[1]) : 0;

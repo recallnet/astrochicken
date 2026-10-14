@@ -1,6 +1,11 @@
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { EventBus } from "@recallnet/factory-telemetry";
-import { describe, it, expect } from "vitest";
+import { afterEach, beforeEach, describe, it, expect } from "vitest";
 
+import { configureFactoryGuardScope } from "./guard-core.js";
+import { createRunState } from "./run.js";
 import { Context, type Outcome, StageStatus, type StageRecord } from "./context.js";
 import { executeNodeWithRetries, type ExecuteNodeParams } from "./engine-execution.js";
 import type { Graph, Node } from "./graph.js";
@@ -357,4 +362,260 @@ describe("executeNodeWithRetries", () => {
 		await expect(executeNodeWithRetries(params)).rejects.toThrow();
 		expect(handlerSignalAborted).toBe(true);
 	});
+});
+
+
+describe("execution guard and lifecycle boundaries", () => {
+	let root: string;
+	let previousLockDir: string | undefined;
+	beforeEach(() => {
+		root = mkdtempSync(join(tmpdir(), "engine-execution-boundary-"));
+		configureFactoryGuardScope({ guardDir: join(root, "guard") });
+		previousLockDir = process.env["HATCH_LOCK_DIR"];
+		process.env["HATCH_LOCK_DIR"] = join(root, "locks");
+	});
+	afterEach(() => {
+		configureFactoryGuardScope({});
+		if (previousLockDir === undefined) delete process.env["HATCH_LOCK_DIR"];
+		else process.env["HATCH_LOCK_DIR"] = previousLockDir;
+		rmSync(root, { recursive: true, force: true });
+	});
+
+	function guardedParams(handlerType: string, handler: Handler, attrs: Record<string, string> = {}) {
+		const registry = new HandlerRegistry();
+		registry.register(handlerType, handler);
+		return makeParams({
+			node: makeNode("guarded", { type: handlerType, ...attrs }),
+			registry,
+			runState: createRunState("boundary-run", "/tmp/fixture.dot", { runsDir: join(root, "runs") }),
+			context: new Context({ guard_factory_scope: "execution-boundary", guard_worker_period: "test" }),
+		});
+	}
+
+	it("does not invoke a handler or heartbeat after a terminal guard decision", async () => {
+		let calls = 0;
+		let heartbeats = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => {
+			calls++;
+			return { status: StageStatus.Completed, output: "forbidden" };
+		}));
+		params.runState!.guard.circuitState = "terminal";
+		params.startRunHeartbeat = () => { heartbeats++; return null; };
+		const outcome = await executeNodeWithRetries(params);
+		expect(outcome.status).toBe(StageStatus.Skipped);
+		expect(outcome.contextUpdates?.["__guard_blocked"]).toBe("true");
+		expect(outcome.error).toBe("guard_terminal_state");
+		expect(calls).toBe(0);
+		expect(heartbeats).toBe(0);
+		expect(params.records).toEqual([]);
+	});
+
+	it("denies the next tool invocation when its run budget is exhausted", async () => {
+		let calls = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => {
+			calls++;
+			return { status: StageStatus.Completed, output: "allowed-once" };
+		}));
+		params.context.set("guard_run_max_tool_calls", "1");
+		params.context.set("guard_factory_max_tool_calls", "100");
+		params.runState!.guard.counters.tool_calls = 1;
+		const outcome = await executeNodeWithRetries(params);
+		expect(outcome.status).toBe(StageStatus.Skipped);
+		expect(outcome.error).toBe("run_tool_budget_exceeded");
+		expect(outcome.contextUpdates?.["gate_name"]).toBe("guard.tool_calls");
+		expect(calls).toBe(0);
+		expect(params.records).toEqual([]);
+	});
+
+	it.each([
+		["tool", "tool_calls"],
+		["pipeline", "pipeline_transition_calls"],
+		["codergen", "llm_calls"],
+	] as const)("accounts for allowed %s execution against its guard counter", async (handlerType, counter) => {
+		const params = guardedParams(handlerType, succeedingHandler("counted"));
+		const outcome = await executeNodeWithRetries(params);
+		expect(outcome.output).toBe("counted");
+		expect(params.runState!.guard.counters[counter]).toBe(1);
+		expect(params.records).toHaveLength(1);
+	});
+
+	it.each(["parallel.fan_out", "parallel.fan_in"])("emits %s pass and failure telemetry without a handler budget counter", async (handlerType) => {
+		const params = guardedParams(handlerType, succeedingHandler("parallel-result"));
+		const emitted: Array<{ kind: string; data?: Record<string, string> }> = [];
+		params.events.on((event) => emitted.push(event));
+		expect((await executeNodeWithRetries(params)).status).toBe(StageStatus.Completed);
+		expect(emitted.some((event) => event.kind === handlerType && event.data?.["outcome"] === "pass")).toBe(true);
+		params.registry.register(handlerType, failingHandler("parallel-failure"));
+		await expect(executeNodeWithRetries(params)).rejects.toThrow("parallel-failure");
+		expect(emitted.some((event) => event.kind === handlerType && event.data?.["outcome"] === "fail")).toBe(true);
+	});
+
+	it("keeps failure records and stops every heartbeat when a handler throws a non-Error value", async () => {
+		let stops = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => { throw "remote failure"; }), { max_retries: "2" });
+		params.startRunHeartbeat = () => () => { stops++; };
+		await expect(executeNodeWithRetries(params)).rejects.toThrow("after 2 attempts: remote failure");
+		expect(stops).toBe(2);
+		expect(params.records.map((record) => record.outcome?.error)).toEqual(["remote failure", "remote failure"]);
+	});
+
+	it("stops the heartbeat and records a returned failure without retrying it as an exception", async () => {
+		let stops = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => ({ status: StageStatus.Failed, output: "", error: "explicit rejection" })), { max_retries: "3" });
+		params.startRunHeartbeat = () => () => { stops++; };
+		const outcome = await executeNodeWithRetries(params);
+		expect(outcome.error).toBe("explicit rejection");
+		expect(params.records).toHaveLength(1);
+		expect(params.records[0].status).toBe(StageStatus.Failed);
+		expect(stops).toBe(1);
+	});
+
+	it.each([
+		[{ llm_model: "primary", agent_model: "fallback" }, "primary"],
+		[{ agent_model: "fallback" }, "fallback"],
+	] as const)("records effective model telemetry for %j", async (attrs, expectedModel) => {
+		const params = guardedParams("tool", succeedingHandler(), attrs);
+		const models: string[] = [];
+		params.events.on((event) => { if (event.kind === "stage.start") models.push(event.data?.["model"] || ""); });
+		await executeNodeWithRetries(params);
+		expect(models).toEqual([expectedModel]);
+	});
+
+	it("tolerates absent merged telemetry while still executing and recording a failure", async () => {
+		const params = guardedParams("tool", failingHandler("no metadata"));
+		params.mergeLifecycleData = () => undefined;
+		await expect(executeNodeWithRetries(params)).rejects.toThrow("no metadata");
+		expect(params.records[0].outcome?.error).toBe("no metadata");
+		params.registry.register("tool", succeedingHandler("no metadata success"));
+		expect((await executeNodeWithRetries(params)).output).toBe("no metadata success");
+	});
+
+	it("binds graph intent metadata without losing the handler's resolved intent", async () => {
+		const params = guardedParams("tool", new FakeHandler(async () => ({
+			status: StageStatus.Completed, output: "", intent: { handlerType: "tool", kind: "command", data: { command: "inspect" }, nodeId: "guarded", digest: "fixture-digest" },
+		})));
+		params.graph.attrs = { intent_ref: "release-check", intent_profile: "strict", intent_patches: "audit" };
+		const outcome = await executeNodeWithRetries(params);
+		expect(outcome.intent).toMatchObject({ intentRef: "release-check", intentProfile: "strict", intentPatches: ["audit"], data: { command: "inspect" } });
+	});
+
+	it("preserves timeout cause metadata even when a handler ignores cancellation", async () => {
+		const params = guardedParams("tool", new FakeHandler(async () => new Promise<Outcome>(() => {})), { timeout: "5ms" });
+		await expect(executeNodeWithRetries(params)).rejects.toMatchObject({ timeoutTriggered: true, abortTriggered: false });
+		expect(params.records).toHaveLength(1);
+	});
+
+	it("rejects an already-aborted parent before invoking a cooperative handler", async () => {
+		const controller = new AbortController();
+		controller.abort();
+		let called = false;
+		const params = guardedParams("tool", new FakeHandler(async (_call, signal) => {
+			called = true;
+			signal.throwIfAborted();
+			return { status: StageStatus.Completed, output: "forbidden" };
+		}), { timeout: "10ms" });
+		params.signal = controller.signal;
+		await expect(executeNodeWithRetries(params)).rejects.toThrow();
+		expect(called).toBe(false);
+	});
+
+	it("adds prior thread history when the current input is empty and skips empty assistant output", async () => {
+		let captured = "";
+		const params = guardedParams("tool", { async execute(_signal, _node, _context, input) { captured = input; return { status: StageStatus.Completed, output: "" }; } }, { thread_id: "history" });
+		params.input = "";
+		params.threadStore.addMessage("history", { role: "assistant", content: "previous answer" });
+		await executeNodeWithRetries(params);
+		expect(captured).toContain("Previous conversation:");
+		expect(captured).toContain("previous answer");
+		expect(params.threadStore.getMessages("history").filter((message) => message.role === "assistant")).toHaveLength(1);
+	});
+
+	it("requires a scenario registry before invoking a scenario-dependent handler", async () => {
+		let calls = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => { calls++; return { status: StageStatus.Completed, output: "" }; }), { scenarios: "missing" });
+		await expect(executeNodeWithRetries(params)).rejects.toThrow("scenario registry root is required");
+		expect(calls).toBe(0);
+	});
+
+	it("keeps the original input when a declared scenario is absent from an explicit registry", async () => {
+		let captured = "";
+		const params = guardedParams("tool", { async execute(_signal, _node, _context, input) { captured = input; return { status: StageStatus.Completed, output: "ok" }; } }, { scenarios: "missing" });
+		mkdirSync(join(root, "scenarios"));
+		params.context.set("scenarios_root", join(root, "scenarios"));
+		await executeNodeWithRetries(params);
+		expect(captured).toBe("hello");
+	});
+	it.each(["", "operator input"])("injects scenario guidance while preserving current input %j", async (input) => {
+		let captured = "";
+		const params = guardedParams("tool", { async execute(_signal, _node, _context, value) { captured = value; return { status: StageStatus.Completed, output: "ok" }; } }, { scenarios: "audit/SCENARIO.md" });
+		params.input = input;
+		const registryRoot = join(root, "scenarios");
+		mkdirSync(join(registryRoot, "audit"), { recursive: true });
+		writeFileSync(join(registryRoot, "audit", "SCENARIO.md"), "---\nid: audit-before-change\ntitle: Inspect real evidence\npriority: critical\nscope: safety\ndomain: release\n---\n## Context\nReview artifacts before changing state.\n## Steps\nInspect the release.\n");
+		params.context.set("scenarios_root", registryRoot);
+		await executeNodeWithRetries(params);
+		expect(captured).toContain("audit-before-change");
+		expect(captured).toContain("Inspect real evidence");
+		if (input) expect(captured.endsWith("\n\n" + input)).toBe(true);
+		else expect(captured).not.toContain("operator input");
+	});
+
+	it("rejects a pre-aborted timed execution without starting uncancellable work", async () => {
+		const controller = new AbortController();
+		controller.abort();
+		let calls = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => {
+			calls++;
+			return new Promise<Outcome>(() => {});
+		}), { timeout: "5ms" });
+		params.signal = controller.signal;
+		const result = await Promise.race([
+			executeNodeWithRetries(params).then(() => ({ state: "completed" }), (error: unknown) => ({ state: "rejected", error })),
+			new Promise<{ state: string }>((resolve) => setTimeout(() => resolve({ state: "still-pending" }), 50)),
+		]);
+		expect(result.state).toBe("rejected");
+		expect("error" in result && result.error).toMatchObject({ timeoutTriggered: false, abortTriggered: true });
+		expect(calls).toBe(0);
+	});
+
+	it("observes a parent abort raised synchronously while starting a handler", async () => {
+		const controller = new AbortController();
+		const params = guardedParams("tool", new FakeHandler(async () => {
+			controller.abort();
+			return new Promise<Outcome>(() => {});
+		}), { timeout: "5ms" });
+		params.signal = controller.signal;
+		await expect(executeNodeWithRetries(params)).rejects.toMatchObject({ timeoutTriggered: false, abortTriggered: true });
+	});
+
+	it("handles a synchronous parent abort followed by a synchronous handler throw without orphan rejection", async () => {
+		const controller = new AbortController();
+		const params = guardedParams("tool", {
+			execute() {
+				controller.abort();
+				throw new Error("synchronous handler failure");
+			},
+		}, { timeout: "5ms" });
+		params.signal = controller.signal;
+		await expect(executeNodeWithRetries(params)).rejects.toMatchObject({ timeoutTriggered: false, abortTriggered: true });
+		// Allow the runtime's unhandled-rejection turn to run before this case completes.
+		await new Promise((resolve) => setTimeout(resolve, 10));
+		expect(params.records).toHaveLength(1);
+		expect(params.records[0].status).toBe(StageStatus.Failed);
+	});
+
+	it("does not start deferred timed work if the parent aborts before its invocation microtask", async () => {
+		const controller = new AbortController();
+		let calls = 0;
+		const params = guardedParams("tool", new FakeHandler(async () => {
+			calls++;
+			return { status: StageStatus.Completed, output: "forbidden" };
+		}), { timeout: "50ms" });
+		params.signal = controller.signal;
+		const execution = executeNodeWithRetries(params);
+		controller.abort();
+		await expect(execution).rejects.toMatchObject({ timeoutTriggered: false, abortTriggered: true });
+		expect(calls).toBe(0);
+	});
+
 });

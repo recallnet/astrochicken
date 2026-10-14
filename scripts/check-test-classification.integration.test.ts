@@ -15,7 +15,7 @@ import {
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "..");
-const scriptPath = join(repoRoot, "scripts", "check-test-classification.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-test-classification.ts");
 
 function write(root, relativePath, content) {
   const absolute = join(root, relativePath);

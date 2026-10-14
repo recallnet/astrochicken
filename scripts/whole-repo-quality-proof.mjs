@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const TELEMETRY_PREFIX = "whole_repo_quality_proof";
@@ -139,43 +139,44 @@ export function buildWholeRepoQualityProof({
   diagnostics.push(...manifestLoad.diagnostics, ...ownershipLoad.diagnostics, ...registryLoad.diagnostics);
 
   const suiteDefinitions = new Map();
-  const packages = [];
-
+  const aliases = new Map();
   for (const manifest of manifestLoad.manifests) {
-    const executedSuites = [];
     for (const suite of manifest.suites) {
-      if (!isRecord(suite) || typeof suite.name !== "string") {
-        continue;
-      }
-      if (suiteDefinitions.has(suite.name)) {
-        if (executedSuiteNames.includes(suite.name)) {
-          diagnostics.push(`duplicate executed suite name across package manifests: ${suite.name}`);
-        }
+      if (!isRecord(suite) || typeof suite.name !== "string") continue;
+      const id = `${manifest.packageName}#${suite.name}`;
+      if (suiteDefinitions.has(id)) {
+        diagnostics.push(`duplicate package suite identity: ${id}`);
         continue;
       }
       const definition = {
         name: suite.name,
         packageName: manifest.packageName,
         manifestPath: manifest.relativePath,
-        entrypoints: Array.isArray(suite.entrypoints) ? suite.entrypoints : [],
+        entrypoints: (Array.isArray(suite.entrypoints) ? suite.entrypoints : []).map((entrypoint) =>
+          relative(repoRoot, resolve(repoRoot, suite.working_directory || ".", entrypoint)).replaceAll("\\", "/")),
       };
-      suiteDefinitions.set(suite.name, definition);
-      if (executedSuiteNames.includes(suite.name)) {
-        executedSuites.push(suite.name);
-      }
+      suiteDefinitions.set(id, definition);
+      aliases.set(suite.name, [...(aliases.get(suite.name) || []), definition]);
     }
-    packages.push({
-      packageName: manifest.packageName,
-      manifestPath: manifest.relativePath,
-      executedSuites: executedSuites.sort(),
-    });
   }
 
-  for (const suiteName of executedSuiteNames) {
-    if (!suiteDefinitions.has(suiteName)) {
-      diagnostics.push(`executed suite is not declared in any package manifest: ${suiteName}`);
-    }
+  const resolvedSuites = new Map();
+  for (const name of executedSuiteNames) {
+    const qualified = suiteDefinitions.get(name);
+    const candidates = qualified ? [qualified] : [...new Set([
+      ...(aliases.get(name) || []),
+      ...(name.startsWith("test:") ? aliases.get(name.slice(5)) || [] : []),
+    ])];
+    if (candidates.length === 1) resolvedSuites.set(name, candidates[0]);
+    else if (candidates.length > 1) diagnostics.push(`ambiguous executed suite name across package manifests: ${name}`);
+    else diagnostics.push(`executed suite is not declared in any package manifest: ${name}`);
   }
+  const packages = manifestLoad.manifests.map((manifest) => ({
+    packageName: manifest.packageName,
+    manifestPath: manifest.relativePath,
+    executedSuites: [...new Set([...resolvedSuites.values()]
+      .filter((suite) => suite.manifestPath === manifest.relativePath).map((suite) => suite.name))].sort(),
+  }));
 
   const specs = [];
   const subsystemMap = new Map();
@@ -202,7 +203,7 @@ export function buildWholeRepoQualityProof({
       }
       let matched = false;
       for (const suiteName of executedSuiteNames) {
-        const suite = suiteDefinitions.get(suiteName);
+        const suite = resolvedSuites.get(suiteName);
         if (!suite) continue;
         if (suite.entrypoints.some((entrypoint) => matchesEntryPoint(surface.path, entrypoint))) {
           provingSuites.add(suiteName);

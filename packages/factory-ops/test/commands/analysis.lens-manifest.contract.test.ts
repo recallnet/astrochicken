@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { promises as fsPromises } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -74,6 +74,14 @@ test("daily lens manifest contract materializes dataset files and keeps all refe
     assert.equal(datasetsById.get("llm_inventory").file_path, externalDatasetPaths.llmInventoryPath);
     assert.equal(datasetsById.get("goal_decomposition_timeouts").file_path, externalDatasetPaths.goalDecompositionTimeoutsPath);
     assert.equal(datasetsById.get("langfuse").collector_health.status, "degraded");
+    assert.deepEqual(datasetsById.get("managed_fleet").summary, {
+      item_count: 1,
+      active_factory_count: 1,
+      total_runs: 2,
+      total_commits: 3,
+    });
+    const fleetPayload = JSON.parse(readFileSync(datasetsById.get("managed_fleet").file_path, "utf8"));
+    assert.equal(fleetPayload.factories[0].factory_id, "fixture-factory");
     assert.equal(manifest.summary.pending_suggestion_count, 2);
   } finally {
     rmSync(root, { recursive: true, force: true });

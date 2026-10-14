@@ -1,12 +1,9 @@
+import { createLensFollowupIssueReader, readLensReport2188 } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test, { afterEach } from "node:test";
 
-import {
-  resetAnalysisLensFollowupCandidatesRuntimeForTest,
-  runAnalysisLensFollowupCandidates,
-  setAnalysisLensFollowupCandidatesRuntimeForTest,
-} from "../../src/commands/analysis/lens-followup-candidates.ts";
+import { resetAnalysisLensFollowupCandidatesRuntimeForTest, runAnalysisLensFollowupCandidates, setAnalysisLensFollowupCandidatesRuntimeForTest } from "../../src/commands/analysis/lens-followup-candidates.ts";
 
 function sha256(value = "") {
   return createHash("sha256").update(String(value ?? "")).digest("hex");
@@ -140,17 +137,7 @@ test("runAnalysisLensFollowupCandidates creates candidate issues, links sub-issu
       updateCalls.push({ repo, issueUrl, issueSpecRaw: JSON.parse(issueSpecRaw) });
       return { ok: true, issue_url: issueUrl };
     },
-    ghJson: (args) => {
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2188") {
-        return {
-          number: 2188,
-          url: "https://github.com/recallnet/astrochicken/issues/2188",
-          title: "Daily Lens Report — 2026-03-16",
-          body: "Report body",
-        };
-      }
-      return {};
-    },
+    ghJson: readLensReport2188,
     ghJsonPaginated: () => [],
     commentIssue: () => ({ ok: true }),
   });
@@ -353,25 +340,7 @@ test("runAnalysisLensFollowupCandidates updates generated block and preserves op
       ],
     }),
     listGoalSubIssues: () => [{ number: 2205, title: "existing", state: "open" }],
-    ghJson: (args) => {
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2205") {
-        return {
-          number: 2205,
-          url: "https://github.com/recallnet/astrochicken/issues/2205",
-          title: "Daily Lens follow-up",
-          body: existingBody,
-        };
-      }
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2188") {
-        return {
-          number: 2188,
-          url: "https://github.com/recallnet/astrochicken/issues/2188",
-          title: "Daily Lens Report — 2026-03-16",
-          body: "report body",
-        };
-      }
-      return {};
-    },
+    ghJson: createLensFollowupIssueReader(existingBody),
     ghJsonPaginated: () => [],
     updateIssue: ({ repo, issueUrl, issueSpecRaw }) => {
       updateCalls.push({ repo, issueUrl, issueSpecRaw: JSON.parse(issueSpecRaw) });
@@ -432,25 +401,7 @@ test("runAnalysisLensFollowupCandidates posts reconciliation comment when manage
       ],
     }),
     listGoalSubIssues: () => [{ number: 2205, title: "existing", state: "open" }],
-    ghJson: (args) => {
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2205") {
-        return {
-          number: 2205,
-          url: "https://github.com/recallnet/astrochicken/issues/2205",
-          title: "Daily Lens follow-up",
-          body: existingBody,
-        };
-      }
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2188") {
-        return {
-          number: 2188,
-          url: "https://github.com/recallnet/astrochicken/issues/2188",
-          title: "Daily Lens Report — 2026-03-16",
-          body: "report body",
-        };
-      }
-      return {};
-    },
+    ghJson: createLensFollowupIssueReader(existingBody),
     ghJsonPaginated: () => [],
     updateIssue: ({ repo, issueUrl, issueSpecRaw }) => {
       updateCalls.push({ repo, issueUrl, issueSpecRaw: JSON.parse(issueSpecRaw) });
@@ -511,17 +462,7 @@ test("runAnalysisLensFollowupCandidates supports legacy suggestions fallback", a
       return { ok: true };
     },
     updateIssue: ({ repo, issueUrl, issueSpecRaw }) => ({ ok: true, issue_url: issueUrl, repo, issueSpecRaw }),
-    ghJson: (args) => {
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2188") {
-        return {
-          number: 2188,
-          url: "https://github.com/recallnet/astrochicken/issues/2188",
-          title: "Daily Lens Report — 2026-03-16",
-          body: "Report body",
-        };
-      }
-      return {};
-    },
+    ghJson: readLensReport2188,
     ghJsonPaginated: () => [],
     commentIssue: () => ({ ok: true }),
   });
@@ -711,17 +652,7 @@ test("runAnalysisLensFollowupCandidates adds goal label to parent issue when sub
       updateCalls.push({ repo, issueUrl, issueSpecRaw: parsed });
       return { ok: true, issue_url: issueUrl };
     },
-    ghJson: (args) => {
-      if (args[0] === "issue" && args[1] === "view" && String(args[2]) === "2188") {
-        return {
-          number: 2188,
-          url: "https://github.com/recallnet/astrochicken/issues/2188",
-          title: "Daily Lens Report — 2026-03-16",
-          body: "Report body",
-        };
-      }
-      return {};
-    },
+    ghJson: readLensReport2188,
     ghJsonPaginated: () => [],
     commentIssue: () => ({ ok: true }),
   });

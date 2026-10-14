@@ -3,11 +3,25 @@ import { spawnSync } from "node:child_process";
 import { cpSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import test from "node:test";
+import test, { before, after } from "node:test";
+import { createCanonicalEventStoreFixture } from "../packages/factory-ops/test/supervisor/factory-status-postgres-fixture.ts";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { ensureHatchBuild } from "./lib/ensure-hatch-build.ts";
 import { runFactoryHealthCheck } from "./factory-health-check.mjs";
+
+// Test operator visibility against a disposable store, never the host's live database.
+const postgresFixture = createCanonicalEventStoreFixture();
+const previousEventStoreUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+before(async () => {
+	await postgresFixture.setup();
+	process.env.HATCH_CANONICAL_EVENT_STORE_URL = postgresFixture.connectionString;
+});
+after(() => {
+	if (previousEventStoreUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+	else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousEventStoreUrl;
+	postgresFixture.teardown();
+});
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptsDir, "..");

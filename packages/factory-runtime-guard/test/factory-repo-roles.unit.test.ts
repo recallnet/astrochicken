@@ -93,12 +93,12 @@ describe("normalizeDestinationRepos", () => {
 describe("normalizeFactoryRepoRoleContext", () => {
   it("normalizes a full context", () => {
     const result = normalizeFactoryRepoRoleContext({
-      homeRepo: "OWNER/HOME",
+      targetRepo: "OWNER/HOME",
       controlPlaneRepo: "OWNER/CP",
       destinationRepos: ["OWNER/DEST"],
     });
     assert.deepEqual(result, {
-      homeRepo: "owner/home",
+      targetRepo: "owner/home",
       controlPlaneRepo: "owner/cp",
       destinationRepos: ["owner/dest"],
     });
@@ -106,28 +106,28 @@ describe("normalizeFactoryRepoRoleContext", () => {
 
   it("returns empty for empty object", () => {
     const result = normalizeFactoryRepoRoleContext({});
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("returns empty for non-object", () => {
     const result = normalizeFactoryRepoRoleContext("not-object");
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("returns empty for undefined", () => {
     const result = normalizeFactoryRepoRoleContext();
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("returns empty for null", () => {
     const result = normalizeFactoryRepoRoleContext(null);
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 });
 
 describe("hasFactoryRepoRoleContext", () => {
-  it("returns true when homeRepo present", () => {
-    assert.equal(hasFactoryRepoRoleContext({ homeRepo: "owner/repo" }), true);
+  it("returns true when targetRepo present", () => {
+    assert.equal(hasFactoryRepoRoleContext({ targetRepo: "owner/repo" }), true);
   });
 
   it("returns true when controlPlaneRepo present", () => {
@@ -148,14 +148,14 @@ describe("hasFactoryRepoRoleContext", () => {
 });
 
 describe("buildFactoryRepoRoleContext", () => {
-  it("uses homeRepo as primary", () => {
-    const result = buildFactoryRepoRoleContext({ homeRepo: "owner/home", targetRepo: "owner/target" });
-    assert.equal(result.homeRepo, "owner/home");
+  it("normalizes targetRepo as the primary work repository", () => {
+    const result = buildFactoryRepoRoleContext({ targetRepo: "OWNER/HOME" });
+    assert.equal(result.targetRepo, "owner/home");
   });
 
-  it("falls back to targetRepo when homeRepo empty", () => {
-    const result = buildFactoryRepoRoleContext({ homeRepo: "", targetRepo: "owner/target" });
-    assert.equal(result.homeRepo, "owner/target");
+  it("ignores the removed homeRepo alias", () => {
+    const result = buildFactoryRepoRoleContext({ homeRepo: "owner/ignored", targetRepo: "owner/target" });
+    assert.equal(result.targetRepo, "owner/target");
   });
 
   it("normalizes controlPlaneRepo", () => {
@@ -184,7 +184,7 @@ describe("buildFactoryRepoRoleContext", () => {
 
   it("returns empty for defaults", () => {
     const result = buildFactoryRepoRoleContext();
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("throws on invalid destinations JSON string", () => {
@@ -210,18 +210,18 @@ describe("buildFactoryRepoRoleContext", () => {
 });
 
 describe("buildFactoryRepoRoleContextFromFactory", () => {
-  it("reads home_repo from context", () => {
+  it("reads target_repo from context", () => {
     const result = buildFactoryRepoRoleContextFromFactory({
-      context: { home_repo: "owner/home" },
+      context: { target_repo: "owner/home" },
     });
-    assert.equal(result.homeRepo, "owner/home");
+    assert.equal(result.targetRepo, "owner/home");
   });
 
   it("reads target_repo from context", () => {
     const result = buildFactoryRepoRoleContextFromFactory({
       context: { target_repo: "owner/target" },
     });
-    assert.equal(result.homeRepo, "owner/target");
+    assert.equal(result.targetRepo, "owner/target");
   });
 
   it("falls back target_repo from config", () => {
@@ -229,7 +229,7 @@ describe("buildFactoryRepoRoleContextFromFactory", () => {
       context: {},
       config: { target_repo: "owner/cfg-target" },
     });
-    assert.equal(result.homeRepo, "owner/cfg-target");
+    assert.equal(result.targetRepo, "owner/cfg-target");
   });
 
   it("reads control_plane_repo from context", () => {
@@ -266,28 +266,28 @@ describe("buildFactoryRepoRoleContextFromFactory", () => {
 
   it("returns empty for defaults", () => {
     const result = buildFactoryRepoRoleContextFromFactory();
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("handles non-object context/config", () => {
     const result = buildFactoryRepoRoleContextFromFactory({ context: "bad", config: 42 });
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 });
 
 describe("readFactoryRepoRoleContextFromEnv", () => {
   it("returns empty context when env has no var", () => {
     const result = readFactoryRepoRoleContextFromEnv({ env: {} });
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("returns empty context for empty string value", () => {
     const result = readFactoryRepoRoleContextFromEnv({ env: { HATCH_FACTORY_REPO_ROLES_JSON: "" } });
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 
   it("parses valid JSON from env", () => {
-    const ctx = { homeRepo: "owner/repo", controlPlaneRepo: "owner/cp", destinationRepos: ["owner/dest"] };
+    const ctx = { targetRepo: "owner/repo", controlPlaneRepo: "owner/cp", destinationRepos: ["owner/dest"] };
     const result = readFactoryRepoRoleContextFromEnv({
       env: { HATCH_FACTORY_REPO_ROLES_JSON: JSON.stringify(ctx) },
     });
@@ -310,26 +310,26 @@ describe("readFactoryRepoRoleContextFromEnv", () => {
 
   it("returns empty for undefined env", () => {
     const result = readFactoryRepoRoleContextFromEnv({ env: undefined });
-    assert.deepEqual(result, { homeRepo: "", controlPlaneRepo: "", destinationRepos: [] });
+    assert.deepEqual(result, { targetRepo: "", controlPlaneRepo: "", destinationRepos: [] });
   });
 });
 
 describe("buildGuardRepoRoleOptions", () => {
   it("uses explicit context over env", () => {
     const result = buildGuardRepoRoleOptions({
-      explicitContext: { homeRepo: "owner/explicit" },
-      env: { HATCH_FACTORY_REPO_ROLES_JSON: JSON.stringify({ homeRepo: "owner/env" }) },
+      explicitContext: { targetRepo: "owner/explicit" },
+      env: { HATCH_FACTORY_REPO_ROLES_JSON: JSON.stringify({ targetRepo: "owner/env" }) },
     });
-    assert.equal(result.homeRepo, "owner/explicit");
+    assert.equal(result.targetRepo, "owner/explicit");
     assert.equal(result.enforceRepoRoles, true);
   });
 
   it("falls back to env when no explicit context", () => {
     const result = buildGuardRepoRoleOptions({
       explicitContext: null,
-      env: { HATCH_FACTORY_REPO_ROLES_JSON: JSON.stringify({ homeRepo: "owner/env" }) },
+      env: { HATCH_FACTORY_REPO_ROLES_JSON: JSON.stringify({ targetRepo: "owner/env" }) },
     });
-    assert.equal(result.homeRepo, "owner/env");
+    assert.equal(result.targetRepo, "owner/env");
     assert.equal(result.enforceRepoRoles, true);
   });
 
@@ -361,11 +361,11 @@ describe("buildGuardRepoRoleOptions", () => {
     assert.equal(result.repoSlug, "owner/cp");
   });
 
-  it("falls back to homeRepo from context", () => {
+  it("falls back to targetRepo from context", () => {
     const result = buildGuardRepoRoleOptions({
       repoSlug: "",
       fallbackRepoSlug: "",
-      explicitContext: { homeRepo: "owner/home" },
+      explicitContext: { targetRepo: "owner/home" },
       env: {},
     });
     assert.equal(result.repoSlug, "owner/home");
@@ -373,7 +373,7 @@ describe("buildGuardRepoRoleOptions", () => {
 
   it("enforceRepoRoles true when context present", () => {
     const result = buildGuardRepoRoleOptions({
-      explicitContext: { homeRepo: "owner/repo" },
+      explicitContext: { targetRepo: "owner/repo" },
       env: {},
     });
     assert.equal(result.enforceRepoRoles, true);
@@ -389,7 +389,7 @@ describe("buildGuardRepoRoleOptions", () => {
 
   it("enforceRepoRoles false when enforceWhenContextPresent is false", () => {
     const result = buildGuardRepoRoleOptions({
-      explicitContext: { homeRepo: "owner/repo" },
+      explicitContext: { targetRepo: "owner/repo" },
       enforceWhenContextPresent: false,
       env: {},
     });
@@ -398,7 +398,7 @@ describe("buildGuardRepoRoleOptions", () => {
 
   it("returns defaults when called with no args", () => {
     const result = buildGuardRepoRoleOptions({ env: {} });
-    assert.equal(result.homeRepo, "");
+    assert.equal(result.targetRepo, "");
     assert.equal(result.controlPlaneRepo, "");
     assert.deepEqual(result.destinationRepos, []);
     assert.equal(result.repoSlug, "");

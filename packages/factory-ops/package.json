@@ -32,17 +32,16 @@
     "ink-testing-library": "^4.0.0"
   },
   "dependencies": {
-    "@mariozechner/pi-coding-agent": "^0.56.2",
     "@hatch/github-adapter": "workspace:*",
+    "@mariozechner/pi-coding-agent": "^0.56.3",
     "@recallnet/factory-telemetry": "workspace:*",
-    "camelcase-keys": "^10.0.2",
-    "clipanion": "^4.0.0-rc.4",
+    "camelcase-keys": "^10.0.3",
+    "clipanion": "4.0.0-rc.4",
     "hatch": "workspace:*",
     "ink": "^5.2.1",
     "ink-text-input": "^6.0.0",
-    "pg": "^8.16.3",
+    "pg": "^8.23.1",
     "react": "^18.3.1",
-    "semver": "^7.7.2",
-    "zod-to-json-schema": "^3.25.1"
+    "semver": "^7.8.5"
   }
 }

@@ -64,10 +64,10 @@ describe("resolveCanonicalCheckoutPath", () => {
   it("supports ${VAR} interpolation from env", () => {
     const result = resolveCanonicalCheckoutPath({
       configuredPath: "${HOME}/projects/repo",
-      env: { HOME: "/users/dev" },
+      env: { HOME: "/test-home/dev" },
       baseDir: BASE,
     });
-    assert.equal(result, "/users/dev/projects/repo");
+    assert.equal(result, "/test-home/dev/projects/repo");
   });
 
   it("resolves relative path from baseDir", () => {

@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -72,7 +76,7 @@ test("resetFactoryBudget enforces owner checks and resets only guard state", () 
   }
 });
 
-test("factoryStatus treats suspended/guarded terminal states as failed terminal outcomes", () => {
+test("factoryStatus treats suspended/guarded terminal states as failed terminal outcomes", async () => {
   const root = mkdtempSync(join(tmpdir(), "factory-guard-status-"));
   const runsDir = join(root, ".hatch", "runs");
   mkdirSync(join(runsDir, "r1"), { recursive: true });
@@ -82,6 +86,7 @@ test("factoryStatus treats suspended/guarded terminal states as failed terminal 
   writeFileSync(join(runsDir, "r2", "state.json"), JSON.stringify({ runId: "r2", status: "guarded_terminal", context: {} }));
   writeFileSync(join(runsDir, "r3", "state.json"), JSON.stringify({ runId: "r3", status: "suspended", context: {} }));
 
+  await eventStoreFixture.seedRuns({ runsDir });
   const out = factoryStatus({ runsDir });
   assert.equal(out.failed, 3);
   assert.equal(out.active.length, 0);

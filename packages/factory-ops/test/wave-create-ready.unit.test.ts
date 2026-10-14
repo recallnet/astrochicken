@@ -4,6 +4,36 @@ import { createTestAdapter } from "../../github-adapter/src/test-adapter.ts";
 import { createReadyMarkers, createWaveReadyMarker } from "../src/commands/wave-create-ready.ts";
 import { WAVE_READY_LEASE_EVENT_PREFIX } from "../src/commands/wave-claim.ts";
 
+function readyMarkerStubs() {
+  return {
+    ghJsonFn: () => [],
+    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
+    syncBlockedByFn: () => ({ ok: true }),
+  };
+}
+
+function releaseEventFixture({ issueNumber, runId, reason, at }) {
+  return JSON.stringify({
+    schema_version: "wave_ready_lease_event/v1",
+    action: "release",
+    milestone_title: "goal-1-wave-1",
+    ready_issue_number: issueNumber,
+    run_id: runId,
+    pipeline: "wave_execute",
+    reason,
+    at,
+  });
+}
+
+function closedMarkerQuery(number, comments) {
+  return (args) => {
+    if (args.includes("--state") && args.includes("open")) return [];
+    if (args.includes("--search")) return [marker(number, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
+    if (String(args[1] || "").includes(`/issues/${number}/comments`)) return comments;
+    return [];
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -25,20 +55,18 @@ function marker(number, title, milestone, state = "OPEN", labels = []) {
 
 test("createReadyMarkers returns empty array when no waves provided", () => {
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: [],
-    ghJsonFn: () => [],
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, []);
 });
 
 test("createReadyMarkers returns empty array with default waves", () => {
   const out = createReadyMarkers({
-    ghJsonFn: () => [],
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+    ...readyMarkerStubs(),
+
   });
   assert.deepEqual(out, []);
 });
@@ -52,6 +80,7 @@ test("createWaveReadyMarker returns invalid_input when repo or wave is missing",
 
 test("createWaveReadyMarker returns already_ready for existing open marker", () => {
   const out = createWaveReadyMarker({
+    ...readyMarkerStubs(),
     repo: "r/r",
     wave: "goal-1-wave-1",
     ghJsonFn: (args) => {
@@ -60,8 +89,7 @@ test("createWaveReadyMarker returns already_ready for existing open marker", () 
       }
       return [];
     },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -76,6 +104,7 @@ test("createWaveReadyMarker returns already_ready for existing open marker", () 
 
 test("createReadyMarkers returns existing URL for open+ready marker", () => {
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     ghJsonFn: (args) => {
@@ -84,8 +113,7 @@ test("createReadyMarkers returns existing URL for open+ready marker", () => {
       }
       return [];
     },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/1"]);
 });
@@ -101,14 +129,14 @@ test("createWaveReadyMarker reads open ready markers through adapter when provid
   });
 
   const out = createWaveReadyMarker({
+    ...readyMarkerStubs(),
     repo: "r/r",
     wave: "goal-1-wave-1",
     adapter,
     ghJsonFn: () => {
       throw new Error("ghJson must not be called when adapter is provided");
     },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
 
   assert.equal(out.ok, true);
@@ -123,6 +151,7 @@ test("createWaveReadyMarker reads open ready markers through adapter when provid
 test("createReadyMarkers adds ready label to existing open issue without it", () => {
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     ghJsonFn: (args) => {
@@ -133,7 +162,7 @@ test("createReadyMarkers adds ready label to existing open issue without it", ()
       return [];
     },
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/2"]);
   const addLabelCall = calls.find((c) => c.includes("--add-label") && c.includes("ready"));
@@ -143,6 +172,7 @@ test("createReadyMarkers adds ready label to existing open issue without it", ()
 test("createReadyMarkers does not add ready label if already present on open issue", () => {
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     ghJsonFn: (args) => {
@@ -153,7 +183,7 @@ test("createReadyMarkers does not add ready label if already present on open iss
       return [];
     },
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/2"]);
   const addLabelCall = calls.find((c) => c.includes("--add-label"));
@@ -167,19 +197,12 @@ test("createReadyMarkers does not add ready label if already present on open iss
 test("createReadyMarkers reopens closed marker", () => {
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(3, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      // Comments endpoint — no lease events, safe to reopen
-      if (String(args[1] || "").includes("/issues/3/comments")) return [];
-      return [];
-    },
+    ghJsonFn: closedMarkerQuery(3, []),
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/3"]);
   const reopenCall = calls.find((c) => c.includes("reopen"));
@@ -192,31 +215,13 @@ test("createReadyMarkers reopens closed marker", () => {
 
 test("createReadyMarkers does NOT reopen closed marker with no_merge_candidates release within cooldown", () => {
   const recentAt = new Date(Date.now() - 10 * 60 * 1000).toISOString(); // 10 min ago (within 30-min cooldown)
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "4",
-    run_id: "run-4",
-    pipeline: "wave_execute",
-    reason: "no_merge_candidates",
-    at: recentAt,
-  });
+  const event = releaseEventFixture({ issueNumber: "4", runId: "run-4", reason: "no_merge_candidates", at: recentAt });
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(4, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/4/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: recentAt }];
-      }
-      return [];
-    },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+    ghJsonFn: closedMarkerQuery(4, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: recentAt }]),
+
   });
   // Should NOT reopen — still within cooldown window
   assert.deepEqual(out, [""]);
@@ -224,31 +229,13 @@ test("createReadyMarkers does NOT reopen closed marker with no_merge_candidates 
 
 test("createReadyMarkers does NOT reopen closed marker with judge_failed release within cooldown", () => {
   const recentAt = new Date(Date.now() - 5 * 60 * 1000).toISOString(); // 5 min ago
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "5",
-    run_id: "run-5",
-    pipeline: "wave_execute",
-    reason: "judge_failed",
-    at: recentAt,
-  });
+  const event = releaseEventFixture({ issueNumber: "5", runId: "run-5", reason: "judge_failed", at: recentAt });
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(5, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/5/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: recentAt }];
-      }
-      return [];
-    },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+    ghJsonFn: closedMarkerQuery(5, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: recentAt }]),
+
   });
   assert.deepEqual(out, [""]);
 });
@@ -259,32 +246,15 @@ test("createReadyMarkers does NOT reopen closed marker with judge_failed release
 
 test("createReadyMarkers reopens closed marker with no_merge_candidates release after cooldown expires", () => {
   const oldAt = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // 1 hour ago (past 30-min cooldown)
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "4",
-    run_id: "run-4",
-    pipeline: "wave_execute",
-    reason: "no_merge_candidates",
-    at: oldAt,
-  });
+  const event = releaseEventFixture({ issueNumber: "4", runId: "run-4", reason: "no_merge_candidates", at: oldAt });
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(4, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/4/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: oldAt }];
-      }
-      return [];
-    },
+    ghJsonFn: closedMarkerQuery(4, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: oldAt }]),
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/4"]);
   const reopenCall = calls.find((c) => c.includes("reopen"));
@@ -293,32 +263,15 @@ test("createReadyMarkers reopens closed marker with no_merge_candidates release 
 
 test("createReadyMarkers reopens closed marker with judge_failed release after cooldown expires", () => {
   const oldAt = new Date(Date.now() - 45 * 60 * 1000).toISOString(); // 45 min ago
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "5",
-    run_id: "run-5",
-    pipeline: "wave_execute",
-    reason: "judge_failed",
-    at: oldAt,
-  });
+  const event = releaseEventFixture({ issueNumber: "5", runId: "run-5", reason: "judge_failed", at: oldAt });
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(5, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/5/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: oldAt }];
-      }
-      return [];
-    },
+    ghJsonFn: closedMarkerQuery(5, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: oldAt }]),
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/5"]);
   const reopenCall = calls.find((c) => c.includes("reopen"));
@@ -327,34 +280,17 @@ test("createReadyMarkers reopens closed marker with judge_failed release after c
 
 test("createReadyMarkers respects custom cooldownMs", () => {
   const at = new Date(Date.now() - 10 * 60 * 1000).toISOString(); // 10 min ago
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "7",
-    run_id: "run-7",
-    pipeline: "wave_execute",
-    reason: "judge_failed",
-    at,
-  });
+  const event = releaseEventFixture({ issueNumber: "7", runId: "run-7", reason: "judge_failed", at: at });
   // With 5-min cooldown, 10-min-old event should allow reopen
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     cooldownMs: 5 * 60 * 1000,
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(7, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/7/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: at }];
-      }
-      return [];
-    },
+    ghJsonFn: closedMarkerQuery(7, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: at }]),
     ghFn: (args) => { calls.push(args); return { ok: true, stdout: "", stderr: "" }; },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/7"]);
   const reopenCall = calls.find((c) => c.includes("reopen"));
@@ -362,21 +298,12 @@ test("createReadyMarkers respects custom cooldownMs", () => {
 
   // With 60-min cooldown, same 10-min-old event should still block
   const out2 = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     cooldownMs: 60 * 60 * 1000,
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(7, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/7/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: at }];
-      }
-      return [];
-    },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+    ghJsonFn: closedMarkerQuery(7, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: at }]),
+
   });
   assert.deepEqual(out2, [""]);
 });
@@ -388,31 +315,13 @@ test("createReadyMarkers respects custom cooldownMs", () => {
 test("createReadyMarkers does NOT reopen closed marker with wave_completed release (permanent block with default cooldown)", () => {
   // wave_completed means the wave successfully merged — permanent block at default cooldown (no explicit override)
   const longAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "6",
-    run_id: "run-6",
-    pipeline: "wave_execute",
-    reason: "wave_completed",
-    at: longAgo,
-  });
+  const event = releaseEventFixture({ issueNumber: "6", runId: "run-6", reason: "wave_completed", at: longAgo });
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(6, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/6/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: longAgo }];
-      }
-      return [];
-    },
-    ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
-    syncBlockedByFn: () => ({ ok: true }),
+    ghJsonFn: closedMarkerQuery(6, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: longAgo }]),
+
   });
   // Should NOT reopen — wave_completed is a permanent block at default cooldown
   assert.deepEqual(out, [""]);
@@ -422,37 +331,20 @@ test("createReadyMarkers allows new marker when wave_completed but cooldownMs=0 
   // cooldownMs=0 is an explicit supervisor override that bypasses even wave_completed terminal state
   // so that re-dispatch is possible when open features still exist.
   const longAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
-  const event = JSON.stringify({
-    schema_version: "wave_ready_lease_event/v1",
-    action: "release",
-    milestone_title: "goal-1-wave-1",
-    ready_issue_number: "6",
-    run_id: "run-6",
-    pipeline: "wave_execute",
-    reason: "wave_completed",
-    at: longAgo,
-  });
+  const event = releaseEventFixture({ issueNumber: "6", runId: "run-6", reason: "wave_completed", at: longAgo });
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
     cooldownMs: 0, // explicit force-override
-    ghJsonFn: (args) => {
-      if (args.includes("--state") && args.includes("open")) return [];
-      if (args.includes("--search")) {
-        return [marker(6, "goal-1-wave-1", "goal-1-wave-1", "CLOSED", [])];
-      }
-      if (String(args[1] || "").includes("/issues/6/comments")) {
-        return [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: longAgo }];
-      }
-      return [];
-    },
+    ghJsonFn: closedMarkerQuery(6, [{ body: `${WAVE_READY_LEASE_EVENT_PREFIX}${event}`, created_at: longAgo }]),
     ghFn: (args) => {
       calls.push(args);
       if (args.includes("reopen")) return { ok: true, stdout: "https://gh/6\n", stderr: "" };
       return { ok: true, stdout: "", stderr: "" };
     },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   // Should reopen — cooldownMs=0 is an explicit override that bypasses wave_completed permanent block
   assert.deepEqual(out, ["https://gh/6"]);
@@ -467,15 +359,16 @@ test("createReadyMarkers allows new marker when wave_completed but cooldownMs=0 
 test("createReadyMarkers creates new issue when no marker exists", () => {
   const calls = [];
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: () => [],
+
     ghFn: (args) => {
       calls.push(args);
       if (args.includes("create")) return { ok: true, stdout: "https://gh/5\n", stderr: "" };
       return { ok: true, stdout: "", stderr: "" };
     },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, ["https://gh/5"]);
   const createCall = calls.find((c) => c.includes("create"));
@@ -488,28 +381,30 @@ test("createReadyMarkers creates new issue when no marker exists", () => {
 
 test("createReadyMarkers returns empty string when issue creation fails", () => {
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: () => [],
+
     ghFn: (args) => {
       if (args.includes("create")) return { ok: false, stdout: "", stderr: "create_failed" };
       return { ok: true, stdout: "", stderr: "" };
     },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.deepEqual(out, [""]);
 });
 
 test("createReadyMarkers handles ghJsonFn failure gracefully", () => {
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1"],
-    ghJsonFn: () => [],
+
     ghFn: (args) => {
       if (args.includes("create")) return { ok: true, stdout: "https://gh/new\n", stderr: "" };
       return { ok: true, stdout: "", stderr: "" };
     },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   // When all queries return empty, falls through to create new
   assert.deepEqual(out, ["https://gh/new"]);
@@ -517,6 +412,7 @@ test("createReadyMarkers handles ghJsonFn failure gracefully", () => {
 
 test("createReadyMarkers handles multiple waves", () => {
   const out = createReadyMarkers({
+    ...readyMarkerStubs(),
     repo: "r/r",
     waves: ["goal-1-wave-1", "goal-2-wave-1"],
     ghJsonFn: (args) => {
@@ -529,7 +425,7 @@ test("createReadyMarkers handles multiple waves", () => {
       if (args.includes("create")) return { ok: true, stdout: "https://gh/new\n", stderr: "" };
       return { ok: true, stdout: "", stderr: "" };
     },
-    syncBlockedByFn: () => ({ ok: true }),
+
   });
   assert.equal(out.length, 2);
   assert.equal(out[0], "https://gh/1"); // existing

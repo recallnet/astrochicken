@@ -4,10 +4,10 @@ import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
-const CAPABILITY_ROOT = resolve(REPO_ROOT, "packages/capability-software-development");
+const CAPABILITY_ROOT = resolve(REPO_ROOT, "docs/contracts/workflow-ir/capability-software-development");
 
-const GOAL_EXECUTE_PATH = join(CAPABILITY_ROOT, "graphs/goal_execute.dot");
-const GOAL_ISSUE_EXECUTE_PATH = join(CAPABILITY_ROOT, "graphs/goal_issue_execute.dot");
+const GOAL_EXECUTE_PATH = join(CAPABILITY_ROOT, "goal_execute.dot");
+const GOAL_ISSUE_EXECUTE_PATH = join(CAPABILITY_ROOT, "goal_issue_execute.dot");
 
 function readGraph(path: string): string {
 	return readFileSync(path, "utf8");
@@ -17,7 +17,7 @@ describe("@hatch/capability-software-development execution portability contract"
 	it("goal_execute references shared goal_issue_execute pipeline path", () => {
 		const content = readGraph(GOAL_EXECUTE_PATH);
 		expect(content).toContain(
-			'pipeline="docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot"',
+			'pipeline="@hatch/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"',
 		);
 		expect(content).not.toContain('pipeline="docs/contracts/workflow-ir/mothership/goal_issue_execute.dot"');
 	});

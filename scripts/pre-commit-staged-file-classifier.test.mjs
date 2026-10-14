@@ -131,11 +131,11 @@ test("platform invariant trigger predicate matches shared platform surfaces", ()
   assert.equal(isPlatformInvariantTriggerPath("scripts/test/fixtures/factory-portability/external/factory.config.json"), true);
   assert.equal(isPlatformInvariantTriggerPath("factory-registry.json"), true);
   assert.equal(isPlatformInvariantTriggerPath("factories/brainstorm/kind.json"), true);
-  assert.equal(isPlatformInvariantTriggerPath("scripts/check-factory-registry-consistency.mjs"), true);
+  assert.equal(isPlatformInvariantTriggerPath("scripts/check-factory-registry-consistency.ts"), true);
   assert.equal(isPlatformInvariantTriggerPath("factories/brainstorm/factory.config.json"), true);
   assert.equal(isPlatformInvariantTriggerPath("packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs"), true);
   assert.equal(isPlatformInvariantTriggerPath("packages/factory-ops/src/lib/external-factory-control-state.ts"), true);
-  assert.equal(isPlatformInvariantTriggerPath("scripts/check-managed-supervisor-shell-contract.mjs"), true);
+  assert.equal(isPlatformInvariantTriggerPath("scripts/check-managed-supervisor-shell-contract.ts"), true);
   assert.equal(isPlatformInvariantTriggerPath("docs/contracts/factory-label-contract.json"), true);
   assert.equal(isPlatformInvariantTriggerPath("packages/factory-ops/src/commands/supervisor-artifact.ts"), true);
   assert.equal(isPlatformInvariantTriggerPath("packages/factory-ops/src/lib/command-owners/supervisor-artifact.ts"), true);
@@ -221,13 +221,13 @@ test("context propagation trigger predicate covers dot and handler/checker/regis
   assert.equal(isContextPropagationContractTriggerPath("factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"), true);
   assert.equal(isContextPropagationContractTriggerPath("apps/hatch/src/pipeline/handler/register.ts"), true);
   assert.equal(isContextPropagationContractTriggerPath("apps/hatch/src/pipeline/handler/worktree.ts"), true);
-  assert.equal(isContextPropagationContractTriggerPath("scripts/check-context-propagation-contract.mjs"), true);
+  assert.equal(isContextPropagationContractTriggerPath("scripts/check-context-propagation-contract.ts"), true);
   assert.equal(isContextPropagationContractTriggerPath("scripts/handler-context-contract.json"), true);
   assert.equal(isContextPropagationContractTriggerPath("apps/hatch/src/cli.ts"), false);
 });
 
 test("classifyStagedPaths marks scenario count gate trigger candidates", () => {
-  const checkerContract = classifyStagedPaths(["scripts/check-scenario-count-gate.mjs"]);
+  const checkerContract = classifyStagedPaths(["scripts/check-scenario-count-gate.ts"]);
   assert.equal(checkerContract.hasScenarioCountGatePaths, true);
 
   const commandContract = classifyStagedPaths(["packages/factory-ops/src/commands/scenario-count-gate.ts"]);
@@ -249,9 +249,9 @@ test("classifyStagedPaths marks context propagation contract candidates for dot 
   assert.equal(handlerContract.hasContextPropagationContractPaths, true);
   assert.deepEqual(handlerContract.stagedContextPropagationContractCandidates, ["apps/hatch/src/pipeline/handler/worktree.ts"]);
 
-  const checkerContract = classifyStagedPaths(["scripts/check-context-propagation-contract.mjs"]);
+  const checkerContract = classifyStagedPaths(["scripts/check-context-propagation-contract.ts"]);
   assert.equal(checkerContract.hasContextPropagationContractPaths, true);
-  assert.deepEqual(checkerContract.stagedContextPropagationContractCandidates, ["scripts/check-context-propagation-contract.mjs"]);
+  assert.deepEqual(checkerContract.stagedContextPropagationContractCandidates, ["scripts/check-context-propagation-contract.ts"]);
 
   const nonTriggerContract = classifyStagedPaths(["apps/hatch/src/cli.ts"]);
   assert.equal(nonTriggerContract.hasContextPropagationContractPaths, false);
@@ -298,7 +298,7 @@ test("classifyStagedPaths marks hatch and factory-telemetry sources for workspac
 });
 
 test("classifyStagedPaths marks coverage policy surfaces deterministically", () => {
-  const vitestContract = classifyStagedPaths(["apps/hatch/vitest.config.mjs"]);
+  const vitestContract = classifyStagedPaths(["apps/hatch/vitest.config.ts"]);
   assert.equal(vitestContract.hasCoveragePolicyPaths, true);
 
   const factoryOpsContract = classifyStagedPaths(["packages/factory-ops/package.json"]);
@@ -315,13 +315,13 @@ test("classifyStagedPaths marks benchmark job_id registry trigger surfaces", () 
   const registryContract = classifyStagedPaths(["docs/contracts/benchmark-job-id-registry.json"]);
   assert.equal(registryContract.hasBenchmarkJobIdRegistryPaths, true);
 
-  const checkerContract = classifyStagedPaths(["scripts/check-benchmark-job-id-registry.mjs"]);
+  const checkerContract = classifyStagedPaths(["scripts/check-benchmark-job-id-registry.ts"]);
   assert.equal(checkerContract.hasBenchmarkJobIdRegistryPaths, true);
 
   const docsContract = classifyStagedPaths(["docs/guide.md"]);
   assert.equal(docsContract.hasBenchmarkJobIdRegistryPaths, false);
 
-  const scriptedContract = classifyStagedPaths(["scripts/check-benchmark-job-id-registry.mjs"]);
+  const scriptedContract = classifyStagedPaths(["scripts/check-benchmark-job-id-registry.ts"]);
   assert.equal(scriptedContract.hasBenchmarkJobIdRegistryPaths, true);
 });
 
@@ -740,4 +740,12 @@ test("default staged parser includes deleted docs paths", () => {
   const contract = runClassifierInRepo(repo);
   assert.deepEqual(contract.stagedPaths, ["docs/keep.md"]);
   assert.equal(contract.isDocsOnly, true);
+});
+
+test("typed workflow JSON changes retain graph semantic gate coverage", () => {
+ const contract = classifyStagedPaths(["factories/mothership/workflows/wave-execution/wave_execute.workflow-source.data.json"]);
+ assert.equal(contract.hasContextPropagationContractPaths, true);
+ assert.equal(contract.hasPipelineSegmentCoveragePaths, true);
+ assert.equal(contract.hasDegenerateStateGuardPaths, true);
+ assert.equal(contract.hasBenchmarkJobIdRegistryPaths, true);
 });

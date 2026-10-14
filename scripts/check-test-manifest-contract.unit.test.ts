@@ -1,10 +1,8 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import { createJsonFixtureRepo } from "./test/helpers/json-fixture-repo.ts";
 
 import {
   parseArgs,
@@ -13,100 +11,44 @@ import {
   validatePackageManifest,
 } from "./check-test-manifest-contract.ts";
 
-const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-test-manifest-contract.mjs");
+const scriptsDir = import.meta.dirname;
+const checkerPath = join(scriptsDir, "check-test-manifest-contract.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
-function writeJson(path, value) {
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+function packageManifestFixture(packageName, packagePath, suites) {
+  return { schema: "hatch.package-test-manifest.v1", package_name: packageName, package_path: packagePath, default_suite: "default", suites };
+}
+
+function vitestSuiteFixture(name, workingDirectory, command) {
+  return { name, runner: "vitest", working_directory: workingDirectory, entrypoints: ["src/**/*.test.ts"], command };
+}
+
+function opsSuiteFixture(overrides) {
+  return {
+    working_directory: ".",
+    entrypoints: ["commands", "packets", "merge", "wave", "scenarios", "supervisor", "leases", "shared"].map((name) => `packages/factory-ops/test/${name}`),
+    ...overrides,
+  };
 }
 
 function createFixtureRepo() {
-  const dir = mkdtempSync(join(tmpdir(), "test-manifest-contract-"));
-  writeJson(join(dir, "config", "testing", "package-test-manifests", "apps-hatch.json"), {
-    schema: "hatch.package-test-manifest.v1",
-    package_name: "hatch",
-    package_path: "apps/hatch",
-    default_suite: "default",
-    suites: [
-      {
-        name: "default",
-        runner: "vitest",
-        working_directory: "apps/hatch",
-        entrypoints: ["src/**/*.test.ts"],
-        command: "vitest --run --passWithNoTests --reporter=dot",
-      },
-      {
-        name: "guard-gates",
-        runner: "vitest",
-        working_directory: "apps/hatch",
-        entrypoints: ["src/**/*.test.ts"],
-        command: "vitest --run --coverage --coverage.reporter=text-summary --reporter=dot",
-      },
-    ],
-  });
-  writeJson(join(dir, "config", "testing", "package-test-manifests", "packages-factory-ops.json"), {
-    schema: "hatch.package-test-manifest.v1",
-    package_name: "@hatch/factory-ops",
-    package_path: "packages/factory-ops",
-    default_suite: "default",
-    suites: [
-      {
-        name: "default",
-        runner: "node:test",
-        working_directory: ".",
-        entrypoints: [
-          "packages/factory-ops/test/commands",
-          "packages/factory-ops/test/packets",
-          "packages/factory-ops/test/merge",
-          "packages/factory-ops/test/wave",
-          "packages/factory-ops/test/scenarios",
-          "packages/factory-ops/test/supervisor",
-          "packages/factory-ops/test/leases",
-          "packages/factory-ops/test/shared"
-        ],
-        command: "node --test --test-reporter=dot $(find packages/factory-ops/test -mindepth 2 -type f -name '*.test.mjs' | sort)",
-      },
-      {
-        name: "wave-claim-gates",
-        runner: "node:test+c8",
-        working_directory: ".",
-        entrypoints: [
-          "packages/factory-ops/test/commands",
-          "packages/factory-ops/test/packets",
-          "packages/factory-ops/test/merge",
-          "packages/factory-ops/test/wave",
-          "packages/factory-ops/test/scenarios",
-          "packages/factory-ops/test/supervisor",
-          "packages/factory-ops/test/leases",
-          "packages/factory-ops/test/shared"
-        ],
-        command: "node scripts/run-c8-with-temp-dir.mjs --all --src packages/factory-ops/src --reporter=text-summary --reporter=lcov --check-coverage --statements 57 --lines 57 --functions 55 --branches 61 node --max-old-space-size=8192 --test --test-reporter=dot $(find packages/factory-ops/test -mindepth 2 -type f -name '*.test.mjs' | sort)",
-        coverage_policy: {
+  return createJsonFixtureRepo({
+"config/testing/package-test-manifests/apps-hatch.json": packageManifestFixture("hatch", "apps/hatch", [
+vitestSuiteFixture("default", "apps/hatch", "vitest --run --passWithNoTests --reporter=dot"),
+vitestSuiteFixture("guard-gates", "apps/hatch", "vitest --run --coverage --coverage.reporter=text-summary --reporter=dot")
+]),
+"config/testing/package-test-manifests/packages-factory-ops.json": packageManifestFixture("@hatch/factory-ops", "packages/factory-ops", [
+opsSuiteFixture({ name: "default", runner: "node:test", command: "node --test --test-reporter=dot $(find packages/factory-ops/test -mindepth 2 -type f -name '*.test.mjs' | sort)" }),
+opsSuiteFixture({ name: "wave-claim-gates", runner: "node:test+c8", command: "node scripts/run-c8-with-temp-dir.mjs --all --src packages/factory-ops/src --reporter=text-summary --reporter=lcov --check-coverage --statements 57 --lines 57 --functions 55 --branches 61 node --max-old-space-size=8192 --test --test-reporter=dot $(find packages/factory-ops/test -mindepth 2 -type f -name '*.test.mjs' | sort)", coverage_policy: {
           src: ["packages/factory-ops/src"],
           exclude: ["packages/factory-ops/src/generated/**"],
           thresholds: { statements: 57, lines: 57, functions: 55, branches: 61 },
-        },
-      },
-    ],
-  });
-  writeJson(join(dir, "config", "testing", "package-test-manifests", "packages-factory-telemetry.json"), {
-    schema: "hatch.package-test-manifest.v1",
-    package_name: "@recallnet/factory-telemetry",
-    package_path: "packages/factory-telemetry",
-    default_suite: "default",
-    suites: [
-      {
-        name: "default",
-        runner: "vitest",
-        working_directory: "packages/factory-telemetry",
-        entrypoints: ["src/**/*.test.ts"],
-        command: "vitest --run --passWithNoTests --reporter=dot",
-      },
-    ],
-  });
-  return dir;
+        } })
+]),
+"config/testing/package-test-manifests/packages-factory-telemetry.json": packageManifestFixture("@recallnet/factory-telemetry", "packages/factory-telemetry", [
+vitestSuiteFixture("default", "packages/factory-telemetry", "vitest --run --passWithNoTests --reporter=dot")
+])
+  }, { prefix: "test-manifest-contract-" });
 }
 
 test("parseArgs reads repo-root, manifest, and json mode", () => {

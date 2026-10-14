@@ -1,6 +1,5 @@
 Factory: (unresolved)
 Factory ID: mothership
-Home Repo: recallnet/astrochicken
 Target Repo: recallnet/astrochicken
 Factory Mode: standalone
 Control Plane: (unresolved)

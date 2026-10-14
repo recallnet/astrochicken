@@ -13,9 +13,9 @@ written: "2026-03-20"
 
 Schema: `active_surface_inventory/v1`
 Manifest: `docs/contracts/active-surface-manifest.json`
-Live graph roots: 40
-Active graphs: 3
-Active runtime files: 367
+Live graph roots: 41
+Active graphs: 0
+Active runtime files: 371
 Active command references: 0
 Reachable active command files: 0
 Diagnostics: 0
@@ -24,54 +24,52 @@ Diagnostics: 0
 
 | Path | Classification | Source |
 | --- | --- | --- |
+| `factories/_shared/conformance/factory_supervisor_tick.dot` | `historical_or_test_only` | `factory_config.conformance_smoke_graph:conformance.smoke_graph` |
 | `factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:brainstorm::domain_graph` |
 | `factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs` | `operator_only` | `factory_config.dispatch_graph:dispatch.graph` |
 | `factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs` | `operator_only` | `factory_config.pipeline_graph:pipeline.supervisor_tick` |
 | `factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:brainstorm::factory_supervisor_tick` |
 | `factories/mothership/conformance/factory_supervisor_tick.dot` | `historical_or_test_only` | `factory_config.conformance_smoke_graph:conformance.smoke_graph` |
-| `factories/mothership/graphs/daily_lens_publish.dot` | `active_factory` | `factory_config.scheduled_graph:daily-lens` |
-| `factories/mothership/graphs/daily_release_report.dot` | `active_factory` | `factory_config.scheduled_graph:daily-release-report` |
-| `factories/mothership/graphs/factory_dispatch_reactor.dot` | `active_factory` | `factory_config.dispatch_graph:dispatch.graph` |
+| `factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs` | `operator_only` | `factory_config.scheduled_graph:daily-lens` |
+| `factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs` | `operator_only` | `factory_config.scheduled_graph:daily-release-report` |
+| `factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs` | `operator_only` | `factory_config.dispatch_graph:dispatch.graph` |
 | `factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs` | `operator_only` | `factory_config.pipeline_graph:pipeline.supervisor_tick` |
 | `factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:mothership::domain_graph` |
 | `factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:mothership::wave_execute` |
 | `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::goal_intake_decompose` |
-| `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_intake_decompose` |
 | `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::goal_intake_decompose` |
+| `packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_intake_decompose` |
 | `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::goal_queue` |
-| `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:mothership::goal_queue` |
-| `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_queue` |
 | `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::goal_queue` |
+| `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_queue` |
+| `packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:mothership::goal_queue` |
 | `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::goal_run` |
-| `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:mothership::goal_run` |
-| `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_run` |
 | `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::goal_run` |
+| `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_run` |
+| `packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:mothership::goal_run` |
 | `packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs` | `operator_only` | `factory_config.scheduled_graph:daily-release-report` |
 | `packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::daily_release_report` |
 | `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::goal_execute` |
-| `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_execute` |
 | `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::goal_execute` |
+| `packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_execute` |
 | `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::goal_issue_execute` |
-| `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_issue_execute` |
 | `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::goal_issue_execute` |
+| `packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::goal_issue_execute` |
 | `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:example-scanner::domain_graph` |
-| `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:example-web::domain_graph` |
 | `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:example-trading::domain_graph` |
+| `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_kind.domain_graph:example-web::domain_graph` |
 | `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::managed_software_delivery_domain` |
 | `packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::managed_software_delivery_domain` |
 | `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_config.dispatch_graph:dispatch.graph` |
 | `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_config.pipeline_graph:pipeline.supervisor_tick` |
 | `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-scanner::factory_supervisor_tick` |
-| `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::factory_supervisor_tick` |
 | `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-trading::factory_supervisor_tick` |
+| `packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs` | `operator_only` | `factory_registry.instance_graph:example-web::factory_supervisor_tick` |
 
 ## Active Graphs
 
 | Path | Classification | Entry |
 | --- | --- | --- |
-| `factories/mothership/graphs/daily_lens_publish.dot` | `active_factory` | `factory_graphs_active` |
-| `factories/mothership/graphs/daily_release_report.dot` | `active_factory` | `factory_graphs_active` |
-| `factories/mothership/graphs/factory_dispatch_reactor.dot` | `active_factory` | `factory_graphs_active` |
 
 ## Active Runtime Files
 
@@ -185,6 +183,8 @@ Diagnostics: 0
 | `packages/factory-core/src/daily-lens-collector.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-core/src/factory-composition-registry.d.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-core/src/factory-composition-registry.ts` | `execution_path` | `shared_runtime_execution` |
+| `packages/factory-core/src/graph-source-loader.d.ts` | `execution_path` | `shared_runtime_execution` |
+| `packages/factory-core/src/graph-source-loader.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-core/src/hatch-config-schema-boundaries.d.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-core/src/hatch-config-schema-boundaries.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-core/src/hatch-run-lifecycle-asyncapi.d.ts` | `execution_path` | `shared_runtime_execution` |
@@ -368,6 +368,7 @@ Diagnostics: 0
 | `packages/factory-ops/src/lib/managed-observability-boundary.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-ops/src/lib/merge-capability.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-ops/src/lib/merge-conflict-packet.ts` | `execution_path` | `shared_runtime_execution` |
+| `packages/factory-ops/src/lib/merge-resolution-telemetry-path.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-ops/src/lib/mirror-managed-snapshot.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-ops/src/lib/mothership-label-overlay.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-ops/src/lib/mutation-policy-contract.ts` | `execution_path` | `shared_runtime_execution` |
@@ -413,6 +414,7 @@ Diagnostics: 0
 | `packages/factory-runtime-guard/src/canonical-worktree.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-runtime-guard/src/cli-helpers.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-runtime-guard/src/factory-repo-roles.ts` | `execution_path` | `shared_runtime_execution` |
+| `packages/factory-runtime-guard/src/filesystem-path.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-runtime-guard/src/git-mutation-guard.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-runtime-guard/src/index.ts` | `execution_path` | `shared_runtime_execution` |
 | `packages/factory-runtime-guard/src/io.ts` | `execution_path` | `shared_runtime_execution` |

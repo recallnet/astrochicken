@@ -17,7 +17,7 @@
 		"test:degenerate-state-guards-contract": "node --test --test-reporter=dot scripts/check-degenerate-state-guards.unit.test.ts scripts/run-gates.unit.test.mjs scripts/pre-commit-gate-matrix.test.mjs",
 		"test:testing-config-contract": "node scripts/check-test-config-contract.ts && node scripts/check-suite-routing-contract.ts && node scripts/check-subsystem-ownership.ts && node scripts/check-shared-surface-ownership.ts && node scripts/check-spec-registry-contract.ts && node scripts/check-test-topology.mjs --all-tracked && node scripts/check-fixture-ownership.ts --all-tracked && node scripts/check-factory-ops-test-topology.ts",
 		"test:test-manifest-contract": "node scripts/check-test-manifest-contract.ts",
-		"test:pre-commit-gates": "node --test --test-reporter=dot scripts/lint-dot.test.mjs scripts/dot-lint.test.mjs scripts/workflow-diagram-png.unit.test.mjs scripts/docs-policy-check.test.mjs scripts/docs-canonical-guard.unit.test.mjs scripts/docs-frontmatter-check.test.mjs scripts/docs-check-freshness.unit.test.mjs scripts/docs-template-scaffold.test.mjs scripts/docs-graph-check.test.mjs scripts/docs-index-generate.test.mjs scripts/docs-quality-workflow.test.mjs scripts/docs-check-rationale-docs.unit.test.mjs scripts/pre-merge-quality-workflow.contract.test.mjs scripts/jscpd-gate.contract.test.mjs scripts/check-dot-quality.unit.test.ts scripts/check-line-limit.unit.test.ts scripts/check-export-coverage.test.ts scripts/check-workspace-export-coverage.unit.test.mjs scripts/check-coverage-policy-ratchet.unit.test.ts scripts/check-pipeline-segment-coverage.unit.test.ts scripts/check-degenerate-state-guards.unit.test.ts scripts/check-scenario-count-gate.unit.test.ts scripts/check-scenario-registry-budget.unit.test.ts scripts/check-test-config-contract.unit.test.ts scripts/check-suite-routing-contract.unit.test.ts scripts/check-subsystem-ownership.unit.test.ts scripts/check-shared-surface-ownership.unit.test.ts scripts/check-spec-registry-contract.unit.test.ts scripts/check-test-topology.unit.test.mjs scripts/check-fixture-ownership.unit.test.ts scripts/check-factory-ops-test-topology.unit.test.ts scripts/check-test-manifest-contract.unit.test.ts scripts/run-package-test-manifest.unit.test.mjs scripts/lib/check-harness.unit.test.ts scripts/check-named-packet-contract.unit.test.ts scripts/check-benchmark-job-id-registry.unit.test.ts scripts/check-context-propagation-contract.unit.test.ts scripts/docs-check-benchmark-queries.unit.test.mjs scripts/check-packet-registry-contract.unit.test.ts scripts/check-packet-takeover-contract.unit.test.ts scripts/check-goal-packet-contract.unit.test.ts scripts/check-factory-template-packet-contract.unit.test.ts scripts/check-factory-label-contract.unit.test.ts scripts/check-managed-factory-config-surfaces.unit.test.ts scripts/check-factory-registry-consistency.unit.test.ts scripts/check-factory-env-contracts.unit.test.ts scripts/check-factory-public-contract.unit.test.ts scripts/check-managed-supervisor-shell-contract.unit.test.ts scripts/check-managed-factory-mutation-boundaries.unit.test.ts scripts/check-managed-factory-telemetry-contract.unit.test.ts scripts/check-shared-surface-manifest-contract.unit.test.ts scripts/check-cli-parameter-coverage.unit.test.ts scripts/check-canonical-event-emitter-ownership.unit.test.ts scripts/test/check-provisioning-drift.unit.test.mjs scripts/check-runtime-startup-probe.integration.test.ts scripts/check-test-boundaries.contract.test.ts scripts/check-test-classification.integration.test.ts scripts/check-irreversible-node-coverage.integration.test.ts scripts/jscpd-scope.integration.test.mjs scripts/pre-commit-gate-matrix.test.mjs scripts/pre-commit-staged-file-classifier.test.mjs scripts/live-doc-assets-manifest.test.mjs scripts/pre-commit-quality-gates.test.mjs scripts/pre-commit-hook.test.mjs scripts/post-commit-hook.integration.test.mjs scripts/pre-push-hook.test.mjs scripts/platform-invariant-manifest.test.mjs scripts/run-platform-invariant-gates.test.mjs scripts/check-scaffolded-factory-contract.integration.test.ts scripts/factory-health-check.integration.test.mjs scripts/run-factory-health-ci.integration.test.mjs scripts/sync-shared-factory-surfaces.integration.test.mjs scripts/verify-scaffolded-factory-conformance.test.mjs scripts/hatch-runtime-identity-contract.test.mjs scripts/runtime-workspace-identity-contract.test.mjs scripts/factory-architect-subagent.test.mjs scripts/run-gates.unit.test.mjs scripts/git-fixture-signing-hermetic.unit.test.mjs",
+		"test:pre-commit-gates": "node --test --test-reporter=dot --test-concurrency=1 scripts/lint-dot.test.mjs scripts/dot-lint.test.mjs scripts/workflow-diagram-png.unit.test.mjs scripts/docs-policy-check.test.mjs scripts/docs-canonical-guard.unit.test.mjs scripts/docs-frontmatter-check.test.mjs scripts/docs-check-freshness.unit.test.mjs scripts/docs-template-scaffold.test.mjs scripts/docs-graph-check.test.mjs scripts/docs-index-generate.test.mjs scripts/docs-quality-workflow.test.mjs scripts/docs-check-rationale-docs.unit.test.mjs scripts/pre-merge-quality-workflow.contract.test.mjs scripts/jscpd-gate.contract.test.mjs scripts/check-dot-quality.unit.test.ts scripts/check-line-limit.unit.test.ts scripts/check-export-coverage.test.ts scripts/check-workspace-export-coverage.unit.test.mjs scripts/check-coverage-policy-ratchet.unit.test.ts scripts/check-pipeline-segment-coverage.unit.test.ts scripts/check-degenerate-state-guards.unit.test.ts scripts/check-scenario-count-gate.unit.test.ts scripts/check-scenario-registry-budget.unit.test.ts scripts/check-test-config-contract.unit.test.ts scripts/check-suite-routing-contract.unit.test.ts scripts/check-subsystem-ownership.unit.test.ts scripts/check-shared-surface-ownership.unit.test.ts scripts/check-spec-registry-contract.unit.test.ts scripts/check-test-topology.unit.test.mjs scripts/check-fixture-ownership.unit.test.ts scripts/check-factory-ops-test-topology.unit.test.ts scripts/check-test-manifest-contract.unit.test.ts scripts/run-package-test-manifest.unit.test.mjs scripts/lib/check-harness.unit.test.ts scripts/check-named-packet-contract.unit.test.ts scripts/check-benchmark-job-id-registry.unit.test.ts scripts/check-context-propagation-contract.unit.test.ts scripts/docs-check-benchmark-queries.unit.test.mjs scripts/check-packet-registry-contract.unit.test.ts scripts/check-packet-takeover-contract.unit.test.ts scripts/check-goal-packet-contract.unit.test.ts scripts/check-factory-template-packet-contract.unit.test.ts scripts/check-factory-label-contract.unit.test.ts scripts/check-managed-factory-config-surfaces.unit.test.ts scripts/check-factory-registry-consistency.unit.test.ts scripts/check-factory-env-contracts.unit.test.ts scripts/check-factory-public-contract.unit.test.ts scripts/check-managed-supervisor-shell-contract.unit.test.ts scripts/check-managed-factory-mutation-boundaries.unit.test.ts scripts/check-managed-factory-telemetry-contract.unit.test.ts scripts/check-shared-surface-manifest-contract.unit.test.ts scripts/check-cli-parameter-coverage.unit.test.ts scripts/check-canonical-event-emitter-ownership.unit.test.ts scripts/test/check-provisioning-drift.unit.test.mjs scripts/check-runtime-startup-probe.integration.test.ts scripts/check-test-boundaries.contract.test.ts scripts/check-test-classification.integration.test.ts scripts/check-irreversible-node-coverage.integration.test.ts scripts/jscpd-scope.integration.test.mjs scripts/pre-commit-gate-matrix.test.mjs scripts/pre-commit-staged-file-classifier.test.mjs scripts/live-doc-assets-manifest.test.mjs scripts/pre-commit-quality-gates.test.mjs scripts/pre-commit-hook.test.mjs scripts/post-commit-hook.integration.test.mjs scripts/pre-push-hook.test.mjs scripts/platform-invariant-manifest.test.mjs scripts/run-platform-invariant-gates.test.mjs scripts/check-scaffolded-factory-contract.integration.test.ts scripts/factory-health-check.integration.test.mjs scripts/run-factory-health-ci.integration.test.mjs scripts/sync-shared-factory-surfaces.integration.test.mjs scripts/verify-scaffolded-factory-conformance.test.mjs scripts/hatch-runtime-identity-contract.test.mjs scripts/runtime-workspace-identity-contract.test.mjs scripts/factory-architect-subagent.test.mjs scripts/run-gates.unit.test.mjs scripts/git-fixture-signing-hermetic.unit.test.mjs",
 		"factory:health": "node scripts/factory-health-check.mjs",
 		"factory:health:ci": "node scripts/run-factory-health-ci.mjs",
 		"test:platform:scaffold-contract": "node scripts/check-scaffolded-factory-contract.ts",
@@ -63,37 +63,50 @@
 		"docs:template:scaffold": "node scripts/docs-scaffold-from-template.mjs",
 		"hooks:install": "git config core.hooksPath .githooks",
 		"supervisor:start": "bash factories/mothership/scripts/factory_supervisor_loop.sh",
-		"supervisor:status": "node packages/factory-ops/src/cli.mjs supervisor status --repo ${MOTHERSHIP_REPO:-recallnet/astrochicken}"
+		"supervisor:status": "node packages/factory-ops/src/cli.ts supervisor status --repo ${MOTHERSHIP_REPO:-recallnet/astrochicken}"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.22.0",
+		"@eslint/js": "^9.39.5",
 		"@hatch/factory-ops": "workspace:*",
 		"@opentelemetry/exporter-logs-otlp-http": "^0.206.0",
 		"@opentelemetry/sdk-logs": "^0.206.0",
-		"@recallnet/codecontext-cli": "^0.1.3",
-		"@recallnet/codecontext-eslint-plugin": "^0.2.0",
-		"@recallnet/codecontext-parser": "^0.2.0",
+		"@recallnet/codecontext-cli": "^0.1.5",
+		"@recallnet/codecontext-eslint-plugin": "^0.2.2",
+		"@recallnet/codecontext-parser": "^0.2.2",
 		"@recallnet/docs-governance-preset": "0.2.8",
-		"@sinclair/typebox": "^0.34.49",
-		"@typescript-eslint/parser": "^8.26.1",
-		"@viz-js/viz": "^3.25.0",
-		"acorn": "^8.14.0",
-		"eslint": "^9.22.0",
-		"eslint-plugin-boundaries": "^5.0.1",
-		"eslint-plugin-import-x": "^4.16.1",
-		"globals": "^16.0.0",
+		"@sinclair/typebox": "^0.34.52",
+		"@typescript-eslint/parser": "^8.71.2",
+		"@viz-js/viz": "^3.31.0",
+		"acorn": "^8.19.0",
+		"eslint": "^9.39.5",
+		"eslint-plugin-boundaries": "^5.4.0",
+		"eslint-plugin-import-x": "^4.17.1",
+		"globals": "^16.5.0",
 		"hatch": "workspace:*",
 		"jscpd": "4.0.7",
-		"knip": "^5.46.0",
-		"pg": "^8.20.0",
+		"knip": "^5.88.1",
+		"pg": "^8.23.1",
 		"sharp": "^0.34.5",
-		"turbo": "^2.8.0",
-		"typescript": "^5.7.3",
-		"zod": "^4.3.6"
+		"turbo": "^2.11.8",
+		"typescript": "^5.9.3",
+		"zod": "^4.6.7"
 	},
 	"packageManager": "pnpm@10.32.1",
 	"engines": {
-		"node": ">=22.6.0"
+		"node": ">=22.18.0"
 	},
-	"license": "MIT"
+	"license": "MIT",
+	"pnpm": {
+		"overrides": {
+			"@apidevtools/json-schema-ref-parser@>=11.0.0 <=11.1.0": "^11.9.3",
+			"minimatch@>=9.0.0 <9.0.7": "^9.0.9",
+			"ajv@>=7.0.0-alpha.0 <8.18.0": "^8.20.0",
+			"yaml@>=2.0.0 <2.8.3": "^2.9.1",
+			"handlebars@>=3.0.0 <=4.7.9": "^4.7.10",
+			"sharp@<0.35.5": "^0.35.5",
+			"@opentelemetry/core@<2.8.0": "^2.8.0",
+			"basic-ftp@<=6.2.0": "^6.2.1",
+			"tinypool@<2.1.2": "^2.1.2"
+		}
+	}
 }

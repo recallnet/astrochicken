@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -104,7 +104,7 @@ export function writeFactoryFixture(options: {
 		);
 		writeFileSync(
 			path.join(workflowDir, "factory_supervisor_tick.workflow-source.mjs"),
-			"export {};\n",
+			`export const WORKFLOW_SOURCE_MODULE = ${readFileSync(path.join(workflowDir, "factory_supervisor_tick.workflow-source.data.json"), "utf8")};\n`,
 		);
 		writeFileSync(runtimeGraphPath, options.graph);
 	} else {

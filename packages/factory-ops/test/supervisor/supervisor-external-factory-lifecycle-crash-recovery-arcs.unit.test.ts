@@ -1,3 +1,6 @@
+import { HOST_PATHS } from "./external-lifecycle.fixture.ts";
+import { BASE_INPUT } from "./external-lifecycle.fixture.ts";
+import { readInactiveControlState } from "./external-lifecycle.fixture.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -6,34 +9,8 @@ import {
   runExternalFactoryLifecycleGate,
 } from "../../src/commands/supervisor-external-factory-lifecycle.ts";
 
-const BASE_INPUT = Object.freeze({
-  controlPlaneRepo: "recallnet/astrochicken",
-  sourceRepo: "example/external-factory",
-  sourceIssueNumber: 1504,
-});
 
-const HOST_PATHS = Object.freeze({
-  baseDir: "/tmp/host",
-  logsDir: "/tmp/host/logs",
-  runsDir: "/tmp/host/runs",
-  tmpDir: "/tmp/host/tmp",
-  socketDir: "/tmp/host/sockets",
-  pidDir: "/tmp/host/pid",
-  pidFile: "/tmp/host/pid/factory-daemon.pid",
-  lockDir: "/tmp/host/pid/factory-daemon.lock",
-});
 
-function readInactiveControlState() {
-  return {
-    action_state: {
-      pause: { active: false },
-      quarantine: { active: false },
-      retry: { active: false },
-      unblock: { active: false },
-      resume: { active: false },
-    },
-  };
-}
 
 function stableCrashTuple(out) {
   return {

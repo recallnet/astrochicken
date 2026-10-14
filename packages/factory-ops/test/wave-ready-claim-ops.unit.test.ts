@@ -1,3 +1,4 @@
+import { waveClaimFixture } from "./wave-ready-fixtures.test-support.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -41,15 +42,7 @@ test("lockReadyWaveIssue releases claim when wave-in-progress label mutation fai
     claimToken: "wave_claim_701",
     claimOwnerId: "worker-a",
     claimRunId: "run-a",
-    claimAcquire: () => ({
-      ok: true,
-      acquired: true,
-      reason: "claim_refreshed",
-      claim: {
-        claim_token: "wave_claim_701",
-        lease_expires_at: "2026-01-01T00:20:00.000Z",
-      },
-    }),
+    claimAcquire: () => (waveClaimFixture({ claimToken: "wave_claim_701", reason: "claim_refreshed" })),
     claimReleaser: (payload) => {
       releaseCalls.push(payload);
       return { ok: true, released: true, reason: "claim_released" };
@@ -74,15 +67,7 @@ test("lockReadyWaveIssue sets wave-in-progress when claim is valid", () => {
     claimToken: "wave_claim_701",
     claimOwnerId: "worker-a",
     claimRunId: "run-a",
-    claimAcquire: () => ({
-      ok: true,
-      acquired: true,
-      reason: "claim_refreshed",
-      claim: {
-        claim_token: "wave_claim_701",
-        lease_expires_at: "2026-01-01T00:20:00.000Z",
-      },
-    }),
+    claimAcquire: () => (waveClaimFixture({ claimToken: "wave_claim_701", reason: "claim_refreshed" })),
     execGh: (args) => {
       ghCalls.push(args);
       return { ok: true };

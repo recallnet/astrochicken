@@ -1,3 +1,21 @@
+import { makeCreatedTradingSubIssue } from "../helpers/ops-domain-fixtures.ts";
+import { writeFixtureRunState as writeRunState } from "../helpers/ops-command-fixtures.ts";
+import { before, after } from "node:test";
+import { createCanonicalEventStoreFixture } from "../supervisor/factory-status-postgres-fixture.ts";
+
+// Canonical lifecycle reads use a disposable database, never a host service.
+const eventStoreFixture = createCanonicalEventStoreFixture();
+const previousEventStoreUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+before(async () => {
+  await eventStoreFixture.setup();
+  process.env.HATCH_CANONICAL_EVENT_STORE_URL = eventStoreFixture.connectionString;
+});
+after(() => {
+  if (previousEventStoreUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+  else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousEventStoreUrl;
+  eventStoreFixture.teardown();
+});
+
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -5,12 +23,6 @@ import { join } from "node:path";
 import test from "node:test";
 
 import { projectGoalFinalState } from "../../src/lib/goal-final-state-projection.ts";
-
-function writeRunState(runsDir, runId, state) {
-  const dir = join(runsDir, runId);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, "state.json"), JSON.stringify(state), "utf8");
-}
 
 test("projectGoalFinalState keeps partially completed goals open from canonical packet + run history", () => {
   const repoRoot = mkdtempSync(join(tmpdir(), "goal-final-state-projection-"));
@@ -135,17 +147,7 @@ test("projectGoalFinalState trusts canonical shipped sub-issue lifecycle when Gi
     runsDir,
     factoryId: "example-trading",
     listCanonicalIssueLifecycleFn: () => [
-      {
-        issue_number: "3001",
-        parent_issue_number: "3000",
-        repo: "example-org/example-trading",
-        created: true,
-        sub_issue_link_status: "linked",
-        merge_status: "pushed",
-        shipped_to_main: true,
-        github_close_status: "",
-        last_error: "",
-      },
+      makeCreatedTradingSubIssue(),
       {
         issue_number: "3002",
         parent_issue_number: "3000",

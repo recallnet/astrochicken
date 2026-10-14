@@ -397,6 +397,7 @@
   "required": [
     "schema",
     "factory_id",
+    "target_repo",
     "control_plane_repo",
     "dispatch",
     "skills",

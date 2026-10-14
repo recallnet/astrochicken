@@ -9,7 +9,7 @@ import { MANAGED_FACTORY_TELEMETRY_EVENTS, emitManagedLifecycleEvent } from "../
 import { validateManagedFactoryTelemetryContract } from "./check-managed-factory-telemetry-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-managed-factory-telemetry-contract.mjs");
+const checkerPath = join(scriptsDir, "check-managed-factory-telemetry-contract.ts");
 const fixturesRoot = join(scriptsDir, "fixtures", "managed-factory-telemetry-contract");
 
 function fixtureRoot(name) {

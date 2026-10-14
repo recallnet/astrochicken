@@ -182,6 +182,7 @@ export function appendCliCrashActionItems({
           nodeId: node || "supervisor_state_snapshot",
           targetRepo: resolvedTargetRepo || normalizedTargetRepo,
           controlPlaneRepo: normalizedControlPlaneRepo,
+          resourceRefs: { run_id: runId, pipeline, node_id: node, file_path: filePath },
         });
         try {
           const persisted = persistDurableSnapshotPacket({

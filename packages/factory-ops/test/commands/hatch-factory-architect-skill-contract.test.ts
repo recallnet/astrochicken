@@ -1,5 +1,7 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { readFixtureJson as readJson } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -13,7 +15,7 @@ const skillDir = join(skillsRoot, skillName);
 const interfacePath = join(skillDir, "interface.json");
 const contextPackPath = join(skillDir, "context-pack.json");
 const currentPath = join(skillDir, "current.md");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 const REQUIRED_OUTPUT_SCHEMA_KEYS = [
   "design_summary",
@@ -48,10 +50,6 @@ const REQUIRED_JUDGE_CONTEXT_INPUTS = [
   "judge_context_identity",
   "judge_context_purpose",
 ];
-
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
-}
 
 function entryPattern(entry = {}) {
   if (typeof entry.path === "string" && entry.path.trim()) return entry.path.trim();
@@ -97,19 +95,14 @@ test("hatch_factory_architect skill artifact exists under skills root", () => {
 });
 
 test("interface.json validates via ops CLI and exposes required Hatch architect contract keys", () => {
-  const run = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const run = spawnOpsCli([
       "skill",
       "validate-interface",
       "--skill-name",
       skillName,
       "--skills-root",
-      "factories/mothership/skills",
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      "factories/mothership/skills"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
 

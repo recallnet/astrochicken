@@ -7,6 +7,8 @@ import test, { afterEach } from "node:test";
 import { resolveScheduledJobs } from "../../src/lib/daemon-schedules.ts";
 import { runScheduledJobs } from "../../src/lib/daemon-scheduled-jobs.ts";
 
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
+
 const tempDirs = [];
 
 function makeTmpDir(prefix = "daemon-scheduled-jobs-") {
@@ -30,7 +32,7 @@ function createDailyLensRuntimeConfig(overrides = {}) {
         jobs: [{
           id: "daily-lens",
           type: "graph",
-          graph: "factories/mothership/graphs/daily_lens_publish.dot",
+          graph: "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
           cron: "30 8 * * *",
           time_zone: "America/Denver",
           catch_up: true,
@@ -85,8 +87,8 @@ test("daily-lens scheduled job metadata matches mothership contract", () => {
 
   assert.ok(dailyLens, "expected daily-lens job in mothership schedule config");
   assert.equal(dailyLens.type, "graph");
-  assert.equal(dailyLens.graph, "factories/mothership/graphs/daily_lens_publish.dot");
-  assert.equal(dailyLens.cron, "45 8 * * *");
+  assert.equal(dailyLens.graph, "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs");
+  assert.equal(dailyLens.cron, "30 9 * * *");
   assert.equal(dailyLens.time_zone, "America/Denver");
   assert.equal(dailyLens.catch_up, true);
   assert.equal(dailyLens.report_window_hours, 24);
@@ -104,7 +106,7 @@ test("daily-release-report scheduled job metadata matches mothership contract", 
 
   assert.ok(dailyRelease, "expected daily-release-report job in mothership schedule config");
   assert.equal(dailyRelease.type, "graph");
-  assert.equal(dailyRelease.graph, "factories/mothership/graphs/daily_release_report.dot");
+  assert.equal(dailyRelease.graph, "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs");
   assert.equal(dailyRelease.cron, "30 14 * * *");
   assert.equal(dailyRelease.time_zone, "America/Denver");
   assert.equal(dailyRelease.catch_up, false);
@@ -118,7 +120,7 @@ test("daily-release-report scheduled graph wires release_report_flow as pipeline
     path.resolve(process.cwd(), "factories/mothership/graphs/daily_release_report.dot"),
     "utf8",
   );
-  assert.match(graphSource, /pipeline="@hatch\/capability-release-reporting\/graphs\/release_report_flow\.dot"/);
+  assert.match(graphSource, /pipeline="packages\/capability-release-reporting\/workflows\/release_report_flow\/release_report_flow\.workflow-source\.mjs"/);
   assert.match(graphSource, /inherit_context="true"/);
   assert.match(graphSource, /set_repo/);
   assert.match(graphSource, /set_factory_id/);
@@ -138,9 +140,8 @@ test("daily-lens scheduler path stays wired to generic graph execution", () => {
 });
 
 test("daily-lens scheduled graph remains manifest-guided and agent-runtime driven", () => {
-  const graphSource = readFileSync(
-    path.resolve(process.cwd(), "factories/mothership/graphs/daily_lens_publish.dot"),
-    "utf8",
+  const graphSource = loadGraphSemanticsText(
+    path.resolve(process.cwd(), "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs"),
   );
 
   assert.match(graphSource, /prepare_daily_lens \[type="tool" governance="irreversible" action_runtime="in_process" action_id="daily_lens\.prepare"/);
@@ -178,7 +179,7 @@ test("runScheduledJobs invokes scheduled graph with slot-aligned trailing 24h wi
   const [call] = calls;
   assert.equal(call.job.id, "daily-lens");
   assert.equal(call.job.type, "graph");
-  assert.equal(call.job.graph, "factories/mothership/graphs/daily_lens_publish.dot");
+  assert.equal(call.job.graph, "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs");
   assert.equal(call.context.date, "2026-03-15");
   assert.equal(call.context.repo, "recallnet/astrochicken");
   assert.equal(call.context.output_dir, "reports/lens");

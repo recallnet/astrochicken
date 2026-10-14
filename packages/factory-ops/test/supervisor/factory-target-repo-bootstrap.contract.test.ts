@@ -224,7 +224,7 @@ test("factory CLI wires target-repo bootstrap command", () => {
   const source = readFileSync(path.join(repoRoot, "packages/factory-ops/src/cli/commands/factory-host-cmds.ts"), "utf8");
   assert.match(source, /FactoryTargetRepoBootstrapCommand/);
   assert.match(source, /static paths = \[\["factory", "target-repo", "bootstrap"\]\]/);
-  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-target-repo-bootstrap\.mjs"\)/);
+  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-target-repo-bootstrap\.ts"\)/);
 
   const run = spawnSync("node", [
     opsCliPath,

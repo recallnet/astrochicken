@@ -7,13 +7,13 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${POSTGRES_BIND_HOST:-127.0.0.1}:${POSTGRES_PORT}:5432"
     volumes:
       - ${CANONICAL_EVENT_STORE_ROOT}/data:/var/lib/postgresql/data
       - ${CANONICAL_EVENT_STORE_ROOT}/backups:/backups
       - ${CANONICAL_EVENT_STORE_ROOT}/restore:/restore
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 1s
       timeout: 5s
       retries: 30

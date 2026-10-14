@@ -31,6 +31,40 @@ function makeTmpDir(prefix) {
   return mkdtempSync(join(tmpdir(), prefix));
 }
 
+function writeApiOnlyInstallation(installationDir, { work_dir = "", ...identity }) {
+  writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
+    ...identity,
+    workspace_mode: "api_only",
+    work_dir,
+    log_dir: join(installationDir, "logs"),
+    artifact_dir: join(installationDir, "artifacts"),
+  }, null, 2)}\n`);
+}
+
+function signatureInstallOptions(fixture) {
+  return {
+    runtimeSignature: fixture.runtimeSignature,
+    runtimeSignatureKeyId: fixture.runtimeSignatureKeyId,
+    trustPublicKeyPath: fixture.publicKeyPath,
+    signedPayloadPath: fixture.payloadPath,
+  };
+}
+
+function useRegistryEnv(registryPath, hostBaseDir) {
+  const previous = {
+    HATCH_FACTORY_REGISTRY_PATH: process.env.HATCH_FACTORY_REGISTRY_PATH,
+    HATCH_FACTORY_REGISTRY_CWD: process.env.HATCH_FACTORY_REGISTRY_CWD,
+  };
+  process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
+  process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+  return () => {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+  };
+}
+
 function writeRegistry(root, rows = []) {
   const registryPath = join(root, "factory-registry.json");
   writeFileSync(registryPath, `${JSON.stringify({
@@ -74,24 +108,17 @@ test("runHostRuntime blocks incompatible runtime before writing daemon logs", as
       paths,
       hostId: "host_unit_test_01",
       repoRoot,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
 
     const installationDir = join(hostBaseDir, "example-notes");
     mkdirSync(installationDir, { recursive: true });
-    writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
+    writeApiOnlyInstallation(installationDir, {
       installation_id: "inst_unit_01",
       instance_id: "fac_unit_01",
       host_id: "host_unit_test_01",
-      workspace_mode: "api_only",
-      work_dir: "",
-      log_dir: join(installationDir, "logs"),
-      artifact_dir: join(installationDir, "artifacts"),
       runtime_version: "1.0.0",
-    }, null, 2)}\n`);
+    });
 
     const registryPath = writeRegistry(hostBaseDir, [
       baseRegistryRow({
@@ -100,10 +127,7 @@ test("runHostRuntime blocks incompatible runtime before writing daemon logs", as
       }),
     ]);
 
-    const previousRegistryEnv = process.env.HATCH_FACTORY_REGISTRY_PATH;
-    const previousRegistryCwdEnv = process.env.HATCH_FACTORY_REGISTRY_CWD;
-    process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
-    process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+    const restoreRegistryEnv = useRegistryEnv(registryPath, hostBaseDir);
 
     try {
       const out = await runHostRuntime({ paths, once: true });
@@ -112,17 +136,7 @@ test("runHostRuntime blocks incompatible runtime before writing daemon logs", as
       assert.equal(out.errorCode, "runtime_incompatible");
       assert.equal(existsSync(join(paths.runtimeLogDir, "hatch-host.log")), false);
     } finally {
-      if (previousRegistryEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_PATH;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_PATH = previousRegistryEnv;
-      }
-
-      if (previousRegistryCwdEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_CWD;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_CWD = previousRegistryCwdEnv;
-      }
+      restoreRegistryEnv();
     }
   } finally {
     rmSync(hostBaseDir, { recursive: true, force: true });
@@ -144,10 +158,7 @@ test("host runtime lifecycle exports create, inspect, and remove runtime state",
       paths,
       hostId: "host_unit_test_01",
       repoRoot,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
     assert.equal(install.ok, true);
     assert.equal(install.status, "installed");
@@ -163,16 +174,12 @@ test("host runtime lifecycle exports create, inspect, and remove runtime state",
 
     const installationDir = join(hostBaseDir, "example-notes");
     mkdirSync(installationDir, { recursive: true });
-    writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
+    writeApiOnlyInstallation(installationDir, {
       installation_id: "inst_unit_01",
       instance_id: "fac_unit_01",
       host_id: "host_unit_test_01",
-      workspace_mode: "api_only",
-      work_dir: "",
-      log_dir: join(installationDir, "logs"),
-      artifact_dir: join(installationDir, "artifacts"),
       runtime_version: runtimeManifest.runtime_version,
-    }, null, 2)}\n`);
+    });
 
     const listed = listHostInstallations({ paths });
     assert.equal(listed.installations.length, 1);
@@ -243,10 +250,7 @@ test("host runtime lifecycle exports create, inspect, and remove runtime state",
       }),
     ]);
 
-    const previousRegistryEnv = process.env.HATCH_FACTORY_REGISTRY_PATH;
-    const previousRegistryCwdEnv = process.env.HATCH_FACTORY_REGISTRY_CWD;
-    process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
-    process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+    const restoreRegistryEnv = useRegistryEnv(registryPath, hostBaseDir);
 
     const run = await runHostRuntime({
       paths,
@@ -261,17 +265,7 @@ test("host runtime lifecycle exports create, inspect, and remove runtime state",
       }),
     });
 
-    if (previousRegistryEnv === undefined) {
-      delete process.env.HATCH_FACTORY_REGISTRY_PATH;
-    } else {
-      process.env.HATCH_FACTORY_REGISTRY_PATH = previousRegistryEnv;
-    }
-
-    if (previousRegistryCwdEnv === undefined) {
-      delete process.env.HATCH_FACTORY_REGISTRY_CWD;
-    } else {
-      process.env.HATCH_FACTORY_REGISTRY_CWD = previousRegistryCwdEnv;
-    }
+    restoreRegistryEnv();
 
     assert.equal(run.ok, true);
     assert.equal(run.mode, "once");
@@ -311,25 +305,19 @@ test("runHostRuntime repairs expired host leases and refreshes host registry row
       paths,
       hostId: "host_unit_test_repair",
       repoRoot: repoRootOverride,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
 
     const installationDir = join(hostBaseDir, "example-trading");
     mkdirSync(installationDir, { recursive: true });
     const installationManifestPath = join(installationDir, "installation.json");
-    writeFileSync(installationManifestPath, `${JSON.stringify({
+    writeApiOnlyInstallation(installationDir, {
       installation_id: "inst_example_trading_devrel",
       instance_id: "example-trading",
       host_id: "host_unit_test_repair",
-      workspace_mode: "api_only",
       work_dir: null,
-      log_dir: join(installationDir, "logs"),
-      artifact_dir: join(installationDir, "artifacts"),
       runtime_version: install.runtimeVersion,
-    }, null, 2)}\n`);
+    });
     writeFileSync(join(installationDir, "lease.json"), `${JSON.stringify({
       instance_id: "example-trading",
       installation_id: "inst_example_trading_devrel",
@@ -370,11 +358,8 @@ test("runHostRuntime repairs expired host leases and refreshes host registry row
       }),
     ]);
 
-    const previousRegistryEnv = process.env.HATCH_FACTORY_REGISTRY_PATH;
-    const previousRegistryCwdEnv = process.env.HATCH_FACTORY_REGISTRY_CWD;
     const previousHostMaxActive = process.env.HATCH_HOST_MAX_ACTIVE;
-    process.env.HATCH_FACTORY_REGISTRY_PATH = hostRegistryPath;
-    process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+    const restoreRegistryEnv = useRegistryEnv(hostRegistryPath, hostBaseDir);
     process.env.HATCH_HOST_MAX_ACTIVE = "1";
 
     try {
@@ -406,17 +391,7 @@ test("runHostRuntime repairs expired host leases and refreshes host registry row
       assert.equal(repairedLease.host_id, "host_unit_test_repair");
       assert.equal(Date.parse(repairedLease.lease_expires_at) > Date.now(), true);
     } finally {
-      if (previousRegistryEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_PATH;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_PATH = previousRegistryEnv;
-      }
-
-      if (previousRegistryCwdEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_CWD;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_CWD = previousRegistryCwdEnv;
-      }
+      restoreRegistryEnv();
 
       if (previousHostMaxActive === undefined) {
         delete process.env.HATCH_HOST_MAX_ACTIVE;
@@ -443,24 +418,18 @@ test("runHostRuntime loop mode executes scheduled installations", async () => {
       paths,
       hostId: "host_unit_test_loop_01",
       repoRoot,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
 
     const installationDir = join(hostBaseDir, "example-notes");
     mkdirSync(installationDir, { recursive: true });
-    writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
+    writeApiOnlyInstallation(installationDir, {
       installation_id: "inst_unit_loop_01",
       instance_id: "fac_unit_loop_01",
       host_id: "host_unit_test_loop_01",
-      workspace_mode: "api_only",
       work_dir: null,
-      log_dir: join(installationDir, "logs"),
-      artifact_dir: join(installationDir, "artifacts"),
       runtime_version: install.runtimeVersion,
-    }, null, 2)}\n`);
+    });
     writeFileSync(join(installationDir, "lease.json"), `${JSON.stringify({
       instance_id: "fac_unit_loop_01",
       installation_id: "inst_unit_loop_01",
@@ -482,11 +451,8 @@ test("runHostRuntime loop mode executes scheduled installations", async () => {
       }),
     ]);
 
-    const previousRegistryEnv = process.env.HATCH_FACTORY_REGISTRY_PATH;
-    const previousRegistryCwdEnv = process.env.HATCH_FACTORY_REGISTRY_CWD;
     const previousHostMaxActive = process.env.HATCH_HOST_MAX_ACTIVE;
-    process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
-    process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+    const restoreRegistryEnv = useRegistryEnv(registryPath, hostBaseDir);
     process.env.HATCH_HOST_MAX_ACTIVE = "1";
 
     try {
@@ -511,17 +477,7 @@ test("runHostRuntime loop mode executes scheduled installations", async () => {
       assert.equal(out.executionResults[0].run_id, "run_loop_01");
       assert.equal(out.executionResults[0].tick_id, "tick_loop_01");
     } finally {
-      if (previousRegistryEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_PATH;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_PATH = previousRegistryEnv;
-      }
-
-      if (previousRegistryCwdEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_CWD;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_CWD = previousRegistryCwdEnv;
-      }
+      restoreRegistryEnv();
 
       if (previousHostMaxActive === undefined) {
         delete process.env.HATCH_HOST_MAX_ACTIVE;
@@ -547,24 +503,18 @@ test("runHostRuntime once fails closed when scheduled execution exits non-zero",
       paths,
       hostId: "host_unit_test_03",
       repoRoot,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
 
     const installationDir = join(hostBaseDir, "example-notes");
     mkdirSync(installationDir, { recursive: true });
-    writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
+    writeApiOnlyInstallation(installationDir, {
       installation_id: "inst_unit_01",
       instance_id: "fac_unit_01",
       host_id: "host_unit_test_03",
-      workspace_mode: "api_only",
       work_dir: null,
-      log_dir: join(installationDir, "logs"),
-      artifact_dir: join(installationDir, "artifacts"),
       runtime_version: install.runtimeVersion,
-    }, null, 2)}\n`);
+    });
     writeFileSync(join(installationDir, "lease.json"), `${JSON.stringify({
       instance_id: "fac_unit_01",
       installation_id: "inst_unit_01",
@@ -585,11 +535,8 @@ test("runHostRuntime once fails closed when scheduled execution exits non-zero",
       }),
     ]);
 
-    const previousRegistryEnv = process.env.HATCH_FACTORY_REGISTRY_PATH;
-    const previousRegistryCwdEnv = process.env.HATCH_FACTORY_REGISTRY_CWD;
     const previousHostMaxActive = process.env.HATCH_HOST_MAX_ACTIVE;
-    process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
-    process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
+    const restoreRegistryEnv = useRegistryEnv(registryPath, hostBaseDir);
     process.env.HATCH_HOST_MAX_ACTIVE = "1";
 
     try {
@@ -616,17 +563,7 @@ test("runHostRuntime once fails closed when scheduled execution exits non-zero",
       assert.equal(out.executionResults[0].exit_code, 2);
       assert.equal(out.installations[0].last_exit_code, 2);
     } finally {
-      if (previousRegistryEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_PATH;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_PATH = previousRegistryEnv;
-      }
-
-      if (previousRegistryCwdEnv === undefined) {
-        delete process.env.HATCH_FACTORY_REGISTRY_CWD;
-      } else {
-        process.env.HATCH_FACTORY_REGISTRY_CWD = previousRegistryCwdEnv;
-      }
+      restoreRegistryEnv();
 
       if (previousHostMaxActive === undefined) {
         delete process.env.HATCH_HOST_MAX_ACTIVE;
@@ -704,10 +641,7 @@ test("installHostRuntime rejects tampered payload and runHostRuntime fails close
       paths,
       hostId: "host_signature_invalid_01",
       repoRoot,
-      runtimeSignature: signatureFixture.runtimeSignature,
-      runtimeSignatureKeyId: signatureFixture.runtimeSignatureKeyId,
-      trustPublicKeyPath: signatureFixture.publicKeyPath,
-      signedPayloadPath: signatureFixture.payloadPath,
+      ...signatureInstallOptions(signatureFixture),
     });
 
     assert.equal(invalidInstall.ok, false);
@@ -743,6 +677,21 @@ test("installHostRuntime rejects tampered payload and runHostRuntime fails close
     assert.equal(run.ok, false);
     assert.equal(run.errorCode, "host_runtime_signature_invalid");
     assert.equal(existsSync(join(paths.runtimeLogDir, "hatch-host.log")), false);
+  } finally {
+    rmSync(hostBaseDir, { recursive: true, force: true });
+  }
+});
+
+test("doctor rejects failed live signature verification despite stored verified evidence", () => {
+  const hostBaseDir = makeTmpDir("host-runtime-live-signature-");
+  const paths = resolveHostRuntimePaths({ hostBaseDir, repoRoot });
+  const fixture = createRuntimeSignatureFixture({ workspaceDir: hostBaseDir, payloadRelativePath: "runtime/payload.mjs" });
+  try {
+    const installed = installHostRuntime({ paths, hostId: "fixture", repoRoot, runtimeSignature: fixture.runtimeSignature, runtimeSignatureKeyId: fixture.runtimeSignatureKeyId, trustPublicKeyPath: fixture.publicKeyPath, signedPayloadPath: fixture.payloadPath });
+    assert.equal(installed.ok, true);
+    const result = doctorHostRuntime({ paths, runtimeSignature: "invalid-signature", runtimeSignatureKeyId: fixture.runtimeSignatureKeyId, trustPublicKeyPath: fixture.publicKeyPath, signedPayloadPath: fixture.payloadPath });
+    assert.equal(result.ok, false);
+    assert.equal(result.checks.find((check) => check.id === "runtime_signature")?.ok, false);
   } finally {
     rmSync(hostBaseDir, { recursive: true, force: true });
   }

@@ -1,6 +1,8 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { writeFixtureJson as writeJson } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+
+import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -8,14 +10,10 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 function makeTmpDir(prefix = "factory-mirror-cli-") {
   return mkdtempSync(join(tmpdir(), prefix));
-}
-
-function writeJson(path, payload) {
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
 }
 
 function writeFactoryConfig(rootDir, factoryId = "brainstorm") {
@@ -39,10 +37,11 @@ function writeFactoryConfig(rootDir, factoryId = "brainstorm") {
 }
 
 function runCli(args, { cwd = repoRoot, expectStatus = 0 } = {}) {
-  const run = spawnSync("node", [opsCliPath, ...args], {
-    cwd,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      ...args
+    ], {
+      cwd
+    });
   assert.equal(run.status, expectStatus, `stderr=${run.stderr}\nstdout=${run.stdout}`);
   return run;
 }

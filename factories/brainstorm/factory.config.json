@@ -70,5 +70,9 @@
     "brainstorm.local.fan_in.dynamic"
   ],
   "max_concurrent_brainstorms": 1,
-  "max_brainstorms_per_tick": 1
+  "max_brainstorms_per_tick": 1,
+  "conformance": {
+    "smoke_graph": "factories/_shared/conformance/factory_supervisor_tick.dot",
+    "entrypoint": "factories/_shared/conformance/run-conformance.sh"
+  }
 }

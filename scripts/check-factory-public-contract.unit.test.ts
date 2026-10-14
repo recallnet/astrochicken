@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url"
 import { validateFactoryPublicContractDrift } from "./check-factory-public-contract.ts"
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url))
-const checkerPath = join(scriptsDir, "check-factory-public-contract.mjs")
+const checkerPath = join(scriptsDir, "check-factory-public-contract.ts")
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "factory-public-contract")
 
 function fixtureRoot(name) {

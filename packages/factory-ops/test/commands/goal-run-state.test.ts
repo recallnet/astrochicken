@@ -1,15 +1,8 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  GOAL_AWAITING_REVIEW_MARKER,
-  buildAwaitingHumanReviewCommentBody,
-  buildGoalRetryCommentBody,
-  exhaustDecomposeRetries,
-  holdGoalForHumanReview,
-  markGoalDispatched,
-  postGoalRetryComment,
-} from "../../src/commands/goal-run-state.ts";
+import { GOAL_AWAITING_REVIEW_MARKER, buildAwaitingHumanReviewCommentBody, buildGoalRetryCommentBody, exhaustDecomposeRetries, holdGoalForHumanReview, markGoalDispatched, postGoalRetryComment } from "../../src/commands/goal-run-state.ts";
 
 test("buildGoalRetryCommentBody emits machine-readable retry marker and compact diagnostics", () => {
   const out = buildGoalRetryCommentBody({
@@ -31,7 +24,7 @@ test("exhaustDecomposeRetries leaves labels unchanged and posts exhaustion comme
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = exhaustDecomposeRetries({
@@ -53,7 +46,7 @@ test("markGoalDispatched keeps goals ready for flattened execution", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = markGoalDispatched({
@@ -75,7 +68,7 @@ test("markGoalDispatched emits canonical goal_selected event", () => {
     issueNumber: "1462",
     factoryId: "example-trading",
     runId: "run-1462",
-    ghExec: () => ({ ok: true, status: 0, stdout: "", stderr: "" }),
+    ghExec: () => (successfulCommandResult()),
     emitDomainEventFn: (event) => emitted.push(event),
   });
 
@@ -94,7 +87,7 @@ test("markGoalDispatched forwards github projection receipt events through the a
     issueNumber: "1462",
     factoryId: "example-trading",
     runId: "run-1462",
-    ghExec: () => ({ ok: true, status: 0, stdout: "", stderr: "" }),
+    ghExec: () => (successfulCommandResult()),
     emitCanonicalEventFn: (event) => emitted.push(event),
   });
 
@@ -125,7 +118,7 @@ test("holdGoalForHumanReview removes ready, adds awaiting-human, and posts revie
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = holdGoalForHumanReview({
@@ -160,7 +153,7 @@ test("holdGoalForHumanReview routes outbound mutations through the github adapte
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = holdGoalForHumanReview({
@@ -197,7 +190,7 @@ test("holdGoalForHumanReview fails closed when awaiting-human label ensure fails
     if (args[0] === "label" && args[1] === "create") {
       return { ok: false, status: 1, stdout: "", stderr: "boom" };
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = holdGoalForHumanReview({
@@ -220,7 +213,7 @@ test("postGoalRetryComment posts compact retry comment", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postGoalRetryComment({

@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const scriptPath = join(scriptsDir, "check-cli-context-portability.mjs");
+const scriptPath = join(scriptsDir, "check-cli-context-portability.ts");
 const scriptSource = readFileSync(scriptPath, "utf8");
 
 test("cli context portability targets only the intended Hatch Vitest contract files", () => {
@@ -14,12 +14,13 @@ test("cli context portability targets only the intended Hatch Vitest contract fi
   assert.match(scriptSource, /function boundedVitestArgs/);
   assert.match(
     scriptSource,
-    /"--pool",\s*"forks",\s*"--poolOptions\.forks\.singleFork",\s*"true",\s*"--no-file-parallelism",\s*"--testTimeout",\s*"120000",\s*"--hookTimeout",\s*"120000",\s*"--maxWorkers",\s*"1",\s*"--minWorkers",\s*"1"/,
+    /"--pool",\s*"forks",\s*"--no-file-parallelism",\s*"--testTimeout",\s*"120000",\s*"--hookTimeout",\s*"120000",\s*"--maxWorkers",\s*"1"/,
   );
+  assert.doesNotMatch(scriptSource, /--poolOptions|--minWorkers/);
   assert.match(scriptSource, /boundedVitestArgs\("src\/cli-run-config\.test\.ts"\)/);
   assert.match(
     scriptSource,
-    /"factory_ops_context",\s*"node",\s*\[\s*"--test",\s*"packages\/factory-ops\/test\/supervisor\/factory-context-resolution-cli\.cli\.test\.mjs"/,
+    /^run\("factory_ops_context",\s*"node",\s*\[\s*"--test",\s*"packages\/factory-ops\/test\/supervisor\/factory-context-resolution-cli\.cli\.test\.ts"/m,
   );
   assert.match(
     scriptSource,

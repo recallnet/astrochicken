@@ -21,7 +21,7 @@ import {
   buildMergeConflictPacket,
   persistMergeConflictPacket,
 } from "../merge-conflict-packet.ts";
-import { resolveRunsDir } from "../runs-dir-resolver.ts";
+import { resolveMergeTelemetryFilePath } from "../merge-resolution-telemetry-path.ts";
 function isolatedGitEnv() {
   const env = { ...process.env };
   for (const key of Object.keys(env)) {
@@ -1143,23 +1143,6 @@ export function buildMergeReport({ issueNumber = "", branch = "", mergeStatus = 
     notes: mergedNotes,
     path_taken: resolvedPathTaken,
     "hatch.merge.resolver": resolvedMergeResolver,
-  };
-}
-function resolveMergeTelemetryFactoryId(factoryId = "") {
-  const explicit = trim(factoryId);
-  if (explicit) return explicit;
-  return trim(process.env.FACTORY_ID || process.env.HATCH_FACTORY_ID || "") || "mothership";
-}
-function resolveMergeTelemetryFilePath({ factoryId = "", runsDir = "" } = {}) {
-  const resolvedFactoryId = resolveMergeTelemetryFactoryId(factoryId);
-  const explicitRunsDir = trim(runsDir) || trim(process.env.HATCH_RUNS_DIR || "");
-  const resolvedRunsDir = explicitRunsDir || resolveRunsDir({ factoryId: resolvedFactoryId });
-  const eventsDir = join(resolvedRunsDir, "..", "events");
-  const filePath = join(eventsDir, "merge_conflict_resolution_failures.ndjson");
-  return {
-    factoryId: resolvedFactoryId,
-    eventsDir,
-    filePath,
   };
 }
 function nullableText(value = "") {

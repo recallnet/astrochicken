@@ -10,6 +10,22 @@ import {
   isBlockedByOpenRelationships,
 } from "../../src/commands/supervisor-open-bug-gate.ts";
 
+function openIssueRelationshipResponse(args) {
+  const queryArg = args.find((a) => String(a).startsWith("query=")) || "";
+  const query = String(queryArg);
+  const matches = [...query.matchAll(/i(\d+):\s*issue\(number:(\d+)\)/g)];
+  const repository = {};
+  for (const m of matches) {
+    const n = Number(m[2]);
+    if (query.includes("blockedBy(")) {
+      repository[`i${n}`] = { blockedBy: { nodes: [] } };
+    } else {
+      repository[`i${n}`] = { state: "OPEN" };
+    }
+  }
+  return { data: { repository } };
+}
+
 function makeUnifiedStub(issues) {
   return (args, fallback = []) => {
     const cmd = Array.isArray(args) ? args.join(" ") : "";
@@ -17,19 +33,7 @@ function makeUnifiedStub(issues) {
       return issues;
     }
     if (cmd.includes("api graphql")) {
-      const queryArg = args.find((a) => String(a).startsWith("query=")) || "";
-      const query = String(queryArg);
-      const matches = [...query.matchAll(/i(\d+):\s*issue\(number:(\d+)\)/g)];
-      const repository = {};
-      for (const m of matches) {
-        const n = Number(m[2]);
-        if (query.includes("blockedBy(")) {
-          repository[`i${n}`] = { blockedBy: { nodes: [] } };
-        } else {
-          repository[`i${n}`] = { state: "OPEN" };
-        }
-      }
-      return { data: { repository } };
+      return openIssueRelationshipResponse(args);
     }
     return fallback;
   };
@@ -63,19 +67,7 @@ function makeRepoAwareStub(repo, calls) {
       ];
     }
     if (cmd.includes("api graphql")) {
-      const queryArg = args.find((a) => String(a).startsWith("query=")) || "";
-      const query = String(queryArg);
-      const matches = [...query.matchAll(/i(\d+):\s*issue\(number:(\d+)\)/g)];
-      const repository = {};
-      for (const m of matches) {
-        const n = Number(m[2]);
-        if (query.includes("blockedBy(")) {
-          repository[`i${n}`] = { blockedBy: { nodes: [] } };
-        } else {
-          repository[`i${n}`] = { state: "OPEN" };
-        }
-      }
-      return { data: { repository } };
+      return openIssueRelationshipResponse(args);
     }
     return fallback;
   };
@@ -895,6 +887,10 @@ test("buildStateSnapshot tags goal sub-issue bugs with goal_managed", () => {
       { number: 2186, title: "Fail-closed graph outcome", createdAt: "2026-03-16T00:00:00Z", body: "", labels: [{ name: "bug" }] },
       { number: 800, title: "[bug] standalone", createdAt: "2026-03-16T00:00:00Z", body: "", labels: [{ name: "bug" }] },
     ]),
+    ghPaginatedFn: (args) => {
+      assert.equal(args, "repos/recallnet/astrochicken/milestones?state=all&per_page=100");
+      return [];
+    },
     listGoalSubIssuesFn: ({ goalNumber }) => {
       if (goalNumber === 2181) {
         return [

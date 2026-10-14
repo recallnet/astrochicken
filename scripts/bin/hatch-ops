@@ -17,7 +17,7 @@ else
   export NODE_PATH="$pnpm_node_path:$NODE_PATH"
 fi
 if [ -x "$basedir/node" ]; then
-  exec "$basedir/node"  "$basedir/../../packages/factory-ops/src/cli.mjs" "$@"
+  exec "$basedir/node"  "$basedir/../../packages/factory-ops/src/cli.ts" "$@"
 else
-  exec node  "$basedir/../../packages/factory-ops/src/cli.mjs" "$@"
+  exec node  "$basedir/../../packages/factory-ops/src/cli.ts" "$@"
 fi

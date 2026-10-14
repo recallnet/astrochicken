@@ -14,7 +14,7 @@ import {
 } from "./check-repo-test-manifest-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-repo-test-manifest-contract.mjs");
+const checkerPath = join(scriptsDir, "check-repo-test-manifest-contract.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {

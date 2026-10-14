@@ -3,8 +3,8 @@ import test from "node:test";
 
 import { buildFactoryDashboard } from "../../src/lib/command-owners/factory-dashboard.ts";
 
-test("buildFactoryDashboard surfaces current issue and zero-delta burn detail for long-running goal runs", async () => {
-  const dashboard = await buildFactoryDashboard({
+function dashboardFixtureOptions() {
+  return {
     runsDir: "/tmp/demo-runs",
     nowMs: Date.parse("2026-03-29T01:10:00.000Z"),
     context: {
@@ -12,6 +12,21 @@ test("buildFactoryDashboard surfaces current issue and zero-delta burn detail fo
       target_repo: "example-org/example-trading",
       runs_dir: "/tmp/demo-runs",
     },
+    tickStatusFn: () => ({ ticks: [] }),
+    collectFactoryOutcomesFn: () => ({
+      commits: [],
+      closed_goals: 0,
+      closed_features: 0,
+      closed_bugs: 0,
+      merge_commits_main: 0,
+    }),
+    fetchGoalTitlesFn: () => ({ 1700: "Latency optimization" }),
+  };
+}
+
+test("buildFactoryDashboard surfaces current issue and zero-delta burn detail for long-running goal runs", async () => {
+  const dashboard = await buildFactoryDashboard({
+    ...dashboardFixtureOptions(),
     factoryStatusFn: () => ({
       active: [{ id: "goal-run-1700" }, { id: "goal-issue-1706" }],
       managed_state: {
@@ -59,15 +74,6 @@ test("buildFactoryDashboard surfaces current issue and zero-delta burn detail fo
       ],
       waves: [],
     }),
-    tickStatusFn: () => ({ ticks: [] }),
-    collectFactoryOutcomesFn: () => ({
-      commits: [],
-      closed_goals: 0,
-      closed_features: 0,
-      closed_bugs: 0,
-      merge_commits_main: 0,
-    }),
-    fetchGoalTitlesFn: () => ({ 1700: "Latency optimization" }),
     listGoalSubIssuesFn: ({ goalNumber }) => {
       assert.equal(goalNumber, 1700);
       return [
@@ -102,13 +108,7 @@ test("buildFactoryDashboard surfaces current issue and zero-delta burn detail fo
 
 test("buildFactoryDashboard derives current goal issue from parent goal run when child rows are absent", async () => {
   const dashboard = await buildFactoryDashboard({
-    runsDir: "/tmp/demo-runs",
-    nowMs: Date.parse("2026-03-29T01:10:00.000Z"),
-    context: {
-      factory_id: "example-trading",
-      target_repo: "example-org/example-trading",
-      runs_dir: "/tmp/demo-runs",
-    },
+    ...dashboardFixtureOptions(),
     factoryStatusFn: () => ({
       active: [{ id: "goal-run-1700" }],
       managed_state: {
@@ -140,15 +140,6 @@ test("buildFactoryDashboard derives current goal issue from parent goal run when
       }],
       waves: [],
     }),
-    tickStatusFn: () => ({ ticks: [] }),
-    collectFactoryOutcomesFn: () => ({
-      commits: [],
-      closed_goals: 0,
-      closed_features: 0,
-      closed_bugs: 0,
-      merge_commits_main: 0,
-    }),
-    fetchGoalTitlesFn: () => ({ 1700: "Latency optimization" }),
     listGoalSubIssuesFn: ({ goalNumber }) => {
       assert.equal(goalNumber, 1700);
       return [
@@ -177,13 +168,7 @@ test("buildFactoryDashboard derives current goal issue from parent goal run when
 
 test("buildFactoryDashboard keeps a first-class goal issue row when only the parent goal run is persisted", async () => {
   const dashboard = await buildFactoryDashboard({
-    runsDir: "/tmp/demo-runs",
-    nowMs: Date.parse("2026-03-29T01:10:00.000Z"),
-    context: {
-      factory_id: "example-trading",
-      target_repo: "example-org/example-trading",
-      runs_dir: "/tmp/demo-runs",
-    },
+    ...dashboardFixtureOptions(),
     factoryStatusFn: () => ({
       active: [{ id: "goal-run-1700" }],
       managed_state: {
@@ -219,15 +204,6 @@ test("buildFactoryDashboard keeps a first-class goal issue row when only the par
       }],
       waves: [],
     }),
-    tickStatusFn: () => ({ ticks: [] }),
-    collectFactoryOutcomesFn: () => ({
-      commits: [],
-      closed_goals: 0,
-      closed_features: 0,
-      closed_bugs: 0,
-      merge_commits_main: 0,
-    }),
-    fetchGoalTitlesFn: () => ({ 1700: "Latency optimization" }),
     listGoalSubIssuesFn: ({ goalNumber }) => {
       assert.equal(goalNumber, 1700);
       return [

@@ -6,7 +6,7 @@
       "description": "Repair goal review decisions after deterministic validation failures",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/goal_batch.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
           "node_id": "repair_decisions"
         }
       ]
@@ -16,7 +16,7 @@
       "description": "Review open goals for dedupe/closure decisions before goal fan-out",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/goal_batch.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/goal_batch/goal_batch.workflow-source.mjs",
           "node_id": "review_goals"
         }
       ]
@@ -26,7 +26,7 @@
       "description": "Analyze a goal issue and produce compact decomposition context",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
           "node_id": "analyze"
         }
       ]
@@ -36,7 +36,7 @@
       "description": "Propose implementable feature breakdown for a goal",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
           "node_id": "propose"
         }
       ]
@@ -46,7 +46,7 @@
       "description": "Review proposed decomposition for completeness and quality",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/goal_intake_decompose.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
           "node_id": "review"
         }
       ]
@@ -56,7 +56,7 @@
       "description": "Judge generated implementation issue quality before accepting",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
           "node_id": "judge_issue"
         }
       ]
@@ -66,7 +66,7 @@
       "description": "Revise a generated implementation issue based on judge feedback",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
           "node_id": "revise_issue_spec"
         }
       ]
@@ -76,7 +76,7 @@
       "description": "Repair a drafted implementation issue spec after deterministic validation failures",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
           "node_id": "repair_issue_spec"
         }
       ]
@@ -86,7 +86,7 @@
       "description": "Write and create a single implementation issue from goal decomposition context",
       "nodes": [
         {
-          "graph": "@hatch/capability-goal-decomposition/graphs/write_issue_item.dot",
+          "graph": "@hatch/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
           "node_id": "draft_issue_spec"
         }
       ]
@@ -96,7 +96,7 @@
       "description": "Build a single issue implementation on an issue-scoped branch",
       "nodes": [
         {
-          "graph": "@hatch/capability-coding/graphs/issue_execute_item.dot",
+          "graph": "@hatch/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
           "node_id": "build"
         }
       ]
@@ -106,7 +106,7 @@
       "description": "Judge post-merge alignment for issue execution pipeline",
       "nodes": [
         {
-          "graph": "@hatch/capability-product-judge/graphs/product_judge.dot",
+          "graph": "@hatch/capability-product-judge/workflows/product_judge/product_judge.workflow-source.mjs",
           "node_id": "judge"
         }
       ]
@@ -116,7 +116,7 @@
       "description": "Review single issue implementation for correctness and scope",
       "nodes": [
         {
-          "graph": "@hatch/capability-coding/graphs/issue_execute_item.dot",
+          "graph": "@hatch/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
           "node_id": "review"
         }
       ]
@@ -126,7 +126,7 @@
       "description": "Execute fast-route supervisor bug remediation for open bug queue",
       "nodes": [
         {
-          "graph": "factory_supervisor_tick.dot",
+          "graph": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
           "node_id": "supervisor_review_bug_fast"
         }
       ]
@@ -136,7 +136,7 @@
       "description": "Narrate release capability shift for operator-facing report",
       "nodes": [
         {
-          "graph": "@hatch/capability-release-reporting/graphs/release_report_flow.dot",
+          "graph": "@hatch/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
           "node_id": "release_narrator"
         }
       ]
@@ -146,7 +146,7 @@
       "description": "Execute full supervisor recovery/action-item review",
       "nodes": [
         {
-          "graph": "factory_supervisor_tick.dot",
+          "graph": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
           "node_id": "supervisor_review"
         }
       ]
@@ -156,7 +156,11 @@
       "description": "Build a goal sub-issue implementation on the goal-scoped branch",
       "nodes": [
         {
-          "graph": "goal_issue_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+          "node_id": "build"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
           "node_id": "build"
         }
       ]
@@ -166,7 +170,11 @@
       "description": "Review goal sub-issue implementation for issue and goal alignment",
       "nodes": [
         {
-          "graph": "goal_issue_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+          "node_id": "review"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
           "node_id": "review"
         }
       ]
@@ -176,7 +184,11 @@
       "description": "Judge post-merge goal outcome before goal closure",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "judge"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "judge"
         }
       ]
@@ -186,11 +198,15 @@
       "description": "Resolve merge conflicts for goal merge flows",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
           "node_id": "resolve_conflict"
         },
         {
-          "graph": "@hatch/capability-merge/graphs/merge_item.dot",
+          "graph": "@hatch/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+          "node_id": "resolve_conflict"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "resolve_conflict"
         }
       ]
@@ -200,7 +216,11 @@
       "description": "Resolve post-merge failures after deterministic merge path",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "resolve_post_merge"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "resolve_post_merge"
         }
       ]
@@ -210,7 +230,11 @@
       "description": "Clean dirty canonical checkout after merge (untracked files, modified files, partial git state)",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "clean_main"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "clean_main"
         }
       ]
@@ -220,7 +244,11 @@
       "description": "Resolve push failure after successful merge (e.g. rebase onto diverged origin/main)",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "resolve_push_failure"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "resolve_push_failure"
         }
       ]
@@ -230,11 +258,15 @@
       "description": "Retry merge conflict resolution after finalize detected incomplete state",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
           "node_id": "retry_resolve_conflict"
         },
         {
-          "graph": "@hatch/capability-merge/graphs/merge_item.dot",
+          "graph": "@hatch/capability-merge/workflows/merge_item/merge_item.workflow-source.mjs",
+          "node_id": "retry_resolve_conflict"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "retry_resolve_conflict"
         }
       ]
@@ -244,7 +276,11 @@
       "description": "Retry post-merge resolution after finalize detected incomplete state",
       "nodes": [
         {
-          "graph": "goal_execute.dot",
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "retry_resolve_post_merge"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
           "node_id": "retry_resolve_post_merge"
         }
       ]
@@ -254,7 +290,7 @@
       "description": "Build a wave sub-issue implementation on the wave-scoped branch",
       "nodes": [
         {
-          "graph": "wave_issue_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
           "node_id": "build"
         }
       ]
@@ -264,7 +300,7 @@
       "description": "Review wave sub-issue implementation for correctness and scope",
       "nodes": [
         {
-          "graph": "wave_issue_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_issue_execute.workflow-source.mjs",
           "node_id": "review"
         }
       ]
@@ -274,7 +310,7 @@
       "description": "Judge post-merge wave outcome before wave closure",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "judge"
         }
       ]
@@ -284,7 +320,7 @@
       "description": "Resolve merge conflicts for wave merge flows",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "resolve_conflict"
         }
       ]
@@ -294,7 +330,7 @@
       "description": "Retry merge conflict resolution after finalize detected incomplete state in wave flow",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "retry_resolve_conflict"
         }
       ]
@@ -304,7 +340,7 @@
       "description": "Resolve post-merge failures after deterministic merge path in wave flow",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "resolve_post_merge"
         }
       ]
@@ -314,7 +350,7 @@
       "description": "Retry post-merge resolution after finalize detected incomplete state in wave flow",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "retry_resolve_post_merge"
         }
       ]
@@ -324,8 +360,22 @@
       "description": "Resolve push failure after successful merge in wave flow",
       "nodes": [
         {
-          "graph": "wave_execute.dot",
+          "graph": "factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs",
           "node_id": "resolve_push_failure"
+        }
+      ]
+    },
+    {
+      "job_id": "goal.execute.merge.supervisor_push_recovery",
+      "description": "Recover a failed goal merge push when deterministic push recovery cannot prove the state is safe.",
+      "nodes": [
+        {
+          "graph": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+          "node_id": "supervisor_push_recovery"
+        },
+        {
+          "graph": "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
+          "node_id": "supervisor_push_recovery"
         }
       ]
     }

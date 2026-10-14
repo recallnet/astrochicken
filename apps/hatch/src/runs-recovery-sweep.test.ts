@@ -22,6 +22,22 @@ function git(args: string[], cwd: string): string {
 	return String(execFileSync("git", args, { cwd, stdio: "pipe" })).trim();
 }
 
+function recoveryRunState(overrides: Record<string, unknown>): Record<string, unknown> {
+	return {
+		pipelineFile: GRAPH_PATHS.waveIssueExecute,
+		status: "running",
+		pid: 999999,
+		updatedAt: "2026-01-01T00:00:00.000Z",
+		startedAt: "2026-01-01T00:00:00.000Z",
+		currentNode: "build",
+		activeChildren: {},
+		completedNodes: [],
+		locksHeld: [],
+		records: [],
+		...overrides,
+	};
+}
+
 function writeRunState(runsDir: string, runId: string, state: Record<string, unknown>): void {
 	const runDir = join(runsDir, runId);
 	mkdirSync(runDir, { recursive: true });
@@ -128,43 +144,26 @@ describe("runtime recovery sweep", () => {
 		git(["worktree", "add", "-b", "wave/target-run", targetWorktree, "main"], repo);
 		git(["worktree", "add", "-b", "wave/other-active", otherWorktree, "main"], repo);
 
-		writeRunState(runsDir, "target-run", {
+		writeRunState(runsDir, "target-run", recoveryRunState({
 			runId: "target-run",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: targetWorktree,
 				branch: "wave/target-run",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "other-active", {
+		writeRunState(runsDir, "other-active", recoveryRunState({
 			runId: "other-active",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
 			pid: process.pid,
 			updatedAt: new Date().toISOString(),
 			startedAt: new Date().toISOString(),
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: otherWorktree,
 				branch: "wave/other-active",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -191,43 +190,28 @@ describe("runtime recovery sweep", () => {
 		mkdirSync(dirname(targetWorktree), { recursive: true });
 		git(["worktree", "add", "-b", "wave/target-only", targetWorktree, "main"], repo);
 
-		writeRunState(runsDir, "target-run", {
+		writeRunState(runsDir, "target-run", recoveryRunState({
 			runId: "target-run",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: targetWorktree,
 				branch: "wave/target-only",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "historical-heavy", {
+		writeRunState(runsDir, "historical-heavy", recoveryRunState({
 			runId: "historical-heavy",
 			pipelineFile: GRAPH_PATHS.factorySupervisorTick,
 			status: "completed",
 			pid: 0,
 			updatedAt: "2026-01-01T00:00:10.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "done",
 			context: {
 				huge_snapshot: "x".repeat(20000),
 				worktree_dir: join(root, ".hatch-worktrees", "wave", "should-not-load"),
 				branch: "wave/should-not-load",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const parseSpy = vi.spyOn(JSON, "parse");
 		const report = scanRuntimeRecoverySweep({
@@ -252,24 +236,14 @@ describe("runtime recovery sweep", () => {
 		mkdirSync(dirname(worktreeDir), { recursive: true });
 		git(["worktree", "add", "-b", "wave/api-only-stale", worktreeDir, "main"], repo);
 
-		writeRunState(runsDir, "api-only-stale", {
+		writeRunState(runsDir, "api-only-stale", recoveryRunState({
 			runId: "api-only-stale",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: worktreeDir,
 				branch: "wave/api-only-stale",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -313,32 +287,21 @@ describe("runtime recovery sweep", () => {
 		mkdirSync(dirname(worktreeDir), { recursive: true });
 		git(["worktree", "add", "-b", "wave/orphan-1", worktreeDir, "main"], repo);
 
-		writeRunState(runsDir, "dead-run-1", {
+		writeRunState(runsDir, "dead-run-1", recoveryRunState({
 			runId: "dead-run-1",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: worktreeDir,
 				branch: "wave/orphan-1",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "parent-run-1", {
+		writeRunState(runsDir, "parent-run-1", recoveryRunState({
 			runId: "parent-run-1",
 			pipelineFile: GRAPH_PATHS.factorySupervisorTick,
 			status: "failed",
 			pid: process.pid,
 			updatedAt: "2026-01-01T00:02:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "wave_execute",
 			context: {},
 			activeChildren: {
@@ -349,10 +312,7 @@ describe("runtime recovery sweep", () => {
 					currentNode: "start",
 				},
 			},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -396,13 +356,10 @@ describe("runtime recovery sweep", () => {
 	});
 
 	it("reclaims stale live-pid parents that still reference a terminal child as running", () => {
-		writeRunState(runsDir, "goal-parent-stale", {
+		writeRunState(runsDir, "goal-parent-stale", recoveryRunState({
 			runId: "goal-parent-stale",
 			pipelineFile: GRAPH_PATHS.goalExecute,
-			status: "running",
 			pid: process.pid,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "merge_branch",
 			context: {},
 			activeChildren: {
@@ -417,25 +374,17 @@ describe("runtime recovery sweep", () => {
 					currentNode: "done",
 				},
 			},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "child-done", {
+		writeRunState(runsDir, "child-done", recoveryRunState({
 			runId: "child-done",
 			pipelineFile: GRAPH_PATHS.artifactIngest,
 			status: "completed",
 			pid: process.pid,
 			updatedAt: "2026-01-01T00:00:05.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "done",
 			context: {},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -495,24 +444,14 @@ describe("runtime recovery sweep", () => {
 		mkdirSync(dirname(unapprovedWorktree), { recursive: true });
 		git(["worktree", "add", "-b", "wave/orphan-unsafe", unapprovedWorktree, "main"], repo);
 
-		writeRunState(runsDir, "dead-run-unsafe", {
+		writeRunState(runsDir, "dead-run-unsafe", recoveryRunState({
 			runId: "dead-run-unsafe",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: unapprovedWorktree,
 				branch: "wave/orphan-unsafe",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -532,24 +471,16 @@ describe("runtime recovery sweep", () => {
 	});
 
 	it("excludes canonical checkout from orphaned worktree classification and protected removal actions", () => {
-		writeRunState(runsDir, "dead-main-run", {
+		writeRunState(runsDir, "dead-main-run", recoveryRunState({
 			runId: "dead-main-run",
 			pipelineFile: GRAPH_PATHS.waveExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "merge_shared_branch",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: repo,
 				branch: "main",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = scanRuntimeRecoverySweep({
 			runsDir,
@@ -610,13 +541,12 @@ describe("runtime recovery sweep", () => {
 	});
 
 	it("clear_active_child_ref resolves canonical child entries by childId and parentNodeId+traceKind fallback", () => {
-		writeRunState(runsDir, "parent-canonical", {
+		writeRunState(runsDir, "parent-canonical", recoveryRunState({
 			runId: "parent-canonical",
 			pipelineFile: GRAPH_PATHS.factorySupervisorTick,
 			status: "failed",
 			pid: process.pid,
 			updatedAt: "2026-01-01T00:05:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "wave_execute",
 			context: {},
 			activeChildren: {
@@ -641,40 +571,22 @@ describe("runtime recovery sweep", () => {
 					currentNode: "review",
 				},
 			},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "child-a", {
+		writeRunState(runsDir, "child-a", recoveryRunState({
 			runId: "child-a",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
 			pid: process.pid,
 			updatedAt: "2026-01-01T00:04:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
-		writeRunState(runsDir, "child-b", {
+		writeRunState(runsDir, "child-b", recoveryRunState({
 			runId: "child-b",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
 			pid: process.pid,
 			updatedAt: "2026-01-01T00:05:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
 			currentNode: "review",
 			context: {},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		const report = {
 			schemaVersion: "runtime_recovery_sweep/v1",
@@ -731,24 +643,14 @@ describe("runtime recovery sweep", () => {
 		mkdirSync(dirname(worktreeDir), { recursive: true });
 		git(["worktree", "add", "-b", "wave/lease-protected", worktreeDir, "main"], repo);
 
-		writeRunState(runsDir, "lease-protected-run", {
+		writeRunState(runsDir, "lease-protected-run", recoveryRunState({
 			runId: "lease-protected-run",
-			pipelineFile: GRAPH_PATHS.waveIssueExecute,
-			status: "running",
-			pid: 999999,
-			updatedAt: "2026-01-01T00:00:00.000Z",
-			startedAt: "2026-01-01T00:00:00.000Z",
-			currentNode: "build",
 			context: {
 				__worktree_repo: repo,
 				worktree_dir: worktreeDir,
 				branch: "wave/lease-protected",
 			},
-			activeChildren: {},
-			completedNodes: [],
-			locksHeld: [],
-			records: [],
-		});
+		}));
 
 		writeLease(lockDir, "lease-protected", {
 			schemaVersion: 1,

@@ -1,40 +1,15 @@
+import { acquireReleaseLeaseFixture } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  CONTROL_PLANE_RELEASE_ASSET_PREFIX,
-  createGhReleaseAssetClient,
-  publishControlPlaneReleaseAsset,
-} from "../../src/commands/control-plane-release-asset.ts";
+import { CONTROL_PLANE_RELEASE_ASSET_PREFIX, createGhReleaseAssetClient, publishControlPlaneReleaseAsset } from "../../src/commands/control-plane-release-asset.ts";
 import { buildReleaseManifest } from "../../src/commands/release-manifest.ts";
-import {
-  buildReconciledControllerState,
-  latestTelemetryRecord,
-  normalizePublishedManifest,
-  readRolloutEventLog,
-  reconcilePromotedChannelPins,
-  reconcileRolledBackChannelPins,
-} from "../../src/commands/release-rollout-controller-state.ts";
-import {
-  RELEASE_ROLLOUT_EVENT_PREFIX,
-  RELEASE_ROLLOUT_EVENT_SCHEMA_VERSION,
-  RELEASE_ROLLOUT_STATE_SCHEMA_VERSION,
-  buildReleaseRolloutEvent,
-  evaluateManifestRolloutGate,
-  readReleaseManifestFile,
-  renderReleaseRolloutEvent,
-  resolveReleaseIdentity,
-  runReleaseRolloutController,
-  selectCanaryFactoryIds,
-  writeReleaseManifestFile,
-} from "../../src/commands/release-rollout-controller.ts";
-import {
-  evaluateReleaseCanaryHealth,
-  pollReleaseCanaryHealth,
-} from "../../src/commands/release-rollout-controller-health.ts";
+import { buildReconciledControllerState, latestTelemetryRecord, normalizePublishedManifest, readRolloutEventLog, reconcilePromotedChannelPins, reconcileRolledBackChannelPins } from "../../src/commands/release-rollout-controller-state.ts";
+import { RELEASE_ROLLOUT_EVENT_PREFIX, RELEASE_ROLLOUT_EVENT_SCHEMA_VERSION, RELEASE_ROLLOUT_STATE_SCHEMA_VERSION, buildReleaseRolloutEvent, evaluateManifestRolloutGate, readReleaseManifestFile, renderReleaseRolloutEvent, resolveReleaseIdentity, runReleaseRolloutController, selectCanaryFactoryIds, writeReleaseManifestFile } from "../../src/commands/release-rollout-controller.ts";
+import { evaluateReleaseCanaryHealth, pollReleaseCanaryHealth } from "../../src/commands/release-rollout-controller-health.ts";
 import { buildReleaseRolloutCloudEvent } from "../../src/lib/release-rollout-asyncapi-contract.ts";
 
 function eventData(event) {
@@ -384,30 +359,11 @@ test("runReleaseRolloutController promotes healthy canary, posts fixed-in feedba
 
   const feedbackCalls = [];
 
-  const out = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const out = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     canaryMaxFactories: 1,
     healthPolicyJson: JSON.stringify({ max_polls: 1, poll_interval_ms: 0, min_merged_prs: 1, max_failed_runs: 0, max_failed_ticks: 0 }),
     resolveTrackingIssueFn: () => ({ ok: true, tracking_issue_number: "407", reason: "resolved" }),
-    acquireLeaseFn: ({ trackingIssueNumber, factoryId, leaseName, runId, holderId }) => ({
-      ok: true,
-      acquired: true,
-      reason: "lease_acquired",
-      tracking_issue_number: trackingIssueNumber,
-      factory_id: factoryId,
-      lease_name: leaseName,
-      run_id: runId,
-      holder_id: holderId,
-      lease: { expires_at: "2026-03-07T01:00:00.000Z" },
-      comment_id: 1,
-      comment_etag: '"1"',
-    }),
+    acquireLeaseFn: acquireReleaseLeaseFixture,
     releaseLeaseFn: () => ({ ok: true, released: true, reason: "lease_released" }),
     factoryStatusFn: () => ({ active: [], completed: 3, failed: 0 }),
     tickStatusFn: () => ({ ticks: [{ status: "running", stage: "wave_execute", stageLabel: "Executing wave" }] }),
@@ -424,8 +380,8 @@ test("runReleaseRolloutController promotes healthy canary, posts fixed-in feedba
         source_issue: payload.source_issue,
       };
     },
-    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha }),
-  });
+    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha })
+  }));
 
   assert.equal(out.ok, true);
   assert.equal(out.decision, "promoted");
@@ -459,31 +415,12 @@ test("runReleaseRolloutController forwards factory identity into canary health r
 
   const healthReadArgs = [];
 
-  const out = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const out = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     canaryMaxFactories: 1,
     healthPolicyJson: JSON.stringify({ max_polls: 1, poll_interval_ms: 0, min_merged_prs: 1, max_failed_runs: 0, max_failed_ticks: 0 }),
     factoryId: "example-trading",
     resolveTrackingIssueFn: () => ({ ok: true, tracking_issue_number: "407", reason: "resolved" }),
-    acquireLeaseFn: ({ trackingIssueNumber, factoryId, leaseName, runId, holderId }) => ({
-      ok: true,
-      acquired: true,
-      reason: "lease_acquired",
-      tracking_issue_number: trackingIssueNumber,
-      factory_id: factoryId,
-      lease_name: leaseName,
-      run_id: runId,
-      holder_id: holderId,
-      lease: { expires_at: "2026-03-07T01:00:00.000Z" },
-      comment_id: 1,
-      comment_etag: '"1"',
-    }),
+    acquireLeaseFn: acquireReleaseLeaseFixture,
     releaseLeaseFn: () => ({ ok: true, released: true, reason: "lease_released" }),
     factoryStatusFn: (args) => {
       healthReadArgs.push({ kind: "factory", args });
@@ -499,8 +436,8 @@ test("runReleaseRolloutController forwards factory identity into canary health r
     sleepFn: async () => {},
     nowIsoFn: () => "2026-03-07T00:00:00.000Z",
     postArtifactFeedbackFn: () => ({ ok: true, skipped: true, reason: "no_artifacts" }),
-    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha }),
-  });
+    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha })
+  }));
 
   assert.equal(out.ok, true);
   assert.equal(out.decision, "promoted");
@@ -512,38 +449,19 @@ test("runReleaseRolloutController blocks promotion deterministically when artifa
   const manifest = makeManifest();
   writeReleaseManifestFile(paths.candidateManifestPath, manifest);
 
-  const out = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const out = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     canaryMaxFactories: 1,
     healthPolicyJson: JSON.stringify({ max_polls: 1, poll_interval_ms: 0, min_merged_prs: 1, max_failed_runs: 0, max_failed_ticks: 0 }),
     resolveTrackingIssueFn: () => ({ ok: true, tracking_issue_number: "407", reason: "resolved" }),
-    acquireLeaseFn: ({ trackingIssueNumber, factoryId, leaseName, runId, holderId }) => ({
-      ok: true,
-      acquired: true,
-      reason: "lease_acquired",
-      tracking_issue_number: trackingIssueNumber,
-      factory_id: factoryId,
-      lease_name: leaseName,
-      run_id: runId,
-      holder_id: holderId,
-      lease: { expires_at: "2026-03-07T01:00:00.000Z" },
-      comment_id: 1,
-      comment_etag: '"1"',
-    }),
+    acquireLeaseFn: acquireReleaseLeaseFixture,
     releaseLeaseFn: () => ({ ok: true, released: true, reason: "lease_released" }),
     factoryStatusFn: () => ({ active: [], completed: 3, failed: 0 }),
     tickStatusFn: () => ({ ticks: [{ status: "running", stage: "wave_execute", stageLabel: "Executing wave" }] }),
     outcomesFn: () => ({ merged_prs: 1, merge_commits_main: 1, closed_features: 1, closed_bugs: 0, closed_feature_bug_total: 1 }),
     sleepFn: async () => {},
     nowIsoFn: () => "2026-03-07T00:00:00.000Z",
-    postArtifactFeedbackFn: () => ({ ok: false, reason: "issue_comment_failed", error: "rate limit" }),
-  });
+    postArtifactFeedbackFn: () => ({ ok: false, reason: "issue_comment_failed", error: "rate limit" })
+  }));
 
   assert.equal(out.ok, false);
   assert.equal(out.decision, "blocked");
@@ -577,30 +495,11 @@ test("runReleaseRolloutController checkpoints partial artifact feedback progress
     };
   };
 
-  const runArgs = {
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const runArgs = rolloutFixtureOptions(paths, {
     canaryMaxFactories: 1,
     healthPolicyJson: JSON.stringify({ max_polls: 1, poll_interval_ms: 0, min_merged_prs: 1, max_failed_runs: 0, max_failed_ticks: 0 }),
     resolveTrackingIssueFn: () => ({ ok: true, tracking_issue_number: "407", reason: "resolved" }),
-    acquireLeaseFn: ({ trackingIssueNumber, factoryId, leaseName, runId, holderId }) => ({
-      ok: true,
-      acquired: true,
-      reason: "lease_acquired",
-      tracking_issue_number: trackingIssueNumber,
-      factory_id: factoryId,
-      lease_name: leaseName,
-      run_id: runId,
-      holder_id: holderId,
-      lease: { expires_at: "2026-03-07T01:00:00.000Z" },
-      comment_id: 1,
-      comment_etag: '"1"',
-    }),
+    acquireLeaseFn: acquireReleaseLeaseFixture,
     releaseLeaseFn: () => ({ ok: true, released: true, reason: "lease_released" }),
     factoryStatusFn: () => ({ active: [], completed: 3, failed: 0 }),
     tickStatusFn: () => ({ ticks: [{ status: "running", stage: "wave_execute", stageLabel: "Executing wave" }] }),
@@ -608,8 +507,8 @@ test("runReleaseRolloutController checkpoints partial artifact feedback progress
     sleepFn: async () => {},
     nowIsoFn: () => "2026-03-07T00:00:00.000Z",
     postArtifactFeedbackFn,
-    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha }),
-  };
+    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha })
+  });
 
   const first = await runReleaseRolloutController(runArgs);
   assert.equal(first.ok, false);
@@ -654,30 +553,11 @@ test("runReleaseRolloutController rolls back unhealthy canary idempotently and b
   writeReleaseManifestFile(paths.candidateManifestPath, manifest);
 
   let releaseCount = 0;
-  const first = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const first = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     canaryMaxFactories: 1,
     healthPolicyJson: JSON.stringify({ max_polls: 1, poll_interval_ms: 0, min_merged_prs: 1, max_failed_runs: 0, max_failed_ticks: 0 }),
     resolveTrackingIssueFn: () => ({ ok: true, tracking_issue_number: "407", reason: "resolved" }),
-    acquireLeaseFn: ({ trackingIssueNumber, factoryId, leaseName, runId, holderId }) => ({
-      ok: true,
-      acquired: true,
-      reason: "lease_acquired",
-      tracking_issue_number: trackingIssueNumber,
-      factory_id: factoryId,
-      lease_name: leaseName,
-      run_id: runId,
-      holder_id: holderId,
-      lease: { expires_at: "2026-03-07T01:00:00.000Z" },
-      comment_id: 1,
-      comment_etag: '"1"',
-    }),
+    acquireLeaseFn: acquireReleaseLeaseFixture,
     releaseLeaseFn: () => {
       releaseCount += 1;
       return { ok: true, released: true, reason: "lease_released" };
@@ -690,8 +570,8 @@ test("runReleaseRolloutController rolls back unhealthy canary idempotently and b
     postArtifactFeedbackFn: () => {
       throw new Error("artifact_feedback_should_not_run_on_rollback");
     },
-    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha }),
-  });
+    publishManifestAssetFn: ({ releaseId, releaseTag, releaseSha }) => mockPublishManifestAsset({ releaseId, releaseTag, releaseSha })
+  }));
 
   assert.equal(first.ok, true);
   assert.equal(first.decision, "rolled_back");
@@ -714,18 +594,11 @@ test("runReleaseRolloutController rolls back unhealthy canary idempotently and b
   const restoredCanary = readReleaseManifestFile(paths.canaryManifestPath);
   assert.equal(resolveReleaseIdentity(restoredCanary).release_id, "v1.9.0");
 
-  const second = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const second = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     resolveTrackingIssueFn: () => {
       throw new Error("should_not_reacquire_lease");
-    },
-  });
+    }
+  }));
 
   assert.equal(second.ok, true);
   assert.equal(second.noop, true);
@@ -754,21 +627,14 @@ test("rerun after crash in rolled_back state reconciles pins only and never rest
   writeReleaseManifestFile(paths.canaryManifestPath, candidate);
   writeReleaseManifestFile(paths.generalManifestPath, candidate);
 
-  const out = await runReleaseRolloutController({
-    repo: "recallnet/astrochicken",
-    repoPath: paths.temp,
-    candidateManifestPath: paths.candidateManifestPath,
-    releasesDir: paths.releasesDir,
-    runsDir: paths.runsDir,
-    canaryManifestPath: paths.canaryManifestPath,
-    generalManifestPath: paths.generalManifestPath,
+  const out = await runReleaseRolloutController(rolloutFixtureOptions(paths, {
     resolveTrackingIssueFn: () => {
       throw new Error("should_not_reenter_rollout");
     },
     acquireLeaseFn: () => {
       throw new Error("should_not_reacquire_lease");
-    },
-  });
+    }
+  }));
 
   assert.equal(out.ok, true);
   assert.equal(out.decision, "rolled_back");
@@ -848,3 +714,16 @@ test("evaluateManifestRolloutGate blocks resume after rollback and limits canary
   assert.equal(pinnedAllowed.allowed, true);
   assert.equal(pinnedAllowed.reason, "release_pinned");
 });
+
+function rolloutFixtureOptions(paths, overrides) {
+  return {
+    repo: "recallnet/astrochicken",
+    repoPath: paths.temp,
+    candidateManifestPath: paths.candidateManifestPath,
+    releasesDir: paths.releasesDir,
+    runsDir: paths.runsDir,
+    canaryManifestPath: paths.canaryManifestPath,
+    generalManifestPath: paths.generalManifestPath,
+    ...overrides,
+  };
+}

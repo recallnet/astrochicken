@@ -13,7 +13,7 @@ import {
 } from "./check-test-config-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-test-config-contract.mjs");
+const checkerPath = join(scriptsDir, "check-test-config-contract.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {

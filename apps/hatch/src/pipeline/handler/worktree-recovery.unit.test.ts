@@ -97,6 +97,20 @@ function makeMockSession(options: {
 	return session;
 }
 
+function makeSuccessfulSession(text: string) {
+	return makeMockSession({
+		onPrompt: async (_call, emit, session) => {
+			const message = makeAssistantMessage(text);
+			session.messages = [message];
+			emit({ type: "message_end", message });
+		},
+	});
+}
+
+function executeWorktree(handler: WorktreeAgentHandler, node: Parameters<WorktreeAgentHandler["execute"]>[1], context: Context) {
+	return handler.execute(new AbortController().signal, node, context, "");
+}
+
 function makeHandler(overrides: Record<string, any> = {}) {
 	return new WorktreeAgentHandler({
 		modelRegistry: makeModelRegistry() as any,
@@ -171,12 +185,7 @@ describe("worktree handler recovery paths", () => {
 			mockGit({ commitsAhead: 3, dirty: false, log: "abc Recovery commit 1\ndef Recovery commit 2\nghi Recovery commit 3" });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }),
-				new Context({ __run_id: "run-1" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }), new Context({ __run_id: "run-1" }));
 
 			expect(outcome.status).toBe(StageStatus.Completed);
 			expect(outcome.output).toContain("[recovery]");
@@ -190,12 +199,7 @@ describe("worktree handler recovery paths", () => {
 			mockGit({ commitsAhead: 2, log: "abc123 feat: implement parser\ndef456 test: add parser tests" });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }),
-				new Context({ __run_id: "run-2" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }), new Context({ __run_id: "run-2" }));
 
 			expect(outcome.output).toContain("abc123");
 			expect(outcome.output).toContain("implement parser");
@@ -207,12 +211,7 @@ describe("worktree handler recovery paths", () => {
 			mockGit({ commitsAhead: 5 });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }),
-				new Context({ __run_id: "run-3" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }), new Context({ __run_id: "run-3" }));
 
 			expect(outcome.contextUpdates).toBeDefined();
 			expect(outcome.contextUpdates?.["wave_recovery_ctx_commits"]).toBe("5");
@@ -239,12 +238,7 @@ describe("worktree handler recovery paths", () => {
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }),
-				new Context({ __run_id: "run-4" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }), new Context({ __run_id: "run-4" }));
 
 			expect(outcome.status).toBe(StageStatus.Completed);
 			expect(createAgentSessionMock).toHaveBeenCalledTimes(1);
@@ -257,22 +251,11 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 1 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("ok");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("ok");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }),
-				new Context({ __run_id: "run-5" }),
-				"",
-			);
+			await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }), new Context({ __run_id: "run-5" }));
 
 			expect(createAgentSessionMock).toHaveBeenCalledTimes(1);
 		});
@@ -286,22 +269,11 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 1, dirty: true });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("cleaned up");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("cleaned up");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }),
-				new Context({ __run_id: "run-6" }),
-				"",
-			);
+			await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "false" }), new Context({ __run_id: "run-6" }));
 
 			// Verify git checkout was called for cleanup
 			const checkoutCalls = execFileSyncMock.mock.calls.filter(
@@ -315,22 +287,11 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 2, dirty: true });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("ok");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("ok");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }),
-				new Context({ __run_id: "run-7" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch, skip_prompt_if_commits_exist: "true" }), new Context({ __run_id: "run-7" }));
 
 			// Dirty worktree bypasses the noop short-circuit even with skip=true
 			// because isDirty=true makes the condition fail: commitsAhead > 0 && !isDirty && skip
@@ -348,22 +309,11 @@ describe("worktree handler recovery paths", () => {
 			mkdirSync(explicitWorktreeDir, { recursive: true });
 			mockGit({ commitsAhead: 0 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("implemented");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("implemented");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/goal-1936-wave-1" }),
-				new Context({ __run_id: "run-explicit-worktree", worktree_dir: explicitWorktreeDir }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/goal-1936-wave-1" }), new Context({ __run_id: "run-explicit-worktree", worktree_dir: explicitWorktreeDir }));
 
 			expect(outcome.status).toBe(StageStatus.Completed);
 			expect(createAgentSessionMock).toHaveBeenCalledTimes(1);
@@ -381,22 +331,11 @@ describe("worktree handler recovery paths", () => {
 			mkdirSync(repoDir, { recursive: true });
 			mockGit({ commitsAhead: 0 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("fresh start");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("fresh start");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/fresh" }),
-				new Context({ __run_id: "run-8" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/fresh" }), new Context({ __run_id: "run-8" }));
 
 			// Verify worktree add was attempted
 			const worktreeCalls = execFileSyncMock.mock.calls.filter(
@@ -423,22 +362,11 @@ describe("worktree handler recovery paths", () => {
 				return Buffer.from("");
 			});
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("using existing");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("using existing");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/existing" }),
-				new Context({ __run_id: "run-9" }),
-				"",
-			);
+			await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/existing" }), new Context({ __run_id: "run-9" }));
 
 			expect(worktreeAttempts).toBe(2);
 		});
@@ -455,12 +383,7 @@ describe("worktree handler recovery paths", () => {
 			});
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/broken" }),
-				new Context({ __run_id: "run-10" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/broken" }), new Context({ __run_id: "run-10" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("failed to create worktree");
@@ -472,12 +395,7 @@ describe("worktree handler recovery paths", () => {
 			mkdirSync(repoDir, { recursive: true });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/canonical", worktree_dir: repoDir }),
-				new Context({ __run_id: "run-canonical" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/canonical", worktree_dir: repoDir }), new Context({ __run_id: "run-canonical" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("must not be the canonical checkout");
@@ -497,12 +415,7 @@ describe("worktree handler recovery paths", () => {
 			});
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch: "wave/broken", worktree_dir: badWorktreeDir }),
-				new Context({ __run_id: "run-invalid-worktree" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch: "wave/broken", worktree_dir: badWorktreeDir }), new Context({ __run_id: "run-invalid-worktree" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("not a git worktree");
@@ -528,12 +441,7 @@ describe("worktree handler recovery paths", () => {
 			});
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-branch-mismatch" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-branch-mismatch" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("main");
@@ -557,22 +465,11 @@ describe("worktree handler recovery paths", () => {
 				return Buffer.from("");
 			});
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("ok");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("ok");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-branch-match" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-branch-match" }));
 
 			expect(outcome.status).toBe(StageStatus.Completed);
 		});
@@ -586,25 +483,14 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 0 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("persistent session");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("persistent session");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const sessionsDir = join(tempRoot, "wave-sessions");
 			mkdirSync(sessionsDir, { recursive: true });
 
 			const handler = makeHandler();
-			await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-11", wave_sessions_dir: sessionsDir }),
-				"",
-			);
+			await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-11", wave_sessions_dir: sessionsDir }));
 
 			expect(sessionManagerMock.continueRecent).toHaveBeenCalled();
 			expect(sessionManagerMock.inMemory).not.toHaveBeenCalled();
@@ -615,22 +501,11 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 0 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("ephemeral session");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("ephemeral session");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-12" }),  // no wave_sessions_dir, no __run_sessions_dir
-				"",
-			);
+			await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-12" }));
 
 			expect(sessionManagerMock.inMemory).toHaveBeenCalled();
 			expect(sessionManagerMock.continueRecent).not.toHaveBeenCalled();
@@ -649,12 +524,7 @@ describe("worktree handler recovery paths", () => {
 				modelRegistry: { find: vi.fn(() => null) } as any,
 			});
 
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-13" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-13" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("could not resolve model");
@@ -684,12 +554,7 @@ describe("worktree handler recovery paths", () => {
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-14" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-14" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("503");
@@ -714,12 +579,7 @@ describe("worktree handler recovery paths", () => {
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-15" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-15" }));
 
 			expect(outcome.status).toBe(StageStatus.Failed);
 			expect(outcome.error).toContain("rate limit");
@@ -734,22 +594,11 @@ describe("worktree handler recovery paths", () => {
 			const { repoDir } = setupExistingWorktree(branch);
 			mockGit({ commitsAhead: 0 });
 
-			const session = makeMockSession({
-				onPrompt: async (_call, emit, s) => {
-					const msg = makeAssistantMessage("starting fresh");
-					s.messages = [msg];
-					emit({ type: "message_end", message: msg });
-				},
-			});
+			const session = makeSuccessfulSession("starting fresh");
 			createAgentSessionMock.mockResolvedValue({ session });
 
 			const handler = makeHandler();
-			const outcome = await handler.execute(
-				new AbortController().signal,
-				makeNode({ repo: repoDir, branch }),
-				new Context({ __run_id: "run-16" }),
-				"",
-			);
+			const outcome = await executeWorktree(handler, makeNode({ repo: repoDir, branch }), new Context({ __run_id: "run-16" }));
 
 			expect(outcome.status).toBe(StageStatus.Completed);
 			expect(outcome.output).not.toContain("[recovery]");

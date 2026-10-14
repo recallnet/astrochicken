@@ -1,3 +1,19 @@
+import { before, after } from "node:test";
+import { createCanonicalEventStoreFixture } from "../supervisor/factory-status-postgres-fixture.ts";
+
+// Canonical lifecycle reads use a disposable database, never a host service.
+const eventStoreFixture = createCanonicalEventStoreFixture();
+const previousEventStoreUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+before(async () => {
+  await eventStoreFixture.setup();
+  process.env.HATCH_CANONICAL_EVENT_STORE_URL = eventStoreFixture.connectionString;
+});
+after(() => {
+  if (previousEventStoreUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+  else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousEventStoreUrl;
+  eventStoreFixture.teardown();
+});
+
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { sweepCompletedGoals } from "../../src/commands/goal-sweep-completed.ts";
