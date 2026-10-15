@@ -33,6 +33,7 @@ test("pre-merge quality workflow enforces full repo QA before merge", () => {
   const qaScript = String(packageJson?.scripts?.["qa:pre-merge"] ?? "");
   const factoryHealthCiScript = String(packageJson?.scripts?.["factory:health:ci"] ?? "");
 
+  assert.match(workflow, /timeout-minutes:\s*45/);
   assert.match(workflow, /^name:\s*Pre-Merge Quality\s*$/m);
   assert.match(workflow, /^on:\s*$/m);
   assert.match(workflow, /^\s{2}pull_request:\s*$/m);

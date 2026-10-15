@@ -6,7 +6,7 @@ on:
 jobs:
   pre-merge-quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     services:
       event-store:
         image: postgres:18

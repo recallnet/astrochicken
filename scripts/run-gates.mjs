@@ -591,14 +591,14 @@ async function executeSelectedGates(gates, context, state) {
   return firstFailure || { ok: true, exitStatus: 0 };
 }
 
-function runOneTestSuite(suite, context, state) {
+export function runOneTestSuite(suite, context, state) {
   const commandDisplay = formatCommandInvocation(suite.command, suite.args);
   const contextPart = suite.commandContext ? ` context=${JSON.stringify(suite.commandContext)}` : "";
   process.stdout.write(`[${context.telemetryPrefix}] test_suite_start suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart}\n`);
 
-  const run = runCommand(suite.command, suite.args);
+  const run = runCommand(suite.command, suite.args, { timeoutMs: suite.timeoutMs });
   if (!run.ok) {
-    process.stderr.write(`[${context.telemetryPrefix}] test_suite_failed suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart} exit=${run.exitStatus}\n`);
+    process.stderr.write(`[${context.telemetryPrefix}] test_suite_failed suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart} exit=${run.exitStatus} reason=${run.timedOut ? "timeout" : "command_failed"} timeout_ms=${run.timeoutMs}\n`);
     emitFirstFailure(state, {
       phase: "test_suite",
       target: suite.name,
@@ -655,6 +655,8 @@ export function resolveFullProfileTestSuites() {
     command: "pnpm",
     args: ["--filter", packageName, "test"],
     commandContext: `package default manifest: ${packageName}`,
+    // The full Ops suite exceeds ten minutes on two-core hosted runners.
+    ...(packageName === "@hatch/factory-ops" ? { timeoutMs: 20 * 60 * 1000 } : {}),
   }))];
 }
 
