@@ -411,7 +411,7 @@ function resolveValidationPaths({ repoRoot = "" } = {}) {
   const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   const docsCandidate = join(normalizedRoot, "docs", "contracts", "factory-label-contract.json");
   const supervisorArtifactCandidate = join(normalizedRoot, SUPERVISOR_ARTIFACT_PATH);
-  const incidentCandidate = join(normalizedRoot, "packages", "factory-ops", "src", "lib", "incident-packet.mjs");
+  const incidentCandidate = join(normalizedRoot, "packages", "factory-ops", "src", "lib", "incident-packet.ts");
 
   const labelContractPath = existsSync(docsCandidate)
     ? docsCandidate

@@ -1,43 +1,43 @@
 {
-  "name": "@hatch/capability-foreman",
-  "version": "0.1.0",
-  "description": "Foreman capability primitives: host scheduling, incident ownership, telemetry, and extension-facing tool surfaces",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./manifest": "./capability-manifest.v1.json",
-    "./contract": "./capability-contract.v1.json",
-    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
-    "./capability-contract.v1.json": "./capability-contract.v1.json"
-  },
-  "files": [
-    "dist",
-    "capability-manifest.v1.json",
-    "capability-contract.v1.json"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "test": "pnpm exec vitest --run --reporter=dot src",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm build"
-  },
-  "dependencies": {
-    "@mariozechner/pi-coding-agent": "^0.56.2"
-  },
-  "devDependencies": {
-    "@hatch/tsconfig": "workspace:*",
-    "@types/node": "^22.0.0",
-    "typescript": "^5.7.3",
-    "vitest": "^3.2.4"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "license": "MIT"
+	"name": "@hatch/capability-foreman",
+	"version": "0.1.0",
+	"description": "Foreman capability primitives: host scheduling, incident ownership, telemetry, and extension-facing tool surfaces",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json"
+	},
+	"files": [
+		"dist",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "pnpm exec vitest --run --reporter=dot src",
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "pnpm build"
+	},
+	"dependencies": {
+		"@mariozechner/pi-coding-agent": "^0.56.3"
+	},
+	"devDependencies": {
+		"@hatch/tsconfig": "workspace:*",
+		"@types/node": "^22.20.5",
+		"typescript": "^5.9.3",
+		"vitest": "4.1.11"
+	},
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"license": "MIT"
 }

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
 
-const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "factories/example-trading/graphs/domain_example_trading.dot");
+const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
 const MOTHERSHIP_SUPERVISOR_TICK = resolve(REPO_ROOT, "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot");
 const GOAL_EXECUTION_HANDOFF = resolve(REPO_ROOT, "docs/contracts/workflow-ir/capability-software-development/goal_execution_handoff.dot");
 const RELEASE_REPORT_FLOW = resolve(REPO_ROOT, "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot");
@@ -60,14 +60,13 @@ describe("cross-repo routing contract", () => {
 		).toBe(true);
 	});
 
-	it("example-trading daily_release_report graph sets release_reporting_repo before release report flow", () => {
-		const dailyReleaseGraph = resolve(REPO_ROOT, "factories/example-trading/graphs/daily_release_report.dot");
-		const content = readFileSync(dailyReleaseGraph, "utf8");
-
-		expect(
-			content.includes("set_release_reporting_repo -> run_release_report_flow"),
-			"set_release_reporting_repo must feed into run_release_report_flow",
-		).toBe(true);
+	it("example-trading scheduled release report targets its configured repository", () => {
+		const config = JSON.parse(readFileSync(resolve(REPO_ROOT, "factories/example-trading/factory.config.json"), "utf8"));
+		const releaseJob = config.schedules.jobs.find((job: { id: string }) => job.id === "daily-release-report");
+		expect(releaseJob).toBeDefined();
+		expect(releaseJob.graph).toBe("packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs");
+		expect(releaseJob.repo).toBe(config.target_repo);
+		expect(releaseJob.repo).toBe("example-org/example-trading");
 	});
 
 	it("mothership daily_release_report graph sets release_reporting_repo before release report flow", () => {

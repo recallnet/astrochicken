@@ -149,7 +149,7 @@ export function resolveCommandInvocation(name: string, commandCwd: string): Reso
 	}
 
 	if (name === "hatch-ops") {
-		const sourceCli = path.resolve(commandCwd, "packages", "factory-ops", "src", "cli.mjs");
+		const sourceCli = path.resolve(commandCwd, "packages", "factory-ops", "src", "cli.ts");
 		if (existsSync(sourceCli)) {
 			return {
 				command: process.execPath,

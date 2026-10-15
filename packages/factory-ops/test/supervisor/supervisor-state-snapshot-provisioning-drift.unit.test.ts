@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -36,7 +40,7 @@ function seedProvisioningFixture(rootDir) {
     ],
   });
 
-  writeJson(join(fixtureRoot, "home-repos.json"), {
+  writeJson(join(fixtureRoot, "target-repos.json"), {
     "example-trading": "./home/example-trading",
   });
 
@@ -82,7 +86,7 @@ function seedProvisioningFixture(rootDir) {
   return {
     fixtureRoot,
     registryPath: join(fixtureRoot, "factory-registry.json"),
-    targetRepoMapPath: join(fixtureRoot, "home-repos.json"),
+    targetRepoMapPath: join(fixtureRoot, "target-repos.json"),
     labelsPath: join(fixtureRoot, "labels.json"),
   };
 }

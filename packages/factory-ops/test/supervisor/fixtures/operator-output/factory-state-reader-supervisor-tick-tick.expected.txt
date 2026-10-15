@@ -1,6 +1,5 @@
 Factory: (unresolved)
 Factory ID: mothership
-Home Repo: recallnet/astrochicken
 Target Repo: recallnet/astrochicken
 Factory Mode: standalone
 Control Plane: (unresolved)
@@ -9,7 +8,5 @@ Runs Dir: <runs-dir>
 CURRENT TICK  >>>  supervisor-12
   Stage: Resolving release SHA  [12/28]
   Elapsed: <elapsed>
-  ⚠ STUCK: set_release_sha has been running for <stuck-age> (threshold: <threshold>)
-  ⚠ No progress: no progress
   Goals: 2
   Active: wave-sup  node=execute_issue_in_wave #77 [goal-42-wave-1]

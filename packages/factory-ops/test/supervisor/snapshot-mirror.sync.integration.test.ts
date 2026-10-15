@@ -63,7 +63,7 @@ test("persistManagedLifecycleState writes deterministic managed snapshot mirror 
     queueDepth: "1",
     oldestWorkAgeSeconds: "0",
     latestIncidents: "[]",
-    writeLifecycleStateFn: () => makePersisted({ version: 3, lifecycleState: "active" }),
+    writeLifecycleProjectionFn: () => makePersisted({ version: 3, lifecycleState: "active" }),
   });
 
   assert.equal(out.ok, true);
@@ -96,7 +96,7 @@ test("mirror version advances across sequential lifecycle writes", () => {
     instanceId,
     rootDir,
     lifecycleState: "active",
-    writeLifecycleStateFn: () => makePersisted({ version: 4, lifecycleState: "active", now: "2026-03-16T20:01:00.000Z" }),
+    writeLifecycleProjectionFn: () => makePersisted({ version: 4, lifecycleState: "active", now: "2026-03-16T20:01:00.000Z" }),
   });
 
   const second = persistManagedLifecycleState({
@@ -104,7 +104,7 @@ test("mirror version advances across sequential lifecycle writes", () => {
     instanceId,
     rootDir,
     lifecycleState: "idle",
-    writeLifecycleStateFn: () => makePersisted({ version: 5, lifecycleState: "idle", now: "2026-03-16T20:02:00.000Z" }),
+    writeLifecycleProjectionFn: () => makePersisted({ version: 5, lifecycleState: "idle", now: "2026-03-16T20:02:00.000Z" }),
   });
 
   assert.equal(first.ok, true);

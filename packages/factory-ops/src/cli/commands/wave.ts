@@ -588,6 +588,8 @@ export class WaveBuildWaveMergeResultsCommand extends Command {
   static paths = [["wave", "build-wave-merge-results"]];
   mergeCandidates = Option.String("--merge-candidates", "[]");
   mergeStatus = Option.String("--merge-status", "");
+  pushStatus = Option.String("--push-status", "");
+  repo = Option.String("--repo", "");
   mergeNotes = Option.String("--merge-notes", { required: false });
   mergeNotesB64 = Option.String("--merge-notes-b64", { required: false });
   mergeResolver = Option.String("--merge-resolver", "");
@@ -599,6 +601,8 @@ export class WaveBuildWaveMergeResultsCommand extends Command {
     const out = buildWaveMergeResults({
       mergeCandidatesRaw: this.mergeCandidates,
       mergeStatus: this.mergeStatus,
+      pushStatus: this.pushStatus,
+      repo: this.repo,
       mergeNotes: notes,
       mergeResolver: this.mergeResolver,
       pathTaken: this.pathTaken,

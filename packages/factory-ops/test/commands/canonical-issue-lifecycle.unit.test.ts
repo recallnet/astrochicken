@@ -1,15 +1,8 @@
+import { makeAppliedTradingSubIssueLinkEvent } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  listCanonicalIssueLifecycleForGoal,
-  listCanonicalGoalLifecycleForGoal,
-  listCanonicalGoalCandidatesForRepo,
-  normalizeIssueSubIssueLinkTransition,
-  projectGoalCandidatesFromCanonicalRows,
-  projectIssueLifecycleFromCanonicalRows,
-  projectGoalLifecycleFromCanonicalRows,
-} from "../../src/lib/canonical-issue-lifecycle.ts";
+import { listCanonicalIssueLifecycleForGoal, listCanonicalGoalLifecycleForGoal, listCanonicalGoalCandidatesForRepo, normalizeIssueSubIssueLinkTransition, projectGoalCandidatesFromCanonicalRows, projectIssueLifecycleFromCanonicalRows, projectGoalLifecycleFromCanonicalRows } from "../../src/lib/canonical-issue-lifecycle.ts";
 
 test("normalizeIssueSubIssueLinkTransition validates and normalizes canonical sub-issue link state", () => {
   const out = normalizeIssueSubIssueLinkTransition({
@@ -73,16 +66,7 @@ test("listCanonicalIssueLifecycleForGoal projects canonical merge and close stat
     goalNumber: "1789",
     repo: "example-org/example-trading",
     queryRowsFn: () => [
-      {
-        event_family: "factory.issue.sub_issue_link_applied",
-        payload: {
-          issue_number: "1791",
-          parent_issue_number: "1789",
-          repo: "example-org/example-trading",
-          link_status: "linked",
-          error: "",
-        },
-      },
+      makeAppliedTradingSubIssueLinkEvent(),
       {
         event_family: "factory.merge.completed",
         payload: {
@@ -202,16 +186,7 @@ test("listCanonicalGoalLifecycleForGoal projects canonical goal close state", as
 
 test("projectGoalCandidatesFromCanonicalRows keeps canonically known goals and latest close state", () => {
   const out = projectGoalCandidatesFromCanonicalRows([
-    {
-      event_family: "factory.issue.sub_issue_link_applied",
-      payload: {
-        issue_number: "1791",
-        parent_issue_number: "1789",
-        repo: "example-org/example-trading",
-        link_status: "linked",
-        error: "",
-      },
-    },
+    makeAppliedTradingSubIssueLinkEvent(),
     {
       event_family: "factory.goal.close_applied",
       payload: {
@@ -241,16 +216,7 @@ test("listCanonicalGoalCandidatesForRepo projects distinct goals from canonical 
     factoryId: "example-trading",
     repo: "example-org/example-trading",
     queryRowsFn: () => [
-      {
-        event_family: "factory.issue.sub_issue_link_applied",
-        payload: {
-          issue_number: "1791",
-          parent_issue_number: "1789",
-          repo: "example-org/example-trading",
-          link_status: "linked",
-          error: "",
-        },
-      },
+      makeAppliedTradingSubIssueLinkEvent(),
       {
         event_family: "factory.goal.close_requested",
         payload: {

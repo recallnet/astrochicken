@@ -6,7 +6,7 @@ import { delimiter, join } from "node:path";
 import test from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 
-import { buildCommandEnv, createAsyncChildRegistry, runCommand, terminateProcessTree } from "./run-gates.mjs";
+import { buildCommandEnv, createAsyncChildRegistry, runCommand, terminateProcessTree, resolveFullProfileTestSuites, runOneTestSuite } from "./run-gates.mjs";
 
 test("buildCommandEnv prepends local node_modules bin to PATH", () => {
   const cwd = mkdtempSync(join(tmpdir(), "run-gates-env-"));
@@ -143,4 +143,44 @@ test("runCommand fails closed when a gate exceeds its timeout", () => {
   assert.equal(run.timedOut, true);
   assert.equal(run.timeoutMs, 50);
   assert.equal(run.exitStatus, 1);
+});
+
+
+test("full profile executes actual package defaults with unambiguous proof identities", () => {
+  const suites = resolveFullProfileTestSuites();
+  assert.deepEqual(suites.map((suite) => suite.name), ["test:guard-gates", "test:wave-claim-gates", "hatch#default", "@hatch/factory-ops#default", "@recallnet/factory-telemetry#default"]);
+  for (const packageName of ["hatch", "@hatch/factory-ops", "@recallnet/factory-telemetry"]) {
+    const suite = suites.find((entry) => entry.name === `${packageName}#default`);
+    assert.equal(suite.command, "pnpm");
+    assert.deepEqual(suite.args, ["--filter", packageName, "test"]);
+  }
+});
+
+test("test suites forward their explicit wall-clock budget and report timeout failures", () => {
+  const state = { executedSuiteNames: [] };
+  const context = { telemetryPrefix: "budget-test" };
+  const diagnostics = [];
+  const originalWrite = process.stderr.write;
+  process.stderr.write = (text) => { diagnostics.push(String(text)); return true; };
+  try {
+    const result = runOneTestSuite({ name: "bounded", command: process.execPath, args: ["-e", "setTimeout(() => {}, 200)"], timeoutMs: 20 }, context, state);
+    assert.equal(result.ok, false);
+    assert.equal(result.exitStatus, 1);
+    assert.deepEqual(state.executedSuiteNames, []);
+    assert.match(diagnostics.join(""), /reason=timeout timeout_ms=20/);
+  } finally { process.stderr.write = originalWrite; }
+});
+
+test("only full factory Ops receives the larger suite budget", () => {
+  for (const suite of resolveFullProfileTestSuites()) {
+    assert.equal(suite.timeoutMs, suite.name === "@hatch/factory-ops#default" ? 20 * 60 * 1000 : undefined);
+  }
+});
+
+test("commands without a suite override retain the ten-minute default", () => {
+  const env = { ...process.env };
+  delete env.HATCH_GATE_TIMEOUT_MS;
+  const result = runCommand(process.execPath, ["-e", ""], { env, stdio: "pipe" });
+  assert.equal(result.ok, true);
+  assert.equal(result.timeoutMs, 10 * 60 * 1000);
 });

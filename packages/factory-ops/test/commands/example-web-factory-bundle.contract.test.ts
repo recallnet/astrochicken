@@ -1,5 +1,6 @@
+import { readFixtureText as read } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -36,10 +37,6 @@ const localSupervisorRulesPath = join(repoRoot, "factories/example-web/skills/su
 const codeReviewRepoPath = join(repoRoot, "factories/example-web/skills/code_review/REPO.md");
 const readmePath = join(repoRoot, "factories/example-web/README.md");
 
-function read(path) {
-  return readFileSync(path, "utf8");
-}
-
 test("example-web config contains required managed-factory wiring", () => {
   const config = JSON.parse(read(configPath));
 
@@ -61,12 +58,12 @@ test("example-web config contains required managed-factory wiring", () => {
   assert.equal(config.model, "openai/gpt-5.3-codex");
   // @context:regression !critical issue #2573 removed example-web-local policy-pack files; config-only managed wiring must not reintroduce policyPack for example-web.
   assert.equal(Object.prototype.hasOwnProperty.call(config, "policyPack"), false);
-  assert.equal(config.dispatch?.graph, "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot");
-  assert.equal(config.pipeline?.supervisor_tick, "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot");
+  assert.equal(config.dispatch?.graph, "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs");
+  assert.equal(config.pipeline?.supervisor_tick, "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs");
 
   const dailyReleaseReportJob = (config.schedules?.jobs || []).find((job) => job.id === "daily-release-report");
   assert.ok(dailyReleaseReportJob, "daily-release-report scheduled job must exist");
-  assert.equal(dailyReleaseReportJob.graph, "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot");
+  assert.equal(dailyReleaseReportJob.graph, "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs");
 });
 
 test("example-web kind manifest routes through shared shell into shared software-delivery domain", () => {
@@ -76,8 +73,8 @@ test("example-web kind manifest routes through shared shell into shared software
   assert.equal(kind.managed, true);
   assert.equal(kind.execution_mode, "code");
   assert.equal(kind.default_workspace_mode, "checkout");
-  assert.equal(kind.shared_supervisor_shell, "docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot");
-  assert.equal(kind.domain_graph, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
+  assert.equal(kind.shared_supervisor_shell, "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs");
+  assert.equal(kind.domain_graph, "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs");
   assert.equal(kind.shell_hooks?.managed_load_context, "hatch-ops supervisor managed-load-context");
   assert.equal(kind.shell_hooks?.managed_domain_contract, "hatch-ops supervisor managed-domain-contract");
   assert.deepEqual(kind.supported_destinations, ["platform_incidents"]);
@@ -153,8 +150,8 @@ test("managed supervisor routes through resolved domain_graph context key", () =
 test("shared managed software-delivery domain graph is reachable for example-web", () => {
   const dot = read(sharedDomainGraphPath);
 
-  assert.match(dot, /fan_out_goal_run\s*\[[\s\S]*template="@hatch\/capability-goal-decomposition\/graphs\/goal_run\.dot"/);
-  assert.match(dot, /spawn_goal_execute\s*\[[\s\S]*template="@hatch\/capability-software-development\/graphs\/goal_execute\.dot"/);
+  assert.match(dot, /fan_out_goal_run\s*\[[\s\S]*template="@hatch\/capability-goal-decomposition\/workflows\/goal_run\/goal_run\.workflow-source\.mjs"/);
+  assert.match(dot, /spawn_goal_execute\s*\[[\s\S]*template="@hatch\/capability-software-development\/workflows\/goal_execute\/goal_execute\.workflow-source\.mjs"/);
   assert.match(dot, /set_domain_result\s*\[[\s\S]*output_key="domain_result"/);
   assert.match(dot, /release_manifest[\s\S]*action_runtime="in_process" action_id="artifact\.release_manifest"/);
 
@@ -184,15 +181,15 @@ test("factory-registry includes example-web factory + instance graph inventory",
   const instance = (registry.instances || []).find((entry) => entry.instance_id === "example-web");
 
   assert.ok(factory, "factory-registry.json must include example-web factory entry");
-  assert.equal(factory.target_repo, "example-org/example-web");
+  assert.equal(factory.repo, "example-org/example-web");
 
   const factoryGraphPaths = (factory.graphs || []).map((graph) => graph.path);
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-software-development/goal_execute.dot"));
-  assert.ok(factoryGraphPaths.includes("docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot"));
+  assert.ok(factoryGraphPaths.includes("packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"));
+  assert.ok(factoryGraphPaths.includes("packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"));
 
   assert.ok(instance, "factory-registry.json must include example-web instance entry");
   assert.equal(instance.kind_id, "example-web");
@@ -204,12 +201,12 @@ test("factory-registry includes example-web factory + instance graph inventory",
   assert.equal(instance.support_owner, "ops");
 
   const instanceGraphPaths = (instance.graphs || []).map((graph) => graph.path);
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/capability-software-development/goal_execute.dot"));
-  assert.ok(instanceGraphPaths.includes("docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot"));
+  assert.ok(instanceGraphPaths.includes("packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs"));
+  assert.ok(instanceGraphPaths.includes("packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs"));
 });
 
 test("example-web README captures host lifecycle, monitoring loop, and validation commands", () => {
@@ -232,6 +229,6 @@ test("example-web README captures host lifecycle, monitoring loop, and validatio
   assert.doesNotMatch(readme, /verify-pilot-outcome\.mjs/);
 
   assert.match(readme, /workspace_mode: "checkout"/);
-  assert.match(readme, /packages\/factory-runtime\/graphs\/managed_software_delivery_domain\.dot/);
+  assert.match(readme, /packages\/factory-runtime\/workflows\/managed_software_delivery_domain\/managed_software_delivery_domain\.workflow-source\.mjs/);
   assert.doesNotMatch(readme, /factories\/example-web\/graphs\/domain_example_web\.dot/);
 });

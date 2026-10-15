@@ -100,7 +100,7 @@
   "telemetryDefaults": {
     "benchmarkTelemetryExemptions": [],
     "benchmarkTelemetryWarnOnly": false,
-    "conformanceEntrypoint": null,
+    "conformanceEntrypoint": "factories/_shared/conformance/run-conformance.sh",
     "conformanceRunsDir": null,
     "dispatchLatencySloSeconds": null,
     "maintenanceIntervalSeconds": null

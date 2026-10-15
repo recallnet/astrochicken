@@ -3,7 +3,7 @@ import { dirname, resolve } from "node:path";
 
 const HATCH_PARSE_MODULE_URL = new URL("../../apps/hatch/dist/pipeline/parse.js", import.meta.url);
 const HATCH_STYLESHEET_IMPORTS_MODULE_URL = new URL("../../apps/hatch/dist/pipeline/stylesheet-imports.js", import.meta.url);
-const FALLBACK_PARSE_MODULE_URL = new URL("./hatch-dot-parser-fallback.mjs", import.meta.url);
+const FALLBACK_PARSE_MODULE_URL = new URL("./hatch-dot-parser-fallback.ts", import.meta.url);
 
 let parserModulePromise;
 let stylesheetModulePromise;

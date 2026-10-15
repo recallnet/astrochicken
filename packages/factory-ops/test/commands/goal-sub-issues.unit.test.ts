@@ -1,3 +1,5 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
+import { linkSubIssueSuccessfully } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -5,11 +7,7 @@ import path from "node:path";
 import { describe, it } from "node:test";
 
 import { createTestAdapter } from "../../../github-adapter/src/test-adapter.ts";
-import {
-  listGoalSubIssues,
-  addSubIssue,
-  checkAllSubIssuesClosed,
-} from "../../src/commands/goal-sub-issues.ts";
+import { listGoalSubIssues, addSubIssue, checkAllSubIssuesClosed } from "../../src/commands/goal-sub-issues.ts";
 
 // ─── DI stubs ───────────────────────────────────────────────────────────────
 
@@ -247,14 +245,7 @@ describe("addSubIssue", () => {
       runId: "goal-run-1",
       githubProjectionTarget: {
         repo: "o/r",
-        addSubIssue: ({ parentNumber, childNumber }) => ({
-          ok: true,
-          parent: String(parentNumber),
-          child: String(childNumber),
-          error: "",
-          status: 0,
-          stderr: "",
-        }),
+        addSubIssue: linkSubIssueSuccessfully,
       },
       emitDomainEventFn: (event) => domainEvents.push(event),
       emitCanonicalEventFn: (event) => canonicalEvents.push(event),
@@ -319,14 +310,7 @@ describe("addSubIssue", () => {
       runId: "goal-run-1",
       githubProjectionTarget: {
         repo: "o/r",
-        addSubIssue: ({ parentNumber, childNumber }) => ({
-          ok: true,
-          parent: String(parentNumber),
-          child: String(childNumber),
-          error: "",
-          status: 0,
-          stderr: "",
-        }),
+        addSubIssue: linkSubIssueSuccessfully,
       },
       appendCanonicalEventsFn: () => {
         const error = new Error("canceling statement due to lock timeout");
@@ -369,20 +353,10 @@ describe("addSubIssue", () => {
           ghCalls.push(args);
           if (args[0] === "api" && String(args[1] || "").startsWith("repos/o/r/issues/")) {
             const issueNumber = String(args[1]).split("/").pop();
-            return {
-              ok: true,
-              status: 0,
-              stdout: issueNumber === "1400" ? "PARENT_NODE_ID\n" : "CHILD_NODE_ID\n",
-              stderr: "",
-            };
+            return successfulCommandResult(issueNumber === "1400" ? "PARENT_NODE_ID\n" : "CHILD_NODE_ID\n");
           }
           if (args[0] === "api" && args[1] === "graphql") {
-            return {
-              ok: true,
-              status: 0,
-              stdout: JSON.stringify({ data: { addSubIssue: { issue: { number: 1400 }, subIssue: { number: 1536 } } } }),
-              stderr: "",
-            };
+            return successfulCommandResult(JSON.stringify({ data: { addSubIssue: { issue: { number: 1400 }, subIssue: { number: 1536 } } } }));
           }
           return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${JSON.stringify(args)}` };
         },

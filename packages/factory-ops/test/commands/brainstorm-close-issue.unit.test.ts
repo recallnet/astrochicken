@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -12,7 +13,7 @@ test("closeBrainstormIssue posts completion comment and closes source issue", ()
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = closeBrainstormIssue({
@@ -123,7 +124,7 @@ test("closeBrainstormIssue ignores malformed next_cursor payload and does not wr
     factoryId: "brainstorm",
     rootDir: root,
     nextCursorRaw: "not-json",
-    ghExec: () => ({ ok: true, status: 0, stdout: "", stderr: "" }),
+    ghExec: () => (successfulCommandResult()),
   });
 
   assert.equal(out.cursor_path, "");

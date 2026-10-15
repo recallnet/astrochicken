@@ -13,7 +13,7 @@ import {
 } from "./check-subsystem-ownership.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-subsystem-ownership.mjs");
+const checkerPath = join(scriptsDir, "check-subsystem-ownership.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {

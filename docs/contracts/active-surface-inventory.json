@@ -3,6 +3,14 @@
   "manifest_path": "docs/contracts/active-surface-manifest.json",
   "live_graph_roots": [
     {
+      "path": "factories/_shared/conformance/factory_supervisor_tick.dot",
+      "source_kind": "factory_config.conformance_smoke_graph",
+      "source_id": "conformance.smoke_graph",
+      "exists": true,
+      "classification": "historical_or_test_only",
+      "entry_id": "graph_fixtures_historical"
+    },
+    {
       "path": "factories/brainstorm/workflows/dispatch-control/domain_brainstorm.workflow-source.mjs",
       "source_kind": "factory_kind.domain_graph",
       "source_id": "brainstorm::domain_graph",
@@ -43,28 +51,28 @@
       "entry_id": "graph_fixtures_historical"
     },
     {
-      "path": "factories/mothership/graphs/daily_lens_publish.dot",
+      "path": "factories/mothership/workflows/daily-reporting/daily_lens_publish.workflow-source.mjs",
       "source_kind": "factory_config.scheduled_graph",
       "source_id": "daily-lens",
       "exists": true,
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active"
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
     },
     {
-      "path": "factories/mothership/graphs/daily_release_report.dot",
+      "path": "factories/mothership/workflows/daily-reporting/daily_release_report.workflow-source.mjs",
       "source_kind": "factory_config.scheduled_graph",
       "source_id": "daily-release-report",
       "exists": true,
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active"
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
     },
     {
-      "path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
+      "path": "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs",
       "source_kind": "factory_config.dispatch_graph",
       "source_id": "dispatch.graph",
       "exists": true,
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active"
+      "classification": "operator_only",
+      "entry_id": "factory_runtime_scripts"
     },
     {
       "path": "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
@@ -101,7 +109,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-web::goal_intake_decompose",
+      "source_id": "example-trading::goal_intake_decompose",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -109,7 +117,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::goal_intake_decompose",
+      "source_id": "example-web::goal_intake_decompose",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -125,7 +133,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "mothership::goal_queue",
+      "source_id": "example-trading::goal_queue",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -141,7 +149,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::goal_queue",
+      "source_id": "mothership::goal_queue",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -157,7 +165,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "mothership::goal_run",
+      "source_id": "example-trading::goal_run",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -173,7 +181,7 @@
     {
       "path": "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::goal_run",
+      "source_id": "mothership::goal_run",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -205,7 +213,7 @@
     {
       "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-web::goal_execute",
+      "source_id": "example-trading::goal_execute",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -213,7 +221,7 @@
     {
       "path": "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::goal_execute",
+      "source_id": "example-web::goal_execute",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -229,7 +237,7 @@
     {
       "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-web::goal_issue_execute",
+      "source_id": "example-trading::goal_issue_execute",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -237,7 +245,7 @@
     {
       "path": "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::goal_issue_execute",
+      "source_id": "example-web::goal_issue_execute",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -253,7 +261,7 @@
     {
       "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
       "source_kind": "factory_kind.domain_graph",
-      "source_id": "example-web::domain_graph",
+      "source_id": "example-trading::domain_graph",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -261,7 +269,7 @@
     {
       "path": "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
       "source_kind": "factory_kind.domain_graph",
-      "source_id": "example-trading::domain_graph",
+      "source_id": "example-web::domain_graph",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -309,7 +317,7 @@
     {
       "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-web::factory_supervisor_tick",
+      "source_id": "example-trading::factory_supervisor_tick",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
@@ -317,53 +325,13 @@
     {
       "path": "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
       "source_kind": "factory_registry.instance_graph",
-      "source_id": "example-trading::factory_supervisor_tick",
+      "source_id": "example-web::factory_supervisor_tick",
       "exists": true,
       "classification": "operator_only",
       "entry_id": "operator_runtime_packages"
     }
   ],
-  "active_graphs": [
-    {
-      "path": "factories/mothership/graphs/daily_lens_publish.dot",
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active",
-      "root_sources": [
-        {
-          "source_kind": "factory_config.scheduled_graph",
-          "source_id": "daily-lens",
-          "exists": true
-        }
-      ],
-      "reached_from": []
-    },
-    {
-      "path": "factories/mothership/graphs/daily_release_report.dot",
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active",
-      "root_sources": [
-        {
-          "source_kind": "factory_config.scheduled_graph",
-          "source_id": "daily-release-report",
-          "exists": true
-        }
-      ],
-      "reached_from": []
-    },
-    {
-      "path": "factories/mothership/graphs/factory_dispatch_reactor.dot",
-      "classification": "active_factory",
-      "entry_id": "factory_graphs_active",
-      "root_sources": [
-        {
-          "source_kind": "factory_config.dispatch_graph",
-          "source_id": "dispatch.graph",
-          "exists": true
-        }
-      ],
-      "reached_from": []
-    }
-  ],
+  "active_graphs": [],
   "active_runtime_files": [
     {
       "path": "apps/hatch/src/dispatch/loop.ts",
@@ -902,6 +870,16 @@
     },
     {
       "path": "packages/factory-core/src/factory-composition-registry.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/graph-source-loader.d.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
+      "path": "packages/factory-core/src/graph-source-loader.ts",
       "classification": "execution_path",
       "entry_id": "shared_runtime_execution"
     },
@@ -1821,6 +1799,11 @@
       "entry_id": "shared_runtime_execution"
     },
     {
+      "path": "packages/factory-ops/src/lib/merge-resolution-telemetry-path.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
       "path": "packages/factory-ops/src/lib/mirror-managed-snapshot.ts",
       "classification": "execution_path",
       "entry_id": "shared_runtime_execution"
@@ -2046,6 +2029,11 @@
       "entry_id": "shared_runtime_execution"
     },
     {
+      "path": "packages/factory-runtime-guard/src/filesystem-path.ts",
+      "classification": "execution_path",
+      "entry_id": "shared_runtime_execution"
+    },
+    {
       "path": "packages/factory-runtime-guard/src/git-mutation-guard.ts",
       "classification": "execution_path",
       "entry_id": "shared_runtime_execution"
@@ -2203,31 +2191,12 @@
   ],
   "active_command_references": [],
   "active_command_reachable_files": [],
-  "graph_references": [
-    {
-      "source_graph": "factories/mothership/graphs/daily_release_report.dot",
-      "raw_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
-      "resolved_path": "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
-      "dynamic": false
-    },
-    {
-      "source_graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
-      "raw_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
-      "resolved_path": "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
-      "dynamic": false
-    },
-    {
-      "source_graph": "factories/mothership/graphs/factory_dispatch_reactor.dot",
-      "raw_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
-      "resolved_path": "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs",
-      "dynamic": false
-    }
-  ],
+  "graph_references": [],
   "diagnostics": [],
   "summary": {
-    "live_graph_roots": 40,
-    "active_graphs": 3,
-    "active_runtime_files": 367,
+    "live_graph_roots": 41,
+    "active_graphs": 0,
+    "active_runtime_files": 371,
     "active_command_references": 0,
     "active_command_reachable_files": 0,
     "diagnostics": 0

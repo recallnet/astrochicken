@@ -1,4 +1,6 @@
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, writeFileSync } from "node:fs";
+
+import { isWorkflowSourceModulePath, loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
 
 import { listActiveIntentGraphPaths } from "../lib/active-graphs.ts";
 import {
@@ -26,7 +28,7 @@ import {
   resolveHandlerTypeFromAttrs,
 } from "../lib/trust-participants.ts";
 
-export const DEFAULT_LOCAL_INTENTS_GRAPHS_DIR = "factories/mothership/graphs";
+export const DEFAULT_LOCAL_INTENTS_GRAPHS_DIR = "factories/mothership/workflows";
 
 const CLASS_DERIVED_TRUST_DEFAULTS = {
   reviewer: {
@@ -101,10 +103,13 @@ export function isStrictTrustContractEnabled(rawValue = "", env = process.env) {
 }
 
 export function listLocalIntentGraphPaths({ graphsDir = DEFAULT_LOCAL_INTENTS_GRAPHS_DIR } = {}) {
-  return readdirSync(graphsDir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".dot"))
-    .map((entry) => `${graphsDir}/${entry.name}`)
-    .sort();
+  const paths = [];
+  for (const entry of readdirSync(graphsDir, { withFileTypes: true })) {
+    const path = `${graphsDir}/${entry.name}`;
+    if (entry.isDirectory()) paths.push(...listLocalIntentGraphPaths({ graphsDir: path }));
+    else if (entry.isFile() && (entry.name.endsWith(".dot") || isWorkflowSourceModulePath(entry.name))) paths.push(path);
+  }
+  return paths.sort();
 }
 
 export function listActiveLocalIntentGraphPaths({ graphsDir = DEFAULT_LOCAL_INTENTS_GRAPHS_DIR } = {}) {
@@ -525,11 +530,14 @@ export function migrateLocalIntentGraphTrustContracts({
   activeOnly = false,
 } = {}) {
   const targets = resolveTargetPaths({ graphsDir, paths, activeOnly });
+  // @context:security Generated DOT must never replace executable authored source.
+  // Validate/dry-run typed workflows, but require deliberate source edits for writes.
+  if (write && targets.some(isWorkflowSourceModulePath)) throw new Error("typed_workflow_trust_migration_requires_source_edit");
   const files = [];
   let changedFiles = 0;
 
   for (const path of targets) {
-    const before = readFileSync(path, "utf8");
+    const before = loadGraphSemanticsText(path);
     const migrated = migrateTrustContractInDot(before, { sourcePath: path });
     if (migrated.changed && write) writeFileSync(path, migrated.content);
     if (migrated.changed) changedFiles += 1;
@@ -562,7 +570,7 @@ export function validateLocalIntentGraphTrustContracts({
   let trustParticipants = 0;
 
   for (const path of targets) {
-    const dot = readFileSync(path, "utf8");
+    const dot = loadGraphSemanticsText(path);
     const result = validateTrustContractInDot(dot, { sourcePath: path, strict });
     trustParticipants += result.trust_participants;
     files.push({

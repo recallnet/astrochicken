@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, "..");
 const syncScriptPath = join(repoRoot, "scripts", "sync-shared-factory-surfaces.mjs");
-const checkScriptPath = join(repoRoot, "scripts", "check-shared-surface-external-layout.mjs");
+const checkScriptPath = join(repoRoot, "scripts", "check-shared-surface-external-layout.ts");
 
 function withTempExternalRoot(run) {
   const tempRoot = mkdtempSync(join(tmpdir(), "shared-surfaces-external-"));

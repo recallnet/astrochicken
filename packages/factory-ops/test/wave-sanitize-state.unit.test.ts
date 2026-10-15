@@ -4,6 +4,10 @@ import { planWaveReadyNormalization, downgradeOrphanedLeases, readRunMetadata, p
 import { mergeLocalActiveMilestones } from "../src/commands/wave-active-run-guard.ts";
 import { planStaleWorktreeCleanupActions as planStaleWorktreeCleanupActionsDirect } from "../src/commands/wave-sanitize-rules.ts";
 
+function leaseCollectionFixture(overrides) {
+  return { active_lease_count: 1, stale_candidate_count: 0, stale_candidates: [], ...overrides };
+}
+
 test("planWaveReadyNormalization closes duplicate ready markers and relabels canonical", () => {
   const out = planWaveReadyNormalization([
     { number: 236, title: "Wave Ready: goal-202-wave-1", labels: [], milestone: { title: "goal-202-wave-1" } },
@@ -27,15 +31,12 @@ test("planWaveReadyNormalization leaves single healthy marker unchanged", () => 
 // --- downgradeOrphanedLeases tests ---
 
 test("downgradeOrphanedLeases moves completed-run leases from active to stale", () => {
-  const activeLeases = {
-    active_lease_count: 1,
-    stale_candidate_count: 0,
-    active_milestones: ["goal-188-wave-2"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_milestones: ["goal-188-wave-2"],
+active_leases: [
       { run_id: "dead-run-1", milestone_title: "goal-188-wave-2", status: "claimed", ready_issue_number: "452", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   const runStatuses = new Map([["dead-run-1", "completed"]]);
 
   const result = downgradeOrphanedLeases({ activeLeases, runStatuses });
@@ -49,15 +50,12 @@ test("downgradeOrphanedLeases moves completed-run leases from active to stale", 
 });
 
 test("downgradeOrphanedLeases keeps running-run leases active", () => {
-  const activeLeases = {
-    active_lease_count: 1,
-    stale_candidate_count: 0,
-    active_milestones: ["goal-1-wave-1"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_milestones: ["goal-1-wave-1"],
+active_leases: [
       { run_id: "live-run", milestone_title: "goal-1-wave-1", status: "claimed", ready_issue_number: "100", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   const runStatuses = new Map([["live-run", "running"]]);
 
   const result = downgradeOrphanedLeases({ activeLeases, runStatuses });
@@ -69,15 +67,12 @@ test("downgradeOrphanedLeases keeps running-run leases active", () => {
 });
 
 test("downgradeOrphanedLeases treats missing run_id (no state file) as orphaned", () => {
-  const activeLeases = {
-    active_lease_count: 1,
-    stale_candidate_count: 0,
-    active_milestones: ["goal-2-wave-1"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_milestones: ["goal-2-wave-1"],
+active_leases: [
       { run_id: "ghost-run", milestone_title: "goal-2-wave-1", status: "claimed", ready_issue_number: "200", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   // Empty map means run state doesn't exist
   const runStatuses = new Map();
 
@@ -89,17 +84,15 @@ test("downgradeOrphanedLeases treats missing run_id (no state file) as orphaned"
 });
 
 test("downgradeOrphanedLeases handles failed and guarded_terminal runs", () => {
-  const activeLeases = {
-    active_lease_count: 3,
-    stale_candidate_count: 0,
-    active_milestones: ["m-1", "m-2", "m-3"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_lease_count: 3,
+active_milestones: ["m-1", "m-2", "m-3"],
+active_leases: [
       { run_id: "run-a", milestone_title: "m-1", status: "claimed", ready_issue_number: "10", source: "github_claim" },
       { run_id: "run-b", milestone_title: "m-2", status: "claimed", ready_issue_number: "20", source: "github_claim" },
       { run_id: "run-c", milestone_title: "m-3", status: "claimed", ready_issue_number: "30", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   const runStatuses = new Map([
     ["run-a", "failed"],
     ["run-b", "guarded_terminal"],
@@ -122,15 +115,12 @@ test("downgradeOrphanedLeases source file exports downgradeOrphanedLeases", () =
 test("downgradeOrphanedLeases detects zombie run with stale heartbeat", () => {
   const now = Date.now();
   const staleHeartbeat = new Date(now - 25 * 60 * 1000).toISOString(); // 25 min ago
-  const activeLeases = {
-    active_lease_count: 1,
-    stale_candidate_count: 0,
-    active_milestones: ["goal-zombie-wave-1"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_milestones: ["goal-zombie-wave-1"],
+active_leases: [
       { run_id: "zombie-run", milestone_title: "goal-zombie-wave-1", status: "claimed", ready_issue_number: "999", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   const runStatuses = new Map([["zombie-run", "running"]]);
   const runMetadata = new Map([["zombie-run", { status: "running", heartbeatAt: staleHeartbeat }]]);
 
@@ -145,15 +135,12 @@ test("downgradeOrphanedLeases detects zombie run with stale heartbeat", () => {
 test("downgradeOrphanedLeases keeps running-run with fresh heartbeat active", () => {
   const now = Date.now();
   const freshHeartbeat = new Date(now - 5 * 60 * 1000).toISOString(); // 5 min ago
-  const activeLeases = {
-    active_lease_count: 1,
-    stale_candidate_count: 0,
-    active_milestones: ["goal-active-wave-1"],
-    active_leases: [
+  const activeLeases = leaseCollectionFixture({
+active_milestones: ["goal-active-wave-1"],
+active_leases: [
       { run_id: "active-run", milestone_title: "goal-active-wave-1", status: "claimed", ready_issue_number: "888", source: "github_claim" },
-    ],
-    stale_candidates: [],
-  };
+    ]
+});
   const runStatuses = new Map([["active-run", "running"]]);
   const runMetadata = new Map([["active-run", { status: "running", heartbeatAt: freshHeartbeat }]]);
 

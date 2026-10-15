@@ -19,7 +19,7 @@ async function resolveHandler(name) {
     case "factoryFleetStatus": {
       const [fleetMod, poolMod, outcomesMod] = await Promise.all([
         import("../commands/factory-fleet-status.ts"),
-        import("../lib/factory-worker-pool.mjs"),
+        import("../lib/factory-worker-pool.ts"),
         import("../commands/factory-outcomes.ts"),
       ]);
       if (!_workerPool) _workerPool = poolMod.createWorkerPool();
@@ -34,7 +34,7 @@ async function resolveHandler(name) {
     case "buildFactoryDashboard": {
       const [dashMod, goalTitlesMod] = await Promise.all([
         import("../commands/factory-dashboard.ts"),
-        import("../lib/fetch-goal-titles-graphql-only.mjs"),
+        import("../lib/fetch-goal-titles-graphql-only.ts"),
       ]);
       // Use GraphQL-only goal titles — no serial REST fallback that stalls refresh
       handlers[name] = (args) => dashMod.buildFactoryDashboard({
@@ -44,9 +44,6 @@ async function resolveHandler(name) {
       break;
     }
     case "ping": {
-      // Eagerly warm module cache in the background so the first real call is fast
-      void import("../commands/factory-fleet-status.ts").then((mod) => { handlers["factoryFleetStatus"] = mod.factoryFleetStatus; });
-      void import("../commands/factory-dashboard.ts").then((mod) => { handlers["buildFactoryDashboard"] = mod.buildFactoryDashboard; });
       handlers[name] = async (args) => ({ pong: true, ...args });
       break;
     }

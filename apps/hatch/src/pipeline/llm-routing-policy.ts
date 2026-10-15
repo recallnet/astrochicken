@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
 import {
@@ -20,6 +20,7 @@ import {
 import { buildModelAttemptChain, type ModelAttempt } from "./handler/model-routing.js";
 import { enforceModelMatrixContractsAtLoad } from "./model-matrix-resolution.js";
 import { parseWithAst } from "./parse.js";
+import { loadGraphSource } from "./graph-source.js";
 import { applyGraphStylesheetImports } from "./stylesheet-imports.js";
 
 export interface ResolveRoutingPolicyForNodeArgs {
@@ -376,7 +377,7 @@ function resolvePolicyDefaultLayer(
 function loadGraphWithStylesheets(graphFile: string): Graph {
 	let source = "";
 	try {
-		source = readFileSync(graphFile, "utf8");
+		source = loadGraphSource(graphFile, dirname(graphFile)).sourceText;
 	} catch (error) {
 		throw new ModelPolicyError(
 			`failed to read graph ${graphFile}: ${String(error instanceof Error ? error.message : error)}`,

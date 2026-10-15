@@ -1,8 +1,9 @@
+import { appendFixtureBatch } from "./canonical-parity.fixture.ts";
+import { writeRunState } from "./canonical-parity.fixture.ts";
+import { createCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import net from "node:net";
 import { tmpdir } from "node:os";
 import path, { join } from "node:path";
 import test, { after, before } from "node:test";
@@ -10,59 +11,11 @@ import test, { after, before } from "node:test";
 import { Pool } from "pg";
 
 import { factoryStatus } from "../../src/commands/factory-status.ts";
-import {
-  ensureFactoryStatusProjectionSchema,
-  projectFactoryStatusToPostgres,
-  readFactoryStatusProjection,
-} from "../../src/lib/factory-status-postgres-projection.ts";
+import { ensureFactoryStatusProjectionSchema, projectFactoryStatusToPostgres, readFactoryStatusProjection,  } from "../../src/lib/factory-status-postgres-projection.ts";
 import { buildReleaseManifest } from "../../src/lib/control-plane-manifest.ts";
 
+
 const repoRoot = path.resolve(import.meta.dirname, "../../../..");
-const composePath = path.resolve(
-  repoRoot,
-  "packages/factory-ops/config/postgres/canonical-event-store.compose.yml",
-);
-
-function runShell(command, env = {}) {
-  const result = spawnSync("/bin/zsh", ["-lc", command], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: { ...process.env, ...env },
-  });
-  if (result.status !== 0) {
-    throw new Error(result.stderr || result.stdout || `command failed: ${command}`);
-  }
-  return String(result.stdout || "");
-}
-
-async function allocatePort() {
-  return await new Promise((resolve, reject) => {
-    const server = net.createServer();
-    server.listen(0, "127.0.0.1", () => {
-      const address = server.address();
-      if (!address || typeof address === "string") {
-        server.close();
-        reject(new Error("failed to allocate port"));
-        return;
-      }
-      const { port } = address;
-      server.close((error) => {
-        if (error) reject(error);
-        else resolve(port);
-      });
-    });
-    server.on("error", reject);
-  });
-}
-
-function writeRunState(runsDir, runId, state, metadata = null) {
-  const runDir = join(runsDir, runId);
-  mkdirSync(runDir, { recursive: true });
-  writeFileSync(join(runDir, "state.json"), JSON.stringify({ runId, ...state }, null, 2));
-  if (metadata) {
-    writeFileSync(join(runDir, "metadata.json"), JSON.stringify(metadata, null, 2));
-  }
-}
 
 function writeControlState({ rootDir, factoryId, state }) {
   const controlStatePath = join(rootDir, ".hatch", "factories", factoryId, "control-state.json");
@@ -131,19 +84,6 @@ function compareKey(value = {}) {
   ]);
 }
 
-function normalizeDeep(value) {
-  if (Array.isArray(value)) {
-    return value.map((entry) => normalizeDeep(entry)).sort((left, right) => compareKey(left).localeCompare(compareKey(right)));
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, entry]) => [key, normalizeDeep(entry)]),
-    );
-  }
-  return value;
-}
 
 function simplifyStatus(status = {}) {
   return normalizeDeep({
@@ -188,76 +128,14 @@ async function resetProjectionTables(pool) {
   await pool.query("truncate table factory_events");
 }
 
-async function appendFixtureBatch(pool, events) {
-  const { rows } = await pool.query("select nextval('canonical_event_commit_seq')::bigint as cursor");
-  const commitCursor = Number(rows[0].cursor);
-  for (const [index, event] of events.entries()) {
-    await pool.query(
-      `insert into factory_events (
-        event_id, commit_cursor, batch_offset, schema, event_family, event_version,
-        factory_id, run_id, emitter, emitted_at, event_origin, provenance, payload
-      ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13::jsonb)`,
-      [
-        event.event_id || randomUUID(),
-        commitCursor,
-        index,
-        "canonical_event_envelope/v1",
-        event.event_family,
-        1,
-        event.factory_id,
-        event.run_id || null,
-        event.emitter || "test.fixture",
-        event.emitted_at,
-        event.event_origin || "runtime",
-        JSON.stringify(event.provenance || {}),
-        JSON.stringify(event.payload || {}),
-      ],
-    );
-  }
-}
 
-let stateRoot = "";
-let envPath = "";
-let composeProject = "";
+const canonicalFixture = createCanonicalEventStoreFixture();
 let connectionString = "";
-
 before(async () => {
-  stateRoot = mkdtempSync(path.join(tmpdir(), "factory-status-postgres-parity-"));
-  envPath = path.join(stateRoot, "postgres.env");
-  composeProject = `commit05_${randomUUID().slice(0, 8)}`;
-  const password = "astrochicken";
-  const db = "astrochicken_factory";
-  const user = "astrochicken";
-  const port = String(await allocatePort());
-  writeFileSync(envPath, [
-    `CANONICAL_EVENT_STORE_ROOT=${stateRoot}`,
-    `POSTGRES_DB=${db}`,
-    `POSTGRES_USER=${user}`,
-    `POSTGRES_PASSWORD=${password}`,
-    `POSTGRES_PORT=${port}`,
-  ].join("\n") + "\n");
-  runShell(`docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} up -d postgres`);
-  runShell(`
-    for i in {1..30}; do
-      if docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} exec -T postgres pg_isready -U ${user} -d ${db} >/dev/null 2>&1; then
-        exit 0
-      fi
-      sleep 1
-    done
-    exit 1
-  `);
-  connectionString = `postgres://${user}:${password}@127.0.0.1:${port}/${db}`;
+  await canonicalFixture.setup();
+  connectionString = canonicalFixture.connectionString;
 });
-
-after(() => {
-  try {
-    if (composeProject) {
-      runShell(`docker compose -p ${composeProject} -f ${composePath} --env-file ${envPath} down -v`);
-    }
-  } finally {
-    if (stateRoot) rmSync(stateRoot, { recursive: true, force: true });
-  }
-});
+after(() => { canonicalFixture.teardown(); });
 
 test("status cutover: factory status reads canonical projection for normal tick fixture", async () => {
   const rootDir = mkdtempSync(join(tmpdir(), "factory-status-parity-normal-"));
@@ -326,7 +204,7 @@ test("status cutover: factory status reads canonical projection for normal tick 
       connectionString,
       factoryId: "mothership",
       runsDir,
-      context: { factory_id: "mothership" },
+      context: { factory_id: "mothership", canonical_event_store_url: connectionString },
       now: Date.parse(now),
     });
     const projected = await readFactoryStatusProjection({ connectionString, factoryId: "mothership" });
@@ -335,7 +213,10 @@ test("status cutover: factory status reads canonical projection for normal tick 
       context: { factory_id: "mothership", canonical_event_store_url: connectionString },
       now: Date.parse(now),
     });
-    assert.deepEqual(simplifyStatus(projected.projection), simplifyStatus(legacy));
+    assert.deepEqual(simplifyStatus({
+      ...projected.projection,
+      context: { ...projected.projection.context, canonical_event_store_url: connectionString },
+    }), simplifyStatus(legacy));
   } finally {
     await pool.end();
     rmSync(rootDir, { recursive: true, force: true });
@@ -413,7 +294,7 @@ test("status cutover: factory status reads canonical projection for stale run fi
       connectionString,
       factoryId: "example-trading",
       runsDir,
-      context: { factory_id: "example-trading" },
+      context: { factory_id: "example-trading", canonical_event_store_url: connectionString },
       staleMinutes: 20,
       now,
     });
@@ -424,7 +305,10 @@ test("status cutover: factory status reads canonical projection for stale run fi
       staleMinutes: 20,
       now,
     });
-    assert.deepEqual(simplifyStatus(projected.projection), simplifyStatus(legacy));
+    assert.deepEqual(simplifyStatus({
+      ...projected.projection,
+      context: { ...projected.projection.context, canonical_event_store_url: connectionString },
+    }), simplifyStatus(legacy));
   } finally {
     await pool.end();
     rmSync(rootDir, { recursive: true, force: true });
@@ -489,7 +373,7 @@ test("status cutover: canonical status excludes ghost running rows without reada
       connectionString,
       factoryId: "example-trading",
       runsDir,
-      context: { factory_id: "example-trading" },
+      context: { factory_id: "example-trading", canonical_event_store_url: connectionString },
       staleMinutes: 20,
       now,
     });
@@ -501,7 +385,10 @@ test("status cutover: canonical status excludes ghost running rows without reada
       now,
     });
 
-    assert.deepEqual(simplifyStatus(projected.projection), simplifyStatus(legacy));
+    assert.deepEqual(simplifyStatus({
+      ...projected.projection,
+      context: { ...projected.projection.context, canonical_event_store_url: connectionString },
+    }), simplifyStatus(legacy));
     assert.equal(projected.projection.active.some((entry) => entry.run_id === "ghost-running"), false);
     assert.equal(projected.projection.runs.some((entry) => entry.run_id === "ghost-running"), false);
     assert.equal(projected.projection.active.some((entry) => entry.run_id === "healthy-running"), true);
@@ -562,7 +449,7 @@ test("status cutover: factory status reads canonical projection for paused daemo
       connectionString,
       factoryId: "mothership",
       runsDir,
-      context: { factory_id: "mothership" },
+      context: { factory_id: "mothership", canonical_event_store_url: connectionString },
       now: Date.parse(pausedAt),
     });
     const projected = await readFactoryStatusProjection({ connectionString, factoryId: "mothership" });
@@ -571,7 +458,10 @@ test("status cutover: factory status reads canonical projection for paused daemo
       context: { factory_id: "mothership", canonical_event_store_url: connectionString },
       now: Date.parse(pausedAt),
     });
-    assert.deepEqual(simplifyStatus(projected.projection), simplifyStatus(legacy));
+    assert.deepEqual(simplifyStatus({
+      ...projected.projection,
+      context: { ...projected.projection.context, canonical_event_store_url: connectionString },
+    }), simplifyStatus(legacy));
   } finally {
     await pool.end();
     rmSync(rootDir, { recursive: true, force: true });
@@ -606,3 +496,17 @@ test("status cutover: projection schema initialization is safe under concurrent 
     await pool.end();
   }
 });
+
+function normalizeDeep(value) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeDeep(entry)).sort((left, right) => compareKey(left).localeCompare(compareKey(right)));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, entry]) => [key, normalizeDeep(entry)]),
+    );
+  }
+  return value;
+}

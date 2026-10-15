@@ -49,8 +49,8 @@ interface WorkspaceBootstrapResult {
 }
 
 const require = createRequire(import.meta.url);
-const { bootstrapWorkspace } = require("../../../packages/factory-core/src/workspace-package-manager.ts") as {
-	bootstrapWorkspace: (options?: {
+const { repairWorkspaceBootstrap } = require("../../../packages/factory-core/src/workspace-package-manager.ts") as {
+	repairWorkspaceBootstrap: (options?: {
 		repoRoot?: string;
 		workspaceDir?: string;
 		packageManager?: string;
@@ -78,7 +78,7 @@ export interface CliCommandDeps {
 
 function ensureWorkspaceReadyOrExit(file: string): void {
 	const repoRoot = findRepoRoot(dirname(file));
-	const bootstrap = bootstrapWorkspace({
+	const bootstrap = repairWorkspaceBootstrap({
 		repoRoot,
 		workspaceDir: repoRoot,
 	});

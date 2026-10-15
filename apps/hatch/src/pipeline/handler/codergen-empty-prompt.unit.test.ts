@@ -1,64 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const {
-	createAgentSessionMock,
-	createReadOnlyToolsMock,
-	sessionManagerMock,
-	settingsManagerMock,
-	promptAndExtractTextMock,
-	bindLangfuseSessionTelemetryMock,
-	emitLangfuseGenerationEventMock,
-} = vi.hoisted(() => ({
-	createAgentSessionMock: vi.fn(),
-	createReadOnlyToolsMock: vi.fn(() => []),
-	sessionManagerMock: {
-		inMemory: vi.fn(() => ({ kind: "in-memory" })),
-	},
-	settingsManagerMock: {
-		inMemory: vi.fn(() => ({ kind: "settings" })),
-	},
-	promptAndExtractTextMock: vi.fn(),
-	bindLangfuseSessionTelemetryMock: vi.fn(() => vi.fn()),
-	emitLangfuseGenerationEventMock: vi.fn(),
-}));
-
-vi.mock("@mariozechner/pi-coding-agent", () => ({
-	createAgentSession: createAgentSessionMock,
-	createReadOnlyTools: createReadOnlyToolsMock,
-	SessionManager: sessionManagerMock,
-	SettingsManager: settingsManagerMock,
-}));
-
-vi.mock("./session-completion.js", () => ({
-	promptAndExtractText: promptAndExtractTextMock,
-	extractLastAssistantText: vi.fn(() => ""),
-}));
-
-vi.mock("@recallnet/factory-telemetry", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("@recallnet/factory-telemetry")>();
-	return {
-		...actual,
-		bindLangfuseSessionTelemetry: bindLangfuseSessionTelemetryMock,
-		computeLangfusePromptHash: vi.fn(() => "prompt-hash"),
-		emitLangfuseGenerationEvent: emitLangfuseGenerationEventMock,
-		nextLangfuseAttemptIndex: vi.fn(() => 1),
-		recordLangfuseSessionContext: vi.fn(),
-		usageFromAssistantMessage: vi.fn(() => undefined),
-	};
-});
-
 import { Context, StageStatus } from "../context.js";
-import { CodergenHandler } from "./codergen.js";
-
-function makeHandler() {
-	return new CodergenHandler({
-		modelRegistry: { find: vi.fn(() => ({ id: "mock-model" })) } as any,
-		authStorage: {} as any,
-		resourceLoader: {} as any,
-		defaultModel: "claude-sonnet-4-6",
-		defaultProvider: "anthropic",
-	} as any);
-}
+import { createAgentSessionMock, promptAndExtractTextMock, makeHandler } from "../test/codergen-agent-mocks.js";
 
 describe("CodergenHandler empty-prompt early exit", () => {
 	beforeEach(() => {

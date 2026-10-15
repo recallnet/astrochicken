@@ -19,7 +19,7 @@ import {
   runOpsCliJson,
   sha256,
   writeReviewEvidence,
-} from "./helpers/command-test-helpers.mjs";
+} from "./helpers/command-test-helpers.ts";
 
 function assertJudgeEvidenceFailure(validated, expectedCode, options = {}) {
   assertDeterministicGateFailure({

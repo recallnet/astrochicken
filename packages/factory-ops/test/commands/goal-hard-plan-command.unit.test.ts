@@ -1,12 +1,8 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  attachGoalHardPlanPacket,
-  inspectGoalHardPlanPacketAttachment,
-  parseGoalHardPlanAttachmentInput,
-  upsertGoalHardPlanComment,
-} from "../../src/commands/goal-hard-plan-packet.ts";
+import { attachGoalHardPlanPacket, inspectGoalHardPlanPacketAttachment, parseGoalHardPlanAttachmentInput, upsertGoalHardPlanComment } from "../../src/commands/goal-hard-plan-packet.ts";
 
 test("parseGoalHardPlanAttachmentInput validates required fields", () => {
   assert.throws(() => parseGoalHardPlanAttachmentInput({
@@ -81,7 +77,7 @@ test("attachGoalHardPlanPacket can skip human-review hold when explicitly disabl
           stderr: "",
         };
       }
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
   });
 

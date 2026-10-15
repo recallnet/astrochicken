@@ -23,7 +23,7 @@ test("splitWaveImplResults separates merge candidates from review failures", () 
 test("splitWaveImplResults handles object entries (not double-encoded)", () => {
   const raw = JSON.stringify([
     { issue_number: "10", review_failed: "false" },
-    { issue_number: "20", review_failed: "true" },
+    { issue_number: "20", review_failed: "true", branch: "wave/20" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.merge_candidates.length, 1);
@@ -98,7 +98,7 @@ test("splitWaveImplResults disposition check is case-insensitive", () => {
 
 test("splitWaveImplResults handles review_failed boolean true", () => {
   const raw = JSON.stringify([
-    { issue_number: "1", review_failed: true },
+    { issue_number: "1", review_failed: true, branch: "wave/1" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.merge_candidates.length, 0);
@@ -107,7 +107,7 @@ test("splitWaveImplResults handles review_failed boolean true", () => {
 
 test("splitWaveImplResults handles review_failed=1", () => {
   const raw = JSON.stringify([
-    { issue_number: "1", review_failed: "1" },
+    { issue_number: "1", review_failed: "1", branch: "wave/1" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.review_failures.length, 1);
@@ -115,7 +115,7 @@ test("splitWaveImplResults handles review_failed=1", () => {
 
 test("splitWaveImplResults handles review_failed=yes", () => {
   const raw = JSON.stringify([
-    { issue_number: "1", review_failed: "yes" },
+    { issue_number: "1", review_failed: "yes", branch: "wave/1" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.review_failures.length, 1);
@@ -123,7 +123,7 @@ test("splitWaveImplResults handles review_failed=yes", () => {
 
 test("splitWaveImplResults handles review_failed=YES (case insensitive)", () => {
   const raw = JSON.stringify([
-    { issue_number: "1", review_failed: "YES" },
+    { issue_number: "1", review_failed: "YES", branch: "wave/1" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.review_failures.length, 1);
@@ -192,7 +192,7 @@ test("splitWaveImplResults handles non-array JSON as empty", () => {
 test("splitWaveImplResults mixed: pass, fail, merged, infra_failure, done_elsewhere", () => {
   const raw = JSON.stringify([
     JSON.stringify({ issue_number: "1", review_failed: "false" }),
-    JSON.stringify({ issue_number: "2", review_failed: "true", review_notes: "bad" }),
+    JSON.stringify({ issue_number: "2", review_failed: "true", branch: "wave/2", review_notes: "bad" }),
     JSON.stringify({ issue_number: "3", review_failed: "false", merged: "true" }),
     JSON.stringify({ issue_number: "4", review_failed: "false", disposition: "infra_failure" }),
     JSON.stringify({ issue_number: "5", review_failed: "false", disposition: "done_elsewhere" }),
@@ -214,8 +214,8 @@ test("splitWaveImplResults all pass review", () => {
 
 test("splitWaveImplResults all fail review", () => {
   const raw = JSON.stringify([
-    { issue_number: "1", review_failed: "true" },
-    { issue_number: "2", review_failed: "true" },
+    { issue_number: "1", review_failed: "true", branch: "wave/1" },
+    { issue_number: "2", review_failed: "true", branch: "wave/2" },
   ]);
   const out = splitWaveImplResults(raw);
   assert.equal(out.merge_candidates.length, 0);
@@ -363,7 +363,7 @@ test("splitWaveImplResultsFromSources falls back to stdinRaw when no run state",
 
 test("splitWaveImplResultsFromSources falls back to fallbackRaw when no stdin", () => {
   const payload = JSON.stringify([
-    JSON.stringify({ issue_number: "400", review_failed: "true" }),
+    JSON.stringify({ issue_number: "400", review_failed: "true", branch: "wave/400" }),
   ]);
   const out = splitWaveImplResultsFromSources({
     runId: "",
@@ -469,4 +469,13 @@ test("splitWaveImplResultsFromSources trims whitespace from sources", () => {
     stdinRaw: `  ${payload}  `,
   });
   assert.equal(out.merge_candidates.length, 1);
+});
+
+test("splitWaveImplResults leaves unattempted failures out of quarantine", () => {
+  const out = splitWaveImplResults(JSON.stringify([
+    { issue_number: "1", review_failed: true },
+    { issue_number: "2", review_failed: true, branch: "wave/2" },
+  ]));
+  assert.deepEqual(out.review_failures.map((item) => item.issue_number), ["2"]);
+  assert.deepEqual(out.merge_candidates, []);
 });

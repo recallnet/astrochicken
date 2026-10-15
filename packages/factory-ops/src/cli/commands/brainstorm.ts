@@ -171,6 +171,8 @@ export class BrainstormCloseIssueCommand extends Command {
 
   repo = Option.String("--repo", "");
   brainstormIssueNumber = Option.String("--brainstorm-issue-number", "");
+  goalIssueUrl = Option.String("--goal-issue-url", "");
+  goalIssueNumber = Option.String("--goal-issue-number", "");
   factoryId = Option.String("--factory-id", "");
   rootDir = Option.String("--root-dir", ".");
   nextCursor = Option.String("--next-cursor", { required: false });
@@ -188,6 +190,8 @@ export class BrainstormCloseIssueCommand extends Command {
       const out = closeBrainstormIssue({
         repo: this.repo,
         brainstormIssueNumber: this.brainstormIssueNumber,
+        goalIssueUrl: this.goalIssueUrl,
+        goalIssueNumber: this.goalIssueNumber,
         factoryId: this.factoryId,
         rootDir: this.rootDir,
         nextCursorRaw: nextCursorPayload,

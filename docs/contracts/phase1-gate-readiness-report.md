@@ -13,14 +13,14 @@ written: "2026-03-20"
 
 Schema: `phase1_gate_readiness/v1`
 Diagnostics: 0
-Active graph roots: 40
-Active graphs: 3
-Active runtime files: 367
+Active graph roots: 41
+Active graphs: 0
+Active runtime files: 371
 Active command references: 0
 Graph transport violations: 0
 Runtime internal CLI violations: 0
 Runtime internal CLI allowlisted external boundaries: 0
-Command thinness violations: 1
+Command thinness violations: 0
 
 ## Gate Scope Contract
 
@@ -57,7 +57,7 @@ Allowlisted external boundaries: 0
 
 | File | Kind | Detail |
 | --- | --- | --- |
-| `packages/factory-ops/src/commands/goal-final-state-review.ts` | `command_thinness_hotspot` | `lines=403 class=oversized` |
+| _none_ | _none_ | _none_ |
 
 ## Diagnostics
 

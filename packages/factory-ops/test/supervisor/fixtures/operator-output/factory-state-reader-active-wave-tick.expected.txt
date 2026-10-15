@@ -1,6 +1,5 @@
 Factory: (unresolved)
 Factory ID: mothership
-Home Repo: recallnet/astrochicken
 Target Repo: recallnet/astrochicken
 Factory Mode: standalone
 Control Plane: (unresolved)
@@ -9,8 +8,6 @@ Runs Dir: <runs-dir>
 CURRENT TICK  >>>  supervisor-active
   Stage: Executing wave  [16/28]
   Elapsed: <elapsed>
-  ⚠ STUCK: wave_execute has been running for <stuck-age> (threshold: <threshold>)
-  ⚠ No progress: no progress
   Goals: 1
   Active: wave-act  node=execute_issue_in_wave #42 [goal-42-wave-1]
     └─ issue-ac  node=execute_issue #42 [goal-42-wave-1]

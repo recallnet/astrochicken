@@ -51,6 +51,20 @@ function validFactoryConfig(overrides?: Record<string, unknown>): Record<string,
 	};
 }
 
+function modelPolicyFixture(overrides: Record<string, unknown>): Record<string, unknown> {
+	return {
+		shared: {
+				default_provider: "openrouter",
+				default_model: "openai/gpt-5.3-codex",
+				override_env_vars: {
+					provider: "HATCH_MODEL_PROVIDER",
+					model: "HATCH_MODEL",
+				},
+			},
+		...overrides,
+	};
+}
+
 function writePolicyPack(factoryRoot: string, modelPolicy: Record<string, unknown>): void {
 	const policyPackDir = join(factoryRoot, "policy-pack", "v1");
 	mkdirSync(policyPackDir, { recursive: true });
@@ -131,15 +145,7 @@ describe("factory model policy resolver", () => {
 				},
 			},
 		}));
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["openai/gpt-5.3-codex"],
 				preferred_model: "openai/gpt-5.3-codex",
@@ -151,7 +157,7 @@ describe("factory model policy resolver", () => {
 				},
 				safe_fallback_model: "openai/gpt-5.3-codex",
 			},
-		});
+		}));
 
 		const policy = resolveEffectiveModelPolicyForPipeline({
 			pipelineFile: join(graphDir, "wave.dot"),
@@ -194,21 +200,13 @@ describe("factory model policy resolver", () => {
 				},
 			},
 		}));
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["openai/gpt-5.3-codex"],
 				preferred_model: "openai/gpt-5.3-codex",
 				provider_order: ["openrouter"],
 			},
-		});
+		}));
 
 		const policy = resolveEffectiveModelPolicyForFactoryConfig({
 			factoryConfigPath: join(factoryRoot, "factory.config.json"),
@@ -227,21 +225,13 @@ describe("factory model policy resolver", () => {
 		const graphPath = join(factoryRoot, "graphs", "tick.dot");
 		mkdirSync(dirname(graphPath), { recursive: true });
 		writeJson(join(factoryRoot, "factory.config.json"), validFactoryConfig());
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["openai/gpt-5.3-codex", "anthropic/claude-sonnet-4-6", "openai/gpt-5.1-codex-mini"],
 				preferred_model: "openai/gpt-5.3-codex",
 				provider_order: ["openrouter", "anthropic"],
 			},
-		});
+		}));
 
 		const cases = [
 			{
@@ -325,15 +315,7 @@ describe("factory model policy resolver", () => {
 		const graphDir = join(factoryRoot, "graphs");
 		mkdirSync(graphDir, { recursive: true });
 		writeJson(join(factoryRoot, "factory.config.json"), validFactoryConfig());
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["*"],
 				preferred_model: "openai/gpt-5.3-codex",
@@ -345,7 +327,7 @@ describe("factory model policy resolver", () => {
 				},
 				safe_fallback_model: "openai/gpt-5.1-codex-mini",
 			},
-		});
+		}));
 
 		const policy = resolveEffectiveModelPolicyForPipeline({
 			pipelineFile: join(graphDir, "tick.dot"),
@@ -385,15 +367,7 @@ describe("factory model policy resolver", () => {
 				},
 			},
 		}));
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["openai/gpt-5.3-codex"],
 				preferred_model: "openai/gpt-5.3-codex",
@@ -405,7 +379,7 @@ describe("factory model policy resolver", () => {
 				},
 				safe_fallback_model: "openai/gpt-5.3-codex",
 			},
-		});
+		}));
 
 		const policy = resolveEffectiveModelPolicyForPipeline({
 			pipelineFile: join(graphDir, "tick.dot"),
@@ -452,22 +426,14 @@ describe("factory model policy resolver", () => {
 		const factoryRoot = join(root, "factories", "policy-factory");
 		mkdirSync(join(factoryRoot, "graphs"), { recursive: true });
 		writeJson(join(factoryRoot, "factory.config.json"), validFactoryConfig());
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["*"],
 				preferred_model: "openai/gpt-5.3-codex",
 				provider_order: ["openrouter"],
 				safe_fallback_model: "gpt-3.5-turbo",
 			},
-		});
+		}));
 
 		const policy = resolveEffectiveModelPolicyForPipeline({
 			pipelineFile: join(factoryRoot, "graphs", "tick.dot"),
@@ -487,8 +453,6 @@ describe("factory model policy resolver", () => {
 		const seenHandlerTypes = new Set<string>();
 		let validatedSelections = 0;
 
-		const mothershipPolicyGraphPath = join(repoRoot, "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot");
-
 		for (const relativeGraphPath of graphPaths) {
 			const graphPath = join(repoRoot, relativeGraphPath);
 			const parsed = parseWithAst(readFileSync(graphPath, "utf8"));
@@ -500,7 +464,7 @@ describe("factory model policy resolver", () => {
 			});
 
 			const policy = resolveEffectiveModelPolicyForPipeline({ pipelineFile: graphPath })
-				?? resolveEffectiveModelPolicyForPipeline({ pipelineFile: mothershipPolicyGraphPath });
+				?? resolveEffectiveModelPolicyForFactoryConfig({ factoryConfigPath: join(repoRoot, "factories/mothership/factory.config.json") });
 			expect(policy).toBeTruthy();
 			expect(policy?.providerOrder).toContain("openrouter");
 			expect(policy?.allowedModels).toContain("*");
@@ -631,21 +595,13 @@ describe("factory model policy resolver", () => {
 		const factoryRoot = join(root, "factories", "policy-factory");
 		mkdirSync(join(factoryRoot, "graphs"), { recursive: true });
 		writeJson(join(factoryRoot, "factory.config.json"), validFactoryConfig());
-		writePolicyPack(factoryRoot, {
-			shared: {
-				default_provider: "openrouter",
-				default_model: "openai/gpt-5.3-codex",
-				override_env_vars: {
-					provider: "HATCH_MODEL_PROVIDER",
-					model: "HATCH_MODEL",
-				},
-			},
+		writePolicyPack(factoryRoot, modelPolicyFixture({
 			factory: {
 				allowed_models: ["anthropic/claude-sonnet-4-6"],
 				preferred_model: "anthropic/claude-sonnet-4-6",
 				provider_order: ["openrouter"],
 			},
-		});
+		}));
 
 		expect(() =>
 			resolveEffectiveModelPolicyForPipeline({ pipelineFile: join(factoryRoot, "graphs", "tick.dot") })

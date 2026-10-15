@@ -111,7 +111,7 @@ test("goal_run resolves execution-path metadata then enforces admission gate bef
   assert.match(dot, /admission_check\s*->\s*admission_gate/);
   assert.match(dot, /admission_gate -> fail_duplicate_admission \[condition="goal_admission_allowed!=true"\]/);
   assert.match(dot, /easy_execution_gate\s*\[shape="diamond" label="Direct easy execution\?"\]/);
-  assert.match(dot, /execute_easy_goal\s*\[type="pipeline"[\s\S]*?pipeline="factories\/mothership\/graphs\/goal_execute\.dot"/);
+  assert.match(dot, /execute_easy_goal\s*\[type="pipeline"[\s\S]*?pipeline="factories\/mothership\/workflows\/goal-execution\/goal_execute\.workflow-source\.mjs"/);
   assert.match(dot, /set_goal_execution_mode_direct\s*->\s*clear_direct_execution_reason/);
   assert.match(dot, /clear_direct_execution_reason\s*->\s*execute_easy_goal/);
   assert.match(dot, /execute_easy_goal\s*->\s*set_empty_issue_urls/);

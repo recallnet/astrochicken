@@ -1,17 +1,14 @@
+import { readFixtureText as loadText } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+
 import test from "node:test";
 
 const dotPath = "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot";
 const capabilityContractPath = "packages/capability-brainstorming/capability-contract.v1.json";
 
-function loadText(path) {
-  return readFileSync(path, "utf8");
-}
-
 test("brainstorm supervisor graph composes shared managed shell", () => {
   const dot = loadText(dotPath);
-  assert.match(dot, /run_managed_supervisor_shell \[type="pipeline"[\s\S]*pipeline="packages\/factory-runtime\/graphs\/managed_supervisor\.dot"/);
+  assert.match(dot, /run_managed_supervisor_shell \[type="pipeline"[\s\S]*pipeline="packages\/factory-runtime\/workflows\/managed_supervisor\/managed_supervisor\.workflow-source\.mjs"/);
   assert.match(dot, /set_kind_path[\s\S]*factories\/brainstorm\/kind\.json/);
   assert.match(dot, /set_instance_path[\s\S]*factories\/brainstorm\/instance\.template\.json/);
   assert.match(dot, /set_kind_id[\s\S]*printf 'brainstorm'/);
@@ -53,7 +50,7 @@ test("brainstorm domain graph consumes shell intake context and still satisfies 
   }
 
   assert.match(dot, /spawn_brainstorm \[type="pipeline"[\s\S]*inherit_context="true"/);
-  assert.match(dot, /pipeline="@hatch\/capability-brainstorming\/graphs\/brainstorm\.dot"/);
+  assert.match(dot, /pipeline="packages\/capability-brainstorming\/workflows\/brainstorm\/brainstorm\.workflow-source\.mjs"/);
   assert.match(dot, /build_intake_context[\s\S]*action_runtime="in_process" action_id="brainstorm\.build_intake_context"/);
   assert.match(dot, /build_intake_context[\s\S]*action_repo="\$\{target_repo\}"[\s\S]*action_intake_json="\$\{intake_json\}"/);
   assert.doesNotMatch(dot, /hatch-ops brainstorm next-issue/);

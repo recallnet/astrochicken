@@ -267,7 +267,7 @@ test("factory CLI wires provision-repo command", () => {
   const source = readFileSync(hostCmdSourcePath, "utf8");
   assert.match(source, /FactoryProvisionRepoCommand/);
   assert.match(source, /static paths = \[\["factory", "provision-repo"\]\]/);
-  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-provision-repo\.mjs"\)/);
+  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-provision-repo\.ts"\)/);
 
   const run = spawnSync("node", [
     opsCliPath,

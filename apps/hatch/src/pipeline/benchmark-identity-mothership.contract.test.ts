@@ -9,9 +9,9 @@ import { Engine, HandlerRegistry } from "./engine.js";
 import { parse } from "./parse.js";
 import { BENCHMARK_IDENTITY_REQUIRED_FIELDS, assertBenchmarkIdentityContract } from "./telemetry-benchmark-identity.js";
 
-const MOTHERSHIP_GRAPHS_DIR = join(import.meta.dirname, "../../../../factories/mothership/graphs");
-const CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-goal-decomposition/graphs");
-const CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-release-reporting/graphs");
+const MOTHERSHIP_GRAPHS_DIR = join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/mothership");
+const CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR = join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-goal-decomposition");
+const CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR = join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-release-reporting");
 const REGISTRY_PATH = join(import.meta.dirname, "../../../../docs/contracts/benchmark-job-registry.json");
 const BENCHMARKABLE_CLASSES = new Set([
 	"coder",
@@ -75,7 +75,7 @@ describe("benchmark identity mothership contract", () => {
 	});
 
 	it("engine simulation: coder+reviewer nodes from wave_issue_execute satisfy benchmark identity contract", async () => {
-		const graph = parse(readFileSync(join(MOTHERSHIP_GRAPHS_DIR, "goal_issue_execute.dot"), "utf8"));
+		const graph = parse(readFileSync(join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot"), "utf8"));
 		const build = graph.nodes["build"];
 		const review = graph.nodes["review"];
 		expect(build).toBeTruthy();
@@ -246,36 +246,27 @@ describe("benchmark identity mothership contract", () => {
 		expect(releaseReportingGraphFiles.length).toBeGreaterThan(0);
 
 		const classCoverage = new Set<string>();
-		for (const graphFile of mothershipGraphFiles) {
-			const graph = parse(readFileSync(join(MOTHERSHIP_GRAPHS_DIR, graphFile), "utf8"));
-			for (const node of Object.values(graph.nodes)) {
-				const nodeClass = String(node.attrs.class || "").trim();
-				if (!BENCHMARKABLE_CLASSES.has(nodeClass)) continue;
-				const jobId = String(node.attrs.benchmark_job_id || "").trim();
-				if (registryJobIds.has(jobId)) {
-					classCoverage.add(nodeClass);
-				}
-			}
-		}
-		for (const graphFile of releaseReportingGraphFiles) {
-			const graph = parse(readFileSync(join(CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR, graphFile), "utf8"));
-			for (const node of Object.values(graph.nodes)) {
-				const nodeClass = String(node.attrs.class || "").trim();
-				if (!BENCHMARKABLE_CLASSES.has(nodeClass)) continue;
-				const jobId = String(node.attrs.benchmark_job_id || "").trim();
-				if (registryJobIds.has(jobId)) {
-					classCoverage.add(nodeClass);
-				}
-			}
-		}
-		for (const graphFile of goalDecompositionGraphFiles) {
-			const graph = parse(readFileSync(join(CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR, graphFile), "utf8"));
-			for (const node of Object.values(graph.nodes)) {
-				const nodeClass = String(node.attrs.class || "").trim();
-				if (!BENCHMARKABLE_CLASSES.has(nodeClass)) continue;
-				const jobId = String(node.attrs.benchmark_job_id || "").trim();
-				if (registryJobIds.has(jobId)) {
-					classCoverage.add(nodeClass);
+		// @context:regression Typed-source migration extracted execution roles into
+		// shared capabilities; coverage must enumerate those independently of registry membership.
+		const graphDirectories = [
+			MOTHERSHIP_GRAPHS_DIR,
+			CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR,
+			CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR,
+			join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-software-development"),
+			join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-coding"),
+			join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-merge"),
+			join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-product-judge"),
+		];
+		for (const directory of graphDirectories) {
+			const graphFiles = readdirSync(directory).filter((file) => file.endsWith(".dot"));
+			expect(graphFiles.length, `missing graph projections in ${directory}`).toBeGreaterThan(0);
+			for (const graphFile of graphFiles) {
+				const graph = parse(readFileSync(join(directory, graphFile), "utf8"));
+				for (const node of Object.values(graph.nodes)) {
+					const nodeClass = String(node.attrs.class || "").trim();
+					if (!BENCHMARKABLE_CLASSES.has(nodeClass)) continue;
+					const jobId = String(node.attrs.benchmark_job_id || "").trim();
+					if (registryJobIds.has(jobId)) classCoverage.add(nodeClass);
 				}
 			}
 		}

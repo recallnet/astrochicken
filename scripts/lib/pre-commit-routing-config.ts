@@ -100,7 +100,7 @@ export const STATE_MACHINE_TRIGGER_PATHS = new Set([
 ]);
 
 export const COVERAGE_POLICY_TRIGGER_PATHS = new Set([
-  "apps/hatch/vitest.config.mjs",
+  "apps/hatch/vitest.config.ts",
   "packages/factory-ops/package.json",
   "config/testing/package-test-manifests/packages-factory-ops.json",
   "scripts/check-coverage-policy-ratchet.ts",

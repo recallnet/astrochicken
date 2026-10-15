@@ -1,16 +1,11 @@
+import { writeFixtureRunState as writeRunState } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 
 import { seedMilestoneState } from "../../src/commands/milestone-seed-state.ts";
-
-function writeRunState(runsDir, runId, state) {
-  const dir = join(runsDir, runId);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, "state.json"), JSON.stringify(state), "utf8");
-}
 
 test("seedMilestoneState returns empty arrays when milestone title missing", () => {
   assert.deepEqual(seedMilestoneState(), {

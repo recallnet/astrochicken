@@ -15,19 +15,19 @@ const INVENTORY_MD_PATH = join(REPO_ROOT, "factories/mothership/inventory/goal-d
 
 const EXPECTED_STAGE_OWNERSHIP = Object.freeze({
 	issue_draft: {
-		graph_path: "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+		graph_path: "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
 		node_id: "draft_issue_spec",
 	},
 	issue_repair: {
-		graph_path: "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+		graph_path: "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
 		node_id: "repair_issue_spec",
 	},
 	issue_judge: {
-		graph_path: "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+		graph_path: "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
 		node_id: "judge_issue",
 	},
 	issue_revise: {
-		graph_path: "docs/contracts/workflow-ir/capability-goal-decomposition/write_issue_item.dot",
+		graph_path: "packages/capability-goal-decomposition/workflows/write_issue_item/write_issue_item.workflow-source.mjs",
 		node_id: "revise_issue_spec",
 	},
 });

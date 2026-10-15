@@ -1,7 +1,9 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
+
+import { parseFactoryConfigDocument } from "./config-schema.js";
 
 import {
 	loadPolicyPackDocuments,
@@ -95,10 +97,16 @@ definePolicyPackTemplateContractSuite(
 	resolve(process.cwd(), "../../factories/mothership/policy-pack/v1"),
 );
 
-definePolicyPackTemplateContractSuite(
-	"policy-pack template contract: factories/example-trading/policy-pack/v1",
-	resolve(process.cwd(), "../../factories/example-trading/policy-pack/v1"),
-);
+// @context:regression The managed example is config-only; concrete template packs remain validated above.
+it("example-trading has a valid shared-runtime configuration without a local policy-pack template", () => {
+	const factoryRoot = resolve(import.meta.dirname, "../../../../factories/example-trading");
+	const raw = JSON.parse(readFileSync(resolve(factoryRoot, "factory.config.json"), "utf8"));
+	expect(() => parseFactoryConfigDocument(raw)).not.toThrow();
+	expect(raw.policyPack).toBeUndefined();
+	expect(existsSync(resolve(factoryRoot, "policy-pack"))).toBe(false);
+	expect(raw.provider).toBe("openrouter");
+	expect(raw.model).toBe("openai/gpt-5.3-codex");
+});
 
 definePolicyPackTemplateContractSuite(
 	"policy-pack template contract: factories/brainstorm/policy-pack/v1",

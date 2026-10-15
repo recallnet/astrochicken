@@ -210,4 +210,16 @@ describe("buildGuardEventTelemetry", () => {
 			expect(result.data.factory_id).toBeUndefined();
 		});
 	});
+	it.each([false, true])("retains fallback policy and scope when telemetry conversion fails=%s", (conversionFails) => {
+		if (conversionFails) mockedToGuardEventData.mockImplementationOnce(() => { throw new Error("conversion unavailable"); });
+		const result = buildGuardEventTelemetry(makeArgs({
+			nodeId: "",
+			decision: makeDecision({ counter: "", scope: "", policyRevision: "" }),
+		}));
+		expect(result.data.scope).toBe("none");
+		expect(result.data.policy_revision).toBe("guard.v1");
+		expect(result.traceId).toMatch(/^builder-guard-[a-f0-9]{20}$/);
+		expect(result.data.guard_trace_id).toBe(result.traceId);
+	});
+
 });

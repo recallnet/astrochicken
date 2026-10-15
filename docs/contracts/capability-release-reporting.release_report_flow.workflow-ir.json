@@ -139,7 +139,7 @@
     "schema_version": "artifact_trust_bundle/v1",
     "signature": {
       "key_id": "workflow-ir-contract-key",
-      "payload_digest": "sha256:4c252eeb450fccfbb473f782d4d6155311517f15ac29bc3cd71566fdbe41440e",
+      "payload_digest": "sha256:7361eee6ee5f181cc734db594fb0900c143ab2eed4fc8716cc61b33f7102fe22",
       "payload_ref": "ghcr.io/recallnet/factory/workflow-ir:capability-release-reporting-release_report_flow",
       "payload_type": "oci_artifact",
       "schema_version": "artifact_signature/v1",

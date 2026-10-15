@@ -9,8 +9,8 @@ import { runExpectScenario } from "../helpers/tui-expect-harness.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const fixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-pty-fixture.mjs");
-const fastFirstPaintFixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-fast-first-paint-fixture.mjs");
+const fixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-pty-fixture.ts");
+const fastFirstPaintFixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-fast-first-paint-fixture.ts");
 
 test("fleet TUI expect harness proves row movement, tab view switching, search, and in-app detail drill-in", () => {
   const run = runExpectScenario({
@@ -21,7 +21,7 @@ test("fleet TUI expect harness proves row movement, tab view switching, search, 
       { expect: "*› alpha*" },
       { send: "j", afterMs: 100 },
       { expect: "*› beta*" },
-      { expect: "*managed supervisor*" },
+      { expect: "*1 issue*" },
       { send: "\t", afterMs: 100 },
       { expect: "*1 visible*" },
       { expect: "*› alpha*" },
@@ -42,14 +42,14 @@ test("fleet TUI expect harness proves row movement, tab view switching, search, 
   });
 
   assert.match(run.transcript, /HATCH OPS/);
-  assert.match(run.transcript, /managed supervisor/);
+  assert.match(run.transcript, /1 issue/);
   assert.match(run.transcript, /search · alp/);
   assert.match(run.transcript, /Fleet \/ Now/);
   assert.match(run.transcript, /alpha ship review/);
 });
 
 test("fleet TUI stays responsive during blocking loadSnapshot refresh cycles", () => {
-  const blockingFixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-blocking-fixture.mjs");
+  const blockingFixturePath = join(repoRoot, "packages/factory-ops/test/helpers/fleet-tui-blocking-fixture.ts");
 
   // The fixture uses a loadSnapshot that blocks for 800ms with busy-wait
   // (simulating spawnSync/readFileSync).  The refresh fires every 1.5s.

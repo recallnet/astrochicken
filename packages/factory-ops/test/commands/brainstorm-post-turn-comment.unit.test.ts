@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -9,7 +10,7 @@ test("postBrainstormTurnComment posts conversational red output with role header
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postBrainstormTurnComment({
@@ -33,7 +34,7 @@ test("postBrainstormTurnComment posts conversational blue output with role heade
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   postBrainstormTurnComment({
@@ -57,7 +58,7 @@ test("postBrainstormTurnComment renders final report JSON as markdown", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const finalReport = JSON.stringify({
@@ -93,7 +94,7 @@ test("postBrainstormTurnComment preserves prose and renders JSON as markdown in 
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const mixedOutput = `Red strategist commentary here. The proposal is solid.
@@ -128,7 +129,7 @@ test("postBrainstormTurnComment shows only formatted report when output is pure 
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const pureJson = JSON.stringify({
@@ -161,7 +162,7 @@ test("postBrainstormTurnComment appends trace links when langfuse env is availab
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   postBrainstormTurnComment({
@@ -191,7 +192,7 @@ test("postBrainstormTurnComment omits trace links when langfuse env is missing",
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   postBrainstormTurnComment({
@@ -228,7 +229,7 @@ test("postBrainstormTurnComment skips comment when output is empty", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postBrainstormTurnComment({
@@ -252,7 +253,7 @@ test("postBrainstormTurnComment uses proper role names for force_wrap and format
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   postBrainstormTurnComment({
@@ -275,7 +276,7 @@ test("postBrainstormTurnComment skips comment when suppressRoundComment is true 
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postBrainstormTurnComment({
@@ -298,7 +299,7 @@ test("postBrainstormTurnComment posts comment when suppressRoundComment is false
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postBrainstormTurnComment({
@@ -321,7 +322,7 @@ test("postBrainstormTurnComment posts comment when suppressRoundComment is omitt
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = postBrainstormTurnComment({

@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";

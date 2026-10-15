@@ -1,13 +1,7 @@
-import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 
-import {
-	exportWorkflowSourceDocument,
-} from "@hatch/factory-core/workflow-source-registry";
-import {
-	renderWorkflowSourceModuleToDot,
-} from "@hatch/factory-core/workflow-ir-registry";
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
 
 const require = createRequire(import.meta.url);
 
@@ -17,10 +11,6 @@ function trim(value = ""): string {
 
 function isWorkflowSourceModulePath(filePath = ""): boolean {
 	return trim(filePath).endsWith(".workflow-source.mjs");
-}
-
-function deriveWorkflowSourceDataPath(modulePath = ""): string {
-	return trim(modulePath).replace(/\.workflow-source\.mjs$/u, ".workflow-source.data.json");
 }
 
 /**
@@ -52,18 +42,15 @@ export function loadGraphSource(raw: string, workDir: string): LoadedGraphSource
 	if (!isWorkflowSourceModulePath(resolvedPath)) {
 		return {
 			resolvedPath,
-			sourceText: readFileSync(resolvedPath, "utf8"),
+			sourceText: loadGraphSemanticsText(resolvedPath),
 			sourceKind: "dot",
 		};
 	}
 
-	const workflowSourceDataPath = deriveWorkflowSourceDataPath(resolvedPath);
-	const workflowSourceData = JSON.parse(readFileSync(workflowSourceDataPath, "utf8"));
-	const workflowSourceDocument = exportWorkflowSourceDocument(workflowSourceData);
 
 	return {
 		resolvedPath,
-		sourceText: renderWorkflowSourceModuleToDot(workflowSourceDocument, { hostPath: resolvedPath }),
+		sourceText: loadGraphSemanticsText(resolvedPath),
 		sourceKind: "workflow_source",
 	};
 }

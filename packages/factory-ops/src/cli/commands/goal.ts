@@ -1009,6 +1009,7 @@ export class GoalListSubIssuesCommand extends Command {
 export class GoalListExecutableCommand extends Command {
   static paths = [["goal", "list-executable"]];
   repo = Option.String("--repo", "");
+  backoffSeconds = Option.String("--backoff-seconds", "0");
   repoRoot = Option.String("--repo-root", "");
   factoryId = Option.String("--factory-id", "");
   maxConcurrent = Option.String("--max-concurrent", "3");
@@ -1030,6 +1031,7 @@ export class GoalListExecutableCommand extends Command {
       factoryId: scoped.factoryId || undefined,
       runsDir: resolvedRunsDir || undefined,
       maxConcurrent: this.maxConcurrent,
+      backoffSeconds: this.backoffSeconds,
     });
     this.context.stdout.write(JSON.stringify(out));
     return 0;

@@ -1,5 +1,7 @@
 {
-  "stagedPaths": ["factories/mothership/workflows/wave-execution/wave_execute.workflow-source.mjs"],
+  "stagedPaths": [
+    "factories/mothership/graphs/fixture.dot"
+  ],
   "expectedStatus": 0,
   "expectedNpmCalls": [],
   "expectedReason": "dot_only"

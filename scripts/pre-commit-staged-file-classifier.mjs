@@ -86,7 +86,7 @@ function resolveDocsPathScope() {
  * @param {string} stagedPath
  */
 export function isDocsPath(stagedPath) {
-  return isDocsPathInScope(stagedPath, resolveDocsPathScope());
+  return !isDotPath(stagedPath) && isDocsPathInScope(stagedPath, resolveDocsPathScope());
 }
 
 /**
@@ -118,8 +118,12 @@ export function isPlatformInvariantTriggerPath(stagedPath) {
  *
  * @param {string} stagedPath
  */
+function isGraphSemanticInputPath(stagedPath) {
+  return isDotPath(stagedPath) || /^(?:factories|packages)\/[^/]+\/workflows\/.+\.workflow-source\.(?:mjs|data\.json)$/.test(stagedPath);
+}
+
 export function isContextPropagationContractTriggerPath(stagedPath) {
-  if (isDotPath(stagedPath)) {
+  if (isGraphSemanticInputPath(stagedPath)) {
     return true;
   }
 
@@ -367,11 +371,11 @@ export function classifyStagedPaths(stagedPaths) {
       contract.stagedContextPropagationContractCandidates.push(stagedPath);
     }
 
-    if (isDotPath(stagedPath) || stagedPath.startsWith("packages/")) {
+    if (isGraphSemanticInputPath(stagedPath) || stagedPath.startsWith("packages/")) {
       contract.stagedPipelineSegmentCoverageCandidates.push(stagedPath);
     }
 
-    if (isDotPath(stagedPath)
+    if (isGraphSemanticInputPath(stagedPath)
         || stagedPath.startsWith("packages/factory-ops/src/commands/")
         || stagedPath.startsWith("packages/factory-ops/test/")) {
       contract.stagedDegenerateStateGuardCandidates.push(stagedPath);
@@ -387,6 +391,8 @@ export function classifyStagedPaths(stagedPaths) {
     }
 
     if (stagedPath.startsWith("factories/mothership/graphs/")
+        || stagedPath.startsWith("docs/contracts/workflow-ir/")
+        || /^(?:factories|packages)\/[^/]+\/workflows\//.test(stagedPath)
         || BENCHMARK_JOB_ID_REGISTRY_TRIGGER_PATHS.has(stagedPath)) {
       contract.hasBenchmarkJobIdRegistryPaths = true;
     }

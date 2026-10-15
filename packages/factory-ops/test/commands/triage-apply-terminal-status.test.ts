@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -8,7 +9,7 @@ test("applyTriageDuplicate comments when duplicate_of is present and closes issu
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = applyTriageDuplicate({
@@ -32,7 +33,7 @@ test("applyTriageDeferred adds deferred labels and optional note", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = applyTriageDeferred({

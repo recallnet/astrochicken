@@ -7,7 +7,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const scriptPath = join(repoRoot, "scripts", "check-named-packet-contract.mjs");
+const scriptPath = join(repoRoot, "scripts", "check-named-packet-contract.ts");
 
 function runCheck(source) {
   const dir = mkdtempSync(join(tmpdir(), "named-packet-contract-"));

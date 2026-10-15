@@ -51,6 +51,20 @@ test("runPostinstallBootstrap replaces pre-existing regular bin files with canon
   assert.equal(readlinkSync(path.join(binDir, "hatch-ops")), path.join("..", "..", "scripts", "bin", "hatch-ops"));
 });
 
+test("declared workspace package bins preserve the canonical root launcher across bootstraps", () => {
+  const repoRoot = makeTempRepo();
+  writeFileSync(path.join(repoRoot, "package.json"), JSON.stringify({ dependencies: { hatch: "workspace:*" } }));
+  writeFileSync(path.join(repoRoot, "apps", "hatch", "package.json"), JSON.stringify({ name: "hatch", bin: { hatch: "dist/cli.js" } }));
+  mkdirSync(path.join(repoRoot, "apps", "hatch", "dist"), { recursive: true });
+  writeFileSync(path.join(repoRoot, "apps", "hatch", "dist", "cli.js"), "#!/usr/bin/env node\n");
+  mkdirSync(path.join(repoRoot, "node_modules"), { recursive: true });
+  symlinkSync("../apps/hatch", path.join(repoRoot, "node_modules", "hatch"));
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    runPostinstallBootstrap(repoRoot);
+    assert.equal(readlinkSync(path.join(repoRoot, "node_modules", ".bin", "hatch")), path.join("..", "..", "scripts", "bin", "hatch"));
+  }
+});
+
 test("runPostinstallBootstrap creates root workspace links for shared hatch packages used by scripts", () => {
   const repoRoot = makeTempRepo();
   mkdirSync(path.join(repoRoot, "packages", "eslint-config"), { recursive: true });
@@ -75,7 +89,7 @@ test("runPostinstallBootstrap restores required root and runtime dependency link
   const repoRoot = makeTempRepo();
   writeFileSync(
     path.join(repoRoot, "package.json"),
-    `${JSON.stringify({ name: "astrochicken", devDependencies: { acorn: "^8.14.0", "@recallnet/codecontext-eslint-plugin": "^0.2.2", "@recallnet/docs-governance-preset": "^0.2.8", "@typescript-eslint/parser": "^8.26.1", eslint: "^9.22.0", "eslint-plugin-boundaries": "^5.0.1", "eslint-plugin-import-x": "^4.16.1", globals: "^16.0.0", sharp: "^0.34.5", typescript: "^5.7.3", "@viz-js/viz": "^3.25.0", zod: "^4.3.6" } }, null, 2)}\n`,
+    `${JSON.stringify({ name: "astrochicken", devDependencies: { acorn: "^8.14.0", "@recallnet/codecontext-eslint-plugin": "^0.2.2", "@recallnet/docs-governance-preset": "^0.2.8", "@typescript-eslint/parser": "^8.26.1", eslint: "^9.22.0", "eslint-plugin-boundaries": "^5.0.1", "eslint-plugin-import-x": "^4.16.1", globals: "^16.0.0", "@resvg/resvg-wasm": "2.6.2", typescript: "^5.7.3", "@viz-js/viz": "^3.25.0", zod: "^4.3.6" } }, null, 2)}\n`,
     "utf8",
   );
   mkdirSync(path.join(repoRoot, "packages", "factory-core"), { recursive: true });
@@ -92,7 +106,7 @@ test("runPostinstallBootstrap restores required root and runtime dependency link
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "eslint-plugin-boundaries@5.0.1", "node_modules", "eslint-plugin-boundaries"), { recursive: true });
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "eslint-plugin-import-x@4.16.1", "node_modules", "eslint-plugin-import-x"), { recursive: true });
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "globals@16.0.0", "node_modules", "globals"), { recursive: true });
-  mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "sharp@0.34.5", "node_modules", "sharp"), { recursive: true });
+  mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "@resvg+resvg-wasm@2.6.2", "node_modules", "@resvg", "resvg-wasm"), { recursive: true });
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "typescript@5.7.3", "node_modules", "typescript"), { recursive: true });
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "@viz-js+viz@3.25.0", "node_modules", "@viz-js", "viz"), { recursive: true });
   mkdirSync(path.join(repoRoot, "node_modules", ".pnpm", "ajv@8.18.0", "node_modules", "ajv"), { recursive: true });
@@ -124,7 +138,7 @@ test("runPostinstallBootstrap restores required root and runtime dependency link
   const rootBoundariesLink = path.join(repoRoot, "node_modules", "eslint-plugin-boundaries");
   const rootImportXLink = path.join(repoRoot, "node_modules", "eslint-plugin-import-x");
   const rootGlobalsLink = path.join(repoRoot, "node_modules", "globals");
-  const rootSharpLink = path.join(repoRoot, "node_modules", "sharp");
+  const rootResvgLink = path.join(repoRoot, "node_modules", "@resvg", "resvg-wasm");
   const rootTypescriptLink = path.join(repoRoot, "node_modules", "typescript");
   const rootVizLink = path.join(repoRoot, "node_modules", "@viz-js", "viz");
   const rootAjvLink = path.join(repoRoot, "node_modules", "ajv");
@@ -140,7 +154,7 @@ test("runPostinstallBootstrap restores required root and runtime dependency link
   assert.equal(existsSync(rootBoundariesLink), true);
   assert.equal(existsSync(rootImportXLink), true);
   assert.equal(existsSync(rootGlobalsLink), true);
-  assert.equal(existsSync(rootSharpLink), true);
+  assert.equal(existsSync(rootResvgLink), true);
   assert.equal(existsSync(rootTypescriptLink), true);
   assert.equal(existsSync(rootVizLink), true);
   assert.equal(existsSync(rootAjvLink), true);
@@ -155,7 +169,7 @@ test("runPostinstallBootstrap restores required root and runtime dependency link
   assert.equal(readlinkSync(rootBoundariesLink), path.join(".pnpm", "eslint-plugin-boundaries@5.0.1", "node_modules", "eslint-plugin-boundaries"));
   assert.equal(readlinkSync(rootImportXLink), path.join(".pnpm", "eslint-plugin-import-x@4.16.1", "node_modules", "eslint-plugin-import-x"));
   assert.equal(readlinkSync(rootGlobalsLink), path.join(".pnpm", "globals@16.0.0", "node_modules", "globals"));
-  assert.equal(readlinkSync(rootSharpLink), path.join(".pnpm", "sharp@0.34.5", "node_modules", "sharp"));
+  assert.equal(readlinkSync(rootResvgLink), path.join("..", ".pnpm", "@resvg+resvg-wasm@2.6.2", "node_modules", "@resvg", "resvg-wasm"));
   assert.equal(readlinkSync(rootTypescriptLink), path.join(".pnpm", "typescript@5.7.3", "node_modules", "typescript"));
   assert.equal(readlinkSync(rootVizLink), path.join("..", ".pnpm", "@viz-js+viz@3.25.0", "node_modules", "@viz-js", "viz"));
   assert.equal(readlinkSync(rootAjvLink), path.join(".pnpm", "ajv@8.18.0", "node_modules", "ajv"));

@@ -1,19 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
+
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-import {
-  buildManagedFactoryLabelProvisionPlan,
-  buildManagedFactoryLabelSnapshot,
-  provisionManagedFactoryLabels,
-} from "../../src/lib/factory-label-contract.ts";
+
+import { buildManagedFactoryLabelProvisionPlan, buildManagedFactoryLabelSnapshot, provisionManagedFactoryLabels } from "../../src/lib/factory-label-contract.ts";
 import { runLabelProvision } from "../../src/commands/label-provision.ts";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 test("buildManagedFactoryLabelProvisionPlan returns deterministic example-notes operations", () => {
   const plan = buildManagedFactoryLabelProvisionPlan({
@@ -151,21 +146,22 @@ test("managed label snapshot publishes example-notes scope contract", () => {
   ]);
 });
 
-test("label-provision CLI dry-run supports example-notes managed contract path", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "label-provision",
-    "--factory-kind",
-    "example-notes",
-    "--home-repo",
-    "example-org/example-notes",
-    "--control-plane-repo",
-    "recallnet/astrochicken",
-    "--dry-run",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+test("label-provision CLI dry-run supports example-notes managed contract path", (t) => {
+  const binDir = mkdtempSync(join(tmpdir(), "label-provision-gh-"));
+  t.after(() => rmSync(binDir, { recursive: true, force: true }));
+  writeFileSync(join(binDir, "gh"), '#!/bin/sh\nif [ "$1" = "auth" ] && [ "$2" = "status" ]; then exit 0; fi\nprintf "Unexpected GitHub call in dry-run test\\n" >&2\nexit 97\n', { mode: 0o755 });
+  const run = spawnOpsCli([
+      "label-provision",
+      "--factory-kind",
+      "example-notes",
+      "--target-repo",
+      "example-org/example-notes",
+      "--control-plane-repo",
+      "recallnet/astrochicken",
+      "--dry-run"
+    ], {
+      env: { ...process.env, PATH: `${binDir}:${process.env.PATH}` }
+    });
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const payload = JSON.parse(String(run.stdout || "{}").trim() || "{}");

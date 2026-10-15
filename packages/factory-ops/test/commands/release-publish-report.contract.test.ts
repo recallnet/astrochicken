@@ -1,19 +1,18 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { makeLensFollowupContext, makeReleaseSlackAndIssueDecision } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  RELEASE_REPORT_LABEL,
-  buildReleaseReportIssueBody,
-  publishReleaseReportIssue,
-} from "../../src/commands/release-publish-report.ts";
+import { RELEASE_REPORT_LABEL, buildReleaseReportIssueBody, publishReleaseReportIssue } from "../../src/commands/release-publish-report.ts";
 
 const testDir = fileURLToPath(new URL(".", import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 test("buildReleaseReportIssueBody uses narrator report_body directly as issue body", () => {
   const reportBody = [
@@ -60,13 +59,13 @@ test("publishReleaseReportIssue ensures dedicated label and creates issue", () =
   const ghFn = (args) => {
     calls.push(args);
     if (args[0] === "label" && args[1] === "create") {
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     }
     if (args[0] === "issue" && args[1] === "create") {
-      return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/9999\n", stderr: "" };
+      return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/9999\n");
     }
     if (args[0] === "issue" && args[1] === "list") {
-      return { ok: true, status: 0, stdout: "[]", stderr: "" };
+      return successfulCommandResult("[]");
     }
     return { ok: false, status: 1, stdout: "", stderr: `unexpected:${args.join(" ")}` };
   };
@@ -79,29 +78,8 @@ test("publishReleaseReportIssue ensures dedicated label and creates issue", () =
 
   const result = publishReleaseReportIssue({
     repo: "recallnet/astrochicken",
-    context: {
-      repo: "recallnet/astrochicken",
-      factory_id: "mothership",
-      generated_at: "2026-03-17T18:00:00.000Z",
-      since_iso: "2026-03-17T15:00:00.000Z",
-      metrics: { goals_closed: 1, issues_closed: 3, commits_landed: 4 },
-      goals: [],
-    },
-    narrative: {
-      delivery_decision: "slack_and_issue",
-      headline: "Managed factories now keep release chatter quiet",
-      before_state: "Low-signal release windows still interrupted people.",
-      after_state: "The reporter now keeps weaker windows in GitHub without broadcasting them to Slack.",
-      summary: "The release reporter now skips trivial merge trickles and writes fuller briefs, so real conceptual changes get durable narration.",
-      conceptual_shift: "Understanding is now the release unit, not merge-level narration.",
-      why_it_matters: "The team sees fewer interruptions and better catch-up material.",
-      proof_points: ["Issue-heavy release windows can still produce durable reports."],
-      structural_changes: ["Publish flow now expects deterministic significance context in the narrative contract."],
-      behavioral_shifts: ["Issue-only windows still include comprehension sections when narrating."],
-      implicit_decisions: ["Issue-only delivery remains non-blocking and signal-first."],
-      entry_points: ["packages/factory-ops/src/commands/release-publish-report.ts"],
-      watch_items: [],
-    },
+    context: makeLensFollowupContext(),
+    narrative: makeReleaseSlackAndIssueDecision(),
     ghFn,
     ghJsonFn,
   });
@@ -142,8 +120,8 @@ test("publishReleaseReportIssue updates an existing report when the fingerprint 
     },
     ghFn(args) {
       calls.push(args);
-      if (args[0] === "label" && args[1] === "create") return { ok: true, status: 0, stdout: "", stderr: "" };
-      if (args[0] === "issue" && args[1] === "edit") return { ok: true, status: 0, stdout: "", stderr: "" };
+      if (args[0] === "label" && args[1] === "create") return successfulCommandResult();
+      if (args[0] === "issue" && args[1] === "edit") return successfulCommandResult();
       return { ok: false, status: 1, stdout: "", stderr: `unexpected:${args.join(" ")}` };
     },
     ghJsonFn(args) {
@@ -187,21 +165,7 @@ test("release publish-report CLI supports raw and base64 transport with parity",
     timing: {},
     errors: [],
   };
-  const narrative = {
-    delivery_decision: "slack_and_issue",
-    headline: "Managed factories now keep release chatter quiet",
-    before_state: "Low-signal release windows still interrupted people.",
-    after_state: "The reporter now keeps weaker windows in GitHub without broadcasting them to Slack.",
-    summary: "The release reporter now skips trivial merge trickles and writes fuller briefs, so real conceptual changes get durable narration.",
-    conceptual_shift: "Understanding is now the release unit, not merge-level narration.",
-    why_it_matters: "The team sees fewer interruptions and better catch-up material.",
-    proof_points: ["Issue-heavy release windows can still produce durable reports."],
-    structural_changes: ["Publish flow now expects deterministic significance context in the narrative contract."],
-    behavioral_shifts: ["Issue-only windows still include comprehension sections when narrating."],
-    implicit_decisions: ["Issue-only delivery remains non-blocking and signal-first."],
-    entry_points: ["packages/factory-ops/src/commands/release-publish-report.ts"],
-    watch_items: [],
-  };
+  const narrative = makeReleaseSlackAndIssueDecision();
 
   const tempBinDir = join(repoRoot, ".tmp-test-bin");
   const ghStub = join(tempBinDir, "gh");
@@ -235,39 +199,33 @@ exit 1
     PATH: `${tempBinDir}:${process.env.PATH}`,
   };
 
-  const rawRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "publish-report",
-    "--context",
-    JSON.stringify(context),
-    "--narrative",
-    JSON.stringify(narrative),
-    "--repo",
-    "recallnet/astrochicken",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env,
-  });
+  const rawRun = spawnOpsCli([
+      "release",
+      "publish-report",
+      "--context",
+      JSON.stringify(context),
+      "--narrative",
+      JSON.stringify(narrative),
+      "--repo",
+      "recallnet/astrochicken"
+    ], {
+      env
+    });
   assert.equal(rawRun.status, 0, rawRun.stderr || rawRun.stdout);
   const rawOut = JSON.parse(rawRun.stdout || "{}");
 
-  const b64Run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "publish-report",
-    "--context-b64",
-    Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
-    "--narrative-b64",
-    Buffer.from(JSON.stringify(narrative), "utf8").toString("base64"),
-    "--repo",
-    "recallnet/astrochicken",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env,
-  });
+  const b64Run = spawnOpsCli([
+      "release",
+      "publish-report",
+      "--context-b64",
+      Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
+      "--narrative-b64",
+      Buffer.from(JSON.stringify(narrative), "utf8").toString("base64"),
+      "--repo",
+      "recallnet/astrochicken"
+    ], {
+      env
+    });
   assert.equal(b64Run.status, 0, b64Run.stderr || b64Run.stdout);
   const b64Out = JSON.parse(b64Run.stdout || "{}");
 
@@ -277,27 +235,16 @@ exit 1
 });
 
 test("release publish-report CLI fails closed when narrative transport is missing", () => {
-  const context = {
-    repo: "recallnet/astrochicken",
-    factory_id: "mothership",
-    generated_at: "2026-03-17T18:00:00.000Z",
-    since_iso: "2026-03-17T15:00:00.000Z",
-    metrics: { goals_closed: 1, issues_closed: 3, commits_landed: 4 },
-    goals: [],
-  };
+  const context = makeLensFollowupContext();
 
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "publish-report",
-    "--context",
-    JSON.stringify(context),
-    "--repo",
-    "recallnet/astrochicken",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "publish-report",
+      "--context",
+      JSON.stringify(context),
+      "--repo",
+      "recallnet/astrochicken"
+    ]);
 
   assert.equal(run.status, 1);
   assert.match(run.stderr, /release publish-report requires one transport: --narrative or --narrative-b64/);

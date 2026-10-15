@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { realpathSync } from "node:fs";
+import { join } from "node:path";
 
 import { classifyManagedWorktreePath, resolveCanonicalCheckoutPath } from "../../src/lib/canonical-worktree.ts";
 
@@ -8,7 +10,7 @@ test("resolveCanonicalCheckoutPath honors explicit configured path", () => {
     configuredPath: "/tmp/canonical-repo",
     baseDir: "/tmp/ignored",
   });
-  assert.equal(resolved, "/tmp/canonical-repo");
+  assert.equal(resolved, join(realpathSync("/tmp"), "canonical-repo"));
 });
 
 test("classifyManagedWorktreePath recognizes canonical path and approved disposable roots", () => {

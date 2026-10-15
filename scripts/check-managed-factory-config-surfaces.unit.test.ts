@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { validateManagedFactoryConfigSurfaces } from "./check-managed-factory-config-surfaces.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-managed-factory-config-surfaces.mjs");
+const checkerPath = join(scriptsDir, "check-managed-factory-config-surfaces.ts");
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "managed-factory-configs");
 
 function fixtureRoot(name) {

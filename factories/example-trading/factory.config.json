@@ -12,7 +12,10 @@
   "destinations": {
     "platform_incidents": {
       "repo": "recallnet/astrochicken",
-      "labels": ["managed-factory-bug", "factory:example-trading"]
+      "labels": [
+        "managed-factory-bug",
+        "factory:example-trading"
+      ]
     }
   },
   "tracking_issue": 407,
@@ -83,10 +86,16 @@
         "catch_up": false,
         "repo": "example-org/example-trading",
         "notify_slack": true,
-        "issue_labels": ["daily-release-report"]
+        "issue_labels": [
+          "daily-release-report"
+        ]
       }
     ]
   },
   "max_concurrent_waves": 4,
-  "max_goal_runs_per_tick": 4
+  "max_goal_runs_per_tick": 4,
+  "conformance": {
+    "smoke_graph": "factories/_shared/conformance/factory_supervisor_tick.dot",
+    "entrypoint": "factories/_shared/conformance/run-conformance.sh"
+  }
 }

@@ -32,6 +32,8 @@ export function closeBrainstormIssue({
   // Repo must be the managed target_repo when invoked from domain_brainstorm.
   repo = "",
   brainstormIssueNumber = "",
+  goalIssueUrl = "",
+  goalIssueNumber = "",
   factoryId = "",
   rootDir = ".",
   nextCursorRaw = "",
@@ -40,7 +42,13 @@ export function closeBrainstormIssue({
   const repoSlug = requiredText(repo, "repo");
   const issueNumber = requiredText(brainstormIssueNumber, "brainstorm_issue_number");
 
-  const comment = "Brainstorm complete.";
+  const goalReference = [
+    trim(goalIssueNumber) ? `#${trim(goalIssueNumber)}` : "",
+    trim(goalIssueUrl),
+  ].filter(Boolean).join(": ");
+  const comment = goalReference
+    ? `Brainstorm complete. Created goal issue ${goalReference}`
+    : "Brainstorm complete.";
 
   const commentOut = ghExec([
     "issue",

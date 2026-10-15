@@ -33,7 +33,7 @@ export function resolveGlobalCliLinkPath({ homeDir = os.homedir(), linkDir = "",
 export function resolveCanonicalFactoryOpsCliPath(canonicalCheckoutPath = "") {
   const resolvedCanonicalCheckoutPath = String(canonicalCheckoutPath || "").trim();
   if (!resolvedCanonicalCheckoutPath) return "";
-  return path.resolve(resolvedCanonicalCheckoutPath, "packages", "factory-ops", "src", "cli.mjs");
+  return path.resolve(resolvedCanonicalCheckoutPath, "packages", "factory-ops", "src", "cli.ts");
 }
 
 export function relinkGlobalCli({

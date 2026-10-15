@@ -98,7 +98,7 @@ export function resolveControlPlaneHatchRoot({ runsDir = ".hatch/runs", context 
     // factory_root is typically <repo>/factories/<factory_id>
     const repoCandidate = dirname(dirname(factoryRoot));
     const hatchFromFactory = join(repoCandidate, ".hatch");
-    if (existsSync(hatchFromFactory)) return hatchFromFactory;
+    if (basename(dirname(factoryRoot)) === "factories" && existsSync(hatchFromFactory)) return hatchFromFactory;
 
     // When status runs from a git worktree, the worktree checkout may not have
     // a local .hatch directory even though the canonical control-plane repo

@@ -90,7 +90,7 @@ describe("conformance support", () => {
 			|| hatchOps.command.endsWith("/node_modules/.bin/hatch-ops"),
 		).toBe(true);
 		if (hatchOps.command === process.execPath) {
-			expect(hatchOps.argsPrefix[0]).toMatch(/packages\/factory-ops\/src\/cli\.mjs$/);
+			expect(hatchOps.argsPrefix[0]).toMatch(/packages\/factory-ops\/src\/cli\.ts$/);
 		}
 
 		expect(joinPath("a", "b", "c")).toBe(path.join("a", "b", "c"));

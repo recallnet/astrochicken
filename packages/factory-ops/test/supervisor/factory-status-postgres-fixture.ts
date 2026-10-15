@@ -1,11 +1,18 @@
-import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import net from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { before, after } from "node:test";
 
 import { Pool } from "pg";
+
+import { createComposeCommand, waitForComposePostgres } from "../../../../scripts/test/helpers/compose-command.ts";
+import { buildPacketPublishedEvent } from "../../src/lib/canonical-domain-events.ts";
+import { appendCanonicalEvents } from "../../src/lib/canonical-event-log.ts";
+import { ensureFactoryFleetProjectionSchema } from "../../src/lib/factory-fleet-postgres-projection.ts";
+import { findPacketRegistryEntry, isDurablePacketType } from "../../src/lib/packet-core.ts";
+
 
 const repoRoot = path.resolve(import.meta.dirname, "../../../..");
 const composePath = path.resolve(
@@ -13,17 +20,6 @@ const composePath = path.resolve(
   "packages/factory-ops/config/postgres/canonical-event-store.compose.yml",
 );
 
-function runShell(command, env = {}) {
-  const result = spawnSync("/bin/zsh", ["-lc", command], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: { ...process.env, ...env },
-  });
-  if (result.status !== 0) {
-    throw new Error(result.stderr || result.stdout || `command failed: ${command}`);
-  }
-  return String(result.stdout || "");
-}
 
 async function allocatePort() {
   return await new Promise((resolve, reject) => {
@@ -51,6 +47,7 @@ export function createCanonicalEventStoreFixture() {
     envPath: "",
     composeProject: "",
     connectionString: "",
+    compose: null,
   };
 
   return {
@@ -72,16 +69,9 @@ export function createCanonicalEventStoreFixture() {
         `POSTGRES_PASSWORD=${password}`,
         `POSTGRES_PORT=${port}`,
       ].join("\n") + "\n");
-      runShell(`docker compose -p ${fixture.composeProject} -f ${composePath} --env-file ${fixture.envPath} up -d postgres`);
-      runShell(`
-        for i in {1..30}; do
-          if docker compose -p ${fixture.composeProject} -f ${composePath} --env-file ${fixture.envPath} exec -T postgres pg_isready -U ${user} -d ${db} >/dev/null 2>&1; then
-            exit 0
-          fi
-          sleep 1
-        done
-        exit 1
-      `);
+      fixture.compose = createComposeCommand({ repoRoot, composePath, project: fixture.composeProject, envPath: fixture.envPath });
+      fixture.compose("up", "-d", "postgres");
+      await waitForComposePostgres(fixture.compose, user, db);
       fixture.connectionString = `postgres://${user}:${password}@127.0.0.1:${port}/${db}`;
       const pool = new Pool({ connectionString: fixture.connectionString });
       try {
@@ -104,18 +94,100 @@ export function createCanonicalEventStoreFixture() {
             payload jsonb not null
           );
         `);
+        await ensureFactoryFleetProjectionSchema({ pool });
       } finally {
         await pool.end();
       }
     },
+    async resetEvents() {
+      if (!fixture.connectionString) throw new Error("fixture_not_started");
+      const pool = new Pool({ connectionString: fixture.connectionString });
+      try {
+        await pool.query("truncate table factory_events");
+        await pool.query("drop table if exists factory_status_projection");
+        await pool.query("truncate table factory_fleet_projection");
+      } finally { await pool.end(); }
+    },
+    async seedPacketFile({ packetPath }) {
+      const packet = JSON.parse(readFileSync(packetPath, "utf8"));
+      const registryEntry = findPacketRegistryEntry(packet.packet_type);
+      if (!registryEntry) throw new Error("unregistered_fixture_packet_type");
+      await appendCanonicalEvents({
+        connectionString: fixture.connectionString,
+        events: [buildPacketPublishedEvent({
+          factoryId: packet.factory_id,
+          runId: packet.run_id,
+          packet,
+          packetPath,
+          storageClass: "factory_run_packet",
+          family: registryEntry.family,
+          durable: isDurablePacketType(packet.packet_type),
+        })],
+      });
+    },
+    async resetProjections() {
+      if (!fixture.connectionString) throw new Error("fixture_not_started");
+      const pool = new Pool({ connectionString: fixture.connectionString });
+      try {
+        await pool.query("truncate table factory_fleet_projection");
+      } finally {
+        await pool.end();
+      }
+    },
+    // @context:regression Status fixtures must establish canonical run membership as well as local artifacts.
+    async seedRuns({ runsDir, factoryId = "mothership" }) {
+      if (!fixture.connectionString) throw new Error("fixture_not_started");
+      const pool = new Pool({ connectionString: fixture.connectionString });
+      try {
+        await pool.query("truncate table factory_events");
+        await pool.query("drop table if exists factory_status_projection");
+      } finally {
+        await pool.end();
+      }
+      const events = [];
+      for (const entry of readdirSync(runsDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        let state;
+        try { state = JSON.parse(readFileSync(path.join(runsDir, entry.name, "state.json"), "utf8")); }
+        catch { continue; }
+        events.push({
+          event_id: randomUUID(),
+          schema: "canonical_event_envelope/v1",
+          event_family: "hatch.run.started",
+          event_version: 1,
+          factory_id: factoryId,
+          run_id: state.runId || entry.name,
+          emitter: "test.fixture",
+          emitted_at: state.startedAt || state.updatedAt || "2026-03-10T00:00:00.000Z",
+          event_origin: "runtime",
+          payload: { run_id: state.runId || entry.name, node: state.currentNode || "" },
+        });
+      }
+      await appendCanonicalEvents({ connectionString: fixture.connectionString, runsDir, events });
+    },
     teardown() {
       try {
         if (fixture.composeProject) {
-          runShell(`docker compose -p ${fixture.composeProject} -f ${composePath} --env-file ${fixture.envPath} down -v`);
+          fixture.compose?.("down", "-v");
         }
       } finally {
         if (fixture.stateRoot) rmSync(fixture.stateRoot, { recursive: true, force: true });
       }
     },
   };
+}
+
+export function useCanonicalEventStoreFixture() {
+  const fixture = createCanonicalEventStoreFixture();
+  const previousUrl = process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+  before(async () => {
+    await fixture.setup();
+    process.env.HATCH_CANONICAL_EVENT_STORE_URL = fixture.connectionString;
+  });
+  after(() => {
+    if (previousUrl === undefined) delete process.env.HATCH_CANONICAL_EVENT_STORE_URL;
+    else process.env.HATCH_CANONICAL_EVENT_STORE_URL = previousUrl;
+    fixture.teardown();
+  });
+  return fixture;
 }

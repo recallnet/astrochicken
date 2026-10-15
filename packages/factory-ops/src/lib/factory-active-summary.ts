@@ -1,6 +1,7 @@
 import { join } from "node:path";
 
 import { inspectActiveRunGitSignals } from "./active-run-git-signals.ts";
+import { resolveSessionTrace } from "./factory-session-log.ts";
 import { factoryStatus } from "./factory-status-canonical.ts";
 import {
   describeOperatorSignals,
@@ -77,7 +78,7 @@ function compactGraphLabel(graph = "") {
   const raw = String(graph || "");
   if (!raw) return "";
   const parts = raw.split("/");
-  return parts[parts.length - 1] || raw;
+  return (parts[parts.length - 1] || raw).replace(/\.workflow-source\.mjs$/, ".dot");
 }
 
 function shellSingleQuote(value = "") {
@@ -107,24 +108,6 @@ function compareActiveSummaryWaves(left = {}, right = {}) {
   if (leftIssue !== rightIssue) return leftIssue - rightIssue;
 
   return String(left?.current_issue_node || "").localeCompare(String(right?.current_issue_node || ""), "en");
-}
-
-function resolveSessionTrace(runState = {}, { runSessionsDir = "", childMetadata = undefined } = {}) {
-  const children = parseActiveChildrenInState(runState);
-  const childId = String(childMetadata?.childId || "").trim();
-  if (childId) {
-    const match = children.find((child) => String(child.child_id || "").trim() === childId);
-    if (match?.session_log) {
-      return { sessionLog: String(match.session_log), traceKind: String(match.trace_kind || "") };
-    }
-  }
-  const direct = String(runState?.context?.session_log || runState?.session_log || "").trim();
-  const traceKind = String(runState?.context?.trace_kind || runState?.trace_kind || "").trim();
-  if (direct) return { sessionLog: direct, traceKind };
-  return {
-    sessionLog: runSessionsDir ? join(runSessionsDir, "session.jsonl") : "",
-    traceKind,
-  };
 }
 
 function resolveTraceInfo(runState, runsDir, runId, childMetadata = null) {
@@ -214,7 +197,7 @@ export function factoryActiveSummary({ runsDir = ".hatch/runs", now = Date.now()
   const waves = [];
 
   for (const run of status.active) {
-    if (!String(run.graph || "").includes("/wave_execute.dot")) continue;
+    if (!/(?:^|\/)wave_execute\.(?:dot|workflow-source\.mjs)$/.test(String(run.graph || ""))) continue;
 
     const state = readState(join(runsDir, run.id)) || {};
     const ctx = state.context || {};
@@ -326,7 +309,7 @@ export function factoryActiveSummary({ runsDir = ".hatch/runs", now = Date.now()
   }
 
   const nonWaveActive = status.active
-    .filter((run) => !String(run.graph || "").includes("/wave_execute.dot"))
+    .filter((run) => !/(?:^|\/)wave_execute\.(?:dot|workflow-source\.mjs)$/.test(String(run.graph || "")))
     .map((run) => {
       const state = readState(join(runsDir, run.id)) || {};
       const runContext = state.context && typeof state.context === "object" ? state.context : {};

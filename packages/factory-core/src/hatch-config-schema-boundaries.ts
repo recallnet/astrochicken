@@ -48,7 +48,7 @@ const factoryIsolationDocumentSchema = z.object({
 export const factoryConfigDocumentSchema = z.object({
 	schema: z.literal(FACTORY_CONFIG_SCHEMA_VERSION),
 	factory_id: nonEmptyStringSchema,
-	target_repo: nonEmptyStringSchema.optional(),
+	target_repo: nonEmptyStringSchema,
 	control_plane_repo: nonEmptyStringSchema,
 	dispatch: z.object({ graph: nonEmptyStringSchema }).catchall(z.unknown()),
 	skills: z.object({ supervisor: nonEmptyStringSchema }).catchall(z.unknown()),

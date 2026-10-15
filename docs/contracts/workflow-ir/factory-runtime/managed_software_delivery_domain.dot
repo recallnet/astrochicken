@@ -1,4 +1,6 @@
 // Generated from packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs. Do not edit by hand.
+@import "../../../../factories/_shared/roles.stylesheet"
+
 digraph managed_software_delivery_domain {
     label = "managed_software_delivery_domain"
     workflow_source = "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs"

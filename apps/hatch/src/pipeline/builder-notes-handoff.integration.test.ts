@@ -16,7 +16,7 @@ import type { Node } from "./graph.js";
 
 const _testDir = dirname(fileURLToPath(import.meta.url));
 const _repoRoot = resolve(_testDir, "../../../..");
-const _opsCliPath = join(_repoRoot, "packages/factory-ops/src/cli.mjs");
+const _opsCliPath = join(_repoRoot, "packages/factory-ops/src/cli.ts");
 
 class StaticOutputHandler implements Handler {
 	constructor(private readonly output: string) {}

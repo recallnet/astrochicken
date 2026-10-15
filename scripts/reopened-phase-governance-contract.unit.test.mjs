@@ -3,15 +3,8 @@ import assert from "node:assert/strict";
 
 import { analyzeReopenedPhaseGovernance } from "./lib/reopened-phase-governance-contract.ts";
 
-test("reopened phase governance report records green generated governed DOT-only gate status after migration", async () => {
-  const result = await analyzeReopenedPhaseGovernance({
-    workflowIrAcceptanceAnalysis: {
-      ok: true,
-      diagnostics: [],
-      claimTruthDiagnostics: [],
-      publishStateDiagnostics: [],
-      runtimeParityDiagnostics: [],
-    },
+function governanceAnalysisFixture(overrides) {
+  return {
     capabilityOutputAnalysis: {
       ok: true,
       report: { diagnostics: [] },
@@ -36,14 +29,27 @@ test("reopened phase governance report records green generated governed DOT-only
       ok: true,
       diagnostics: [],
     },
-  });
+    ...overrides,
+  };
+}
+
+test("reopened phase governance report records green generated governed DOT-only gate status after migration", async () => {
+  const result = await analyzeReopenedPhaseGovernance(governanceAnalysisFixture({
+    workflowIrAcceptanceAnalysis: {
+      ok: true,
+      diagnostics: [],
+      claimTruthDiagnostics: [],
+      publishStateDiagnostics: [],
+      runtimeParityDiagnostics: [],
+    },
+  }));
 
   assert.equal(typeof result.report.supporting_gate_status.generated_governed_dot_only, "boolean");
   assert.equal(result.report.supporting_gate_status.generated_governed_dot_only, true);
 });
 
 test("reopened phase governance keeps workflow IR failures local to workflow IR gates", async () => {
-  const result = await analyzeReopenedPhaseGovernance({
+  const result = await analyzeReopenedPhaseGovernance(governanceAnalysisFixture({
     workflowIrAcceptanceAnalysis: {
       ok: false,
       diagnostics: ["workflow_ir_runtime_validation_failed"],
@@ -54,28 +60,7 @@ test("reopened phase governance keeps workflow IR failures local to workflow IR 
     workflowIrParityAnalysis: {
       diagnostics: ["workflow_ir_registry_drift"],
     },
-    lineageSamplesAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-    capabilityOutputAnalysis: {
-      ok: true,
-      report: { diagnostics: [] },
-    },
-    workflowSourceAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-    factoryCompositionAnalysis: {
-      ok: true,
-      report: { diagnostics: [] },
-      manifests: [],
-    },
-    lineageAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-  });
+  }));
 
   assert.equal(result.report.supporting_gate_status.workflow_ir_runtime_parity_e2e, false);
   assert.equal(result.report.supporting_gate_status.workflow_ir_parity_contract, false);
@@ -83,7 +68,7 @@ test("reopened phase governance keeps workflow IR failures local to workflow IR 
 });
 
 test("reopened phase governance keeps legacy inventory and workflow IR support gates outside governed surface owner totality", async () => {
-  const result = await analyzeReopenedPhaseGovernance({
+  const result = await analyzeReopenedPhaseGovernance(governanceAnalysisFixture({
     workflowIrAcceptanceAnalysis: {
       ok: false,
       diagnostics: ["workflow_ir_runtime_validation_failed"],
@@ -91,30 +76,11 @@ test("reopened phase governance keeps legacy inventory and workflow IR support g
       publishStateDiagnostics: [],
       runtimeParityDiagnostics: ["workflow_ir_runtime_validation_failed"],
     },
-    workflowIrParityAnalysis: {
-      diagnostics: [],
-    },
-    lineageSamplesAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-    capabilityOutputAnalysis: {
-      ok: true,
-      report: { diagnostics: [] },
-    },
-    workflowSourceAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
     factoryCompositionAnalysis: {
       ok: true,
       report: { diagnostics: [] },
     },
-    lineageAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-  });
+  }));
 
   assert.equal(result.report.supporting_gate_status.workflow_ir_acceptance, false);
   assert.equal(result.report.supporting_gate_status.workflow_ir_runtime_parity_e2e, false);
@@ -124,7 +90,7 @@ test("reopened phase governance keeps legacy inventory and workflow IR support g
 
 test("reopened phase governance can skip workflow IR runtime parity for lightweight preflight gates", async () => {
   const calls = [];
-  const result = await analyzeReopenedPhaseGovernance({
+  const result = await analyzeReopenedPhaseGovernance(governanceAnalysisFixture({
     includeWorkflowIrRuntimeParity: false,
     workflowIrAcceptanceAnalyzer: async ({ includeRuntimeParity }) => {
       calls.push(includeRuntimeParity);
@@ -136,31 +102,7 @@ test("reopened phase governance can skip workflow IR runtime parity for lightwei
         runtimeParityDiagnostics: ["should_not_drive_lightweight_mode"],
       };
     },
-    capabilityOutputAnalysis: {
-      ok: true,
-      report: { diagnostics: [] },
-    },
-    workflowSourceAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-    workflowIrParityAnalysis: {
-      diagnostics: [],
-    },
-    factoryCompositionAnalysis: {
-      ok: true,
-      report: { diagnostics: [] },
-      manifests: [],
-    },
-    lineageAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-    lineageSamplesAnalysis: {
-      ok: true,
-      diagnostics: [],
-    },
-  });
+  }));
 
   assert.deepEqual(calls, [false]);
   assert.equal(result.report.supporting_gate_status.workflow_ir_acceptance, true);

@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
@@ -19,7 +23,7 @@ function sh(args, cwd) {
   return String(run.stdout || "").trim();
 }
 
-test("buildStateSnapshot surfaces actionable merge conflict packets as supervisor action items", () => {
+test("buildStateSnapshot surfaces actionable merge conflict packets as supervisor action items", async () => {
   const runsDir = mkdtempSync(join(tmpdir(), "snapshot-merge-conflict-packets-"));
   const repoRoot = mkdtempSync(join(tmpdir(), "snapshot-merge-conflict-repo-"));
   sh(["git", "init", "-b", "main"], repoRoot);
@@ -66,6 +70,7 @@ test("buildStateSnapshot surfaces actionable merge conflict packets as superviso
     notes: "Inspect push failure and recover safely.",
   }, null, 2));
 
+  await eventStoreFixture.seedPacketFile({ packetPath: join(packetDir, "merge_conflict_packet_abc.json") });
   const out = JSON.parse(buildStateSnapshot({
     repo: "recallnet/astrochicken",
     factoryId: "mothership",

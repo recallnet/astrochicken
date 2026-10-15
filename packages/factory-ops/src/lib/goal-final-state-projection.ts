@@ -310,3 +310,12 @@ export function projectGoalFinalState({
     goal_close_error: trim(canonicalGoalCloseState?.last_error),
   };
 }
+
+export function canAutoCloseGoal({
+  hasSubIssues = false,
+  anyOpenSubIssues = false,
+}) {
+  if (!hasSubIssues) return false;
+  if (anyOpenSubIssues) return false;
+  return true;
+}

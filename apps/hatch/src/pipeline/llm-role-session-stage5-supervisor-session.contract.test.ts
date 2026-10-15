@@ -72,7 +72,7 @@ describe("Stage 5 persistent supervisor session contract", () => {
 			factoryName: "mothership",
 		},
 		{
-			graphPath: "factories/example-trading/graphs/domain_example_trading.dot",
+			graphPath: "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
 			factoryId: "example-trading/factory_supervisor",
 			factoryName: "example-trading",
 		},

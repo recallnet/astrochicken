@@ -30,6 +30,154 @@ const cliInternalParams = new Map([
   ["factoryFleetStatus", new Set(["json"])],
   ["classifyGoalExecutionPath", new Set(["planningArtifactPath", "classificationSignals"])],
 ]);
+// Adapter, mutation-authority, audit, and correlation inputs are supplied by
+// the owning runtime/environment. They are not caller-editable transport flags.
+for (const [owner, params] of [
+  [
+    "createGitHubIssueFromSpec",
+    [
+      "auditHomeDir",
+      "auditHostBaseDir",
+      "auditLogPath",
+      "factoryId",
+      "githubProjectionTarget",
+      "mutationContext",
+      "mutationContextJson",
+      "repoRoot",
+      "runId"
+    ]
+  ],
+  [
+    "updateGitHubIssueFromSpec",
+    [
+      "auditHomeDir",
+      "auditHostBaseDir",
+      "auditLogPath",
+      "factoryId",
+      "githubProjectionTarget",
+      "mutationContext",
+      "mutationContextJson",
+      "runId"
+    ]
+  ],
+  [
+    "closeMergedIssues",
+    [
+      "factoryId",
+      "githubProjectionTarget",
+      "repoRoot"
+    ]
+  ],
+  [
+    "buildWaveMergeResults",
+    [
+      "factoryId",
+      "runId"
+    ]
+  ],
+  [
+    "reconcileGoalFinalState",
+    [
+      "githubProjectionTarget"
+    ]
+  ],
+  [
+    "fetchGoalIssue",
+    [
+      "factoryId",
+      "githubIssueSource",
+      "runId"
+    ]
+  ],
+  [
+    "listReadyGoals",
+    [
+      "factoryId"
+    ]
+  ],
+  [
+    "evaluateGoalDecomposeBackpressure",
+    [
+      "factoryId"
+    ]
+  ],
+  [
+    "exhaustDecomposeRetries",
+    [
+      "factoryId",
+      "githubProjectionTarget",
+      "runId"
+    ]
+  ],
+  [
+    "markGoalDispatched",
+    [
+      "factoryId",
+      "githubProjectionTarget",
+      "runId"
+    ]
+  ],
+  [
+    "postDecomposeAttemptMarker",
+    [
+      "factoryId",
+      "githubProjectionTarget",
+      "runId"
+    ]
+  ],
+  [
+    "postGoalRetryComment",
+    [
+      "factoryId",
+      "githubProjectionTarget",
+      "runId"
+    ]
+  ],
+  [
+    "addSubIssue",
+    [
+      "auditHomeDir",
+      "auditHostBaseDir",
+      "auditLogPath",
+      "factoryId",
+      "githubProjectionTarget",
+      "mutationContext",
+      "mutationContextJson",
+      "repoRoot",
+      "runId"
+    ]
+  ],
+  [
+    "selectManagedIntakeIssue",
+    [
+      "factoryId"
+    ]
+  ],
+  [
+    "initWaveIssueWorktree",
+    [
+      "factoryId",
+      "runId"
+    ]
+  ],
+  [
+    "pickReadyWaveFromRepo",
+    [
+      "getMilestoneOpenIssues"
+    ]
+  ],
+  [
+    "blockReadyWaveIssue",
+    [
+      "execGh"
+    ]
+  ]
+]) {
+  const declared = cliInternalParams.get(owner) || new Set();
+  for (const param of params) declared.add(param);
+  cliInternalParams.set(owner, declared);
+}
+
 const aliasSatisfiedParams = new Map([
   ["installHostRuntime", new Set(["trustPublicKeyPem"])],
   ["getHostRuntimeStatus", new Set(["trustPublicKeyPem"])],

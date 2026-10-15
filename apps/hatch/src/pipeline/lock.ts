@@ -1,6 +1,8 @@
 import { randomBytes } from "node:crypto";
 import {
 	closeSync,
+	fstatSync,
+	lstatSync,
 	existsSync,
 	mkdirSync,
 	openSync,
@@ -702,9 +704,12 @@ function acquireReclaimClaim(options: AcquireReclaimClaimOptions): ReclaimClaim 
 					createdAt: options.now.toISOString(),
 				}),
 			);
+			const owned = fstatSync(fd);
 			return {
 				release: () => {
 					try {
+						const current = lstatSync(options.claimFile);
+						if (current.dev !== owned.dev || current.ino !== owned.ino) return;
 						unlinkSync(options.claimFile);
 					} catch {
 						// Best effort.
@@ -724,21 +729,32 @@ function acquireReclaimClaim(options: AcquireReclaimClaimOptions): ReclaimClaim 
 }
 
 function reclaimStaleClaimFile(options: AcquireReclaimClaimOptions): boolean {
-	if (!existsSync(options.claimFile)) return true;
+	let observed: ReturnType<typeof lstatSync>;
+	try {
+		observed = lstatSync(options.claimFile);
+	} catch (error) {
+		return isNodeErrorCode(error, "ENOENT");
+	}
 	try {
 		const raw = readFileSync(options.claimFile, "utf-8");
 		const parsed = JSON.parse(raw) as { pid?: number; hostId?: string; createdAt?: string };
 		const claimHost = typeof parsed.hostId === "string" ? parsed.hostId : "";
 		const claimPid = typeof parsed.pid === "number" ? parsed.pid : null;
 		const createdAtMs = Date.parse(String(parsed.createdAt || ""));
-		const expired = Number.isNaN(createdAtMs) || options.now.getTime() - createdAtMs >= RECLAIM_CLAIM_TTL_MS;
+		const expired = Number.isNaN(createdAtMs)
+			? options.now.getTime() - observed.mtimeMs >= RECLAIM_CLAIM_TTL_MS
+			: options.now.getTime() - createdAtMs >= RECLAIM_CLAIM_TTL_MS;
 		const deadLocalPid = claimHost === options.localHostId && claimPid !== null && !isPidAlive(claimPid);
 		if (!expired && !deadLocalPid) return false;
 	} catch {
-		// Invalid claim file => reclaim.
+		// Exclusive creation precedes writing JSON. A fresh incomplete claim belongs
+		// to its creator; treating this window as corruption admits two reclaimers.
+		if (options.now.getTime() - observed.mtimeMs < RECLAIM_CLAIM_TTL_MS) return false;
 	}
 
 	try {
+		const current = lstatSync(options.claimFile);
+		if (current.dev !== observed.dev || current.ino !== observed.ino || current.mtimeMs !== observed.mtimeMs) return false;
 		unlinkSync(options.claimFile);
 		return true;
 	} catch {

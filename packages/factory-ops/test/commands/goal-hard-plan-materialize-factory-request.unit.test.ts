@@ -1,19 +1,8 @@
+import { makeCapabilitySourceFeature } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  buildFactoryRequestGoalIssueMap,
-  buildFactoryRequestMaterializationLedger,
-  normalizeFactoryRequestPrerequisiteMaterialization,
-  normalizeFinalInstantiationGoalIssueNumber,
-  normalizeGoalIssueMap,
-  normalizeIssueSetMap,
-  normalizeOptionalIssueNumber,
-  normalizePrerequisiteGoalIssueNumbers,
-  resolveAndSyncGoalBlockedByEdges,
-  resolveFactoryRequestFinalInstantiationTargets,
-  resolveFactoryRequestPrerequisiteTargets,
-} from "../../src/commands/goal-hard-plan-materialize-factory-request.ts";
+import { buildFactoryRequestGoalIssueMap, buildFactoryRequestMaterializationLedger, normalizeFactoryRequestPrerequisiteMaterialization, normalizeFinalInstantiationGoalIssueNumber, normalizeGoalIssueMap, normalizeIssueSetMap, normalizeOptionalIssueNumber, normalizePrerequisiteGoalIssueNumbers, resolveAndSyncGoalBlockedByEdges, resolveFactoryRequestFinalInstantiationTargets, resolveFactoryRequestPrerequisiteTargets } from "../../src/commands/goal-hard-plan-materialize-factory-request.ts";
 
 function makeFactoryRequestGraph() {
   return {
@@ -106,14 +95,7 @@ test("factory request helper fails closed when prerequisite goal issue numbers a
 test("factory request helper resolves prerequisite targets from approved features", () => {
   const targets = resolveFactoryRequestPrerequisiteTargets({
     approvedFeatures: [
-      {
-        feature_id: "F-cap",
-        source_feature: {
-          feature_id: "F-cap",
-          issue_set_id: "set_capability",
-          goal_id: "goal_capability",
-        },
-      },
+      makeCapabilitySourceFeature(),
       {
         feature_id: "F-pol",
         source_feature: {
@@ -156,14 +138,7 @@ test("factory request helper resolves prerequisite targets from approved feature
 test("factory request helper resolves final-instantiation targets from approved features", () => {
   const targets = resolveFactoryRequestFinalInstantiationTargets({
     approvedFeatures: [
-      {
-        feature_id: "F-cap",
-        source_feature: {
-          feature_id: "F-cap",
-          issue_set_id: "set_capability",
-          goal_id: "goal_capability",
-        },
-      },
+      makeCapabilitySourceFeature(),
       {
         feature_id: "F-final",
         source_feature: {
@@ -219,14 +194,7 @@ test("factory request helper resolves final-instantiation targets from approved 
 test("factory request helper returns no final-instantiation targets when no final features exist", () => {
   const targets = resolveFactoryRequestFinalInstantiationTargets({
     approvedFeatures: [
-      {
-        feature_id: "F-cap",
-        source_feature: {
-          feature_id: "F-cap",
-          issue_set_id: "set_capability",
-          goal_id: "goal_capability",
-        },
-      },
+      makeCapabilitySourceFeature(),
     ],
     factoryRequestGoalGraph: makeFactoryRequestGraph(),
     goalIssueMap: {

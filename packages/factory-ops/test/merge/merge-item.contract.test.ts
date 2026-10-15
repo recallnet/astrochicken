@@ -1,3 +1,4 @@
+import { assertWorkflowEdgeChain as assertEdgeChain } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -10,7 +11,7 @@ test("merge_item escalates non-merge errors (including dirty_worktree) into reso
   assert.match(dot, /merge_gate -> route_error_to_resolver \[condition="merge_status=error"\]/);
   assert.match(dot, /route_error_to_resolver -> set_resolution_source_llm/);
   assert.match(dot, /set_resolution_source_llm -> build_conflict_packet/);
-  assert.match(dot, /build_conflict_packet -> resolve_conflict -> finalize_merge_commit -> finalize_gate/);
+  assertEdgeChain(dot, ["build_conflict_packet", "resolve_conflict", "finalize_merge_commit", "finalize_gate"]);
   assert.match(dot, /finalize_gate -> verify_resolution \[condition="finalize_status=ok"\]/);
   assert.match(dot, /finalize_gate -> retry_resolve_conflict \[condition="finalize_status!=ok"\]/);
   assert.match(dot, /retry_resolve_conflict -> verify_resolution/);
@@ -64,7 +65,7 @@ test("merge_item rebases branch on main before attempting merge", () => {
   assert.match(dot, /action_id="merge.rebase_on_main"/, "rebase node must use merge.rebase_on_main typed action");
 
   // The flow must be: extract_merge -> setup_merge_worktree -> rebase_on_main -> rebase_gate -> attempt_merge
-  assert.match(dot, /extract_merge -> setup_merge_worktree -> rebase_on_main/,
+  assertEdgeChain(dot, ["extract_merge", "setup_merge_worktree", "rebase_on_main"],
     "merge worktree setup must happen after extract and before rebase");
   assert.match(dot, /rebase_on_main -> rebase_gate/,
     "rebase must route through rebase_gate");
@@ -111,7 +112,7 @@ test("merge_item integration path remains non-blocking in graph routing", () => 
   assert.match(dot, /set_status_already -> encode_integration_command/);
   assert.match(dot, /cleanup_failed_merge -> encode_integration_command/);
   assert.match(dot, /encode_integration_command -> integration/);
-  assert.match(dot, /integration -> close_issue -> encode_merge_notes -> report -> cleanup_merge_worktree -> done/);
+  assertEdgeChain(dot, ["integration", "close_issue", "encode_merge_notes", "report", "cleanup_merge_worktree", "done"]);
 });
 
 test("merge_item conflict agents never run in the canonical checkout cwd", () => {

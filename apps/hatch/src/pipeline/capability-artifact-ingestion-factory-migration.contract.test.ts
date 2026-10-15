@@ -9,9 +9,9 @@ const MOTHERSHIP_LOCAL_COPY = resolve(REPO_ROOT, "factories/mothership/graphs/ar
 const EXAMPLE_TRADING_LOCAL_COPY = resolve(REPO_ROOT, "factories/example-trading/graphs/artifact_ingest.dot");
 
 const MOTHERSHIP_DISPATCH_REACTOR = resolve(REPO_ROOT, "factories/mothership/graphs/factory_dispatch_reactor.dot");
-const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "factories/example-trading/graphs/domain_example_trading.dot");
+const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
 
-const PACKAGE_TEMPLATE = "docs/contracts/workflow-ir/capability-artifact-ingestion/artifact_ingest.dot";
+const PACKAGE_TEMPLATE = "packages/capability-artifact-ingestion/workflows/artifact_ingest/artifact_ingest.workflow-source.mjs";
 const MS_LOCAL_TEMPLATE = "factories/mothership/graphs/artifact_ingest.dot";
 const RL_LOCAL_TEMPLATE = "factories/example-trading/graphs/artifact_ingest.dot";
 
@@ -45,12 +45,12 @@ describe("factory migration contract: @hatch/capability-artifact-ingestion", () 
 	it("example-trading domain_example_trading.dot references package template and not local template", () => {
 		const content = readFileSync(EXAMPLE_TRADING_DOMAIN_GRAPH, "utf8");
 		expect(
-			content.includes(PACKAGE_TEMPLATE),
-			"missing package template reference in factories/example-trading/graphs/domain_example_trading.dot",
+			content.includes(PACKAGE_TEMPLATE.replace("packages/", "@hatch/")),
+			"missing package template reference in docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
 		).toBe(true);
 		expect(
 			content.includes(RL_LOCAL_TEMPLATE),
-			"local example-trading template reference still present in factories/example-trading/graphs/domain_example_trading.dot",
+			"local example-trading template reference still present in docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
 		).toBe(false);
 	});
 

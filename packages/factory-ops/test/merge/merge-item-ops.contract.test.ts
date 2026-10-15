@@ -1,3 +1,5 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, readFileSync, chmodSync, mkdirSync } from "node:fs";
@@ -5,54 +7,21 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  assertMainBranch,
-  extractMergeItem,
-  resolveMergeContext,
-  buildMergeReport,
-  rebaseBranchOnMain,
-  attemptDeterministicMerge,
-  pushMainBranch,
-  finalizeMergeCommit,
-  verifyConflictResolution,
-  verifyPushRecovery,
-  verifyPushResolution,
-  buildConflictPacket,
-  runMergeIntegration,
-  buildGoalScopedMergeMessage,
-} from "../../src/commands/merge-item-ops.ts";
-import {
-  cleanupMergeWorktree,
-  resolveMergeWorktreeDir,
-  setupMergeWorktree,
-} from "../../src/commands/merge-worktree.ts";
+import { assertMainBranch, extractMergeItem, resolveMergeContext, buildMergeReport, rebaseBranchOnMain, attemptDeterministicMerge, pushMainBranch, verifyConflictResolution, verifyPushRecovery, verifyPushResolution, buildConflictPacket, runMergeIntegration } from "../../src/commands/merge-item-ops.ts";
+import { cleanupMergeWorktree, resolveMergeWorktreeDir, setupMergeWorktree } from "../../src/commands/merge-worktree.ts";
 import { resolveRepoRoleGuardOptions } from "../../src/commands/merge-guard-context.ts";
 import { inspectMergeWorkspaceState } from "../../src/commands/merge-workspace-state.ts";
-import { readCapabilityMergeGraphDot } from "../../src/lib/merge-capability.ts";
 
 // ── Helpers ───────────────────────────────────────────────────
 
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
-
 /** Create a minimal git repo with a base commit on main. */
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "taxi-merge-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("taxi-merge-");
 }
 
 function initRepoWithBareRemote() {
   const remote = mkdtempSync(join(tmpdir(), "taxi-merge-remote-"));
-  sh(["git", "init", "--bare"], remote);
+  sh(["git", "init", "--bare", "-b", "main"], remote);
 
   const repo = initRepo();
   sh(["git", "remote", "add", "origin", remote], repo);
@@ -641,14 +610,15 @@ test("pushMainBranch fast-forwards canonical main from merge worktree and pushes
   assert.equal(canonicalAfter, worktreeHead, "canonical main must fast-forward to the verified merge-worktree commit");
 });
 
-test("pushMainBranch skips local pre-push hooks for deterministic factory pushes", () => {
-  const { repo } = initRepoWithBareRemote();
+test("pushMainBranch respects failing local pre-push hooks", () => {
+  const { repo, remote } = initRepoWithBareRemote();
+  const remoteHeadBefore = sh(["git", "-C", remote, "rev-parse", "main"], repo);
 
   // Install a failing pre-push hook that would block a normal git push.
   const hooksDir = join(repo, ".git", "hooks");
   mkdirSync(hooksDir, { recursive: true });
   const hookPath = join(hooksDir, "pre-push");
-  writeFileSync(hookPath, "#!/bin/sh\necho PRE_PUSH_HOOK_SHOULD_NOT_RUN >&2\nexit 99\n", "utf8");
+  writeFileSync(hookPath, "#!/bin/sh\necho PRE_PUSH_HOOK_RAN >&2\nexit 99\n", "utf8");
   chmodSync(hookPath, 0o755);
 
   writeFileSync(join(repo, "hook-proof.txt"), "factory push\n", "utf8");
@@ -656,8 +626,9 @@ test("pushMainBranch skips local pre-push hooks for deterministic factory pushes
   sh(["git", "commit", "-m", "commit after hook"], repo);
 
   const out = pushMainBranch({ repo, branch: "main", remote: "origin" });
-  assert.equal(out.push_status, "pushed");
-  assert.doesNotMatch(String(out.push_stderr || ""), /PRE_PUSH_HOOK_SHOULD_NOT_RUN/);
+  assert.equal(out.push_status, "conflict");
+  assert.match(String(out.push_stderr || ""), /PRE_PUSH_HOOK_RAN/);
+  assert.equal(sh(["git", "-C", remote, "rev-parse", "main"], repo), remoteHeadBefore);
 });
 
 test("pushMainBranch allows verified main push from canonical checkout", () => {
@@ -1056,45 +1027,6 @@ test("attemptDeterministicMerge handles stale index entries (UU without MERGE_HE
   const out = attemptDeterministicMerge({ repo, branch: "wave/clean" });
   assert.equal(out.merge_status, "merged",
     "Must handle stale index state and merge cleanly");
-});
-
-// ── Graph contract: state machine exhaustiveness ──────────────
-
-test("merge_item.dot handles all attemptDeterministicMerge status values", () => {
-  const dot = readCapabilityMergeGraphDot();
-  const MERGE_STATUSES = ["merged", "already_merged", "conflict", "error"];
-
-  for (const status of MERGE_STATUSES) {
-    assert.match(dot, new RegExp(`merge_status=${status}`),
-      `merge_item.dot must handle merge_status=${status}`);
-  }
-  assert.match(dot, /rebase_status=ready/);
-  assert.match(dot, /rebase_status!=ready/);
-  assert.match(dot, /resolution_source/);
-  assert.match(dot, /merge_gate -> set_resolution_source_llm \[condition="merge_status=conflict"\]/);
-  assert.match(dot, /route_error_to_resolver -> set_resolution_source_llm/);
-});
-
-test("merge_item.dot handles all resolution_status values", () => {
-  const dot = readCapabilityMergeGraphDot();
-  // resolved → set_status_merged, not-resolved → set_status_failed
-  assert.match(dot, /resolution_status=resolved/);
-  assert.match(dot, /resolution_status!=resolved/);
-});
-
-test("merge_item.dot conflict path is complete: packet → resolve → verify → gate", () => {
-  const dot = readCapabilityMergeGraphDot();
-  assert.match(dot, /build_conflict_packet -> resolve_conflict -> finalize_merge_commit -> finalize_gate/);
-  assert.match(dot, /finalize_gate -> verify_resolution \[condition="finalize_status=ok"\]/);
-  assert.match(dot, /finalize_gate -> retry_resolve_conflict \[condition="finalize_status!=ok"\]/);
-  assert.match(dot, /retry_resolve_conflict -> verify_resolution/);
-});
-
-test("merge_item.dot cleanup runs on failed resolution", () => {
-  const dot = readCapabilityMergeGraphDot();
-  assert.match(dot, /set_status_failed -> cleanup_failed_merge/);
-  assert.match(dot, /cleanup_failed_merge -> encode_integration_command/);
-  assert.match(dot, /encode_integration_command -> integration/);
 });
 
 // ── pushMainBranch: canonical checkout on wave branch ─────────

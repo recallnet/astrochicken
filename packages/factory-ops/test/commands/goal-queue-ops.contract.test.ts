@@ -1,3 +1,4 @@
+import { makeCreatedTradingSubIssue } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -123,17 +124,7 @@ test("evaluateGoalDecomposeBackpressure ignores stale GitHub open sub-issues tha
     maxConcurrentGoals: "1",
     ghJsonFn: () => [{ number: 3000, labels: [{ name: "goal" }, { name: "ready" }] }],
     listCanonicalIssueLifecycleFn: () => [
-      {
-        issue_number: "3001",
-        parent_issue_number: "3000",
-        repo: "example-org/example-trading",
-        created: true,
-        sub_issue_link_status: "linked",
-        merge_status: "pushed",
-        shipped_to_main: true,
-        github_close_status: "",
-        last_error: "",
-      },
+      makeCreatedTradingSubIssue(),
     ],
     listSubIssuesFn: () => [{ number: 3001, state: "open", labels: [], blocked_by_count: 0 }],
   });

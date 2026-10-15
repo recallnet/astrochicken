@@ -24,5 +24,5 @@ test("resolveIntentStack returns platform and factory intent for mothership", ()
   assert.match(out.factory_intent, /control-plane factory/i);
   assert.match(out.work_intent, /Review and decompose/);
   assert.match(out.intent_stack_summary, /Factory identity:/);
-  assert.doesNotMatch(out.intent_stack_summary, /target_repo=/);
+  assert.match(out.intent_stack_summary, /target_repo=recallnet\/astrochicken/);
 });

@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -79,7 +83,6 @@ test("collectFactoryStatus reads outcomes + artifact paths from run-manifest con
   const status = collectFactoryStatus({
     factoryId: "mothership",
     targetRepo: "recallnet/astrochicken",
-    targetRepo: "recallnet/astrochicken",
     controlPlaneRepo: "recallnet/astrochicken",
     runsDir,
     rootDir: root,
@@ -89,7 +92,7 @@ test("collectFactoryStatus reads outcomes + artifact paths from run-manifest con
   assert.equal(status.last_outcomes.length, 1);
   assert.equal(status.last_outcomes[0].run_id, "run-terminal");
   assert.match(String(status.last_outcomes[0].summary || ""), /completed/);
-  assert.match(String(status.last_outcomes[0].summary || ""), /wave_execute\.dot/);
+  assert.match(String(status.last_outcomes[0].summary || ""), /wave_execute\.workflow-source\.mjs/);
 
   assert.equal(Array.isArray(status.run_artifacts), true);
   assert.equal(status.run_artifacts.length, 2);

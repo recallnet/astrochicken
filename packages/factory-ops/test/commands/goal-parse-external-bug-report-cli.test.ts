@@ -1,12 +1,8 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
-import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+import { join } from "node:path";
+import test from "node:test";
 
 test("goal parse-external-bug-report is wired and returns parser keys", () => {
   const goalIssue = {
@@ -27,11 +23,12 @@ test("goal parse-external-bug-report is wired and returns parser keys", () => {
     ].join("\n"),
   };
 
-  const run = spawnSync(
-    "node",
-    [opsCliPath, "goal", "parse-external-bug-report", "--goal-issue", JSON.stringify(goalIssue)],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+  const run = spawnOpsCli([
+      "goal",
+      "parse-external-bug-report",
+      "--goal-issue",
+      JSON.stringify(goalIssue)
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const parsed = JSON.parse(run.stdout || "{}");
@@ -47,17 +44,12 @@ test("goal parse-external-bug-report accepts --goal-issue-b64 transport", () => 
     body: "## Source factory\nexternal\n## Source repo\nexample/external-factory",
   };
 
-  const run = spawnSync(
-    "node",
-    [
-      opsCliPath,
+  const run = spawnOpsCli([
       "goal",
       "parse-external-bug-report",
       "--goal-issue-b64",
-      Buffer.from(JSON.stringify(goalIssue), "utf8").toString("base64"),
-    ],
-    { cwd: repoRoot, encoding: "utf8" },
-  );
+      Buffer.from(JSON.stringify(goalIssue), "utf8").toString("base64")
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const parsed = JSON.parse(run.stdout || "{}");

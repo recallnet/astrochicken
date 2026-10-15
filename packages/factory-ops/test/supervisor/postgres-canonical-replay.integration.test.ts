@@ -1,10 +1,11 @@
+import { writeRegistry } from "./canonical-parity.fixture.ts";
+import { writeRunState } from "./canonical-parity.fixture.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test, { after, before } from "node:test";
-import { fileURLToPath } from "node:url";
 
 import { Pool } from "pg";
 
@@ -17,23 +18,7 @@ import { persistNamedPacket } from "../../src/lib/packet-core.ts";
 import { createCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
 
 const fixture = createCanonicalEventStoreFixture();
-function writeRunState(runsDir, runId, state, metadata = null) {
-  const runDir = join(runsDir, runId);
-  mkdirSync(runDir, { recursive: true });
-  writeFileSync(join(runDir, "state.json"), JSON.stringify({ runId, ...state }, null, 2));
-  if (metadata) {
-    writeFileSync(join(runDir, "metadata.json"), JSON.stringify(metadata, null, 2));
-  }
-}
 
-function writeRegistry(rootDir, entries) {
-  const registryPath = join(rootDir, "factory-registry.json");
-  writeFileSync(registryPath, JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: entries,
-  }, null, 2));
-  return registryPath;
-}
 
 function buildLifecycleEvents({ factoryId, runId, startedAt, updatedAt, currentNode, status, issue = "", milestone = "", graph = "" }) {
   const emittedStart = String(startedAt || updatedAt || "");
@@ -104,21 +89,6 @@ async function appendFixtureBatch(pool, events) {
   }
 }
 
-function normalizeDeep(value) {
-  if (Array.isArray(value)) {
-    return value
-      .map((entry) => normalizeDeep(entry))
-      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, entry]) => [key, normalizeDeep(entry)]),
-    );
-  }
-  return value;
-}
 
 function createFleetDeps({ rootDir, nowMs }) {
   return {
@@ -393,3 +363,19 @@ test("canonical replay rebuilds status, tick, fleet, control-state, and packet p
     rmSync(rootDir, { recursive: true, force: true });
   }
 });
+
+function normalizeDeep(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map((entry) => normalizeDeep(entry))
+      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, entry]) => [key, normalizeDeep(entry)]),
+    );
+  }
+  return value;
+}

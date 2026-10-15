@@ -80,7 +80,18 @@ export function createServer(registry: HandlerRegistryLike | ServerRegistryBuild
 	const pipelines = new Map<string, PipelineRun>();
 
 	const server = createHttpServer(async (req: IncomingMessage, res: ServerResponse) => {
-		const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
+		let url: URL;
+		try {
+			url = new URL(req.url ?? "/", `http://${req.headers.host}`);
+		} catch {
+			sendJSON(res, 400, { error: "invalid request URL or Host" });
+			return;
+		}
+		// @context:security Reject DNS rebinding before reads as well as writes.
+		if ((host === "127.0.0.1" || host === "localhost") && !["127.0.0.1", "localhost", "[::1]"].includes(url.hostname)) {
+			sendJSON(res, 403, { error: "unrecognized local server hostname" });
+			return;
+		}
 
 		if (url.pathname === "/health" && req.method === "GET") {
 			sendJSON(res, 200, { status: "ok" });
@@ -88,6 +99,16 @@ export function createServer(registry: HandlerRegistryLike | ServerRegistryBuild
 		}
 
 		if (url.pathname === "/pipelines" && req.method === "POST") {
+			// @context:security Browser origins must not turn the local command
+			// runner into a cross-site execution endpoint. CLI clients omit Origin.
+			if (req.headers.origin && req.headers.origin !== url.origin) {
+				sendJSON(res, 403, { error: "cross-origin pipeline submission forbidden" });
+				return;
+			}
+			if (req.headers["content-type"]?.split(";", 1)[0]?.trim().toLowerCase() !== "application/json") {
+				sendJSON(res, 415, { error: "application/json required" });
+				return;
+			}
 			const body = await readBody(req);
 
 			try {
@@ -166,7 +187,8 @@ export function createServer(registry: HandlerRegistryLike | ServerRegistryBuild
 	});
 
 	// Parse addr like ":8080" or "localhost:8080"
-	let host = "0.0.0.0";
+	// @context:security Hostless addresses must stay local: this privileged API has no authentication.
+	let host = "127.0.0.1";
 	let port = 8080;
 	if (addr.startsWith(":")) {
 		port = parseInt(addr.slice(1), 10);

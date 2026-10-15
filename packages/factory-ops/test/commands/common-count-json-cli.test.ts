@@ -1,27 +1,27 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
-import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
+import test from "node:test";
 
 test("common count-json via CLI returns exact string '0' for malformed JSON", () => {
-  const run = spawnSync("node", [opsCliPath, "common", "count-json", "--raw", "{broken"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-json",
+      "--raw",
+      "{broken"
+    ]);
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "0");
 });
 
 test("common count-json via CLI returns stable string length for arrays", () => {
-  const run = spawnSync("node", [opsCliPath, "common", "count-json", "--raw", "[1,2,3]"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-json",
+      "--raw",
+      "[1,2,3]"
+    ]);
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "3");
 });
@@ -33,32 +33,36 @@ test("common count-json via CLI preserves quote-safe payload semantics via --raw
   ]);
   const encoded = Buffer.from(recommendedPayload, "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "count-json", "--raw-b64", encoded], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-json",
+      "--raw-b64",
+      encoded
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "2");
 });
 
 test("common count-json via CLI accepts stdin payload transport", () => {
-  const run = spawnSync("node", [opsCliPath, "common", "count-json"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    input: JSON.stringify([{ title: "O'Hare\nLine two" }, { title: "Two" }]),
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-json"
+    ], {
+      input: JSON.stringify([{ title: "O'Hare\nLine two" }, { title: "Two" }])
+    });
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "2");
 });
 
 test("common count-json via CLI empty-stdin fallback is deterministic", () => {
-  const run = spawnSync("node", [opsCliPath, "common", "count-json"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    input: "",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-json"
+    ], {
+      input: ""
+    });
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "0");
@@ -68,10 +72,12 @@ test("common count-feature-objects via CLI counts only object entries", () => {
   const payload = JSON.stringify([{ id: "F-1" }, "oops", null, { id: "F-2" }]);
   const encoded = Buffer.from(payload, "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "count-feature-objects", "--raw-b64", encoded], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-feature-objects",
+      "--raw-b64",
+      encoded
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "2");
@@ -79,10 +85,12 @@ test("common count-feature-objects via CLI counts only object entries", () => {
 
 test("common encode-base64 via CLI encodes --raw payload deterministically", () => {
   const raw = "npm test -- --runInBand";
-  const run = spawnSync("node", [opsCliPath, "common", "encode-base64", "--raw", raw], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "encode-base64",
+      "--raw",
+      raw
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, Buffer.from(raw, "utf8").toString("base64"));
@@ -90,11 +98,12 @@ test("common encode-base64 via CLI encodes --raw payload deterministically", () 
 
 test("common encode-base64 via CLI accepts stdin payload transport", () => {
   const raw = "echo 'hello from stdin'";
-  const run = spawnSync("node", [opsCliPath, "common", "encode-base64"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    input: raw,
-  });
+  const run = spawnOpsCli([
+      "common",
+      "encode-base64"
+    ], {
+      input: raw
+    });
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, Buffer.from(raw, "utf8").toString("base64"));
@@ -112,10 +121,12 @@ test("common count-feature-objects via CLI unwraps Hatch double-encoded JSON str
   const contextValue = JSON.stringify(innerArray);
   const encoded = Buffer.from(contextValue, "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "count-feature-objects", "--raw-b64", encoded], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-feature-objects",
+      "--raw-b64",
+      encoded
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "3", `expected 3 features, got: ${run.stdout} stderr: ${run.stderr}`);
@@ -128,10 +139,12 @@ test("common count-feature-objects via CLI handles double-encoded b64 transport 
   // DOT node: approved_b64=$(printf '%s' "${approved_features}" | base64 | tr -d '\n')
   const b64 = Buffer.from(engineStoredValue, "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "count-feature-objects", "--raw-b64", b64], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-feature-objects",
+      "--raw-b64",
+      b64
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "2", `expected 2 features, got: ${run.stdout} stderr: ${run.stderr}`);
@@ -143,10 +156,14 @@ test("common fallback-json via CLI unwraps Hatch double-encoded JSON string (reg
   const engineStoredValue = JSON.stringify(innerArray);
   const b64 = Buffer.from(engineStoredValue, "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "fallback-json", "--raw-b64", b64, "--goal-number", "1613"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "fallback-json",
+      "--raw-b64",
+      b64,
+      "--goal-number",
+      "1613"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "[]");
@@ -163,10 +180,12 @@ test("common count-feature-objects via CLI unwraps object-wrapped features array
   const wrapped = { features: [{ id: "F-1", name: "Feature A", summary: "s1" }, { id: "F-2", name: "Feature B", summary: "s2" }, { id: "F-3", name: "Feature C", summary: "s3" }] };
   const b64 = Buffer.from(JSON.stringify(wrapped), "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "count-feature-objects", "--raw-b64", b64], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "count-feature-objects",
+      "--raw-b64",
+      b64
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal(run.stdout, "3", `expected 3 features from wrapped object, got: ${run.stdout} stderr: ${run.stderr}`);
@@ -176,10 +195,14 @@ test("common fallback-json via CLI unwraps object-wrapped features array (regres
   const wrapped = { features: [{ id: "F-1", name: "Feature A", summary: "s1" }, { id: "F-2", name: "Feature B", summary: "s2" }] };
   const b64 = Buffer.from(JSON.stringify(wrapped), "utf8").toString("base64");
 
-  const run = spawnSync("node", [opsCliPath, "common", "fallback-json", "--raw-b64", b64, "--goal-number", "42"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "fallback-json",
+      "--raw-b64",
+      b64,
+      "--goal-number",
+      "42"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "[]");

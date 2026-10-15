@@ -1,6 +1,8 @@
+import { buildLifecycleEvents } from "./canonical-parity.fixture.ts";
+import { appendFixtureBatch } from "./canonical-parity.fixture.ts";
+import { writeRunState } from "./canonical-parity.fixture.ts";
 import assert from "node:assert/strict";
-import { randomUUID } from "node:crypto";
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test, { after, before } from "node:test";
@@ -8,22 +10,10 @@ import test, { after, before } from "node:test";
 import { Pool } from "pg";
 
 import { tickStatus as commandTickStatus } from "../../src/commands/factory-tick-status.ts";
-import {
-  ensureFactoryTickProjectionSchema,
-  projectFactoryTickToPostgres,
-  readFactoryTickProjection,
-} from "../../src/lib/factory-tick-postgres-projection.ts";
+import { ensureFactoryTickProjectionSchema, projectFactoryTickToPostgres, readFactoryTickProjection,  } from "../../src/lib/factory-tick-postgres-projection.ts";
 import { buildTickProjectionFromStates } from "../../src/lib/factory-tick-run-projection.ts";
 import { createCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
 
-function writeRunState(runsDir, runId, state, metadata = null) {
-  const runDir = join(runsDir, runId);
-  mkdirSync(runDir, { recursive: true });
-  writeFileSync(join(runDir, "state.json"), JSON.stringify({ runId, ...state }, null, 2));
-  if (metadata) {
-    writeFileSync(join(runDir, "metadata.json"), JSON.stringify(metadata, null, 2));
-  }
-}
 
 function readStateMap(runsDir) {
   const states = new Map();
@@ -46,106 +36,8 @@ function compareKey(value = {}) {
   ]);
 }
 
-function normalizeDeep(value) {
-  if (Array.isArray(value)) {
-    return value.map((entry) => normalizeDeep(entry)).sort((left, right) => compareKey(left).localeCompare(compareKey(right)));
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, entry]) => [key, normalizeDeep(entry)]),
-    );
-  }
-  return value;
-}
 
-function buildLifecycleEvents({ factoryId, runId, startedAt, updatedAt, currentNode, status, issue = "", milestone = "", graph = "" }) {
-  const emittedStart = String(startedAt || updatedAt || "");
-  const emittedUpdate = String(updatedAt || startedAt || "");
-  const payload = {
-    run_id: runId,
-    graph,
-    node: currentNode,
-    issue,
-    milestone,
-  };
-  const rows = [{
-    event_id: randomUUID(),
-    event_family: "hatch.run.started",
-    factory_id: factoryId,
-    run_id: runId,
-    emitter: "test.fixture",
-    emitted_at: emittedStart,
-    event_origin: "runtime",
-    payload,
-  }];
-  if (currentNode) {
-    rows.push({
-      event_id: randomUUID(),
-      event_family: "hatch.run.node_entered",
-      factory_id: factoryId,
-      run_id: runId,
-      emitter: "test.fixture",
-      emitted_at: emittedUpdate,
-      event_origin: "runtime",
-      payload,
-    });
-  }
-  if (status === "completed") {
-    rows.push({
-      event_id: randomUUID(),
-      event_family: "hatch.run.completed",
-      factory_id: factoryId,
-      run_id: runId,
-      emitter: "test.fixture",
-      emitted_at: emittedUpdate,
-      event_origin: "runtime",
-      payload,
-    });
-  }
-  if (["failed", "guarded", "guarded_terminal", "blocked", "terminal"].includes(String(status))) {
-    rows.push({
-      event_id: randomUUID(),
-      event_family: "hatch.run.failed",
-      factory_id: factoryId,
-      run_id: runId,
-      emitter: "test.fixture",
-      emitted_at: emittedUpdate,
-      event_origin: "runtime",
-      payload,
-    });
-  }
-  return rows;
-}
 
-async function appendFixtureBatch(pool, events) {
-  const { rows } = await pool.query("select nextval('canonical_event_commit_seq')::bigint as cursor");
-  const commitCursor = Number(rows[0].cursor);
-  for (const [index, event] of events.entries()) {
-    await pool.query(
-      `insert into factory_events (
-        event_id, commit_cursor, batch_offset, schema, event_family, event_version,
-        factory_id, run_id, emitter, emitted_at, event_origin, provenance, payload
-      ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13::jsonb)`,
-      [
-        event.event_id || randomUUID(),
-        commitCursor,
-        index,
-        "canonical_event_envelope/v1",
-        event.event_family,
-        1,
-        event.factory_id,
-        event.run_id || null,
-        event.emitter || "test.fixture",
-        event.emitted_at,
-        event.event_origin || "runtime",
-        JSON.stringify(event.provenance || {}),
-        JSON.stringify(event.payload || {}),
-      ],
-    );
-  }
-}
 
 const fixture = createCanonicalEventStoreFixture();
 
@@ -257,7 +149,7 @@ for (const scenario of [
       const legacyProjection = normalizeDeep(buildTickProjectionFromStates({
         allStates: readStateMap(runsDir),
         runsDir,
-        context: { factory_id: factoryId, runs_dir: runsDir },
+        context: { factory_id: factoryId, runs_dir: runsDir, canonical_event_store_url: fixture.connectionString },
         now: fixedNow,
       }));
       await ensureFactoryTickProjectionSchema({ connectionString: fixture.connectionString });
@@ -265,7 +157,7 @@ for (const scenario of [
         connectionString: fixture.connectionString,
         factoryId,
         runsDir,
-        context: { factory_id: factoryId, runs_dir: runsDir },
+        context: { factory_id: factoryId, runs_dir: runsDir, canonical_event_store_url: fixture.connectionString },
         now: fixedNow,
       });
       const projected = await readFactoryTickProjection({
@@ -321,7 +213,7 @@ test("tick cutover: tick-status honors the canonical projection timestamp instea
       connectionString: fixture.connectionString,
       factoryId,
       runsDir,
-      context: { factory_id: factoryId, runs_dir: runsDir },
+      context: { factory_id: factoryId, runs_dir: runsDir, canonical_event_store_url: fixture.connectionString },
       now: fixedNow,
     });
     const projected = await readFactoryTickProjection({
@@ -332,7 +224,7 @@ test("tick cutover: tick-status honors the canonical projection timestamp instea
     const legacyIgnoringNow = buildTickProjectionFromStates({
       allStates: readStateMap(runsDir),
       runsDir,
-      context: { factory_id: factoryId, runs_dir: runsDir },
+      context: { factory_id: factoryId, runs_dir: runsDir, canonical_event_store_url: fixture.connectionString },
     });
     assert.notDeepEqual(
       normalizeDeep(legacyIgnoringNow),
@@ -351,8 +243,25 @@ test("tick cutover: tick-status honors the canonical projection timestamp instea
     });
 
     assert.equal(cutover.ticks.length, 1);
-    assert.deepEqual(normalizeDeep(cutover), normalizeDeep(projected?.projection || {}));
+    assert.deepEqual(normalizeDeep(cutover), normalizeDeep({
+      ...projected.projection,
+      context: { ...projected.projection.context, canonical_event_store_url: fixture.connectionString },
+    }));
   } finally {
     rmSync(rootDir, { recursive: true, force: true });
   }
 });
+
+function normalizeDeep(value) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeDeep(entry)).sort((left, right) => compareKey(left).localeCompare(compareKey(right)));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, entry]) => [key, normalizeDeep(entry)]),
+    );
+  }
+  return value;
+}

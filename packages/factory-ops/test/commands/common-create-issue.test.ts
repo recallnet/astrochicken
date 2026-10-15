@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -11,9 +12,9 @@ test("createGitHubIssueFromSpec creates issue from stdin-safe spec payload", () 
   const ghExec = (args) => {
     calls.push(args);
     if (args[0] === "issue" && args[1] === "create") {
-      return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/123\n", stderr: "" };
+      return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/123\n");
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = createGitHubIssueFromSpec({
@@ -44,11 +45,7 @@ test("createGitHubIssueFromSpec creates issue from stdin-safe spec payload", () 
 });
 
 test("createGitHubIssueFromSpec returns created_issue_number extracted from issue URL", () => {
-  const ghExec = () => ({
-    ok: true, status: 0,
-    stdout: "https://github.com/recallnet/astrochicken/issues/2056\n",
-    stderr: "",
-  });
+  const ghExec = () => (successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2056\n"));
 
   const out = createGitHubIssueFromSpec({
     repo: "recallnet/astrochicken",
@@ -82,12 +79,7 @@ test("createGitHubIssueFromSpec keeps created issue when label reconciliation hi
   const ghExec = (args) => {
     calls.push(args);
     if (args[0] === "issue" && args[1] === "create") {
-      return {
-        ok: true,
-        status: 0,
-        stdout: "https://github.com/recallnet/astrochicken/issues/2363\n",
-        stderr: "",
-      };
+      return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2363\n");
     }
     if (args.includes("docs")) {
       return {
@@ -97,7 +89,7 @@ test("createGitHubIssueFromSpec keeps created issue when label reconciliation hi
         stderr: "could not add label: 'docs' not found\n",
       };
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = createGitHubIssueFromSpec({
@@ -122,14 +114,9 @@ test("createGitHubIssueFromSpec emits canonical issue_created event from the com
   const emitted = [];
   const ghExec = (args) => {
     if (args[0] === "issue" && args[1] === "create") {
-      return {
-        ok: true,
-        status: 0,
-        stdout: "https://github.com/recallnet/astrochicken/issues/2411\n",
-        stderr: "",
-      };
+      return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2411\n");
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = createGitHubIssueFromSpec({
@@ -160,14 +147,9 @@ test("createGitHubIssueFromSpec forwards projection receipt events through the a
   const emitted = [];
   const ghExec = (args) => {
     if (args[0] === "issue" && args[1] === "create") {
-      return {
-        ok: true,
-        status: 0,
-        stdout: "https://github.com/recallnet/astrochicken/issues/2501\n",
-        stderr: "",
-      };
+      return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2501\n");
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   createGitHubIssueFromSpec({
@@ -198,6 +180,7 @@ test("createGitHubIssueFromSpec forwards explicit mutation audit context through
   const auditRoot = mkdtempSync(path.join(tmpdir(), "common-create-issue-audit-"));
   try {
     const auditCalls = [];
+    const canonicalAppendCalls = [];
     const out = createGitHubIssueFromSpec({
       repo: "recallnet/astrochicken",
       factoryId: "mothership",
@@ -219,18 +202,17 @@ test("createGitHubIssueFromSpec forwards explicit mutation audit context through
       },
       ghExec: (args) => {
         if (args[0] === "issue" && args[1] === "create") {
-          return {
-            ok: true,
-            status: 0,
-            stdout: "https://github.com/recallnet/astrochicken/issues/2600\n",
-            stderr: "",
-          };
+          return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2600\n");
         }
-        return { ok: true, status: 0, stdout: "", stderr: "" };
+        return successfulCommandResult();
       },
       appendAuditRecordFn: (record) => {
         auditCalls.push(record);
         return { ok: true };
+      },
+      appendCanonicalEventsFn: (args) => {
+        canonicalAppendCalls.push(args);
+        return 43;
       },
       auditHostBaseDir: auditRoot,
     });
@@ -240,6 +222,11 @@ test("createGitHubIssueFromSpec forwards explicit mutation audit context through
     assert.equal(auditCalls[0].action, "issue_create");
     assert.equal(auditCalls[0].installation_id, "inst_mothership_host_a");
     assert.equal(auditCalls[0].target_ref, "issues/2600");
+    assert.equal(canonicalAppendCalls.length, 1);
+    assert.equal(canonicalAppendCalls[0].context.factory_id, "mothership");
+    assert.equal(out.canonical_event_commit_cursor, 43);
+    const createdEvent = canonicalAppendCalls[0].events.find((event) => event.event_family === "factory.issue.created");
+    assert.equal(createdEvent?.payload.issue_number, "2600");
   } finally {
     rmSync(auditRoot, { recursive: true, force: true });
   }
@@ -257,14 +244,9 @@ test("createGitHubIssueFromSpec degrades canonical append lock timeouts after su
     }),
     ghExec: (args) => {
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2601\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2601\n");
       }
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
     appendCanonicalEventsFn: () => {
       const error = new Error("canceling statement due to lock timeout");
@@ -285,7 +267,7 @@ test("updateGitHubIssueFromSpec edits existing issue from stdin-safe spec payloa
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = updateGitHubIssueFromSpec({
@@ -319,12 +301,12 @@ test("updateGitHubIssueFromSpec edits existing issue from stdin-safe spec payloa
 test("updateGitHubIssueFromSpec tolerates missing labels after successful body edit", () => {
   const ghExec = (args) => {
     if (args[0] === "issue" && args[1] === "edit" && args.includes("--title")) {
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     }
     if (args.includes("docs")) {
       return { ok: false, status: 1, stdout: "", stderr: "could not add label: 'docs' not found\n" };
     }
-    return { ok: true, status: 0, stdout: "", stderr: "" };
+    return successfulCommandResult();
   };
 
   const out = updateGitHubIssueFromSpec({

@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
 
 const EXAMPLE_TRADING_LOCAL_COPY = resolve(REPO_ROOT, "factories/example-trading/graphs/wave_dispatch.dot");
-const EXAMPLE_TRADING_SUPERVISOR_TICK = resolve(REPO_ROOT, "factories/example-trading/graphs/factory_supervisor_tick.dot");
+const EXAMPLE_TRADING_SUPERVISOR_TICK = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot");
 const CAPABILITY_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot");
 
 const PACKAGE_TEMPLATE = "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot";
@@ -28,7 +28,7 @@ describe("factory migration contract: @hatch/capability-wave-dispatch", () => {
 		).toBe(false);
 		expect(
 			content.includes(RL_LOCAL_TEMPLATE),
-			"local example-trading template reference still present in factories/example-trading/graphs/factory_supervisor_tick.dot",
+			"local example-trading template reference still present in docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot",
 		).toBe(false);
 	});
 

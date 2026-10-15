@@ -3,6 +3,8 @@ import { createRequire } from "node:module";
 import { basename, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
+
 import { loadFactoryConfig } from "./factory-config-loader.ts";
 import { trim } from "../lib/cli-helpers.ts";
 
@@ -281,7 +283,7 @@ function loadRouteInventory({ factoryRoot = "" } = {}) {
 
 async function collectRoutesFromGraph(graphPathAbs) {
   const hatch = await loadHatchGraphRuntime();
-  const source = readFileSync(graphPathAbs, "utf8");
+  const source = loadGraphSemanticsText(graphPathAbs);
   const parsed = hatch.parseWithAst(source);
   hatch.applyGraphStylesheetImports({
     graph: parsed.graph,
@@ -353,7 +355,7 @@ function normalizeOverrides(overrides = []) {
 
 async function loadGraphNodeAttrs({ graphPathAbs = "", nodeId = "" } = {}) {
   const hatch = await loadHatchGraphRuntime();
-  const source = readFileSync(graphPathAbs, "utf8");
+  const source = loadGraphSemanticsText(graphPathAbs);
   const parsed = hatch.parseWithAst(source);
   hatch.applyGraphStylesheetImports({
     graph: parsed.graph,

@@ -1,3 +1,4 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
@@ -164,18 +165,14 @@ test("common fallback-issue-spec CLI empty-stdin fallback is deterministic", () 
 });
 
 test("common fallback-issue-spec CLI rejects mixed raw and b64 issue-spec transport", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "common",
-    "fallback-issue-spec",
-    "--issue-spec",
-    "{}",
-    "--issue-spec-b64",
-    Buffer.from("{}", "utf8").toString("base64"),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "common",
+      "fallback-issue-spec",
+      "--issue-spec",
+      "{}",
+      "--issue-spec-b64",
+      Buffer.from("{}", "utf8").toString("base64")
+    ]);
 
   assert.equal(run.status, 2);
   assert.match(run.stderr, /issue-spec accepts one transport: --issue-spec or --issue-spec-b64/);

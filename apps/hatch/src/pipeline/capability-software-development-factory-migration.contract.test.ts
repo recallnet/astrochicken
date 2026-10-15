@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
 
-const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "factories/example-trading/graphs/domain_example_trading.dot");
+const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
 
 const REMOVED_EXAMPLE_TRADING_WAVE_GRAPHS = [
 	"factories/example-trading/graphs/wave_execute.dot",
@@ -14,7 +14,7 @@ const REMOVED_EXAMPLE_TRADING_WAVE_GRAPHS = [
 	"factories/example-trading/graphs/milestone_execute_parallel_item.dot",
 ] as const;
 
-const SHARED_GOAL_EXECUTE_TEMPLATE = "docs/contracts/workflow-ir/capability-software-development/goal_execute.dot";
+const SHARED_GOAL_EXECUTE_TEMPLATE = "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs";
 const FORBIDDEN_WAVE_DISPATCH_TEMPLATE = "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot";
 
 const FORBIDDEN_LOCAL_DELIVERY_PATHS = [
@@ -25,6 +25,8 @@ const FORBIDDEN_LOCAL_DELIVERY_PATHS = [
 ] as const;
 
 const FORBIDDEN_ACTIVE_PATH_REFERENCES = [
+	"@hatch/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+	"packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
 	"factories/example-trading/graphs/wave_dispatch.dot",
 	"factories/example-trading/graphs/wave_execute.dot",
 	"factories/example-trading/graphs/wave_issue_execute.dot",
@@ -52,11 +54,11 @@ describe("factory migration contract: @hatch/capability-software-development", (
 		const content = readFileSync(EXAMPLE_TRADING_DOMAIN_GRAPH, "utf8");
 		expect(
 			content.includes(`template="${SHARED_GOAL_EXECUTE_TEMPLATE}"`),
-			`factories/example-trading/graphs/domain_example_trading.dot must use ${SHARED_GOAL_EXECUTE_TEMPLATE}`,
+			`docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot must use ${SHARED_GOAL_EXECUTE_TEMPLATE}`,
 		).toBe(true);
 		expect(
 			content.includes("goal_execute_gate -> spawn_goal_execute [condition=\"count!=0\"]"),
-			"factories/example-trading/graphs/domain_example_trading.dot must route executable goals to spawn_goal_execute",
+			"docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot must route executable goals to spawn_goal_execute",
 		).toBe(true);
 	});
 
@@ -64,12 +66,12 @@ describe("factory migration contract: @hatch/capability-software-development", (
 		const content = readFileSync(EXAMPLE_TRADING_DOMAIN_GRAPH, "utf8");
 		expect(
 			content.includes(FORBIDDEN_WAVE_DISPATCH_TEMPLATE),
-			`forbidden template reference in factories/example-trading/graphs/domain_example_trading.dot: ${FORBIDDEN_WAVE_DISPATCH_TEMPLATE}`,
+			`forbidden template reference in docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot: ${FORBIDDEN_WAVE_DISPATCH_TEMPLATE}`,
 		).toBe(false);
 		for (const forbidden of FORBIDDEN_ACTIVE_PATH_REFERENCES) {
 			expect(
 				content.includes(forbidden),
-				`forbidden example-trading wave-era reference in factories/example-trading/graphs/domain_example_trading.dot: ${forbidden}`,
+				`forbidden example-trading wave-era reference in docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot: ${forbidden}`,
 			).toBe(false);
 		}
 	});

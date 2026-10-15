@@ -1,14 +1,9 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { spawnSync } from "node:child_process";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+import { join } from "node:path";
 
 function makeStatefulGhStub({ issues = [], milestones = [], subIssues = {} } = {}) {
   const root = mkdtempSync(join(tmpdir(), "goal-scheduler-gh-"));
@@ -171,16 +166,16 @@ function writeStubState(statePath, state) {
 }
 
 function runGoalCli(args, { binDir, statePath }) {
-  return spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
+  return spawnOpsCli([
+      ...args
+    ], {
+      env: {
       ...process.env,
       PATH: `${binDir}:${process.env.PATH || ""}`,
       HATCH_TEST_GH_STATE_PATH: statePath,
       MOTHERSHIP_REPO: "recallnet/astrochicken",
-    },
-  });
+    }
+    });
 }
 
 test("exhausted goals leave the ready queue until an explicit requeue re-adds ready", () => {
@@ -233,16 +228,14 @@ test("exhausted goals leave the ready queue until an explicit requeue re-adds re
 });
 
 test("limit-kept CLI enforces max_goal_runs_per_tick on a recovered backlog", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "goal",
-    "limit-kept",
-    "--kept-goals", JSON.stringify([201, 202, 203, 204, 205]),
-    "--max-goals-per-tick", "3",
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "goal",
+      "limit-kept",
+      "--kept-goals",
+      JSON.stringify([201, 202, 203, 204, 205]),
+      "--max-goals-per-tick",
+      "3"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.deepEqual(JSON.parse(run.stdout), [201, 202, 203]);

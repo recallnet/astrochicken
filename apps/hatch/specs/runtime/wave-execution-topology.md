@@ -47,7 +47,7 @@ graph and Hatch graph parser/runtime contracts.
 ## Test Surfaces
 
 - `apps/hatch/src/pipeline/supervisor-wave-topology-contract.test.ts`
-- `packages/factory-ops/test/wave/wave-split-results.test.mjs`
+- `packages/factory-ops/test/wave/wave-split-results.test.ts`
 
 ## Merge Blockers
 

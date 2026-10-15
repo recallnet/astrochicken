@@ -21,17 +21,17 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
+    "@hatch/factory-core": "workspace:*",
     "@opentelemetry/api-logs": "^0.206.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.206.0",
     "@opentelemetry/sdk-logs": "^0.206.0",
-    "@hatch/factory-core": "workspace:*",
-    "langfuse": "^3.38.6"
+    "langfuse": "^3.39.2"
   },
   "devDependencies": {
     "@hatch/tsconfig": "workspace:*",
-    "@types/node": "^22.0.0",
-    "typescript": "^5.7.3",
-    "vitest": "^3.2.4"
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=20.0.0"

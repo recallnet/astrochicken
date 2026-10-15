@@ -1,0 +1,10 @@
+// Bounded engine/checkpoint smoke: executes no factory or external service work.
+// Factory operator visibility is checked separately by the conformance harness.
+digraph factory_supervisor_tick {
+    label = "factory_supervisor_tick"
+    start [shape=Mdiamond]
+    runtime_version [type="tool" label="Read runtime version" governance="reversible"
+        output_key="__runtime_version_result" prompt="node --version"]
+    done [shape=Msquare recovery_sink_type="terminal"]
+    start -> runtime_version -> done
+}

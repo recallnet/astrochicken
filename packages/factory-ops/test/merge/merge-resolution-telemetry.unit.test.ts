@@ -109,3 +109,18 @@ test("countResolutionFailures returns zero shape when telemetry file does not ex
     last_occurrence: null,
   });
 });
+
+test("countResolutionFailures reads events written by emitResolutionFailure", () => {
+  const root = mkdtempSync(join(tmpdir(), "merge-resolution-roundtrip-"));
+  const runsDir = join(root, ".hatch", "mothership", "runs");
+  mkdirSync(runsDir, { recursive: true });
+  emitResolutionFailure({
+    recurrenceKey: RECURRENCE_KEY,
+    resolutionNotes: "fixture unresolved conflict",
+    factoryId: "mothership",
+    runsDir,
+  });
+  const out = countResolutionFailures({ recurrenceKey: RECURRENCE_KEY, factoryId: "mothership", runsDir });
+  assert.equal(out.count_24h, 1);
+  assert.match(out.last_occurrence, /^\d{4}-\d{2}-\d{2}T/);
+});

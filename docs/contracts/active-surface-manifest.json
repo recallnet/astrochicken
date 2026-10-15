@@ -59,6 +59,7 @@
       "id": "graph_fixtures_historical",
       "classification": "historical_or_test_only",
       "include": [
+        "factories/_shared/conformance/factory_supervisor_tick.dot",
         "factories/mothership/conformance/factory_supervisor_tick.dot",
         "factories/mothership/workflows/wave-execution/wave_dispatch.workflow-source.mjs",
         "packages/capability-coding/workflows/issue_execute_item/issue_execute_item.workflow-source.mjs",
@@ -81,7 +82,9 @@
       "classification": "test_only",
       "include": [
         "apps/hatch/src/**/*.test.ts",
-        "apps/hatch/vitest.config.ts"
+        "apps/hatch/vitest.config.ts",
+        "apps/hatch/src/pipeline/test/capability-manifest-support.ts",
+        "apps/hatch/src/pipeline/test/codergen-agent-mocks.ts"
       ]
     },
     {
@@ -96,7 +99,9 @@
       "id": "packages_test_dirs",
       "classification": "test_only",
       "include": [
-        "packages/*/test/**/*.ts"
+        "packages/*/test/**/*.ts",
+        "packages/factory-ops/test/helpers/offthread-worker-probe-loader.mjs",
+        "packages/factory-ops/test/helpers/offthread-worker-probe.mjs"
       ]
     },
     {
@@ -115,7 +120,9 @@
         "apps/hatch/src/pipeline/**/*.ts"
       ],
       "exclude": [
-        "apps/hatch/src/**/*.test.ts"
+        "apps/hatch/src/**/*.test.ts",
+        "apps/hatch/src/pipeline/test/capability-manifest-support.ts",
+        "apps/hatch/src/pipeline/test/codergen-agent-mocks.ts"
       ]
     },
     {

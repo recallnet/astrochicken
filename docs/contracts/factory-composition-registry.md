@@ -16,22 +16,22 @@ written: "2026-03-21"
 
 ## Factory Manifests
 
-- `example-scanner`
-  - composition model: `thin_composition`
-  - manifest: `factories/example-scanner/inventory/factory-composition-manifest.v1.json`
-  - shared graph bindings: `7`
-  - local graph bindings: `0`
-  - private execution glue paths: `0`
 - `brainstorm`
   - composition model: `thin_composition`
   - manifest: `factories/brainstorm/inventory/factory-composition-manifest.v1.json`
   - shared graph bindings: `1`
   - local graph bindings: `0`
   - private execution glue paths: `0`
-- `mothership`
-  - composition model: `control_plane`
-  - manifest: `factories/mothership/inventory/factory-composition-manifest.v1.json`
-  - shared graph bindings: `3`
+- `example-scanner`
+  - composition model: `thin_composition`
+  - manifest: `factories/example-scanner/inventory/factory-composition-manifest.v1.json`
+  - shared graph bindings: `7`
+  - local graph bindings: `0`
+  - private execution glue paths: `0`
+- `example-trading`
+  - composition model: `thin_composition`
+  - manifest: `factories/example-trading/inventory/factory-composition-manifest.v1.json`
+  - shared graph bindings: `8`
   - local graph bindings: `0`
   - private execution glue paths: `0`
 - `example-web`
@@ -40,10 +40,10 @@ written: "2026-03-21"
   - shared graph bindings: `6`
   - local graph bindings: `0`
   - private execution glue paths: `0`
-- `example-trading`
-  - composition model: `thin_composition`
-  - manifest: `factories/example-trading/inventory/factory-composition-manifest.v1.json`
-  - shared graph bindings: `8`
+- `mothership`
+  - composition model: `control_plane`
+  - manifest: `factories/mothership/inventory/factory-composition-manifest.v1.json`
+  - shared graph bindings: `3`
   - local graph bindings: `0`
   - private execution glue paths: `0`
 

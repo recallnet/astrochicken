@@ -8,6 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { resolveModelPolicyOutput } from "../../src/commands/factory-model-policy.ts";
 
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
+
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
 const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
@@ -53,7 +55,7 @@ async function loadRuntimeModelPolicyResolver() {
 async function loadNodePolicyContext(route) {
   const hatch = await import("hatch");
   const graphAbsPath = join(repoRoot, route.graph_path);
-  const source = readFileSync(graphAbsPath, "utf8");
+  const source = loadGraphSemanticsText(graphAbsPath);
   const parsed = hatch.parseWithAst(source);
   hatch.applyGraphStylesheetImports({
     graph: parsed.graph,

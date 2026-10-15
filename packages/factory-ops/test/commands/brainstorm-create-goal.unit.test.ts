@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -7,7 +8,7 @@ test("createBrainstormGoalIssue creates issue from final report", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/2021\n", stderr: "" };
+    return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2021\n");
   };
 
   const out = createBrainstormGoalIssue({
@@ -57,7 +58,7 @@ test("createBrainstormGoalIssue falls back to explicit repo for legacy callers",
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/2021\n", stderr: "" };
+    return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2021\n");
   };
 
   createBrainstormGoalIssue({
@@ -116,7 +117,7 @@ test("createBrainstormGoalIssue uses proposal as title", () => {
   const calls = [];
   const ghExec = (args) => {
     calls.push(args);
-    return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/99\n", stderr: "" };
+    return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/99\n");
   };
 
   createBrainstormGoalIssue({

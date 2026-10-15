@@ -1,3 +1,4 @@
+import { appendCanonicalFixtureEvents as appendFactoryEvents } from "./canonical-parity.fixture.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import {
@@ -12,7 +13,6 @@ import { dirname, join, resolve } from "node:path";
 import test, { after, before } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { Pool } from "pg";
 
 import { buildStateSnapshot } from "../../src/commands/supervisor-state-snapshot.ts";
 import { persistNamedPacket } from "../../src/lib/packet-core.ts";
@@ -55,48 +55,6 @@ function writeFactoryConfig(rootDir, runsDir) {
   }, null, 2));
 }
 
-async function appendFactoryEvents(connectionString, events) {
-  const pool = new Pool({ connectionString });
-  try {
-    const client = await pool.connect();
-    try {
-      await client.query("begin");
-      const next = await client.query("select nextval('canonical_event_commit_seq')");
-      const commitCursor = Number(next.rows[0]?.nextval || 0);
-      for (const [index, event] of events.entries()) {
-        await client.query(
-          `insert into factory_events (
-            event_id, commit_cursor, batch_offset, schema, event_family, event_version,
-            factory_id, run_id, emitter, emitted_at, event_origin, provenance, payload
-          ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13::jsonb)`,
-          [
-            event.event_id,
-            commitCursor,
-            index,
-            event.schema,
-            event.event_family,
-            event.event_version,
-            event.factory_id,
-            event.run_id || null,
-            event.emitter,
-            event.emitted_at,
-            event.event_origin || "runtime",
-            JSON.stringify(event.provenance || {}),
-            JSON.stringify(event.payload || {}),
-          ],
-        );
-      }
-      await client.query("commit");
-    } catch (error) {
-      await client.query("rollback").catch(() => {});
-      throw error;
-    } finally {
-      client.release();
-    }
-  } finally {
-    await pool.end();
-  }
-}
 
 function writeRunState(runsDir, runId, state) {
   const runDir = join(runsDir, runId);
@@ -128,6 +86,12 @@ function runPacketListCli({ cwd, runsDir, factoryId }) {
   return JSON.parse(String(proc.stdout || "[]"));
 }
 
+// @context:regression CLI packet expiry uses real time; preserve fixture ages without expiring a fixed historical window.
+const fixtureNowMs = Date.now();
+function fixtureTime(iso) {
+  return new Date(fixtureNowMs + Date.parse(iso) - Date.parse("2026-03-26T18:00:00.000Z")).toISOString();
+}
+
 test("packet cutover reads canonical projection instead of stale packet files", async () => {
   const rootDir = makeRoot();
   const runsDir = join(rootDir, ".hatch", "runs");
@@ -135,14 +99,14 @@ test("packet cutover reads canonical projection instead of stale packet files", 
   process.env.HATCH_CANONICAL_EVENT_STORE_URL = fixture.connectionString;
 
   try {
-    const nowIso = "2026-03-26T18:00:00.000Z";
+    const nowIso = fixtureTime("2026-03-26T18:00:00.000Z");
     writeFactoryConfig(rootDir, runsDir);
     writeRunState(runsDir, "run-active", {
       runId: "run-active",
       status: "running",
       currentNode: "resolve_conflict",
       pipelineFile: "wave_execute.dot",
-      startedAt: "2026-03-26T17:55:00.000Z",
+      startedAt: fixtureTime("2026-03-26T17:55:00.000Z"),
       updatedAt: nowIso,
       context: {
         issue_number: "101",
@@ -154,7 +118,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
       status: "completed",
       currentNode: "done",
       pipelineFile: "wave_execute.dot",
-      startedAt: "2026-03-26T17:00:00.000Z",
+      startedAt: fixtureTime("2026-03-26T17:00:00.000Z"),
       updatedAt: nowIso,
       context: {
         issue_number: "102",
@@ -171,7 +135,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
         factory_id: "mothership",
         run_id: "run-active",
         emitter: "test.packet-cutover",
-        emitted_at: "2026-03-26T17:55:00.000Z",
+        emitted_at: fixtureTime("2026-03-26T17:55:00.000Z"),
         event_origin: "runtime",
         payload: { graph: "wave_execute.dot", node: "resolve_conflict", issue: "101", milestone: "goal-1-wave-1" },
       },
@@ -195,7 +159,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
         factory_id: "mothership",
         run_id: "run-completed",
         emitter: "test.packet-cutover",
-        emitted_at: "2026-03-26T17:00:00.000Z",
+        emitted_at: fixtureTime("2026-03-26T17:00:00.000Z"),
         event_origin: "runtime",
         payload: { graph: "wave_execute.dot", node: "resolve_conflict", issue: "102", milestone: "goal-1-wave-2" },
       },
@@ -220,7 +184,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
         packet_type: "merge_conflict_packet",
         packet_id: "pkt-active",
         packet_state: "open",
-        created_at: "2026-03-26T17:59:00.000Z",
+        created_at: fixtureTime("2026-03-26T17:59:00.000Z"),
         factory_id: "mothership",
         run_id: "run-active",
         pipeline: "wave_execute.dot",
@@ -253,7 +217,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
         packet_type: "merge_conflict_packet",
         packet_id: "pkt-completed",
         packet_state: "open",
-        created_at: "2026-03-26T17:30:00.000Z",
+        created_at: fixtureTime("2026-03-26T17:30:00.000Z"),
         factory_id: "mothership",
         run_id: "run-completed",
         pipeline: "wave_execute.dot",
@@ -291,7 +255,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
       factoryId: "mothership",
       runsDir,
       context: { factory_id: "mothership" },
-      now: Date.parse("2026-03-26T18:01:00.000Z"),
+      now: Date.parse(fixtureTime("2026-03-26T18:01:00.000Z")),
     });
     assert.deepEqual(
       status.projection.open_packets.map((packet) => packet.packet_id),
@@ -313,7 +277,7 @@ test("packet cutover reads canonical projection instead of stale packet files", 
       factoryId: "mothership",
       ghJsonFn: () => [],
       recoverySweepFn: () => ({ stale_runs: [] }),
-      nowMs: Date.parse("2026-03-26T18:01:00.000Z"),
+      nowMs: Date.parse(fixtureTime("2026-03-26T18:01:00.000Z")),
       runsDir,
     }));
     assert.equal(snapshot.persisted_packet_action_items.length, 1);

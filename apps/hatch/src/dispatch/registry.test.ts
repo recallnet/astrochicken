@@ -15,7 +15,7 @@ describe("factory registry daemonStatus", () => {
 					id: "mothership",
 					instance_id: "mothership",
 					repo: "recallnet/astrochicken",
-					graphs: [{ id: "goal_queue", path: "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot" }],
+					graphs: [{ id: "goal_queue", path: "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs" }],
 					daemonStatus: {
 						status: "running",
 						pid: 1234,
@@ -88,9 +88,10 @@ describe("factory registry daemonStatus", () => {
 					instance_id: "brainstorm",
 					kind_id: "brainstorm",
 					target_repo: "example-org/example-notes",
+					control_plane_repo: "recallnet/astrochicken",
 					status: "registered",
 					assigned_host_id: "unassigned",
-					graphs: [{ id: "factory_supervisor_tick", path: "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot" }],
+					graphs: [{ id: "factory_supervisor_tick", path: "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs" }],
 					daemonStatus: { status: "stopped" },
 					service_tier: "gold",
 					scheduler_weight: 3,
@@ -106,6 +107,24 @@ describe("factory registry daemonStatus", () => {
 		});
 
 		expect(issues).toEqual([]);
+	});
+
+	it.each([42, "not-a-repository"])("rejects invalid instance control-plane repository %s", (controlPlaneRepo) => {
+		const issues = validateFactoryRegistryDocument({
+			schema: "hatch.factory.registry.v1",
+			instances: [{
+				instance_id: "example-trading",
+				kind_id: "example-trading",
+				target_repo: "example-org/example-trading",
+				control_plane_repo: controlPlaneRepo,
+				status: "registered",
+				assigned_host_id: "unassigned",
+			}],
+		});
+		expect(issues).toContainEqual({
+			path: "instances[0].control_plane_repo",
+			message: typeof controlPlaneRepo === "string" ? "must be an owner/repo or local path" : "must be a non-empty string",
+		});
 	});
 
 	it("keeps service profile metadata when normalizing instances[] via loadFactoryRegistry", () => {
@@ -222,7 +241,7 @@ describe("factory registry daemonStatus", () => {
 				{
 					id: "bad",
 					repo: "recallnet/astrochicken",
-					graphs: [{ id: "goal_queue", path: "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot" }],
+					graphs: [{ id: "goal_queue", path: "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs" }],
 					daemonStatus: { status: "paused" },
 				},
 			],
@@ -242,7 +261,7 @@ describe("factory registry daemonStatus", () => {
 		expect(brainstorm?.graphs).toEqual([
 			{
 				id: "factory_supervisor_tick",
-				path: "docs/contracts/workflow-ir/brainstorm/factory_supervisor_tick.dot",
+				path: "factories/brainstorm/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
 			},
 		]);
 		expect(brainstorm?.daemonStatus).toEqual({ status: "stopped" });
@@ -251,33 +270,41 @@ describe("factory registry daemonStatus", () => {
 		expect(replayLab?.graphs).toEqual([
 			{
 				id: "factory_supervisor_tick",
-				path: "factories/example-trading/graphs/factory_supervisor_tick.dot",
+				path: "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
+			},
+			{
+				id: "managed_software_delivery_domain",
+				path: "packages/factory-runtime/workflows/managed_software_delivery_domain/managed_software_delivery_domain.workflow-source.mjs",
+			},
+			{
+				id: "daily_release_report",
+				path: "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
 			},
 			{
 				id: "goal_intake_decompose",
-				path: "docs/contracts/workflow-ir/capability-goal-decomposition/goal_intake_decompose.dot",
+				path: "packages/capability-goal-decomposition/workflows/goal_intake_decompose/goal_intake_decompose.workflow-source.mjs",
 			},
 			{
 				id: "goal_queue",
-				path: "docs/contracts/workflow-ir/capability-goal-decomposition/goal_queue.dot",
+				path: "packages/capability-goal-decomposition/workflows/goal_queue/goal_queue.workflow-source.mjs",
 			},
 			{
 				id: "goal_run",
-				path: "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot",
+				path: "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs",
 			},
 			{
 				id: "goal_execute",
-				path: "docs/contracts/workflow-ir/capability-software-development/goal_execute.dot",
+				path: "packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs",
 			},
 			{
 				id: "goal_issue_execute",
-				path: "docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot",
+				path: "packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs",
 			},
 		]);
 
 		const replayLabGraphPaths = replayLab?.graphs.map((graph) => graph.path) ?? [];
-		expect(replayLabGraphPaths).toContain("docs/contracts/workflow-ir/capability-software-development/goal_execute.dot");
-		expect(replayLabGraphPaths).toContain("docs/contracts/workflow-ir/capability-software-development/goal_issue_execute.dot");
-		expect(replayLabGraphPaths).not.toContain("docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot");
+		expect(replayLabGraphPaths).toContain("packages/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs");
+		expect(replayLabGraphPaths).toContain("packages/capability-software-development/workflows/goal_issue_execute/goal_issue_execute.workflow-source.mjs");
+		expect(replayLabGraphPaths).not.toContain("packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs");
 	});
 });

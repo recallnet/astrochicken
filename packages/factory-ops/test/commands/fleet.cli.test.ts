@@ -1,6 +1,9 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { mothershipFactoryCliArgs } from "../helpers/ops-command-cli-fixture.ts";
+import { writeFixtureJson as writeJson } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+
+import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -8,11 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
-function writeJson(path, payload) {
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
-}
 
 function makeFixtureRoot() {
   const root = mkdtempSync(join(tmpdir(), "fleet-report-cli-"));
@@ -107,10 +106,11 @@ function makeFixtureRoot() {
 }
 
 function runCli(args, { cwd = repoRoot, expectStatus = 0 } = {}) {
-  const run = spawnSync("node", [opsCliPath, ...args], {
-    cwd,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      ...args
+    ], {
+      cwd
+    });
   assert.equal(run.status, expectStatus, `stderr=${run.stderr}\nstdout=${run.stdout}`);
   return run;
 }
@@ -121,14 +121,7 @@ test("fleet report --view throughput --json returns schema payload", () => {
     const run = runCli([
       "fleet",
       "report",
-      "--factory-root",
-      join(root, "factories", "mothership"),
-      "--factory-config-path",
-      join(root, "factories", "mothership", "factory.config.json"),
-      "--factory-id",
-      "mothership",
-      "--registry-path",
-      join(root, "factory-registry.json"),
+      ...mothershipFactoryCliArgs(root),
       "--mirror-dir",
       mirrorRoot,
       "--view",
@@ -162,14 +155,7 @@ test("fleet report supports all required views in json mode", () => {
       const run = runCli([
         "fleet",
         "report",
-        "--factory-root",
-        join(root, "factories", "mothership"),
-        "--factory-config-path",
-        join(root, "factories", "mothership", "factory.config.json"),
-        "--factory-id",
-        "mothership",
-        "--registry-path",
-        join(root, "factory-registry.json"),
+        ...mothershipFactoryCliArgs(root),
         "--mirror-dir",
         mirrorRoot,
         "--view",
@@ -193,14 +179,7 @@ test("fleet report applies --instance and --from/--to window filters", () => {
     const run = runCli([
       "fleet",
       "report",
-      "--factory-root",
-      join(root, "factories", "mothership"),
-      "--factory-config-path",
-      join(root, "factories", "mothership", "factory.config.json"),
-      "--factory-id",
-      "mothership",
-      "--registry-path",
-      join(root, "factory-registry.json"),
+      ...mothershipFactoryCliArgs(root),
       "--mirror-dir",
       mirrorRoot,
       "--view",
@@ -230,14 +209,7 @@ test("fleet report validates view and exits non-zero on invalid input", () => {
     const run = runCli([
       "fleet",
       "report",
-      "--factory-root",
-      join(root, "factories", "mothership"),
-      "--factory-config-path",
-      join(root, "factories", "mothership", "factory.config.json"),
-      "--factory-id",
-      "mothership",
-      "--registry-path",
-      join(root, "factory-registry.json"),
+      ...mothershipFactoryCliArgs(root),
       "--mirror-dir",
       mirrorRoot,
       "--view",

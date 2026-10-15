@@ -1,3 +1,4 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -6,18 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  checkoutMergeWorktreeRef,
-  cleanMergeWorkspaceState,
-  cleanupMergeWorktree,
-  currentMergeWorktreeHead,
-  readMergeWorktreeState,
-  refreshMergeWorktreeBase,
-  resolveMergeBaseRef,
-  resolveMergeWorktreeDir,
-  setupMergeWorktree,
-  writeMergeWorktreeState,
-} from "../../src/commands/merge-worktree.ts";
+import { checkoutMergeWorktreeRef, cleanMergeWorkspaceState, cleanupMergeWorktree, currentMergeWorktreeHead, readMergeWorktreeState, refreshMergeWorktreeBase, resolveMergeBaseRef, resolveMergeWorktreeDir, setupMergeWorktree, writeMergeWorktreeState } from "../../src/commands/merge-worktree.ts";
 
 function sh(args, cwd) {
   const result = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
@@ -26,19 +16,12 @@ function sh(args, cwd) {
 }
 
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "merge-worktree-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("merge-worktree-");
 }
 
 function initRepoWithRemote() {
   const remote = mkdtempSync(join(tmpdir(), "merge-worktree-remote-"));
-  sh(["git", "init", "--bare"], remote);
+  sh(["git", "init", "--bare", "-b", "main"], remote);
   const repo = initRepo();
   sh(["git", "remote", "add", "origin", remote], repo);
   sh(["git", "push", "-u", "origin", "main"], repo);

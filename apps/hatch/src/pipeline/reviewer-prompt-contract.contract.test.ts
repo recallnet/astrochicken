@@ -7,7 +7,7 @@ import { parse } from "./parse.js";
 import {
 	REVIEWER_CONTEXT_REQUIRED_KEYS,
 	REVIEWER_CONTEXT_SCHEMA_VERSION,
-} from "../../../../packages/factory-ops/src/commands/reviewer-context-contract.mjs";
+} from "../../../../packages/factory-ops/src/commands/reviewer-context-contract.ts";
 
 const GOAL_ISSUE_EXECUTE_DOT = join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/mothership/goal_issue_execute.dot");
 const ISSUE_EXECUTE_ITEM_DOT = join(import.meta.dirname, "../../../../docs/contracts/workflow-ir/capability-coding/issue_execute_item.dot");

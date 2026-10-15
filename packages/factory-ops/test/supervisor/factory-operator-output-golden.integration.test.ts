@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -37,8 +41,9 @@ function tickStatus({ runsDir = ".hatch/runs", context = {}, now = Date.now() } 
   return buildTickProjectionFromStates({ allStates: readStateMap(runsDir), runsDir, context, now });
 }
 
-test("golden: recovered-wave active-summary minimal output stays stable", () => {
+test("golden: recovered-wave active-summary minimal output stays stable", async () => {
   const { runsDir } = buildRecoveredWaveFixture();
+  await eventStoreFixture.seedRuns({ runsDir });
   const summary = factoryActiveSummary({
     runsDir,
     now: Date.parse("2026-03-10T16:00:05.000Z"),
@@ -64,6 +69,8 @@ test("golden: recovered-wave tick-status output stays stable", () => {
     },
   });
 
+  assert.equal(status.ticks[0].stuck_warning, "");
+  assert.equal(status.ticks[0].tick_progress.made_progress, true);
   const actual = normalizeOutput(formatTickStatus(status), runsDir);
   assert.equal(actual, readGolden("recovered-tick-status.expected.txt"));
 });

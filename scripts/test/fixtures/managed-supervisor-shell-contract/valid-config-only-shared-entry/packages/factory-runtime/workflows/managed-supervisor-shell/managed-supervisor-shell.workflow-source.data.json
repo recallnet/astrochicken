@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "workflow_source_module/v1",
+  "workflowId": "managed-supervisor-shell",
+  "familyId": "runtime",
+  "title": "Managed Supervisor Shell",
+  "description": "Structural shell-contract fixture migrated from its existing DOT graph.",
+  "sourcePath": "scripts/test/fixtures/managed-supervisor-shell-contract/valid-config-only-shared-entry/packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
+  "runtimeGraphPath": "scripts/test/fixtures/managed-supervisor-shell-contract/valid-config-only-shared-entry/docs/contracts/workflow-ir/factory-runtime/managed-supervisor-shell.dot",
+  "jsonSchemaOutputPath": "docs/contracts/workflow-source-module.v1.schema.json",
+  "graphAttributes": {
+    "label": "managed_supervisor"
+  },
+  "sourceMap": {
+    "graphName": "managed-supervisor-shell",
+    "nodeMappings": [
+      {
+        "sourceNodeId": "blocker_gate",
+        "runtimeNodeId": "blocker_gate"
+      },
+      {
+        "sourceNodeId": "domain_graph_invocation",
+        "runtimeNodeId": "domain_graph_invocation"
+      },
+      {
+        "sourceNodeId": "telemetry_emission",
+        "runtimeNodeId": "telemetry_emission"
+      }
+    ],
+    "debugRules": [
+      "Generated runtime DOT remains the execution IR for this migrated workflow family.",
+      "Operators trace runtime node ids directly through sourceMap.nodeMappings.",
+      "workflow_source graph attr points back to this module for source-of-truth lookup."
+    ]
+  },
+  "invariants": {
+    "mustPreserve": [
+      "edge.condition",
+      "edge.from",
+      "edge.label",
+      "edge.to",
+      "graph.label",
+      "graph.workflow_source",
+      "node.id"
+    ],
+    "mayNormalize": [
+      "attribute_order",
+      "comment_blocks",
+      "whitespace"
+    ]
+  },
+  "sourceOwnership": {
+    "canonicalAuthoringSurface": "typed_workflow_source",
+    "runtimeIr": "generated_dot_runtime_ir"
+  },
+  "artifacts": [],
+  "events": [],
+  "nodes": [
+    {
+      "id": "blocker_gate",
+      "kind": "llm_prompt",
+      "title": "Blocker gate",
+      "dotAttributes": {
+        "label": "Blocker gate"
+      }
+    },
+    {
+      "id": "domain_graph_invocation",
+      "kind": "llm_prompt",
+      "title": "Domain graph invocation",
+      "dotAttributes": {
+        "label": "Domain graph invocation"
+      }
+    },
+    {
+      "id": "telemetry_emission",
+      "kind": "llm_prompt",
+      "title": "Telemetry emit",
+      "dotAttributes": {
+        "label": "Telemetry emit"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "blocker_gate",
+      "to": "domain_graph_invocation"
+    },
+    {
+      "from": "domain_graph_invocation",
+      "to": "telemetry_emission"
+    }
+  ]
+}

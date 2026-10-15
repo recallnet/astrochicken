@@ -59,7 +59,7 @@ test("runtime workspace/package identity is hatch plus expected published scopes
   assert.doesNotMatch(hatchWrapper, /\.claude\/worktrees\//);
   assert.match(hatchOpsWrapper, /repo_root=\$\(cd "\$basedir\/\.\.\/\.\." && pwd\)/);
   assert.match(hatchOpsWrapper, /pnpm_node_path="\$repo_root\/node_modules\/\.pnpm\/node_modules"/);
-  assert.match(hatchOpsWrapper, /packages\/factory-ops\/src\/cli\.mjs/);
+  assert.match(hatchOpsWrapper, /packages\/factory-ops\/src\/cli\.ts/);
   assert.doesNotMatch(hatchOpsWrapper, /\.claude\/worktrees\//);
 
 });

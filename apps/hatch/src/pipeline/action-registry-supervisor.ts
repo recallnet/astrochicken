@@ -32,7 +32,6 @@ const {
 	tickIdleCheck,
 	detectExternalChanges,
 	countOpenDurablePackets,
-	processActionItems,
 	loadManagedSupervisorContext,
 	evaluateGoalDecomposeBackpressure,
 	limitKeptGoalsForTick,
@@ -270,14 +269,11 @@ class SupervisorActionItemGateAction implements ActionExecutor {
 		const actionItems = Array.isArray((snapshot as { action_items?: unknown[] }).action_items)
 			? (snapshot as { action_items: unknown[] }).action_items
 			: [];
-		const result = processActionItems(actionItems);
-		const remaining = result.needsJudgment.length;
+		// @context:security Gate evaluation is read-only. Action execution belongs
+		// to the explicit governed executor after supervisor review.
 		return jsonOutcome({
-			has_action_items: remaining > 0 ? "true" : "false",
-			action_item_count: remaining,
-			auto_executed_count: result.executed.length,
-			auto_exec_failed_count: result.failed.length,
-			skipped_count: result.skipped.length,
+			has_action_items: actionItems.length > 0 ? "true" : "false",
+			action_item_count: actionItems.length,
 		});
 	}
 }

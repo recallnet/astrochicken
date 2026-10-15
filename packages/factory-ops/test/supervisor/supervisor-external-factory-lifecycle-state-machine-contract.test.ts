@@ -1,3 +1,4 @@
+import { buildScenarioArgs } from "./external-lifecycle.fixture.ts";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -12,9 +13,6 @@ import {
 const machine = JSON.parse(readFileSync("packages/factory-ops/test/supervisor/fixtures/state-machines/external-factory-lifecycle.machine.json", "utf8"));
 const stateById = new Map((machine.states || []).map((state) => [state.id, state]));
 
-function clone(value) {
-  return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
-}
 
 function stableTuple(out) {
   return {
@@ -44,34 +42,7 @@ function assertTupleAllowed(tuple, scenarioId) {
   );
 }
 
-function unexpectedStub(scenarioId, stubName) {
-  return () => {
-    throw new Error(`Scenario '${scenarioId}' unexpectedly invoked ${stubName}`);
-  };
-}
 
-function buildScenarioArgs(scenario) {
-  const stubs = scenario.stubs || {};
-
-  return {
-    ...clone(scenario.input || {}),
-    ensureResumeReadyFn: stubs.ensure_resume_ready
-      ? () => clone(stubs.ensure_resume_ready)
-      : unexpectedStub(scenario.id, "ensureResumeReadyFn"),
-    resolveHostPathsFn: stubs.resolve_host_paths
-      ? () => clone(stubs.resolve_host_paths)
-      : unexpectedStub(scenario.id, "resolveHostPathsFn"),
-    hostRestartFn: stubs.host_restart
-      ? async () => clone(stubs.host_restart)
-      : async () => unexpectedStub(scenario.id, "hostRestartFn")(),
-    hostHealthFn: stubs.host_health
-      ? () => clone(stubs.host_health)
-      : unexpectedStub(scenario.id, "hostHealthFn"),
-    readExternalFactoryControlStateFn: stubs.read_control_state
-      ? () => clone(stubs.read_control_state)
-      : () => ({ action_state: {} }),
-  };
-}
 
 test("external-factory lifecycle machine fixture schema + reason coverage are stable", () => {
   assert.equal(machine.schema_version, "external_factory_lifecycle_machine/v1");

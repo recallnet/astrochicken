@@ -40,9 +40,9 @@ const shutdownOtelRuntimeMock = vi.fn(async () => {});
 const registerAllMock = vi.fn();
 const buildHandlerConfigModelRegistryMock = { find: vi.fn() };
 const authStorageCreateMock = vi.fn(() => ({ kind: "auth", setRuntimeApiKey: vi.fn() }));
-const modelRegistryCtorMock = vi.fn(() => buildHandlerConfigModelRegistryMock);
+const modelRegistryCtorMock = vi.fn(function () { return buildHandlerConfigModelRegistryMock; });
 const defaultResourceLoaderReloadMock = vi.fn(async () => {});
-const defaultResourceLoaderCtorMock = vi.fn(() => ({ reload: defaultResourceLoaderReloadMock }));
+const defaultResourceLoaderCtorMock = vi.fn(function () { return { reload: defaultResourceLoaderReloadMock }; });
 
 class HandlerRegistryStub {
 	register = vi.fn();
@@ -74,7 +74,8 @@ vi.mock("./pipeline/validate.js", () => ({
 	formatValidationError: formatValidationErrorMock,
 	hasValidationErrors: hasValidationErrorsMock,
 }));
-vi.mock("./pipeline/graph.js", () => ({
+vi.mock("./pipeline/graph.js", async (importOriginal) => ({
+	...await importOriginal<typeof import("./pipeline/graph.js")>(),
 	graphModelStylesheet: vi.fn(() => ""),
 	nodeHandlerType: vi.fn(() => "start"),
 	outgoingEdges: vi.fn(() => []),
@@ -210,6 +211,7 @@ vi.mock("./cli/provider-defaults.js", () => ({
 }));
 vi.mock("./factory/model-policy.js", () => ({
 	resolveEffectiveModelPolicyForPipeline: vi.fn(() => undefined),
+	resolveEffectiveModelPolicyForFactoryConfig: vi.fn(() => undefined),
 }));
 vi.mock("./pipeline/lifecycle-persistence.js", () => ({ persistLifecycleContextFromEngine: persistLifecycleContextFromEngineMock }));
 vi.mock("@recallnet/factory-telemetry", async (importOriginal) => {

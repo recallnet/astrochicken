@@ -13,8 +13,8 @@ written: "2026-03-21"
 
 - governed factory: `mothership`
 - config: `factories/mothership/factory.config.json`
-- dispatch graph: `factories/mothership/graphs/factory_dispatch_reactor.dot`
-- supervisor graph: `factories/mothership/graphs/factory_supervisor_tick.dot`
+- dispatch graph: `factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs`
+- supervisor graph: `factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs`
 - result: `ok`
 
 ## Diagnostics

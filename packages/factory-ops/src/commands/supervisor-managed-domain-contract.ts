@@ -1,4 +1,6 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
+
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
 
 import { trim } from "../lib/cli-helpers.ts";
 
@@ -182,7 +184,7 @@ export function validateManagedDomainContract({ dotPath = "", dotContent = "" } 
     }
 
     try {
-      dot = readFileSync(normalizedPath, "utf8");
+      dot = loadGraphSemanticsText(normalizedPath);
     } catch (error) {
       return {
         ok: false,

@@ -42,7 +42,8 @@ test("goal_batch validates and repairs llm decisions before irreversible goal mu
   assert.match(dot, /validate_decisions[\s\S]*action_decisions="\$\{review_result\}"/);
   assert.match(dot, /repair_decisions/);
   assert.match(dot, /fallback_decisions/);
-  assert.match(dot, /review_goals -> validate_decisions -> decisions_gate/);
+  assert.match(dot, /review_goals -> validate_decisions/);
+  assert.match(dot, /validate_decisions -> decisions_gate/);
   assert.match(dot, /decisions_gate -> apply_decisions \[condition="ok=true"/);
   assert.match(dot, /decisions_gate -> repair_decisions \[condition="ok!=true"/);
 });

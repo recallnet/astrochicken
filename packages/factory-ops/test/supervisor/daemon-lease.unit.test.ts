@@ -47,6 +47,34 @@ function makeRuntime(repoRoot) {
   };
 }
 
+function makeLeaseFixture() {
+  const root = makeTmpDir();
+  return {
+    root,
+    paths: { hostRoot: root, tmpDir: path.join(root, "tmp") },
+    runtime: makeRuntime(root),
+  };
+}
+
+function successfulDaemonLeaseOptions(runtime) {
+  return {
+      resolveTickRuntimeFn: () => runtime,
+      evaluateStartupInvariantFn: () => ({ ok: true }),
+      readControlStateFn: () => ({ action_state: {}, reason: "" }),
+      getControlStateActionFn: () => "none",
+      resolveLeaseTtlFn: () => ({ ttlSec: 60, source: "test" }),
+      acquireLeaseFn: () => ({
+        ok: true,
+        reason: "lease_acquired",
+        lease: {
+          lease_owner: "host_a:123:brainstorm:managed_daemon_lease",
+          host_id: "host_a",
+          lease_expires_at: "2026-03-16T10:01:00.000Z",
+        },
+      }),
+  };
+}
+
 afterEach(() => {
   mock.restoreAll();
   while (tempDirs.length > 0) {
@@ -55,12 +83,7 @@ afterEach(() => {
 });
 
 test("acquireLease enforces single-owner mutual exclusion with lease_active/split_brain", () => {
-  const root = makeTmpDir();
-  const paths = {
-    hostRoot: root,
-    tmpDir: path.join(root, "tmp"),
-  };
-  const runtime = makeRuntime(root);
+  const { paths, runtime } = makeLeaseFixture();
 
   const first = acquireLease({
     runtime,
@@ -107,12 +130,7 @@ test("acquireLease enforces single-owner mutual exclusion with lease_active/spli
 });
 
 test("acquireLease reclaims an unexpired same-host lease when the recorded pid is dead", () => {
-  const root = makeTmpDir();
-  const paths = {
-    hostRoot: root,
-    tmpDir: path.join(root, "tmp"),
-  };
-  const runtime = makeRuntime(root);
+  const { paths, runtime } = makeLeaseFixture();
   const env = {
     HATCH_HOST_ID: "host_a",
     HATCH_FACTORY_ID: "brainstorm",
@@ -149,12 +167,7 @@ test("acquireLease reclaims an unexpired same-host lease when the recorded pid i
 });
 
 test("renewLease extends lease_expires_at deterministically", () => {
-  const root = makeTmpDir();
-  const paths = {
-    hostRoot: root,
-    tmpDir: path.join(root, "tmp"),
-  };
-  const runtime = makeRuntime(root);
+  const { paths, runtime } = makeLeaseFixture();
   const env = {
     HATCH_HOST_ID: "host_a",
     HATCH_FACTORY_ID: "brainstorm",
@@ -197,12 +210,7 @@ test("resolveDaemonLeaseTtl uses config then env then default", () => {
 });
 
 test("releaseLease fails closed when caller identity does not match persisted lease", () => {
-  const root = makeTmpDir();
-  const paths = {
-    hostRoot: root,
-    tmpDir: path.join(root, "tmp"),
-  };
-  const runtime = makeRuntime(root);
+  const { paths, runtime } = makeLeaseFixture();
 
   const acquired = acquireLease({
     runtime,
@@ -248,20 +256,7 @@ test("runDaemon signal shutdown forwards releaseLeaseFn into terminate helper", 
     const daemonPromise = runDaemon("brainstorm", {
       repoRoot,
       hostBaseDir,
-      resolveTickRuntimeFn: () => runtime,
-      evaluateStartupInvariantFn: () => ({ ok: true }),
-      readControlStateFn: () => ({ action_state: {}, reason: "" }),
-      getControlStateActionFn: () => "none",
-      resolveLeaseTtlFn: () => ({ ttlSec: 60, source: "test" }),
-      acquireLeaseFn: () => ({
-        ok: true,
-        reason: "lease_acquired",
-        lease: {
-          lease_owner: "host_a:123:brainstorm:managed_daemon_lease",
-          host_id: "host_a",
-          lease_expires_at: "2026-03-16T10:01:00.000Z",
-        },
-      }),
+      ...successfulDaemonLeaseOptions(runtime),
       renewLeaseFn: () => ({
         ok: true,
         reason: "lease_renewed",
@@ -319,20 +314,7 @@ test("runDaemon renews the lease while a long-running tick is still active", asy
   const out = await runDaemon("brainstorm", {
     repoRoot,
     hostBaseDir,
-    resolveTickRuntimeFn: () => runtime,
-    evaluateStartupInvariantFn: () => ({ ok: true }),
-    readControlStateFn: () => ({ action_state: {}, reason: "" }),
-    getControlStateActionFn: () => "none",
-    resolveLeaseTtlFn: () => ({ ttlSec: 60, source: "test" }),
-    acquireLeaseFn: () => ({
-      ok: true,
-      reason: "lease_acquired",
-      lease: {
-        lease_owner: "host_a:123:brainstorm:managed_daemon_lease",
-        host_id: "host_a",
-        lease_expires_at: "2026-03-16T10:01:00.000Z",
-      },
-    }),
+    ...successfulDaemonLeaseOptions(runtime),
     renewLeaseFn: () => {
       if (runTickStarted) {
         renewalsDuringTick += 1;
@@ -387,20 +369,7 @@ test("runDaemon renews lease before inter-tick sleep to prevent expiry", async (
     repoRoot,
     hostBaseDir,
     maxTicks: 1,
-    resolveTickRuntimeFn: () => runtime,
-    evaluateStartupInvariantFn: () => ({ ok: true }),
-    readControlStateFn: () => ({ action_state: {}, reason: "" }),
-    getControlStateActionFn: () => "none",
-    resolveLeaseTtlFn: () => ({ ttlSec: 60, source: "test" }),
-    acquireLeaseFn: () => ({
-      ok: true,
-      reason: "lease_acquired",
-      lease: {
-        lease_owner: "host_a:123:brainstorm:managed_daemon_lease",
-        host_id: "host_a",
-        lease_expires_at: "2026-03-16T10:01:00.000Z",
-      },
-    }),
+    ...successfulDaemonLeaseOptions(runtime),
     renewLeaseFn: () => {
       renewalCount += 1;
       if (phase === "post-tick") {

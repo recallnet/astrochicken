@@ -258,7 +258,7 @@ test("factory CLI wires target-repo validate command", () => {
   const source = readFileSync(path.join(repoRoot, "packages/factory-ops/src/cli/commands/factory-host-cmds.ts"), "utf8");
   assert.match(source, /FactoryTargetRepoValidateCommand/);
   assert.match(source, /static paths = \[\["factory", "target-repo", "validate"\]\]/);
-  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-target-repo-validate\.mjs"\)/);
+  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-target-repo-validate\.ts"\)/);
 
   const run = spawnSync("node", [
     opsCliPath,

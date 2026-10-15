@@ -19,7 +19,7 @@ test("commitLocalIssueWorktree returns {ok:false} for a missing worktree directo
 });
 
 test("commit_helper.sh path resolves to an existing file from source location", () => {
-	const sourceFile = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "src", "commands", "wave-issue-commit-local.mjs");
+	const sourceFile = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "src", "commands", "wave-issue-commit-local.ts");
 	const sourceDir = dirname(sourceFile);
 	const src = readFileSync(sourceFile, "utf8");
 	const match = src.match(/join\(dirname\(fileURLToPath\(import\.meta\.url\)\)((?:,\s*"\.\.")+)\)/);

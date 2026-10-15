@@ -6,7 +6,7 @@ function read(path: string): string {
   return readFileSync(path, "utf8");
 }
 
-const skillsRoot = "packages/factory-skills/skills";
+const skillsRoot = new URL("../skills/", import.meta.url).pathname;
 
 // --- Red Strategist ---
 

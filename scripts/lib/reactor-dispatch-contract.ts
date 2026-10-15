@@ -2,6 +2,8 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
+import { loadGraphSemanticsText } from "./load-graph-semantics.ts";
+
 const REPO_ROOT = path.resolve(import.meta.dirname, "../..");
 
 export const REACTOR_DISPATCH_REPORT_JSON_PATH = path.join(REPO_ROOT, "docs/contracts/reactor-dispatch-contract.json");
@@ -45,10 +47,6 @@ function trim(value = "") {
 
 function readJson(relativePath = "") {
   return JSON.parse(readFileSync(path.join(REPO_ROOT, relativePath), "utf8"));
-}
-
-function readText(relativePath = "") {
-  return readFileSync(path.join(REPO_ROOT, relativePath), "utf8");
 }
 
 export function listTrackedFilesFromGit() {
@@ -147,7 +145,7 @@ export function analyzeReactorDispatchContract({ files = [] } = {}) {
   }
 
   if (dispatchGraph) {
-    const dispatchDot = readText(dispatchGraph);
+    const dispatchDot = loadGraphSemanticsText(path.join(REPO_ROOT, dispatchGraph));
     for (const pattern of REQUIRED_DISPATCH_PATTERNS) {
       if (!pattern.test(dispatchDot)) diagnostics.push(`dispatch_graph_missing_required_pattern path=${dispatchGraph} pattern=${pattern}`);
     }
@@ -157,7 +155,7 @@ export function analyzeReactorDispatchContract({ files = [] } = {}) {
   }
 
   if (supervisorGraph) {
-    const supervisorDot = readText(supervisorGraph);
+    const supervisorDot = loadGraphSemanticsText(path.join(REPO_ROOT, supervisorGraph));
     for (const pattern of FORBIDDEN_SUPERVISOR_PATTERNS) {
       if (pattern.test(supervisorDot)) diagnostics.push(`supervisor_graph_contains_dispatch_logic path=${supervisorGraph} pattern=${pattern}`);
     }

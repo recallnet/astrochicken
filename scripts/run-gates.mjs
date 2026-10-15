@@ -459,7 +459,7 @@ function appendRuntimeArgs(gate, context) {
 
 function executeDotValidateGate(gate, context, state) {
   if (context.allTracked) {
-    const run = runCommand("node", ["scripts/check-dot-quality.mjs"]);
+    const run = runCommand("node", ["scripts/check-dot-quality.ts"]);
     if (!run.ok) {
       emitFirstFailure(state, {
         phase: gate.telemetryPhase,
@@ -502,6 +502,48 @@ function executeDotValidateGate(gate, context, state) {
   }
 
   return { ok: true, exitStatus: 0 };
+}
+
+const preflightGateLabels = {
+  docs_check: "docs policy scope",
+  test_classification: "test classification",
+  irreversible_node_coverage: "irreversible node coverage",
+  ops_export_coverage: "ops export coverage",
+  workspace_export_coverage: "workspace export coverage baselines",
+  coverage_policy_ratchet: "coverage policy ratchet",
+  benchmark_job_id_registry: "benchmark job_id registry",
+};
+
+// @context:regression A single owner executes manifest commands for both phases.
+// Missing this function made every installed commit hook abort before any gate.
+function executeCommandGate(gate, context, state) {
+  const args = appendRuntimeArgs(gate, context);
+  const commandDisplay = formatCommandInvocation(gate.command, args);
+  if (gate.phase === "preflight") {
+    process.stdout.write(`Checking ${preflightGateLabels[gate.id] || gate.id.replaceAll("_", " ")}\n`);
+  }
+  process.stdout.write(`[${context.telemetryPrefix}] gate_start gate=${gate.id} command=${JSON.stringify(commandDisplay)}\n`);
+  const run = runCommand(gate.command, args);
+  if (!run.ok) {
+    process.stderr.write(`[${context.telemetryPrefix}] gate_failed gate=${gate.id} command=${JSON.stringify(commandDisplay)} exit=${run.exitStatus}\n`);
+    if (!gate.suppressFirstFailure) {
+      emitFirstFailure(state, {
+        phase: gate.telemetryPhase,
+        target: preflightFailureTarget(gate),
+        exitStatus: run.exitStatus,
+        prefix: context.telemetryPrefix,
+        ...(gate.phase === "quality" ? { command: commandDisplay } : {}),
+      });
+    }
+    return { ok: false, exitStatus: run.exitStatus };
+  }
+  state.executedGateIds.push(gate.id);
+  process.stdout.write(`[${context.telemetryPrefix}] gate_pass gate=${gate.id} command=${JSON.stringify(commandDisplay)} exit=0\n`);
+  return { ok: true, exitStatus: 0 };
+}
+
+function executeQualityGate(gate, context, state) {
+  return executeCommandGate(gate, context, state);
 }
 
 async function executePreflightGate(gate, context, state) {
@@ -549,14 +591,14 @@ async function executeSelectedGates(gates, context, state) {
   return firstFailure || { ok: true, exitStatus: 0 };
 }
 
-function runOneTestSuite(suite, context, state) {
+export function runOneTestSuite(suite, context, state) {
   const commandDisplay = formatCommandInvocation(suite.command, suite.args);
   const contextPart = suite.commandContext ? ` context=${JSON.stringify(suite.commandContext)}` : "";
   process.stdout.write(`[${context.telemetryPrefix}] test_suite_start suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart}\n`);
 
-  const run = runCommand(suite.command, suite.args);
+  const run = runCommand(suite.command, suite.args, { timeoutMs: suite.timeoutMs });
   if (!run.ok) {
-    process.stderr.write(`[${context.telemetryPrefix}] test_suite_failed suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart} exit=${run.exitStatus}\n`);
+    process.stderr.write(`[${context.telemetryPrefix}] test_suite_failed suite=${suite.name} command=${JSON.stringify(commandDisplay)}${contextPart} exit=${run.exitStatus} reason=${run.timedOut ? "timeout" : "command_failed"} timeout_ms=${run.timeoutMs}\n`);
     emitFirstFailure(state, {
       phase: "test_suite",
       target: suite.name,
@@ -602,6 +644,20 @@ function runWholeRepoQualityProof(context, state) {
   }
   process.stdout.write(`[${context.telemetryPrefix}] gate_pass gate=whole_repo_quality_proof command=${JSON.stringify(commandDisplay)} exit=0\n`);
   return { ok: true, exitStatus: 0 };
+}
+
+export function resolveFullProfileTestSuites() {
+  const guard = PRE_COMMIT_TEST_SUITES.find((suite) => suite.name === "test:guard-gates");
+  const wave = PRE_COMMIT_TEST_SUITES.find((suite) => suite.name === "test:wave-claim-gates");
+  if (!guard || !wave) throw new Error("full_profile_required_guard_suite_missing");
+  return [guard, wave, ...["hatch", "@hatch/factory-ops", "@recallnet/factory-telemetry"].map((packageName) => ({
+    name: `${packageName}#default`,
+    command: "pnpm",
+    args: ["--filter", packageName, "test"],
+    commandContext: `package default manifest: ${packageName}`,
+    // The full Ops suite exceeds ten minutes on two-core hosted runners.
+    ...(packageName === "@hatch/factory-ops" ? { timeoutMs: 20 * 60 * 1000 } : {}),
+  }))];
 }
 
 function runTestSuites(context, state) {
@@ -659,13 +715,10 @@ function runTestSuites(context, state) {
 
   const profileReason = "full_profile_all_suites";
   process.stdout.write(
-    `[${context.telemetryPrefix}] test_suites_decision action=run reason=${profileReason} bucket=all_suites selection=guard_only+wave_claim_only\n`,
+    `[${context.telemetryPrefix}] test_suites_decision action=run reason=${profileReason} bucket=all_suites selection=guard_only+wave_claim_only+package_defaults\n`,
   );
 
-  const guardSuite = PRE_COMMIT_TEST_SUITES.find((suite) => suite.name === "test:guard-gates");
-  const waveSuite = PRE_COMMIT_TEST_SUITES.find((suite) => suite.name === "test:wave-claim-gates");
-
-  for (const suite of [guardSuite, waveSuite].filter(Boolean)) {
+  for (const suite of resolveFullProfileTestSuites()) {
     const run = runOneTestSuite(suite, context, state);
     if (!run.ok) return run;
   }

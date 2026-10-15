@@ -1,0 +1,9 @@
+// Generated from scripts/test/fixtures/managed-supervisor-shell-contract/valid-config-only-shared-entry/packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs. Do not edit by hand.
+digraph "managed-supervisor-shell" {
+    label = "managed_supervisor"
+    workflow_source = "scripts/test/fixtures/managed-supervisor-shell-contract/valid-config-only-shared-entry/packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs"
+    blocker_gate [label="Blocker gate"]
+    domain_graph_invocation [label="Domain graph invocation"]
+    telemetry_emission [label="Telemetry emit"]
+    blocker_gate -> domain_graph_invocation -> telemetry_emission
+}

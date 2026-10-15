@@ -1,26 +1,14 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
+import { createReleaseIssueReader } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdirSync, writeFileSync, chmodSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, dirname, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-import {
-  RELEASE_MANIFEST_SCHEMA_VERSION,
-  CONTROL_PLANE_RELEASE_STATUSES,
-  buildReleaseManifest,
-  resolveReleaseManifestPath,
-  produceReleaseManifest,
-  collectReleaseManifestEntries,
-  validateReleaseManifestContract,
-  parseReleaseManifestPayload,
-  markArtifactInManifest,
-} from "../../src/commands/release-manifest.ts";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+import { RELEASE_MANIFEST_SCHEMA_VERSION, CONTROL_PLANE_RELEASE_STATUSES, buildReleaseManifest, resolveReleaseManifestPath, produceReleaseManifest, collectReleaseManifestEntries, validateReleaseManifestContract, parseReleaseManifestPayload, markArtifactInManifest } from "../../src/commands/release-manifest.ts";
 
 function makeGhMock(dir, fixturePath) {
   const ghPath = join(dir, "gh");
@@ -443,19 +431,7 @@ test("collectReleaseManifestEntries filters by run id and carries resume gate me
     },
   };
 
-  const ghJsonFn = (args, fallback = []) => {
-    if (args[0] === "issue" && args[1] === "list") {
-      const repo = args[args.indexOf("--repo") + 1];
-      const state = args[args.indexOf("--state") + 1];
-      return fixture.issue_list?.[repo]?.[state] || [];
-    }
-    if (args[0] === "issue" && args[1] === "view") {
-      const issueNumber = String(args[2]);
-      const repo = args[args.indexOf("--repo") + 1];
-      return fixture.issue_view?.[repo]?.[issueNumber] || { number: Number(issueNumber), comments: [], url: "" };
-    }
-    return fallback;
-  };
+  const ghJsonFn = createReleaseIssueReader(fixture);
 
   const entries = collectReleaseManifestEntries({
     controlPlaneRepo: "recallnet/astrochicken",
@@ -528,19 +504,7 @@ test("produceReleaseManifest fails closed when upstream artifact status is outsi
     },
   };
 
-  const ghJsonFn = (args, fallback = []) => {
-    if (args[0] === "issue" && args[1] === "list") {
-      const repo = args[args.indexOf("--repo") + 1];
-      const state = args[args.indexOf("--state") + 1];
-      return fixture.issue_list?.[repo]?.[state] || [];
-    }
-    if (args[0] === "issue" && args[1] === "view") {
-      const issueNumber = String(args[2]);
-      const repo = args[args.indexOf("--repo") + 1];
-      return fixture.issue_view?.[repo]?.[issueNumber] || { number: Number(issueNumber), comments: [], url: "" };
-    }
-    return fallback;
-  };
+  const ghJsonFn = createReleaseIssueReader(fixture);
 
   assert.throws(
     () => produceReleaseManifest({
@@ -621,8 +585,7 @@ test("artifact release-manifest CLI emits manifest metadata", () => {
   process.env.PATH = `${binDir}:${prevPath}`;
 
   try {
-    const run = spawnSync("node", [
-      opsCliPath,
+    const run = spawnOpsCli([
       "artifact",
       "release-manifest",
       "--control-plane-repo",
@@ -640,8 +603,8 @@ test("artifact release-manifest CLI emits manifest metadata", () => {
       "--runs-dir",
       join(temp, "runs"),
       "--releases-dir",
-      join(temp, "releases"),
-    ], { cwd: repoRoot, encoding: "utf8" });
+      join(temp, "releases")
+    ]);
 
     assert.equal(run.status, 0, run.stderr || run.stdout);
     const out = JSON.parse(run.stdout || "{}");
@@ -726,19 +689,7 @@ test("produceReleaseManifest fails closed when linkage comment is missing", () =
     },
   };
 
-  const ghJsonFn = (args, fallback = []) => {
-    if (args[0] === "issue" && args[1] === "list") {
-      const repo = args[args.indexOf("--repo") + 1];
-      const state = args[args.indexOf("--state") + 1];
-      return fixture.issue_list?.[repo]?.[state] || [];
-    }
-    if (args[0] === "issue" && args[1] === "view") {
-      const issueNumber = String(args[2]);
-      const repo = args[args.indexOf("--repo") + 1];
-      return fixture.issue_view?.[repo]?.[issueNumber] || { number: Number(issueNumber), comments: [], url: "" };
-    }
-    return fallback;
-  };
+  const ghJsonFn = createReleaseIssueReader(fixture);
 
   assert.throws(
     () => produceReleaseManifest({

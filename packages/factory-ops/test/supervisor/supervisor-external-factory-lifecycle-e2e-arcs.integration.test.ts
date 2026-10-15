@@ -1,3 +1,6 @@
+import { BASE_INPUT } from "./external-lifecycle.fixture.ts";
+import { assertStableLifecycle } from "./external-lifecycle.fixture.ts";
+import { readInactiveControlState } from "./external-lifecycle.fixture.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -6,38 +9,8 @@ import {
   runExternalFactoryLifecycleGate,
 } from "../../src/commands/supervisor-external-factory-lifecycle.ts";
 
-const BASE_INPUT = Object.freeze({
-  controlPlaneRepo: "recallnet/astrochicken",
-  sourceRepo: "example/external-factory",
-  sourceIssueNumber: 1504,
-});
 
-function assertStableLifecycle(out, { lifecycle_state, resume_allowed, reason }) {
-  assert.deepEqual(
-    {
-      lifecycle_state: out.lifecycle_state,
-      resume_allowed: out.resume_allowed,
-      reason: out.reason,
-    },
-    {
-      lifecycle_state,
-      resume_allowed,
-      reason,
-    },
-  );
-}
 
-function readInactiveControlState() {
-  return {
-    action_state: {
-      pause: { active: false },
-      quarantine: { active: false },
-      retry: { active: false },
-      unblock: { active: false },
-      resume: { active: false },
-    },
-  };
-}
 
 test("Arc 1 — local defect fixed locally transitions waiting_for_release -> ready_to_resume", async () => {
   const firstTick = await runExternalFactoryLifecycleGate({

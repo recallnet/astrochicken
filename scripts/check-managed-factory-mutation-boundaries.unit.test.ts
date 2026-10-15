@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { validateManagedFactoryMutationBoundaries } from "./check-managed-factory-mutation-boundaries.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-managed-factory-mutation-boundaries.mjs");
+const checkerPath = join(scriptsDir, "check-managed-factory-mutation-boundaries.ts");
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "managed-factory-mutation-boundaries");
 
 function fixtureRoot(name) {

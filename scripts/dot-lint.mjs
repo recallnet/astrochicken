@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+
 import { benchmarkIdentityDiagnosticsForNode } from "./lib/dot-lint-benchmark-identity.ts";
 import {
   CONTEXT_FLOW_SEED_KEYS,
@@ -35,6 +36,7 @@ import {
 } from "./lib/dot-lint-tool-policy.ts";
 import { parseDotFileWithAst } from "./lib/hatch-dot-parser-wrapper.ts";
 import { DEFAULT_INLINE_SCRIPT_BASELINE_FILE, computeInlineScriptMarkerIdentity, dedupeInlineScriptMarkers, toSerializableInlineScriptMarker } from "./lib/inline-script-baseline.ts";
+import { loadGraphSemanticsText } from "./lib/load-graph-semantics.ts";
 const DEFAULT_COMPAT_FILE = "scripts/dot-lint-exceptions.json";
 const TRUST_DOMAIN_KEY = "trust_domain";
 const TRUST_ROLE_KEY = "trust_role";
@@ -807,9 +809,10 @@ export async function lintDotFiles({
       continue;
     }
 
-    const source = readFileSync(absolutePath, "utf8");
+    let source = "";
     let parsed;
     try {
+      source = loadGraphSemanticsText(absolutePath);
       parsed = await parseDotFileWithAst({
         input: source,
         filePath: absolutePath,

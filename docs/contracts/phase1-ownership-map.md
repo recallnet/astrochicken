@@ -12,7 +12,7 @@ written: "2026-03-20"
 # Phase 1 Ownership Map
 
 Schema: `phase1_ownership_audit/v1`
-Active targets: 1
+Active targets: 0
 Legacy targets: 0
 Diagnostics: 0
 
@@ -20,7 +20,6 @@ Diagnostics: 0
 
 | File | Surface | Owner | Owner Path |
 | --- | --- | --- | --- |
-| `packages/factory-ops/src/commands/goal-final-state-review.ts` | `command_thinness` | `factory-ops` | `packages/factory-ops/src/commands/goal-final-state-review.ts` |
 
 ## Legacy Deletion Owners
 

@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { emitOtelEvent } from "./otel-stdout.js";
+import { createServer } from "node:http";
+import type { AddressInfo } from "node:net";
+
+import { emitOtelEvent, flushOtelRuntime, shutdownOtelRuntime } from "./otel-stdout.js";
 import { createLangfuseTelemetry, type LangfuseSpanEnvelope, type LangfuseTelemetryTransport } from "./telemetry/langfuse.js";
 
 class CaptureTransport implements LangfuseTelemetryTransport {
@@ -49,30 +52,35 @@ describe("factory_id telemetry propagation", () => {
 		expect(span.metadata["factory.factory_id"]).toBe("mothership");
 	});
 
-	it("adds factory_id to otel resource attributes", async () => {
+	it("exports factory_id as an OTLP log attribute", async () => {
+		const payloads: any[] = [];
+		const server = createServer((request, response) => {
+			let body = "";
+			request.on("data", (chunk) => { body += chunk.toString(); });
+			request.on("end", () => {
+				payloads.push(JSON.parse(body));
+				response.writeHead(200, { "content-type": "application/json" });
+				response.end("{}");
+			});
+		});
+		await new Promise<void>((resolve) => { server.listen(0, "127.0.0.1", resolve); });
 		const originalMode = process.env.OTEL_MODE;
 		const originalEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
-		const fetchMock = vi.fn().mockResolvedValue({ ok: true });
-		const originalFetch = globalThis.fetch;
-		(globalThis as any).fetch = fetchMock;
-		process.env.OTEL_MODE = "otlp";
-		process.env.OTEL_EXPORTER_OTLP_ENDPOINT = "https://otel.example/v1/logs";
-
-		emitOtelEvent({
-			event_name: "factory.test",
-			attributes: { factory_id: "external" },
-		});
-		await new Promise((resolve) => setTimeout(resolve, 0));
-
-		expect(fetchMock).toHaveBeenCalledTimes(1);
-		const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-		const resourceAttrs = body.resourceLogs[0].resource.attributes as Array<{ key: string; value: { stringValue: string } }>;
-		expect(resourceAttrs.some((entry) => entry.key === "factory.id" && entry.value.stringValue === "external")).toBe(true);
-
-		if (originalMode === undefined) delete process.env.OTEL_MODE;
-		else process.env.OTEL_MODE = originalMode;
-		if (originalEndpoint === undefined) delete process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
-		else process.env.OTEL_EXPORTER_OTLP_ENDPOINT = originalEndpoint;
-		(globalThis as any).fetch = originalFetch;
+		try {
+			process.env.OTEL_MODE = "otlp";
+			process.env.OTEL_EXPORTER_OTLP_ENDPOINT = `http://127.0.0.1:${(server.address() as AddressInfo).port}/v1/logs`;
+			emitOtelEvent({ event_name: "factory.test", attributes: { factory_id: "external" } });
+			await flushOtelRuntime();
+			expect(payloads).toHaveLength(1);
+			const attrs = payloads[0].resourceLogs[0].scopeLogs[0].logRecords[0].attributes;
+			expect(attrs.some((entry: any) => entry.key === "factory_id" && entry.value.stringValue === "external")).toBe(true);
+		} finally {
+			await shutdownOtelRuntime();
+			if (originalMode === undefined) delete process.env.OTEL_MODE;
+			else process.env.OTEL_MODE = originalMode;
+			if (originalEndpoint === undefined) delete process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
+			else process.env.OTEL_EXPORTER_OTLP_ENDPOINT = originalEndpoint;
+			await new Promise<void>((resolve, reject) => { server.close((error) => error ? reject(error) : resolve()); });
+		}
 	});
 });

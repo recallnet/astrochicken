@@ -11,7 +11,7 @@ import {
   runGoalMaterializeApprovedPlan,
   seedApprovedHardPlanningState,
   writeFactoryRequestPlanArtifact,
-} from "./helpers/command-test-helpers.mjs";
+} from "./helpers/command-test-helpers.ts";
 
 function writeSimplePlanArtifact({ packetRepoRoot, goalIssueNumber }) {
   const planningArtifactPath = join(packetRepoRoot, "plan-2299.json");

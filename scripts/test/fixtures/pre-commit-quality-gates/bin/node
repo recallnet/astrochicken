@@ -16,7 +16,7 @@ if [[ -z "$REAL_NODE" ]]; then
   exit 66
 fi
 
-if [[ "${PRE_COMMIT_RUNTIME_STARTUP_PROBE_STUB:-0}" == "1" && "${1:-}" == "scripts/check-runtime-startup-probe.mjs" ]]; then
+if [[ "${PRE_COMMIT_RUNTIME_STARTUP_PROBE_STUB:-0}" == "1" && "${1:-}" == "scripts/check-runtime-startup-probe.ts" ]]; then
   exit_code="${PRE_COMMIT_RUNTIME_STARTUP_PROBE_EXIT:-0}"
   if [[ "$exit_code" == "0" ]]; then
     echo "[runtime-startup-probe] result=ok probes=3"

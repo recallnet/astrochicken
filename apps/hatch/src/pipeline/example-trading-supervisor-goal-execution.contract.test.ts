@@ -6,12 +6,14 @@ import type { Graph, Node } from "./graph.js";
 
 const EXAMPLE_TRADING_DOMAIN_DOT = join(
 	import.meta.dirname,
-	"../../../../factories/example-trading/graphs/domain_example_trading.dot",
+	"../../../../docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot",
 );
 
-const GOAL_EXEC_TEMPLATE = "docs/contracts/workflow-ir/capability-software-development/goal_execute.dot";
+const GOAL_EXEC_TEMPLATE = "@hatch/capability-software-development/workflows/goal_execute/goal_execute.workflow-source.mjs";
 const FORBIDDEN_WAVE_DISPATCH_TEMPLATE = "docs/contracts/workflow-ir/capability-wave-dispatch/wave_dispatch.dot";
 const FORBIDDEN_EXAMPLE_TRADING_LOCAL_WAVE_TEMPLATES = [
+	"@hatch/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
+	"packages/capability-wave-dispatch/workflows/wave_dispatch/wave_dispatch.workflow-source.mjs",
 	"factories/example-trading/graphs/wave_execute.dot",
 	"factories/example-trading/graphs/wave_issue_execute.dot",
 	"factories/example-trading/graphs/milestone_execute.dot",
@@ -204,7 +206,7 @@ describe("example-trading supervisor goal-execution topology contract", () => {
 		expect(node.attrs.action_runtime).toBe("in_process");
 		expect(node.attrs.action_id).toBe("common.resolve_default");
 		expect(node.attrs.action_value).toBe("${runs_dir}");
-		expect(node.attrs.action_fallback).toBe("${repo}/.hatch/example-trading/runs");
+		expect(node.attrs.action_fallback).toBe("${repo}/.hatch/${factory_id}/runs");
 	});
 
 	it("reports missing conditional edge invariant when goal gate routing drifts", () => {

@@ -14,7 +14,7 @@ import {
 } from "./check-pipeline-segment-coverage.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-pipeline-segment-coverage.mjs");
+const checkerPath = join(scriptsDir, "check-pipeline-segment-coverage.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 test("parseArgs accepts file-list aliases and json flag", () => {

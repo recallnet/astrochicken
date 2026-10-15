@@ -99,7 +99,7 @@ test("build failure aborts with canonical gate failure output and suppresses typ
 
   assert.equal(run.status, scenario.expectedStatus);
   assertNpmInvocationContract(pnpmInvocations, scenario.expectedNpmCalls);
-  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.mjs" exit=0/);
+  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.ts" exit=0/);
   assert.match(output, /\[pre-commit\] gate_start gate=build command="pnpm build[^"]*"/);
   assert.match(output, /\[pre-commit\] gate_failed gate=build command="pnpm build[^"]*" exit=17/);
   assert.match(output, /\[pre-commit\] first_failure phase=quality_gate target=build command="pnpm build[^"]*" exit=17/);
@@ -112,9 +112,9 @@ test("typecheck failure runs after successful build with deterministic ordering"
 
   assert.equal(run.status, scenario.expectedStatus);
   assertNpmInvocationContract(pnpmInvocations, scenario.expectedNpmCalls);
-  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.mjs" exit=0/);
+  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.ts" exit=0/);
   assert.match(output, /\[pre-commit\] gate_pass gate=build command="pnpm build[^"]*" exit=0/);
-  assert.match(output, /\[pre-commit\] gate_pass gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs" exit=0/);
+  assert.match(output, /\[pre-commit\] gate_pass gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts" exit=0/);
   assert.match(output, /\[pre-commit\] gate_start gate=typecheck command="pnpm typecheck[^"]*"/);
   assert.match(output, /\[pre-commit\] gate_failed gate=typecheck command="pnpm typecheck[^"]*" exit=23/);
   assert.match(output, /\[pre-commit\] first_failure phase=quality_gate target=typecheck command="pnpm typecheck[^"]*" exit=23/);
@@ -137,9 +137,9 @@ test("all quality gates pass with zero exit and no failure line", () => {
 
   assert.equal(run.status, scenario.expectedStatus);
   assertNpmInvocationContract(pnpmInvocations, scenario.expectedNpmCalls);
-  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.mjs" exit=0/);
+  assert.match(output, /\[pre-commit\] gate_pass gate=lockfile_sync command="node scripts\/check-lockfile-sync\.ts" exit=0/);
   assert.match(output, /\[pre-commit\] gate_pass gate=build command="pnpm build[^"]*" exit=0/);
-  assert.match(output, /\[pre-commit\] gate_pass gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs" exit=0/);
+  assert.match(output, /\[pre-commit\] gate_pass gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts" exit=0/);
   assert.match(output, /\[pre-commit\] gate_pass gate=typecheck command="pnpm typecheck[^"]*" exit=0/);
   assert.doesNotMatch(output, /\[pre-commit\] gate_failed gate=/);
   assert.doesNotMatch(output, /\[pre-commit\] first_failure /);
@@ -150,9 +150,9 @@ test("docs-only path still runs mandatory non-test quality gates", () => {
 
   assert.equal(run.status, scenario.expectedStatus);
   assertNpmInvocationContract(pnpmInvocations, scenario.expectedNpmCalls);
-  assert.match(output, /\[pre-commit\] gate_start gate=lockfile_sync command="node scripts\/check-lockfile-sync\.mjs"/);
+  assert.match(output, /\[pre-commit\] gate_start gate=lockfile_sync command="node scripts\/check-lockfile-sync\.ts"/);
   assert.match(output, /\[pre-commit\] gate_start gate=build command="pnpm build[^"]*"/);
-  assert.match(output, /\[pre-commit\] gate_start gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs"/);
+  assert.match(output, /\[pre-commit\] gate_start gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts"/);
   assert.match(output, /\[pre-commit\] gate_start gate=typecheck command="pnpm typecheck[^"]*"/);
   assert.doesNotMatch(output, /\[pre-commit\] gates_skipped/);
 });
@@ -162,9 +162,9 @@ test("fallback_other branch still runs mandatory quality gates", () => {
 
   assert.equal(run.status, scenario.expectedStatus);
   assertNpmInvocationContract(pnpmInvocations, scenario.expectedNpmCalls);
-  assert.match(output, /\[pre-commit\] gate_start gate=lockfile_sync command="node scripts\/check-lockfile-sync\.mjs"/);
+  assert.match(output, /\[pre-commit\] gate_start gate=lockfile_sync command="node scripts\/check-lockfile-sync\.ts"/);
   assert.match(output, /\[pre-commit\] gate_start gate=build command="pnpm build[^"]*"/);
-  assert.match(output, /\[pre-commit\] gate_start gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs"/);
+  assert.match(output, /\[pre-commit\] gate_start gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts"/);
   assert.match(output, /\[pre-commit\] gate_start gate=typecheck command="pnpm typecheck[^"]*"/);
 });
 

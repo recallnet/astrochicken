@@ -12,8 +12,8 @@ written: "2026-03-20"
 # Phase 1 Burn-Down Inventory
 
 Schema: `phase1_burndown_audit/v1`
-Active targets: 1
-Phase 1 targets: 1
+Active targets: 0
+Phase 1 targets: 0
 Out-of-scope targets: 0
 Diagnostics: 0
 
@@ -25,19 +25,16 @@ The Phase 1 target set can change only by updating this checked-in classificatio
 
 | File | Surface | Owner | Determinism | Graph Role |
 | --- | --- | --- | --- | --- |
-| `packages/factory-ops/src/commands/goal-final-state-review.ts` | `command_thinness` | `factory-ops` | `deterministic_internal_transport` | `` |
 
 ## Owner Partitions
 
 | Owner | Targets |
 | --- | --- |
-| `factory-ops` | 1 |
 
 ## Surface Partitions
 
 | Surface | Targets |
 | --- | --- |
-| `command_thinness` | 1 |
 
 ## Out-of-Scope Targets
 

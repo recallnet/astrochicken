@@ -296,7 +296,7 @@ test("scheduler enforces bounded concurrency and eventually schedules lower-weig
   }
 });
 
-test("scheduler defers installation when lease is invalid and schedules after valid lease appears", async () => {
+test("scheduler defers a foreign-host assignment and schedules after ownership and lease match", async () => {
   const hostBaseDir = makeTmpDir("host-runtime-scheduler-lease-");
   const hostId = "host_scheduler_test_02";
   const paths = resolveHostRuntimePaths({ hostBaseDir, repoRoot: process.cwd() });
@@ -335,7 +335,7 @@ test("scheduler defers installation when lease is invalid and schedules after va
         installationManifestPath: target.installationManifestPath,
         schedulerWeight: 2,
         reservedCapacity: 0,
-        assignedHostId: hostId,
+        assignedHostId: "host_scheduler_other",
         kindId: "brainstorm",
         targetRepo: "example-org/example-notes",
       }),
@@ -344,6 +344,16 @@ test("scheduler defers installation when lease is invalid and schedules after va
     process.env.HATCH_FACTORY_REGISTRY_PATH = registryPath;
     process.env.HATCH_FACTORY_REGISTRY_CWD = hostBaseDir;
     process.env.HATCH_HOST_MAX_ACTIVE = "1";
+
+    // @context:regression A missing owned lease is auto-repaired; an explicit foreign assignment must still defer.
+    writeLease({
+      installationDir: target.installationDir,
+      installationId: "inst_lease",
+      instanceId: "fac_lease",
+      hostId,
+      runtimeVersion: install.runtimeVersion,
+      leaseExpiresAt: "2099-03-16T00:10:00.000Z",
+    });
 
     const invalidRun = await runHostRuntime({
       paths,
@@ -379,6 +389,16 @@ test("scheduler defers installation when lease is invalid and schedules after va
       runtimeVersion: install.runtimeVersion,
       leaseExpiresAt: "2099-03-16T00:10:00.000Z",
     });
+
+    writeRegistry(hostBaseDir, [registryRow({
+      instanceId: "fac_lease",
+      installationManifestPath: target.installationManifestPath,
+      schedulerWeight: 2,
+      reservedCapacity: 0,
+      assignedHostId: hostId,
+      kindId: "brainstorm",
+      targetRepo: "example-org/example-notes",
+    })]);
 
     const validRun = await runHostRuntime({
       paths,

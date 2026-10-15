@@ -12,7 +12,7 @@ import {
 } from "./check-suite-routing-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-suite-routing-contract.mjs");
+const checkerPath = join(scriptsDir, "check-suite-routing-contract.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {

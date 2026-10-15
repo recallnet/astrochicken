@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -21,9 +25,10 @@ function tickStatus({ runsDir = ".hatch/runs", context = {}, now = Date.now() } 
   return buildTickProjectionFromStates({ allStates: readStateMap(runsDir), runsDir, context, now });
 }
 
-test("recovered-wave fixture drives active-summary from real run state", () => {
+test("recovered-wave fixture drives active-summary from real run state", async () => {
   const { runsDir } = buildRecoveredWaveFixture();
 
+  await eventStoreFixture.seedRuns({ runsDir });
   const summary = factoryActiveSummary({
     runsDir,
     now: Date.parse("2026-03-10T16:00:05.000Z"),

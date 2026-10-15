@@ -1,22 +1,18 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+
 
 import { approveResearchStage } from "../../src/commands/research-approve-stage.ts";
 
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
-
 function runCli(args = [], { expectedStatus } = {}) {
-  const out = spawnSync("node", [opsCliPath, ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const out = spawnOpsCli([
+      ...args
+    ]);
   if (expectedStatus !== undefined) {
     assert.equal(out.status, expectedStatus, `stderr=${out.stderr}\nstdout=${out.stdout}`);
   }

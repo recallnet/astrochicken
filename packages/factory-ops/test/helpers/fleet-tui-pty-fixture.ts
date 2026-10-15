@@ -50,6 +50,7 @@ function snapshot() {
       },
       {
         factory_id: "beta",
+        recent_outcomes: [{ closed_features: 1 }],
         target_repo: "example-org/beta",
         control_plane_repo: "recallnet/astrochicken",
         factory_root: "/tmp/beta",

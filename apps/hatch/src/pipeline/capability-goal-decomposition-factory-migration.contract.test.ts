@@ -18,9 +18,9 @@ const MIGRATED_GRAPHS = [
 const MOTHERSHIP_GRAPHS_DIR = resolve(REPO_ROOT, "factories/mothership/graphs");
 const EXAMPLE_TRADING_GRAPHS_DIR = resolve(REPO_ROOT, "factories/example-trading/graphs");
 const MOTHERSHIP_SUPERVISOR_TICK = resolve(REPO_ROOT, "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot");
-const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "factories/example-trading/graphs/domain_example_trading.dot");
+const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
 
-const PACKAGE_GOAL_RUN = "docs/contracts/workflow-ir/capability-goal-decomposition/goal_run.dot";
+const PACKAGE_GOAL_RUN = "packages/capability-goal-decomposition/workflows/goal_run/goal_run.workflow-source.mjs";
 const MS_LOCAL_GOAL_RUN = "factories/mothership/graphs/goal_run.dot";
 const RL_LOCAL_GOAL_RUN = "factories/example-trading/graphs/goal_run.dot";
 
@@ -64,7 +64,7 @@ describe("factory migration contract: @hatch/capability-goal-decomposition", () 
 		const replayLabContent = readFileSync(EXAMPLE_TRADING_DOMAIN_GRAPH, "utf8");
 
 		expect(mothershipContent.includes(PACKAGE_GOAL_RUN)).toBe(true);
-		expect(replayLabContent.includes(PACKAGE_GOAL_RUN)).toBe(true);
+		expect(replayLabContent.includes(PACKAGE_GOAL_RUN.replace("packages/", "@hatch/"))).toBe(true);
 
 		expect(mothershipContent.includes(MS_LOCAL_GOAL_RUN)).toBe(false);
 		expect(mothershipContent.includes(RL_LOCAL_GOAL_RUN)).toBe(false);
@@ -81,28 +81,28 @@ describe("factory migration contract: @hatch/capability-goal-decomposition", () 
 	});
 
 	it("no graph remaining in factories/mothership/graphs/ contains hardcoded mothership goal_analyzer skill path", () => {
-		for (const dotPath of listDotFiles(MOTHERSHIP_GRAPHS_DIR)) {
+		for (const dotPath of listDotFiles(resolve(REPO_ROOT, "docs/contracts/workflow-ir/mothership"))) {
 			const content = readFileSync(dotPath, "utf8");
 			expect(content.includes(MS_HARDCODED_GOAL_ANALYZER), `hardcoded path in ${dotPath}`).toBe(false);
 		}
 	});
 
 	it("no graph remaining in factories/example-trading/graphs/ contains hardcoded example-trading goal_analyzer skill path", () => {
-		for (const dotPath of listDotFiles(EXAMPLE_TRADING_GRAPHS_DIR)) {
+		for (const dotPath of listDotFiles(resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime"))) {
 			const content = readFileSync(dotPath, "utf8");
 			expect(content.includes(RL_HARDCODED_GOAL_ANALYZER), `hardcoded path in ${dotPath}`).toBe(false);
 		}
 	});
 
 	it("no graph remaining in factories/mothership/graphs/ contains hardcoded mothership issue_writer skill path", () => {
-		for (const dotPath of listDotFiles(MOTHERSHIP_GRAPHS_DIR)) {
+		for (const dotPath of listDotFiles(resolve(REPO_ROOT, "docs/contracts/workflow-ir/mothership"))) {
 			const content = readFileSync(dotPath, "utf8");
 			expect(content.includes(MS_HARDCODED_ISSUE_WRITER), `hardcoded path in ${dotPath}`).toBe(false);
 		}
 	});
 
 	it("no graph remaining in factories/example-trading/graphs/ contains hardcoded example-trading issue_writer skill path", () => {
-		for (const dotPath of listDotFiles(EXAMPLE_TRADING_GRAPHS_DIR)) {
+		for (const dotPath of listDotFiles(resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime"))) {
 			const content = readFileSync(dotPath, "utf8");
 			expect(content.includes(RL_HARDCODED_ISSUE_WRITER), `hardcoded path in ${dotPath}`).toBe(false);
 		}

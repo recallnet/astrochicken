@@ -6,12 +6,8 @@ export default defineConfig({
     hookTimeout: 30_000,
     teardownTimeout: 10_000,
     pool: "threads",
-    poolOptions: {
-      threads: {
-        minThreads: 1,
-        maxThreads: 2,
-      },
-    },
+    minWorkers: 1,
+    maxWorkers: 2,
     coverage: {
       provider: "v8",
       reporter: ["text-summary", "lcov"],

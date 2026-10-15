@@ -65,7 +65,7 @@ export function selectDotFiles({ fileList, allTracked }) {
     ? collectTrackedFiles()
     : readPathList(fileList);
 
-  return files.filter((path) => path.endsWith(".dot"));
+  return files.filter((path) => path.endsWith(".dot") || /\.workflow-source\.(?:mjs|data\.json)$/.test(path));
 }
 
 export function runContextPropagationContract({ dotFiles }) {

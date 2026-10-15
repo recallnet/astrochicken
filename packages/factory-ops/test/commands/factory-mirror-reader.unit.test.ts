@@ -1,21 +1,14 @@
+import { writeFixtureJson as writeJson } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  readMirroredSnapshot,
-  readRecentEvents,
-  resolveFactoryMirrorRoot,
-} from "../../src/lib/factory-mirror-reader.ts";
+import { readMirroredSnapshot, readRecentEvents, resolveFactoryMirrorRoot } from "../../src/lib/factory-mirror-reader.ts";
 
 function makeTmpDir(prefix = "factory-mirror-reader-") {
   return mkdtempSync(join(tmpdir(), prefix));
-}
-
-function writeJson(path, payload) {
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
 }
 
 test("resolveFactoryMirrorRoot prefers .hatch/fleet/mirrors when present", () => {

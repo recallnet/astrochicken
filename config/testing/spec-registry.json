@@ -18,12 +18,12 @@
       "authoritative_configs": [
         "config/testing/spec-registry.json",
         "config/testing/subsystem-ownership.json",
-        "factories/mothership/graphs/factory_supervisor_tick.dot"
+        "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
       ],
       "test_surfaces": [
         {
           "kind": "contract",
-          "path": "packages/factory-ops/test/supervisor/supervisor-tick.contract.test.mjs"
+          "path": "packages/factory-ops/test/supervisor/supervisor-tick.contract.test.ts"
         },
         {
           "kind": "contract",
@@ -46,7 +46,7 @@
       "authoritative_configs": [
         "config/testing/spec-registry.json",
         "config/testing/subsystem-ownership.json",
-        "factories/mothership/graphs/factory_supervisor_tick.dot"
+        "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"
       ],
       "test_surfaces": [
         {
@@ -55,7 +55,7 @@
         },
         {
           "kind": "contract",
-          "path": "packages/factory-ops/test/wave/wave-split-results.test.mjs"
+          "path": "packages/factory-ops/test/wave/wave-split-results.test.ts"
         }
       ],
       "merge_blockers": [
@@ -74,16 +74,16 @@
       "authoritative_configs": [
         "config/testing/spec-registry.json",
         "config/testing/subsystem-ownership.json",
-        "packages/factory-ops/src/lib/packet-core.mjs"
+        "packages/factory-ops/src/lib/packet-core.ts"
       ],
       "test_surfaces": [
         {
           "kind": "contract",
-          "path": "packages/factory-ops/test/packets/packet-takeover-cold-start.contract.test.mjs"
+          "path": "packages/factory-ops/test/packets/packet-takeover-cold-start.contract.test.ts"
         },
         {
           "kind": "unit",
-          "path": "packages/factory-ops/test/supervisor/supervisor-state-snapshot-merge-conflict.unit.test.mjs"
+          "path": "packages/factory-ops/test/supervisor/supervisor-state-snapshot-merge-conflict.unit.test.ts"
         }
       ],
       "merge_blockers": [
@@ -102,21 +102,21 @@
       "authoritative_configs": [
         "config/testing/spec-registry.json",
         "config/testing/subsystem-ownership.json",
-        "packages/factory-ops/src/commands/scenario-validate-scope.mjs",
-        "packages/factory-ops/src/commands/scenario-validate-payload.mjs"
+        "packages/factory-ops/src/commands/scenario-validate-scope.ts",
+        "packages/factory-ops/src/commands/scenario-validate-payload.ts"
       ],
       "test_surfaces": [
         {
           "kind": "unit",
-          "path": "packages/factory-ops/test/scenarios/scenario-validate-scope.unit.test.mjs"
+          "path": "packages/factory-ops/test/scenarios/scenario-validate-scope.unit.test.ts"
         },
         {
           "kind": "contract",
-          "path": "packages/factory-ops/test/scenarios/write-scenarios.contract.test.mjs"
+          "path": "packages/factory-ops/test/scenarios/write-scenarios.contract.test.ts"
         },
         {
           "kind": "contract",
-          "path": "packages/factory-ops/test/scenarios/write-scenario-item.contract.test.mjs"
+          "path": "packages/factory-ops/test/scenarios/write-scenario-item.contract.test.ts"
         }
       ],
       "merge_blockers": [
@@ -208,7 +208,7 @@
         },
         {
           "kind": "unit",
-          "path": "apps/hatch/src/pipeline/handler/langfuse-instrumentation.test.ts"
+          "path": "apps/hatch/src/pipeline/guard-langfuse-metadata.test.ts"
         }
       ],
       "merge_blockers": [

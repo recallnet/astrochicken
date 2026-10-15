@@ -1,3 +1,7 @@
+import { useCanonicalEventStoreFixture } from "./factory-status-postgres-fixture.ts";
+
+const eventStoreFixture = useCanonicalEventStoreFixture();
+
 import assert from "node:assert/strict";
 import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -9,11 +13,13 @@ import {
   writeRunState,
   writeRegistryFixture,
 } from "./factory-status-fixture-harness.ts";
-import { factoryFleetStatus, formatFleetStatusHuman, readFactoryRegistry } from "../../src/commands/factory-fleet-status.ts";
+import { formatFleetStatusHuman, readFactoryRegistry } from "../../src/commands/factory-fleet-status.ts";
 import { collectFactoryProgressMetrics, formatFactoryProgressMetrics } from "../../src/commands/factory-progress-metrics.ts";
 import { factoryStatus, formatFactoryStatus } from "../../src/commands/factory-status.ts";
 import { formatTickStatus } from "../../src/commands/factory-tick-status.ts";
 import { buildTickProjectionFromStates } from "../../src/lib/factory-tick-run-projection.ts";
+
+import { buildFactoryFleetProjection } from "../../src/lib/factory-fleet-projection-support.ts";
 
 // factory-outcomes.mjs is intentionally excluded from this snapshot suite.
 // It shells out to `git log` to compute outcome diffs; mocking git is out of scope.
@@ -62,8 +68,8 @@ function buildActiveWaveFixture() {
   const updatedAt = nowIso(-30 * 1000);
 
   writeRunState(fixture.runsDir, "supervisor-active", {
-    pipeline: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+    pipeline: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
     status: "running",
     currentNode: "wave_execute",
     startedAt,
@@ -75,8 +81,8 @@ function buildActiveWaveFixture() {
   });
 
   writeRunState(fixture.runsDir, "wave-active", {
-    pipeline: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+    pipeline: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
     status: "running",
     currentNode: "execute_issue_in_wave",
     startedAt,
@@ -89,8 +95,8 @@ function buildActiveWaveFixture() {
   });
 
   writeRunState(fixture.runsDir, "issue-active-42", {
-    pipeline: "docs/contracts/workflow-ir/mothership/goal_issue_execute.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/goal_issue_execute.dot",
+    pipeline: "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/goal-execution/goal_issue_execute.workflow-source.mjs",
     status: "running",
     currentNode: "execute_issue",
     startedAt,
@@ -110,8 +116,8 @@ function buildSupervisorTickFixture() {
   const updatedAt = nowIso(-45 * 1000);
 
   writeRunState(fixture.runsDir, "supervisor-12", {
-    pipeline: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+    pipeline: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
     status: "running",
     currentNode: "set_release_sha",
     startedAt,
@@ -123,8 +129,8 @@ function buildSupervisorTickFixture() {
   });
 
   writeRunState(fixture.runsDir, "wave-supervisor", {
-    pipeline: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+    pipeline: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
     status: "running",
     currentNode: "execute_issue_in_wave",
     startedAt,
@@ -141,8 +147,8 @@ function buildSupervisorTickFixture() {
 function buildCompletedRunFixture() {
   const fixture = createRunsFixture("factory-state-reader-complete-");
   writeRunState(fixture.runsDir, "complete-1", {
-    pipeline: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/goal_execute.dot",
+    pipeline: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/goal-execution/goal_execute.workflow-source.mjs",
     status: "completed",
     currentNode: "exit",
     startedAt: "2026-03-10T16:00:00.000Z",
@@ -158,8 +164,8 @@ function buildCompletedRunFixture() {
 function buildMetricsFixture() {
   const fixture = createRunsFixture("factory-state-reader-metrics-");
   writeRunState(fixture.runsDir, "stalled-wave", {
-    pipeline: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
-    pipelineFile: "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot",
+    pipeline: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
+    pipelineFile: "factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs",
     status: "completed",
     currentNode: "detect_stalled_wave",
     startedAt: "2026-03-10T16:00:00.000Z",
@@ -194,14 +200,14 @@ function buildFleetFixture() {
         kind_id: "brainstorm",
         repo: "acme/alpha",
         daemonStatus: { status: "running" },
-        graphs: ["docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot"],
+        graphs: ["factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"],
       },
       {
         id: "beta",
         kind_id: "brainstorm",
         repo: "acme/beta",
         daemonStatus: { status: "stopped" },
-        graphs: ["docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot"],
+        graphs: ["factories/mothership/workflows/dispatch-control/factory_supervisor_tick.workflow-source.mjs"],
       },
     ],
   });
@@ -226,9 +232,10 @@ const BASE_CONTEXT = {
   target_repo: "recallnet/astrochicken",
 };
 
-test("snapshot: active wave status output remains stable", () => {
+test("snapshot: active wave status output remains stable", async () => {
   const fixture = buildActiveWaveFixture();
   try {
+    await eventStoreFixture.seedRuns({ runsDir: fixture.runsDir });
     const status = factoryStatus({
       runsDir: fixture.runsDir,
       context: {
@@ -243,7 +250,7 @@ test("snapshot: active wave status output remains stable", () => {
   }
 });
 
-test("snapshot: active wave tick output remains stable", () => {
+test("snapshot: active wave tick output remains stable", async () => {
   const fixture = buildActiveWaveFixture();
   try {
     const status = tickStatus({
@@ -253,6 +260,8 @@ test("snapshot: active wave tick output remains stable", () => {
         runs_dir: fixture.runsDir,
       },
     });
+    assert.equal(status.ticks[0].stuck_warning, "");
+    assert.equal(status.ticks[0].tick_progress.made_progress, true);
     const actual = normalizeOutput(formatTickStatus(status), [fixture.runsDir]);
     assert.equal(actual, readGolden("factory-state-reader-active-wave-tick.expected.txt"));
   } finally {
@@ -260,9 +269,10 @@ test("snapshot: active wave tick output remains stable", () => {
   }
 });
 
-test("snapshot: supervisor tick status output remains stable", () => {
+test("snapshot: supervisor tick status output remains stable", async () => {
   const fixture = buildSupervisorTickFixture();
   try {
+    await eventStoreFixture.seedRuns({ runsDir: fixture.runsDir });
     const status = factoryStatus({
       runsDir: fixture.runsDir,
       context: {
@@ -277,7 +287,7 @@ test("snapshot: supervisor tick status output remains stable", () => {
   }
 });
 
-test("snapshot: supervisor tick tick output includes stage progress", () => {
+test("snapshot: supervisor tick tick output includes stage progress", async () => {
   const fixture = buildSupervisorTickFixture();
   try {
     const status = tickStatus({
@@ -287,6 +297,8 @@ test("snapshot: supervisor tick tick output includes stage progress", () => {
         runs_dir: fixture.runsDir,
       },
     });
+    assert.equal(status.ticks[0].stuck_warning, "");
+    assert.equal(status.ticks[0].tick_progress.made_progress, true);
     const actual = normalizeOutput(formatTickStatus(status), [fixture.runsDir]);
     assert.match(actual, /\[12\/28\]/);
     assert.equal(actual, readGolden("factory-state-reader-supervisor-tick-tick.expected.txt"));
@@ -295,9 +307,10 @@ test("snapshot: supervisor tick tick output includes stage progress", () => {
   }
 });
 
-test("snapshot: completed-run status output remains stable", () => {
+test("snapshot: completed-run status output remains stable", async () => {
   const fixture = buildCompletedRunFixture();
   try {
+    await eventStoreFixture.seedRuns({ runsDir: fixture.runsDir });
     const status = factoryStatus({
       runsDir: fixture.runsDir,
       context: {
@@ -312,9 +325,10 @@ test("snapshot: completed-run status output remains stable", () => {
   }
 });
 
-test("snapshot: empty-runs status output remains stable", () => {
+test("snapshot: empty-runs status output remains stable", async () => {
   const fixture = createRunsFixture("factory-state-reader-empty-");
   try {
+    await eventStoreFixture.seedRuns({ runsDir: fixture.runsDir });
     const status = factoryStatus({
       runsDir: fixture.runsDir,
       context: {
@@ -329,7 +343,7 @@ test("snapshot: empty-runs status output remains stable", () => {
   }
 });
 
-test("snapshot: stalled metrics output remains stable", () => {
+test("snapshot: stalled metrics output remains stable", async () => {
   const fixture = buildMetricsFixture();
   try {
     const metrics = collectFactoryProgressMetrics({
@@ -347,7 +361,7 @@ test("snapshot: stalled metrics output remains stable", () => {
 test("snapshot: fleet-status output remains stable for registry fixture", async () => {
   const fixture = buildFleetFixture();
   try {
-    const report = await factoryFleetStatus({
+    const report = await buildFactoryFleetProjection({
       context: { control_plane_repo: "recallnet/astrochicken" },
       now: Date.parse("2026-03-10T18:00:00.000Z"),
       lookbackHours: 24,

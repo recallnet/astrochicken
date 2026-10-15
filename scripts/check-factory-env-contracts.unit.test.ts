@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { renderFactoryEnvExample, validateFactoryEnvContracts } from "./check-factory-env-contracts.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-factory-env-contracts.mjs");
+const checkerPath = join(scriptsDir, "check-factory-env-contracts.ts");
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "factory-env-contracts");
 
 function fixtureRoot(name) {

@@ -245,16 +245,19 @@ function buildPolicyMutationContext({
 
   return {
     ...raw,
-    target_repo: raw.target_repo ?? raw.targetRepo ?? raw.repo_slug ?? raw.repoSlug ?? repoSlug,
+    target_repo: targetRepo || raw.target_repo || raw.targetRepo,
+    // @context:security The caller's operation target cannot be replaced by the
+    // factory identity retained in mutationContext.target_repo.
+    repo_slug: repoSlug || raw.repo_slug || raw.repoSlug,
     destinations: raw.destinations ?? {},
     destination_repos: raw.destination_repos ?? raw.destinationRepos ?? destinationRepos,
-    control_plane_repo: raw.control_plane_repo ?? raw.controlPlaneRepo ?? controlPlaneRepo,
+    control_plane_repo: controlPlaneRepo || raw.control_plane_repo || raw.controlPlaneRepo,
     instance_id: raw.instance_id ?? raw.instanceId ?? trim(process.env.HATCH_FACTORY_INSTANCE_ID || ""),
     kind_id: raw.kind_id ?? raw.kindId ?? "",
     host_id: raw.host_id ?? raw.hostId ?? "",
-    operation: raw.operation ?? mapGuardOperationToPolicyOperation(operation),
-    target_path: raw.target_path ?? raw.targetPath ?? targetPath,
-    target_branch: raw.target_branch ?? raw.targetBranch ?? targetBranch,
+    operation: operation ? mapGuardOperationToPolicyOperation(operation) : raw.operation,
+    target_path: targetPath || raw.target_path || raw.targetPath,
+    target_branch: targetBranch || raw.target_branch || raw.targetBranch,
     approvedWorktreeRoots: raw.approvedWorktreeRoots ?? resolveApprovedDisposableWorktreeRoots({ repoPath: process.cwd() }),
     flags,
   };
@@ -369,8 +372,14 @@ export function guardGitMutation({
   mutationContext?: Record<string, unknown> | null;
 } = {}): Record<string, unknown> {
   const op: string = trim(operation);
-  const repoIsCanonical: boolean = isCanonicalCheckout(repoPath, { canonicalCheckoutPath });
-  const targetIsCanonical: boolean = isCanonicalCheckout(targetPath, { canonicalCheckoutPath });
+  let repoIsCanonical: boolean;
+  let targetIsCanonical: boolean;
+  try {
+    repoIsCanonical = isCanonicalCheckout(repoPath, { canonicalCheckoutPath });
+    targetIsCanonical = isCanonicalCheckout(targetPath, { canonicalCheckoutPath });
+  } catch {
+    return { ok: false, blocked: true, reason: "filesystem_path_resolution_failed" };
+  }
   if (repoIsCanonical || targetIsCanonical) {
     if (READ_ONLY_CANONICAL_OPERATIONS.has(op)) {
       // canonical read-only operations remain allowed
@@ -389,6 +398,12 @@ export function guardGitMutation({
   if (effectiveMutationContext != null) {
     const contextGuard: Record<string, unknown> = failClosedForUnknownContext({ mutationContext: effectiveMutationContext });
     if (!contextGuard.ok) return contextGuard;
+
+    // @context:security A factory owner is not evidence of the checkout being
+    // mutated. Require the operation's independently supplied repository.
+    if (!READ_ONLY_OPERATIONS.has(op) && !normalizeRepoSlug(repoSlug || String(effectiveMutationContext.repo_slug || effectiveMutationContext.repoSlug || ""))) {
+      return { ok: false, blocked: true, reason: "mutation_context_missing_operation_repo" };
+    }
 
     const policyContext: Record<string, unknown> = buildPolicyMutationContext({
       mutationContext: effectiveMutationContext,
@@ -450,11 +465,16 @@ export function guardDisposableCleanup({
   mutationContext?: Record<string, unknown> | null;
   enforceMutationContext?: boolean;
 } = {}): Record<string, unknown> {
-  const classification = classifyManagedWorktreePath({
-    candidatePath: worktreePath,
-    repoPath,
-    canonicalCheckoutPath,
-  });
+  let classification: ReturnType<typeof classifyManagedWorktreePath>;
+  try {
+    classification = classifyManagedWorktreePath({
+      candidatePath: worktreePath,
+      repoPath,
+      canonicalCheckoutPath,
+    });
+  } catch {
+    return { ok: false, blocked: true, reason: "filesystem_path_resolution_failed" };
+  }
 
   const effectiveMutationContext: Record<string, unknown> | null = resolveEffectiveMutationContext(mutationContext);
   if (enforceMutationContext && (effectiveMutationContext != null || mutationContextHasIdentity(mutationContext))) {

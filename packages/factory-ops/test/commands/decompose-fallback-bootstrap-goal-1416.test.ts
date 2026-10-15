@@ -1,16 +1,13 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { dirname, join, resolve } from "node:path";
+
+
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+
 
 import { fallbackJson, countJsonItems, countFeatureObjects } from "../../src/commands/common-resolve-default.ts";
 import { buildFallbackFeatures } from "../../src/commands/goal-build-fallback-features.ts";
 import { zipFeaturesToIssues } from "../../src/commands/triage-zip-features.ts";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 const goal1416Issue = {
   number: 1416,
@@ -31,7 +28,9 @@ function normalizeApprovedPath({ approvedFeaturesRaw = "[]", goalIssueRaw = "{}"
 }
 
 function runOpsCli(args = []) {
-  const run = spawnSync("node", [opsCliPath, ...args], { cwd: repoRoot, encoding: "utf8" });
+  const run = spawnOpsCli([
+      ...args
+    ]);
   assert.equal(run.status, 0, run.stderr || run.stdout);
   return String(run.stdout || "").trim();
 }

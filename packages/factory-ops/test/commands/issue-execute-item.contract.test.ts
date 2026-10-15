@@ -24,7 +24,7 @@ test("issue_execute_item commandizes setup/review bookkeeping via goal-issue ops
   assert.match(dot, /commit_push[\s\S]*action_runtime="in_process" action_id="coding\.commit_local"/);
   assert.match(dot, /inspect_changes[\s\S]*action_runtime="in_process" action_id="coding\.inspect_branch_changes"/);
   assert.match(dot, /encode_builder_output[\s\S]*action_runtime="in_process" action_id="common\.encode_base64"/);
-  assert.match(dot, /write_review_evidence[\s\S]*action_runtime="in_process" action_id="coding\.write_review_evidence"[\s\S]*action_snapshot_sha="\$\{snapshot_sha\}" action_builder_notes_b64="\$\{builder_output_b64\}"/);
+  assert.match(dot, /write_review_evidence[\s\S]*action_runtime="in_process" action_id="coding\.write_review_evidence"[\s\S]*action_builder_notes_b64="\$\{builder_output_b64\}"[\s\S]*action_snapshot_sha="\$\{snapshot_sha\}"/);
   assert.match(dot, /build_review_context[\s\S]*action_runtime="in_process" action_id="coding\.build_review_context"/);
   assert.match(dot, /validate_review_context[\s\S]*action_runtime="in_process" action_id="coding\.validate_review_context"/);
 });
@@ -46,7 +46,8 @@ test("issue_execute_item keeps output/edge retry contract unchanged", () => {
   assert.match(dot, /REVIEW_CONTEXT_INVALID/);
   assert.match(dot, /REVIEW_OUTPUT_SCHEMA_INVALID/);
 
-  assert.match(dot, /start -> extract_issue -> set_gh_repo -> fetch_issue -> resolve_milestone -> resolve_goal_number -> fetch_goal_issue -> load_intent_stack -> init -> setup -> init_review -> snapshot_head -> build/);
+  assert.match(dot, /start -> extract_issue -> set_gh_repo -> fetch_issue -> resolve_milestone -> resolve_goal_number -> fetch_goal_issue -> load_intent_stack -> init -> setup -> init_review -> snapshot_head/);
+  assert.match(dot, /snapshot_head -> build/);
   assert.match(dot, /build -> commit_push -> inspect_changes -> encode_builder_output -> write_review_evidence -> build_review_context -> validate_review_context -> review_context_gate/);
   assert.match(dot, /review_context_gate -> review \[condition="review_context_gate_pass=true"\]/);
   assert.match(dot, /review_context_gate -> resolve_review_route \[condition="review_context_gate_pass!=true"\]/);

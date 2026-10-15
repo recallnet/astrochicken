@@ -34,16 +34,12 @@ function boundedVitestArgs(...testFiles) {
     "--run",
     "--pool",
     "forks",
-    "--poolOptions.forks.singleFork",
-    "true",
     "--no-file-parallelism",
     "--testTimeout",
     "120000",
     "--hookTimeout",
     "120000",
     "--maxWorkers",
-    "1",
-    "--minWorkers",
     "1",
     ...testFiles,
   ];
@@ -63,17 +59,10 @@ run("hatch_cli_context", "pnpm", [
   ...boundedVitestArgs("src/cli-run-config.test.ts"),
 ]);
 
-// @context:regression !critical The factory_ops_context label is disabled pending
-// investigation of a pre-existing resolver caching bug. When the control-plane
-// CLI run happens before the external-root CLI run in the same test process,
-// the shared resolver returns the control root's factory_root for the external
-// run. The bug is in the hatch context resolver's module-level state interacting
-// with sequential spawns. Tracked in recallnet/astrochicken#2600.
-// TODO: re-enable after fixing the resolver caching bug
-// run("factory_ops_context", "node", [
-//   "--test",
-//   "packages/factory-ops/test/supervisor/factory-context-resolution-cli.cli.test.ts",
-// ]);
+run("factory_ops_context", "node", [
+  "--test",
+  "packages/factory-ops/test/supervisor/factory-context-resolution-cli.cli.test.ts",
+]);
 
 run("hatch_parent_context_contract", "pnpm", [
   "--silent",

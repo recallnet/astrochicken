@@ -11,6 +11,8 @@ import {
   validateLocalIntentGraphTrustContracts,
   validateTrustContractInDot,
 } from "../../src/commands/graph-trust-contract.ts";
+import { loadGraphSemanticsText } from "@hatch/factory-core/graph-source-loader";
+
 import { AGENT_IDS_V1, AGENT_ROLES_V1 } from "../../src/lib/trust-agent-identity-v1.ts";
 
 const LEGACY_FIXTURE_INPUT = "packages/factory-ops/test/commands/fixtures/trust-participants/legacy-only.input.dot";
@@ -47,7 +49,7 @@ test("trust-participant contract scans local graphs and defines explicit active 
   assert.ok(activePaths.length > 0, "expected at least one active local intent graph");
 
   for (const path of localPaths) {
-    assert.match(path, /^factories\/mothership\/graphs\/.+\.dot$/);
+    assert.match(path, /^factories\/mothership\/workflows\/.+\.workflow-source\.mjs$/);
   }
   for (const path of activePaths) {
     if (path.startsWith("packages/capability-merge/")) continue;
@@ -61,7 +63,7 @@ test("active intents graphs remain canonical trust-domain/role and migration is 
   const paths = listActiveLocalIntentGraphPaths();
 
   for (const path of paths) {
-    const original = readFileSync(path, "utf8");
+    const original = loadGraphSemanticsText(path);
 
     const nonStrictOriginal = validateTrustContractInDot(original, { sourcePath: path, strict: false });
     assert.equal(nonStrictOriginal.ok, true);

@@ -150,8 +150,8 @@ test("approve and feedback sinks remain exclusive with no bypass edges around de
   );
   const waveBuildFailureIncoming = incomingEdges(waveContract, "report_build_failed");
   assert.deepEqual(
-    waveBuildFailureIncoming.map((edge) => `${edge.from}:${edge.condition}`),
-    ["build:outcome!=success", "assert_main_after_build:ok!=true", "commit_push_gate:ok!=true"],
+    waveBuildFailureIncoming.map((edge) => `${edge.from}:${edge.condition}`).sort(),
+    ["build:outcome!=success", "assert_main_after_build:ok!=true", "commit_push_gate:ok!=true"].sort(),
   );
   const waveRetryFailureIncoming = incomingEdges(waveContract, "report_retry_failed");
   assert.deepEqual(

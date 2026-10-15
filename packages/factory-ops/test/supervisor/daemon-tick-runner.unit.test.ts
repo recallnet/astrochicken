@@ -35,12 +35,29 @@ function createSpawnStub(callLog, outcomesByGraph) {
   };
 }
 
-test("runTick executes dispatch before maintenance when both graphs are configured", async () => {
-  const repoRoot = makeTmpDir("daemon-tick-runner-order");
+function createTickDirectories(repoRoot) {
   const logsDir = path.join(repoRoot, "logs");
   const runsDir = path.join(repoRoot, ".hatch", "runs");
   mkdirSync(logsDir, { recursive: true });
   mkdirSync(runsDir, { recursive: true });
+  return { logsDir, runsDir };
+}
+
+function createTickRuntime({ repoRoot, runsDir, dispatchGraph, supervisorGraph, ...timing }) {
+  return {
+    factoryId: "mothership",
+    dispatchGraph,
+    supervisorGraph,
+    runsDir,
+    contextRepoPath: repoRoot,
+    targetRepo: "recallnet/astrochicken",
+    ...timing,
+  };
+}
+
+test("runTick executes dispatch before maintenance when both graphs are configured", async () => {
+  const repoRoot = makeTmpDir("daemon-tick-runner-order");
+  const { logsDir, runsDir } = createTickDirectories(repoRoot);
 
   writeRunState(runsDir, "dispatch-run", { tick_idle: false });
   writeRunState(runsDir, "maintenance-run", { tick_idle: true });
@@ -50,15 +67,7 @@ test("runTick executes dispatch before maintenance when both graphs are configur
   const spawnCalls = [];
 
   const result = await runTick({
-    runtime: {
-      factoryId: "mothership",
-      dispatchGraph,
-      supervisorGraph,
-      runsDir,
-      contextRepoPath: repoRoot,
-      targetRepo: "recallnet/astrochicken",
-      targetRepo: "recallnet/astrochicken",
-    },
+    runtime: createTickRuntime({ repoRoot, runsDir, dispatchGraph, supervisorGraph }),
     paths: { logsDir },
     repoRoot,
     hostBaseDir: repoRoot,
@@ -79,25 +88,14 @@ test("runTick executes dispatch before maintenance when both graphs are configur
 
 test("runTick skips maintenance when dispatch fails", async () => {
   const repoRoot = makeTmpDir("daemon-tick-runner-fail");
-  const logsDir = path.join(repoRoot, "logs");
-  const runsDir = path.join(repoRoot, ".hatch", "runs");
-  mkdirSync(logsDir, { recursive: true });
-  mkdirSync(runsDir, { recursive: true });
+  const { logsDir, runsDir } = createTickDirectories(repoRoot);
 
   const dispatchGraph = "factories/mothership/graphs/factory_dispatch_reactor.dot";
   const supervisorGraph = "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot";
   const spawnCalls = [];
 
   const result = await runTick({
-    runtime: {
-      factoryId: "mothership",
-      dispatchGraph,
-      supervisorGraph,
-      runsDir,
-      contextRepoPath: repoRoot,
-      targetRepo: "recallnet/astrochicken",
-      targetRepo: "recallnet/astrochicken",
-    },
+    runtime: createTickRuntime({ repoRoot, runsDir, dispatchGraph, supervisorGraph }),
     paths: { logsDir },
     repoRoot,
     hostBaseDir: repoRoot,
@@ -117,10 +115,7 @@ test("runTick skips maintenance when dispatch fails", async () => {
 
 test("runTick demotes maintenance when the maintenance interval is not due", async () => {
   const repoRoot = makeTmpDir("daemon-tick-runner-demoted-maintenance");
-  const logsDir = path.join(repoRoot, "logs");
-  const runsDir = path.join(repoRoot, ".hatch", "runs");
-  mkdirSync(logsDir, { recursive: true });
-  mkdirSync(runsDir, { recursive: true });
+  const { logsDir, runsDir } = createTickDirectories(repoRoot);
   mkdirSync(path.join(repoRoot, ".hatch", "factories", "mothership"), { recursive: true });
   writeFileSync(
     path.join(repoRoot, ".hatch", "factories", "mothership", "maintenance-tick-state.json"),
@@ -140,17 +135,10 @@ test("runTick demotes maintenance when the maintenance interval is not due", asy
   const daemonLogs = [];
 
   const result = await runTick({
-    runtime: {
-      factoryId: "mothership",
-      dispatchGraph,
-      supervisorGraph,
+    runtime: createTickRuntime({ repoRoot, runsDir, dispatchGraph, supervisorGraph,
       dispatchLatencySloSeconds: 15,
       maintenanceIntervalSeconds: 300,
-      runsDir,
-      contextRepoPath: repoRoot,
-      targetRepo: "recallnet/astrochicken",
-      targetRepo: "recallnet/astrochicken",
-    },
+    }),
     paths: { logsDir },
     repoRoot,
     hostBaseDir: repoRoot,
@@ -182,10 +170,7 @@ test("runTick demotes maintenance when the maintenance interval is not due", asy
 
 test("runTick persists maintenance state when demoted maintenance does run", async () => {
   const repoRoot = makeTmpDir("daemon-tick-runner-maintenance-state");
-  const logsDir = path.join(repoRoot, "logs");
-  const runsDir = path.join(repoRoot, ".hatch", "runs");
-  mkdirSync(logsDir, { recursive: true });
-  mkdirSync(runsDir, { recursive: true });
+  const { logsDir, runsDir } = createTickDirectories(repoRoot);
 
   writeRunState(runsDir, "dispatch-run", { tick_idle: false });
   writeRunState(runsDir, "maintenance-run", { tick_idle: true });
@@ -195,17 +180,10 @@ test("runTick persists maintenance state when demoted maintenance does run", asy
   const spawnCalls = [];
 
   const result = await runTick({
-    runtime: {
-      factoryId: "mothership",
-      dispatchGraph,
-      supervisorGraph,
+    runtime: createTickRuntime({ repoRoot, runsDir, dispatchGraph, supervisorGraph,
       dispatchLatencySloSeconds: 15,
       maintenanceIntervalSeconds: 300,
-      runsDir,
-      contextRepoPath: repoRoot,
-      targetRepo: "recallnet/astrochicken",
-      targetRepo: "recallnet/astrochicken",
-    },
+    }),
     paths: { logsDir },
     repoRoot,
     hostBaseDir: repoRoot,
@@ -242,10 +220,7 @@ test("runTick persists maintenance state when demoted maintenance does run", asy
 
 test("runTick passes factory root for shared managed graphs", async () => {
   const repoRoot = makeTmpDir("daemon-tick-runner-factory-root");
-  const logsDir = path.join(repoRoot, "logs");
-  const runsDir = path.join(repoRoot, ".hatch", "runs");
-  mkdirSync(logsDir, { recursive: true });
-  mkdirSync(runsDir, { recursive: true });
+  const { logsDir, runsDir } = createTickDirectories(repoRoot);
 
   writeRunState(runsDir, "dispatch-run", { tick_idle: false });
 

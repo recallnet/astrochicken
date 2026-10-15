@@ -1,3 +1,5 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
+import { makeUnblockedIssueGraphqlResponse } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -35,23 +37,13 @@ test("autoReadyArtifactGoals skips awaiting-human goals and reports why", () => 
         ];
       }
       if (args[0] === "api" && args[1] === "graphql") {
-        return {
-          data: {
-            repository: {
-              i: {
-                blockedBy: {
-                  nodes: [],
-                },
-              },
-            },
-          },
-        };
+        return makeUnblockedIssueGraphqlResponse();
       }
       throw new Error(`unexpected ghJson args: ${args.join(" ")}`);
     },
     ghExec: (args) => {
       comments.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
     markGoalDispatchedFn: ({ repo, issueNumber }) => {
       markCalls.push({ repo, issueNumber });
@@ -85,23 +77,13 @@ test("autoReadyArtifactGoals promotes eligible artifact goals via markGoalDispat
         ];
       }
       if (args[0] === "api" && args[1] === "graphql") {
-        return {
-          data: {
-            repository: {
-              i: {
-                blockedBy: {
-                  nodes: [],
-                },
-              },
-            },
-          },
-        };
+        return makeUnblockedIssueGraphqlResponse();
       }
       throw new Error(`unexpected ghJson args: ${args.join(" ")}`);
     },
     ghExec: (args) => {
       comments.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
     markGoalDispatchedFn: ({ repo, issueNumber }) => {
       markCalls.push({ repo, issueNumber });

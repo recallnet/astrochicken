@@ -2,14 +2,14 @@
   "schema_version": "phase1_gate_readiness/v1",
   "ok": true,
   "summary": {
-    "active_graph_roots": 40,
-    "active_graphs": 3,
-    "active_runtime_files": 367,
+    "active_graph_roots": 41,
+    "active_graphs": 0,
+    "active_runtime_files": 371,
     "active_command_references": 0,
     "graph_transport_violations": 0,
     "runtime_internal_cli_violations": 0,
     "runtime_internal_cli_allowlisted_external_boundaries": 0,
-    "command_thinness_violations": 1,
+    "command_thinness_violations": 0,
     "diagnostics": 0
   },
   "scope_contract": {
@@ -116,7 +116,7 @@
     },
     "runtime_internal_cli": {
       "gate_id": "runtime_internal_cli_repo_wide",
-      "checked": 367,
+      "checked": 371,
       "classifications": [
         "hot_path",
         "execution_path"
@@ -130,16 +130,7 @@
       "classifications": [
         "active_deterministic_owner"
       ],
-      "violations": [
-        {
-          "file": "packages/factory-ops/src/commands/goal-final-state-review.ts",
-          "kind": "command_thinness_hotspot",
-          "classification": "oversized",
-          "lines": 403,
-          "count": 0,
-          "transport_mode": ""
-        }
-      ]
+      "violations": []
     }
   },
   "diagnostics": []

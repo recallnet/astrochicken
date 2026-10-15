@@ -1,28 +1,14 @@
+import { makeSandboxCredentialBlocker } from "../helpers/ops-domain-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  buildHumanBlockerPacket,
-  buildHumanBlockerBody,
-  buildHumanBlockerSignature,
-  ensureHumanBlockerIssue,
-  extractHumanBlockerPayloadFromBody,
-  parseHumanBlocker,
-  parseHumanResponse,
-  persistHumanBlockerPacket,
-  validateHumanBlockerPacket,
-} from "../../src/commands/human-blocker.ts";
+import { buildHumanBlockerPacket, buildHumanBlockerBody, buildHumanBlockerSignature, ensureHumanBlockerIssue, extractHumanBlockerPayloadFromBody, parseHumanBlocker, parseHumanResponse, persistHumanBlockerPacket, validateHumanBlockerPacket } from "../../src/commands/human-blocker.ts";
 
 test("parseHumanBlocker accepts strict supported blocker payloads only", () => {
-  const valid = parseHumanBlocker({
-    kind: "missing_credentials",
-    exact_request: "Provide sandbox API key",
-    why_blocked: "Factory cannot derive the credential",
-    unblock_condition: "Credential location is provided",
-  });
+  const valid = parseHumanBlocker(makeSandboxCredentialBlocker());
   assert.equal(valid?.kind, "missing_credentials");
 
   const invalid = parseHumanBlocker({
@@ -163,12 +149,7 @@ test("ensureHumanBlockerIssue dedupes by signature and merges blocked_by", () =>
     goalIssueNumber: 1478,
     milestoneTitle: "goal-1478-wave-1",
     blockedByRaw: "[88]",
-    humanBlockerRaw: JSON.stringify({
-      kind: "missing_credentials",
-      exact_request: "Provide sandbox API key",
-      why_blocked: "Factory cannot derive the credential",
-      unblock_condition: "Credential location is provided",
-    }),
+    humanBlockerRaw: JSON.stringify(makeSandboxCredentialBlocker()),
     ghFn,
     ghJsonFn,
   });
@@ -188,12 +169,7 @@ test("ensureHumanBlockerIssue dedupes by signature and merges blocked_by", () =>
     issueNumber: 1484,
     goalIssueNumber: 1478,
     blockedByRaw: "[88]",
-    humanBlockerRaw: JSON.stringify({
-      kind: "missing_credentials",
-      exact_request: "Provide sandbox API key",
-      why_blocked: "Factory cannot derive the credential",
-      unblock_condition: "Credential location is provided",
-    }),
+    humanBlockerRaw: JSON.stringify(makeSandboxCredentialBlocker()),
     ghFn: () => ({ ok: true, stdout: "", stderr: "" }),
     ghJsonFn: (args, fallback = []) => {
       const cmd = args.join(" ");

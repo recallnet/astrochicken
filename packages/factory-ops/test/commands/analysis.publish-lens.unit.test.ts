@@ -1,3 +1,4 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync } from "node:fs";
 import { promises as fsPromises } from "node:fs";
@@ -5,12 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  ensureBodyFitsGitHubLimit,
-  resetAnalysisPublishLensRuntimeForTest,
-  runAnalysisPublishLens,
-  setAnalysisPublishLensRuntimeForTest,
-} from "../../src/commands/analysis/publish-lens.ts";
+import { ensureBodyFitsGitHubLimit, resetAnalysisPublishLensRuntimeForTest, runAnalysisPublishLens, setAnalysisPublishLensRuntimeForTest } from "../../src/commands/analysis/publish-lens.ts";
 
 async function writeLensArtifacts(outputDir, lensJsonOverrides = {}) {
   const markdownPath = join(outputDir, "2026-03-15.md");
@@ -88,12 +84,7 @@ test("analysis publish-lens creates a dated issue when none exists and includes 
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && args[1] === "create") {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2097\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2097\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -149,7 +140,7 @@ test("analysis publish-lens updates existing open dated issue and preserves requ
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && args[1] === "edit") {
-        return { ok: true, status: 0, stdout: "", stderr: "" };
+        return successfulCommandResult();
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -189,7 +180,7 @@ test("analysis publish-lens resolves slack webhook from factoryConfigWebhookUrl 
     },
     ghFn: (args) => {
       if (args[0] === "issue" && args[1] === "create") {
-        return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/9999\n", stderr: "" };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/9999\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: "" };
     },
@@ -238,7 +229,7 @@ test("analysis publish-lens reopens then updates existing closed dated issue", a
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && (args[1] === "reopen" || args[1] === "edit")) {
-        return { ok: true, status: 0, stdout: "", stderr: "" };
+        return successfulCommandResult();
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -305,28 +296,13 @@ test("analysis publish-lens materializes candidate issues and links them to the 
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && args[1] === "create" && args.includes("Daily Lens Report — 2026-03-15")) {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2100\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2100\n");
       }
       if (args[0] === "issue" && args[1] === "create" && args.includes("Add deterministic gate for flaky retries")) {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2101\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2101\n");
       }
       if (args[0] === "issue" && args[1] === "create" && args.includes("Improve routing telemetry")) {
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2102\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2102\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -424,7 +400,7 @@ test("analysis publish-lens updates existing candidate issues and skips malforme
     ghFn: (args) => {
       ghCalls.push(args);
       if (args[0] === "issue" && args[1] === "edit") {
-        return { ok: true, status: 0, stdout: "", stderr: "" };
+        return successfulCommandResult();
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },
@@ -495,12 +471,7 @@ test("analysis publish-lens truncates oversized markdown when creating issue", a
           const body = readFileSync(bodyPath, "utf8");
           assert.ok(body.length <= 65536, `issue body should be <= 65536 chars, got ${body.length}`);
         }
-        return {
-          ok: true,
-          status: 0,
-          stdout: "https://github.com/recallnet/astrochicken/issues/2300\n",
-          stderr: "",
-        };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/2300\n");
       }
       return { ok: false, status: 1, stdout: "", stderr: `unexpected gh args: ${args.join(" ")}` };
     },

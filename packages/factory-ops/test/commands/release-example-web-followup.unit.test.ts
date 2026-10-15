@@ -47,7 +47,7 @@ function makeNarrative(overrides = {}) {
       "Cursor deduplication relies on generated_at as canonical release window identity",
     ],
     entry_points: [
-      "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+      "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
       "packages/factory-ops/src/commands/release-example-web-followup.ts",
     ],
     proof_points: [
@@ -170,7 +170,7 @@ test("buildReleaseShapingFollowupIssueBody includes required sections and payloa
   assert.match(body, /## Orientation/);
   assert.match(body, /## Structural & Behavioral Signals/);
   assert.match(body, /### Entry points/);
-  assert.match(body, /packages\/capability-release-reporting\/graphs\/release_report_flow\.dot/);
+  assert.match(body, /packages\/capability-release-reporting\/workflows\/release_report_flow\/release_report_flow\.workflow-source\.mjs/);
   assert.match(body, /Comprehension payload now includes structural\/behavioral\/debt fields/);
   assert.match(body, /## Payload Contract/);
   assert.match(body, /"structural_changes"/);

@@ -28,6 +28,7 @@
     "fallback_node",
     "fixed_count",
     "health_state",
+    "target_repo",
     "host_id",
     "incident_classification",
     "incident_crash_type",

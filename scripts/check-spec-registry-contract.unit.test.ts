@@ -12,7 +12,7 @@ import {
 } from "./check-spec-registry-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-spec-registry-contract.mjs");
+const checkerPath = join(scriptsDir, "check-spec-registry-contract.ts");
 const repoRoot = resolve(scriptsDir, "..");
 
 function writeJson(path, value) {
@@ -23,6 +23,19 @@ function writeJson(path, value) {
 function writeText(path, value) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, value);
+}
+
+function supervisorSpecFixture(overrides) {
+  return {
+    id: "factory-ops.supervisor.tick",
+    title: "Supervisor Tick Orchestration Contract",
+    owner_id: "factory_ops.supervisor",
+    owner_package: "@hatch/factory-ops",
+    subsystem: "supervisor",
+    status: "active",
+    path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+    ...overrides,
+  };
 }
 
 function createFixtureRepo() {
@@ -46,14 +59,7 @@ function createFixtureRepo() {
     schema: "hatch.spec-registry.v1",
     required_owner_ids: ["factory_ops.supervisor"],
     specs: [
-      {
-        id: "factory-ops.supervisor.tick",
-        title: "Supervisor Tick Orchestration Contract",
-        owner_id: "factory_ops.supervisor",
-        owner_package: "@hatch/factory-ops",
-        subsystem: "supervisor",
-        status: "active",
-        path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+      supervisorSpecFixture({
         authoritative_configs: [
           "config/testing/spec-registry.json",
           "config/testing/subsystem-ownership.json",
@@ -67,7 +73,7 @@ function createFixtureRepo() {
         merge_blockers: [
           "Keep spec and proof aligned.",
         ],
-      },
+      }),
     ],
   });
 
@@ -119,7 +125,7 @@ Spec scope.
   );
 
   writeText(
-    join(dir, "packages", "factory-ops", "test", "supervisor", "supervisor-tick.contract.test.mjs"),
+    join(dir, "packages", "factory-ops", "test", "supervisor", "supervisor-tick.contract.test.ts"),
     "import test from 'node:test';\n",
   );
 
@@ -171,14 +177,7 @@ test("validateSpecRegistry rejects missing coverage for required owners", () => 
     schema: "hatch.spec-registry.v1",
     required_owner_ids: ["factory_ops.supervisor", "factory_ops.scenarios"],
     specs: [
-      {
-        id: "factory-ops.supervisor.tick",
-        title: "Supervisor Tick Orchestration Contract",
-        owner_id: "factory_ops.supervisor",
-        owner_package: "@hatch/factory-ops",
-        subsystem: "supervisor",
-        status: "active",
-        path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+      supervisorSpecFixture({
         authoritative_configs: [
           "config/testing/spec-registry.json",
           "config/testing/subsystem-ownership.json",
@@ -192,7 +191,7 @@ test("validateSpecRegistry rejects missing coverage for required owners", () => 
         merge_blockers: [
           "Keep spec and proof aligned.",
         ],
-      },
+      }),
     ],
   });
 
@@ -206,18 +205,11 @@ test("validateSpecRegistry rejects a spec without proof surfaces", () => {
   writeJson(join(dir, "config", "testing", "spec-registry.json"), {
     schema: "hatch.spec-registry.v1",
     specs: [
-      {
-        id: "factory-ops.supervisor.tick",
-        title: "Supervisor Tick Orchestration Contract",
-        owner_id: "factory_ops.supervisor",
-        owner_package: "@hatch/factory-ops",
-        subsystem: "supervisor",
-        status: "active",
-        path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+      supervisorSpecFixture({
         authoritative_configs: ["config/testing/spec-registry.json"],
         test_surfaces: [],
         merge_blockers: ["blocker"],
-      },
+      }),
     ],
   });
 
@@ -231,18 +223,12 @@ test("validateSpecRegistry rejects unknown owner references", () => {
   writeJson(join(dir, "config", "testing", "spec-registry.json"), {
     schema: "hatch.spec-registry.v1",
     specs: [
-      {
-        id: "factory-ops.supervisor.tick",
-        title: "Supervisor Tick Orchestration Contract",
+      supervisorSpecFixture({
         owner_id: "missing.owner",
-        owner_package: "@hatch/factory-ops",
-        subsystem: "supervisor",
-        status: "active",
-        path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
         authoritative_configs: ["config/testing/spec-registry.json"],
         test_surfaces: [{ kind: "contract", path: "packages/factory-ops/test/supervisor/supervisor-tick.contract.test.ts" }],
         merge_blockers: ["blocker"],
-      },
+      }),
     ],
   });
 
@@ -256,18 +242,11 @@ test("validateSpecRegistry rejects missing proof files", () => {
   writeJson(join(dir, "config", "testing", "spec-registry.json"), {
     schema: "hatch.spec-registry.v1",
     specs: [
-      {
-        id: "factory-ops.supervisor.tick",
-        title: "Supervisor Tick Orchestration Contract",
-        owner_id: "factory_ops.supervisor",
-        owner_package: "@hatch/factory-ops",
-        subsystem: "supervisor",
-        status: "active",
-        path: "packages/factory-ops/specs/supervisor/supervisor-tick.md",
+      supervisorSpecFixture({
         authoritative_configs: ["config/testing/spec-registry.json"],
         test_surfaces: [{ kind: "contract", path: "packages/factory-ops/test/missing.contract.test.mjs" }],
         merge_blockers: ["blocker"],
-      },
+      }),
     ],
   });
 

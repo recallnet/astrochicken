@@ -8,7 +8,7 @@ import { runProvisioningDriftCheck } from "../../packages/factory-ops/src/lib/fa
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../..");
-const driftScriptPath = join(repoRoot, "scripts", "check-provisioning-drift.mjs");
+const driftScriptPath = join(repoRoot, "scripts", "check-provisioning-drift.ts");
 const fixtureRoot = join(repoRoot, "scripts", "test", "fixtures", "provisioning-drift");
 
 function fixturePath(...segments) {

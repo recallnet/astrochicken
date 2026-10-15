@@ -22,6 +22,18 @@ const runFixture = (name) => {
   assert.deepEqual(out, expected);
 };
 
+// Common neutral fixture inputs; each case supplies its milestone/issue evidence
+// and overrides capacity, priorities or blockers when those are under test.
+function selectFixtureWaves(overrides) {
+  return computeSelectedWaves({
+    readyIssues: [],
+    prioritiesText: "",
+    maxConcurrent: 1,
+    getBlockedBy: () => [],
+    ...overrides,
+  });
+}
+
 test("computeSelectedWaves skips milestones already ready", () => {
   runFixture("unit-ready-only");
 });
@@ -37,70 +49,52 @@ test("computeSelectedWaves blocks all-blocked and cross-milestone dependencies",
 test("computeSelectedWaves skips quarantined issues when selecting", () => {
   const milestones = [{ title: "goal-1-wave-1" }, { title: "goal-2-wave-1" }];
   const readyIssues = [];
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones,
     readyIssues,
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-1-wave-1") return [{ number: 11, title: "A", labels: [{ name: "quarantined" }] }];
       return [{ number: 21, title: "B", labels: [] }];
     },
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-2-wave-1"]);
 });
 
 test("computeSelectedWaves skips milestone with no open issues", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.equal(out.evaluations[0].skip_reason, "no_open_issues");
 });
 
 test("computeSelectedWaves skips milestone where all issues are quarantined", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [
       { number: 1, title: "A", labels: [{ name: "quarantined" }] },
       { number: 2, title: "B", labels: [{ name: "quarantined" }] },
     ],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.equal(out.evaluations[0].skip_reason, "all_blocked");
 });
 
 test("computeSelectedWaves selects milestone with mix of quarantined and unblocked issues", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [
       { number: 1, title: "A", labels: [{ name: "quarantined" }] },
       { number: 2, title: "B", labels: [] },
     ],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-1-wave-1"]);
 });
 
 test("computeSelectedWaves ignores closed blockers", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
     getBlockedBy: (num) => num === 1
       ? [{ number: 999, state: "CLOSED", milestone: { title: "goal-0-wave-1" } }]
@@ -110,15 +104,13 @@ test("computeSelectedWaves ignores closed blockers", () => {
 });
 
 test("computeSelectedWaves respects in-flight slot math", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }, { title: "goal-2-wave-1" }],
     readyIssues: [
       { number: 50, title: "Wave Ready: goal-0-wave-1", labels: [{ name: "wave-in-progress" }], milestone: { title: "goal-0-wave-1" } },
     ],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => [{ number: title === "goal-1-wave-1" ? 10 : 20, title: "Task", labels: [] }],
-    getBlockedBy: () => [],
   });
   // 2 max - 1 in-flight = 1 slot available
   assert.equal(out.selected_waves.length, 1);
@@ -129,13 +121,9 @@ test("computeSelectedWaves respects in-flight slot math", () => {
 // --- Error path tests ---
 
 test("computeSelectedWaves returns empty on completely empty input", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.deepEqual(out.candidate_waves, []);
@@ -143,37 +131,27 @@ test("computeSelectedWaves returns empty on completely empty input", () => {
 });
 
 test("computeSelectedWaves filters milestones with missing title", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "" }, { title: null }, { title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   // Only goal-1-wave-1 should be evaluated
   assert.deepEqual(out.selected_waves, ["goal-1-wave-1"]);
 });
 
 test("computeSelectedWaves handles priority ordering with non-candidate waves", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }, { title: "goal-2-wave-1" }],
-    readyIssues: [],
     prioritiesText: "priority: goal-999-wave-1, goal-2-wave-1, goal-1-wave-1",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   // goal-2-wave-1 should be selected first (priority order), goal-999 filtered out (not a candidate)
   assert.equal(out.selected_waves[0], "goal-2-wave-1");
 });
 
 test("computeSelectedWaves handles cross-milestone blocking", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-2-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
     getBlockedBy: (num) => num === 1
       ? [{ number: 50, state: "OPEN", milestone: { title: "goal-1-wave-1" } }]
@@ -185,15 +163,11 @@ test("computeSelectedWaves handles cross-milestone blocking", () => {
 });
 
 test("computeSelectedWaves skips milestones blocked on control-plane metadata", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-10-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [
       { number: 1001, title: "A", labels: [{ name: "blocked-control-plane" }] },
     ],
-    getBlockedBy: () => [],
     getControlPlaneBlocker: () => ({
       kind: "upstream_bug",
       blockerRef: "#1234",
@@ -210,15 +184,11 @@ test("computeSelectedWaves skips milestones blocked on control-plane metadata", 
 });
 
 test("computeSelectedWaves sentinel blocks milestones when blocked-control-plane label is present", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-11-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [
       { number: 1101, title: "A", labels: [{ name: "blocked-control-plane" }] },
     ],
-    getBlockedBy: () => [],
     getControlPlaneBlocker: () => ({
       kind: "release_floor",
       blockerRef: "v9.9.9",
@@ -233,11 +203,8 @@ test("computeSelectedWaves sentinel blocks milestones when blocked-control-plane
 });
 
 test("computeSelectedWaves ignores same-wave blockers when deciding wave eligibility", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-3-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [
       { number: 301, title: "A", labels: [] },
       { number: 302, title: "B", labels: [] },
@@ -251,29 +218,23 @@ test("computeSelectedWaves ignores same-wave blockers when deciding wave eligibi
 });
 
 test("computeSelectedWaves handles getMilestoneOpenIssues returning null", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => null,
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.equal(out.evaluations[0].skip_reason, "no_open_issues");
 });
 
 test("computeSelectedWaves counts in-flight from wave-in-progress ready issues", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
     readyIssues: [
       { number: 10, title: "Wave Ready: goal-0-wave-1", labels: [{ name: "wave-in-progress" }], milestone: { title: "goal-0-wave-1" } },
       { number: 11, title: "Wave Ready: goal-0-wave-2", labels: [{ name: "wave-in-progress" }], milestone: { title: "goal-0-wave-2" } },
     ],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.equal(out.in_flight_count, 2);
   // 2 in-flight, max 2 → 0 slots
@@ -282,17 +243,15 @@ test("computeSelectedWaves counts in-flight from wave-in-progress ready issues",
 });
 
 test("computeSelectedWaves ready_count includes only wave-ready markers", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
     readyIssues: [
       { number: 10, title: "Wave Ready: goal-0-wave-1", labels: [], milestone: { title: "goal-0-wave-1" } },
       { number: 11, title: "Goal: unrelated", labels: [{ name: "goal" }, { name: "ready" }], milestone: null },
       { number: 12, title: "[bug] unrelated", labels: [{ name: "bug" }, { name: "ready" }], milestone: null },
     ],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.equal(out.ready_count, 1);
 });
@@ -301,16 +260,13 @@ test("computeSelectedWaves does NOT false-skip milestone when regular feature is
   // Regression: a regular feature issue with the ready label + milestone was
   // being counted in readyByMilestone, causing the milestone to be skipped
   // with already_ready. Only Wave Ready: marker issues should trigger that skip.
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
     readyIssues: [
       // Regular feature issue with ready label AND a milestone — NOT a Wave Ready: marker
       { number: 42, title: "Bootstrap feature", labels: [{ name: "feature" }, { name: "ready" }, { name: "triaged" }], milestone: { title: "goal-1-wave-1" } },
     ],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 42, title: "Bootstrap feature", labels: [{ name: "feature" }] }],
-    getBlockedBy: () => [],
   });
   // Must select, not skip with already_ready
   assert.deepEqual(out.selected_waves, ["goal-1-wave-1"]);
@@ -318,42 +274,30 @@ test("computeSelectedWaves does NOT false-skip milestone when regular feature is
 });
 
 test("computeSelectedWaves skips milestone with recently-closed no_merge_candidates marker", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
     closedMarkers: [{ milestone: "goal-1-wave-1", releaseReason: "no_merge_candidates" }],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.equal(out.evaluations[0].skip_reason, "recently_released_no_candidates");
 });
 
 test("computeSelectedWaves skips milestone with recently-closed judge_failed marker", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
     closedMarkers: [{ milestone: "goal-1-wave-1", releaseReason: "judge_failed" }],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, []);
   assert.equal(out.evaluations[0].skip_reason, "recently_released_no_candidates");
 });
 
 test("computeSelectedWaves does NOT skip milestone when closedMarker has non-terminal reason", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-1-wave-1" }],
-    readyIssues: [],
     closedMarkers: [{ milestone: "goal-1-wave-1", releaseReason: "completed" }],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 1, title: "A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-1-wave-1"]);
 });
@@ -582,17 +526,14 @@ test("findPriorWave returns null for non-matching titles", () => {
 });
 
 test("isPriorWaveComplete — wave-2 is skipped when wave-1 has open feature issues", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }, { title: "goal-50-wave-2" }],
-    readyIssues: [],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-50-wave-1") return [{ number: 10, title: "Feature A", labels: [] }];
       if (title === "goal-50-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-50-wave-1"]);
   const w2eval = out.evaluations.find((e) => e.milestone === "goal-50-wave-2");
@@ -601,88 +542,69 @@ test("isPriorWaveComplete — wave-2 is skipped when wave-1 has open feature iss
 });
 
 test("isPriorWaveComplete — wave-2 is selected when wave-1 has no open issues", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }, { title: "goal-50-wave-2" }],
-    readyIssues: [],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-50-wave-1") return [];
       if (title === "goal-50-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   // wave-1 has no open issues → no_open_issues; wave-2 proceeds
   assert.ok(out.selected_waves.includes("goal-50-wave-2"));
 });
 
 test("isPriorWaveComplete — wave-2 is selected when wave-1 milestone does not exist", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-2" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 20, title: "Feature B", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-50-wave-2"]);
 });
 
 test("isPriorWaveComplete — wave-2 is selected when wave-1 was terminally completed", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }, { title: "goal-50-wave-2" }],
-    readyIssues: [],
     closedMarkers: [{ milestone: "goal-50-wave-1", releaseReason: "wave_completed" }],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-50-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   assert.ok(out.selected_waves.includes("goal-50-wave-2"));
 });
 
 test("isPriorWaveComplete — wave-2 is skipped when wave-1 is in-progress", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }, { title: "goal-50-wave-2" }],
     readyIssues: [
       { number: 99, title: "Wave Ready: goal-50-wave-1", labels: [{ name: "wave-in-progress" }], milestone: { title: "goal-50-wave-1" } },
     ],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-50-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   const w2eval = out.evaluations.find((e) => e.milestone === "goal-50-wave-2");
   assert.equal(w2eval.skip_reason, "prior_wave_open");
 });
 
 test("wave-1 is never blocked by wave sequencing", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }],
-    readyIssues: [],
-    prioritiesText: "",
-    maxConcurrent: 1,
     getMilestoneOpenIssues: () => [{ number: 10, title: "Feature A", labels: [] }],
-    getBlockedBy: () => [],
   });
   assert.deepEqual(out.selected_waves, ["goal-50-wave-1"]);
 });
 
 test("unrelated goals do not block each other's waves", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-A-wave-1" }, { title: "goal-B-wave-2" }],
-    readyIssues: [],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: () => [{ number: 10, title: "Feature", labels: [] }],
-    getBlockedBy: () => [],
   });
   // goal-A-wave-1 and goal-B-wave-2 are different goals — no sequencing
   // goal-B-wave-2 doesn't match the goal-(\d+)-wave-(\d+) pattern (B is not a digit)
@@ -691,18 +613,15 @@ test("unrelated goals do not block each other's waves", () => {
 });
 
 test("isPriorWaveComplete — wave-3 is skipped when wave-2 is still open even if wave-1 is complete", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-50-wave-1" }, { title: "goal-50-wave-2" }, { title: "goal-50-wave-3" }],
-    readyIssues: [],
     closedMarkers: [{ milestone: "goal-50-wave-1", releaseReason: "wave_completed" }],
-    prioritiesText: "",
     maxConcurrent: 3,
     getMilestoneOpenIssues: (title) => {
       if (title === "goal-50-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       if (title === "goal-50-wave-3") return [{ number: 30, title: "Feature C", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   assert.ok(out.selected_waves.includes("goal-50-wave-2"), "wave-2 should be selected");
   assert.ok(!out.selected_waves.includes("goal-50-wave-3"), "wave-3 should be blocked by wave-2");
@@ -742,10 +661,8 @@ test("isPriorWaveComplete returns false when getMilestoneOpenIssues is not provi
 });
 
 test("computeSelectedWaves skips wave-2 when getMilestoneOpenIssues errors on wave-1 query", () => {
-  const out = computeSelectedWaves({
+  const out = selectFixtureWaves({
     milestones: [{ title: "goal-60-wave-1" }, { title: "goal-60-wave-2" }],
-    readyIssues: [],
-    prioritiesText: "",
     maxConcurrent: 2,
     getMilestoneOpenIssues: (title) => {
       // wave-1 query fails (API error returns undefined), wave-2 succeeds
@@ -753,7 +670,6 @@ test("computeSelectedWaves skips wave-2 when getMilestoneOpenIssues errors on wa
       if (title === "goal-60-wave-2") return [{ number: 20, title: "Feature B", labels: [] }];
       return [];
     },
-    getBlockedBy: () => [],
   });
   assert.ok(!out.selected_waves.includes("goal-60-wave-2"), "wave-2 must not dispatch when wave-1 state is unknown");
   const w2eval = out.evaluations.find((e) => e.milestone === "goal-60-wave-2");

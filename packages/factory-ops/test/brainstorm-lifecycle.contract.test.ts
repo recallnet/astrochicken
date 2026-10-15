@@ -126,11 +126,10 @@ test("brainstorm lifecycle contract: comment failure blocks close", () => {
   assert.deepEqual(calls[0].slice(0, 2), ["issue", "comment"]);
 });
 
-test("host runtime intake certification: verifies goal creation, backlink, and source closure", async () => {
-  const hostBaseDir = mkdtempSync(join(tmpdir(), "host-runtime-intake-certify-pass-"));
+function createIntakeFixture({ prefix, runId = "", sourceIssueNumber = "", goalNumber = "" }) {
+  const hostBaseDir = mkdtempSync(join(tmpdir(), prefix));
   const installationDir = join(hostBaseDir, "brainstorm");
-  mkdirSync(join(installationDir, "runs", "run_123"), { recursive: true });
-
+  mkdirSync(runId ? join(installationDir, "runs", runId) : installationDir, { recursive: true });
   writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
     installation_id: "inst_brainstorm",
     instance_id: "brainstorm",
@@ -141,35 +140,39 @@ test("host runtime intake certification: verifies goal creation, backlink, and s
     artifact_dir: join(installationDir, "artifacts"),
     runtime_version: "0.1.0",
   }, null, 2)}\n`);
-
-  writeFileSync(join(installationDir, "runs", "run_123", "state.json"), `${JSON.stringify({
-    runId: "run_123",
-    status: "completed",
-    context: {
-      domain_result: JSON.stringify({
-        brainstorm_issue_number: "1201",
-        goal_issue_number: "3030",
-        goal_issue_url: "https://github.com/recallnet/astrochicken/issues/3030",
-      }),
-    },
-  }, null, 2)}\n`);
-
+  if (runId) {
+    writeFileSync(join(installationDir, "runs", runId, "state.json"), `${JSON.stringify({
+      runId,
+      status: "completed",
+      context: { domain_result: JSON.stringify({
+        brainstorm_issue_number: sourceIssueNumber,
+        goal_issue_number: goalNumber,
+        goal_issue_url: `https://github.com/recallnet/astrochicken/issues/${goalNumber}`,
+      }) },
+    }, null, 2)}\n`);
+  }
   const registryPath = join(hostBaseDir, "factory-registry.json");
   writeFileSync(registryPath, `${JSON.stringify({
     schema: "hatch.factory.registry.v1",
-    instances: [
-      {
-        instance_id: "brainstorm",
-        target_repo: "example-org/example-notes",
-        destinations_json: JSON.stringify({
-          goal_issues: {
-            repo: "recallnet/astrochicken",
-            labels: ["goal", "source:brainstorm"],
-          },
-        }),
-      },
-    ],
+    instances: [{
+      instance_id: "brainstorm",
+      target_repo: "example-org/example-notes",
+      destinations_json: JSON.stringify({ goal_issues: {
+        repo: "recallnet/astrochicken",
+        labels: ["goal", "source:brainstorm"],
+      } }),
+    }],
   }, null, 2)}\n`);
+  return { hostBaseDir, registryPath };
+}
+
+test("host runtime intake certification: verifies goal creation, backlink, and source closure", async () => {
+  const { hostBaseDir, registryPath } = createIntakeFixture({
+    prefix: "host-runtime-intake-certify-pass-",
+    runId: "run_123",
+    sourceIssueNumber: "1201",
+    goalNumber: "3030",
+  });
 
   try {
     const out = await certifyHostRuntimeIntake({
@@ -246,49 +249,12 @@ test("host runtime intake certification: verifies goal creation, backlink, and s
 });
 
 test("host runtime intake certification: fails when backlink/closure invariants are missing", async () => {
-  const hostBaseDir = mkdtempSync(join(tmpdir(), "host-runtime-intake-certify-fail-"));
-  const installationDir = join(hostBaseDir, "brainstorm");
-  mkdirSync(join(installationDir, "runs", "run_456"), { recursive: true });
-
-  writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
-    installation_id: "inst_brainstorm",
-    instance_id: "brainstorm",
-    host_id: "host_test_01",
-    workspace_mode: "api_only",
-    work_dir: null,
-    log_dir: join(installationDir, "logs"),
-    artifact_dir: join(installationDir, "artifacts"),
-    runtime_version: "0.1.0",
-  }, null, 2)}\n`);
-
-  writeFileSync(join(installationDir, "runs", "run_456", "state.json"), `${JSON.stringify({
+  const { hostBaseDir, registryPath } = createIntakeFixture({
+    prefix: "host-runtime-intake-certify-fail-",
     runId: "run_456",
-    status: "completed",
-    context: {
-      domain_result: JSON.stringify({
-        brainstorm_issue_number: "1202",
-        goal_issue_number: "4040",
-        goal_issue_url: "https://github.com/recallnet/astrochicken/issues/4040",
-      }),
-    },
-  }, null, 2)}\n`);
-
-  const registryPath = join(hostBaseDir, "factory-registry.json");
-  writeFileSync(registryPath, `${JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: [
-      {
-        instance_id: "brainstorm",
-        target_repo: "example-org/example-notes",
-        destinations_json: JSON.stringify({
-          goal_issues: {
-            repo: "recallnet/astrochicken",
-            labels: ["goal", "source:brainstorm"],
-          },
-        }),
-      },
-    ],
-  }, null, 2)}\n`);
+    sourceIssueNumber: "1202",
+    goalNumber: "4040",
+  });
 
   try {
     const out = await certifyHostRuntimeIntake({
@@ -360,37 +326,9 @@ test("host runtime intake certification: fails when backlink/closure invariants 
 });
 
 test("host runtime intake certification: surfaces host runtime run failure and exits non-certified", async () => {
-  const hostBaseDir = mkdtempSync(join(tmpdir(), "host-runtime-intake-certify-run-fail-"));
-  const installationDir = join(hostBaseDir, "brainstorm");
-  mkdirSync(installationDir, { recursive: true });
-
-  writeFileSync(join(installationDir, "installation.json"), `${JSON.stringify({
-    installation_id: "inst_brainstorm",
-    instance_id: "brainstorm",
-    host_id: "host_test_01",
-    workspace_mode: "api_only",
-    work_dir: null,
-    log_dir: join(installationDir, "logs"),
-    artifact_dir: join(installationDir, "artifacts"),
-    runtime_version: "0.1.0",
-  }, null, 2)}\n`);
-
-  const registryPath = join(hostBaseDir, "factory-registry.json");
-  writeFileSync(registryPath, `${JSON.stringify({
-    schema: "hatch.factory.registry.v1",
-    instances: [
-      {
-        instance_id: "brainstorm",
-        target_repo: "example-org/example-notes",
-        destinations_json: JSON.stringify({
-          goal_issues: {
-            repo: "recallnet/astrochicken",
-            labels: ["goal", "source:brainstorm"],
-          },
-        }),
-      },
-    ],
-  }, null, 2)}\n`);
+  const { hostBaseDir, registryPath } = createIntakeFixture({
+    prefix: "host-runtime-intake-certify-run-fail-",
+  });
 
   try {
     const out = await certifyHostRuntimeIntake({

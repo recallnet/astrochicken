@@ -1393,5 +1393,8 @@
       "from": "supervisor_review",
       "to": "set_domain_result"
     }
+  ],
+  "imports": [
+    "../../../factories/_shared/roles.stylesheet"
   ]
 }

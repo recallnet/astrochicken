@@ -1,16 +1,13 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+
 
 import { loadResumePolicy } from "../../src/commands/factory-resume-gate.ts";
 import { validateResumePolicy } from "../../src/lib/resume-policy-schema.ts";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 test("release command wiring includes validate-policy and rollout-events", () => {
   const text = readFileSync("packages/factory-ops/src/cli/commands/release-policy-cmds.ts", "utf8");
@@ -21,10 +18,10 @@ test("release command wiring includes validate-policy and rollout-events", () =>
 });
 
 test("hatch-ops release --help lists validate-policy and rollout-events", () => {
-  const run = spawnSync("node", [opsCliPath, "release", "--help"], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "--help"
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const help = `${run.stdout || ""}\n${run.stderr || ""}`;
@@ -113,32 +110,24 @@ test("loadResumePolicy always returns policy_validation_errors array", () => {
 });
 
 test("release validate-policy CLI prints ok for a valid policy", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "validate-policy",
-    "--policy-json",
-    '{"control_plane_repo":"recallnet/astrochicken"}',
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "validate-policy",
+      "--policy-json",
+      '{"control_plane_repo":"recallnet/astrochicken"}'
+    ]);
 
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.equal((run.stdout || "").trim(), "ok");
 });
 
 test("release validate-policy CLI prints unknown key errors and exits non-zero", () => {
-  const run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "validate-policy",
-    "--policy-json",
-    '{"bad_key":true}',
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const run = spawnOpsCli([
+      "release",
+      "validate-policy",
+      "--policy-json",
+      '{"bad_key":true}'
+    ]);
 
   assert.equal(run.status, 1);
   assert.match(run.stderr, /Unknown top-level key `bad_key`/);

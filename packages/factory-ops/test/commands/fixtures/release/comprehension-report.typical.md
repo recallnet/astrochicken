@@ -23,7 +23,7 @@ Release reporting moved from per-merge narration to significance-ranked comprehe
 Operators can now orient on conceptual movement without replaying every merged PR.
 
 ## Entry Points
-- `packages/factory-ops/src/commands/release-comprehension-catchup.mjs`
+- `packages/factory-ops/src/commands/release-comprehension-catchup.ts`
 - `packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs`
 
 ## Watch Items

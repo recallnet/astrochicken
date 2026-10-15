@@ -33,7 +33,8 @@
     "./contract": "./capability-contract.v1.json",
     "./graphs/*": "./graphs/*",
     "./manifest": "./capability-manifest.v1.json",
-    "./skills/*": "./skills/*"
+    "./skills/*": "./skills/*",
+    "./workflows/*": "./workflows/*"
   },
   "manifestPath": "packages/capability-product-judge/capability-manifest.v1.json",
   "nonGoals": [],
@@ -107,7 +108,8 @@
     "capability-contract.v1.json",
     "capability-manifest.v1.json",
     "graphs",
-    "skills"
+    "skills",
+    "workflows"
   ],
   "requiredContextKeys": [
     "control_plane_repo",

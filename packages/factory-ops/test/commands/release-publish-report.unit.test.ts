@@ -1,11 +1,8 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  buildReleaseReportIssueBody,
-  buildReleaseReportIssueTitle,
-  publishReleaseReportIssue,
-} from "../../src/commands/release-publish-report.ts";
+import { buildReleaseReportIssueBody, buildReleaseReportIssueTitle, publishReleaseReportIssue } from "../../src/commands/release-publish-report.ts";
 
 test("buildReleaseReportIssueBody uses narrator markdown directly as the report body", () => {
   const context = {
@@ -140,11 +137,11 @@ test("publishReleaseReportIssue updates an existing release report issue when th
     narrative,
     ghFn(args) {
       ghCalls.push(args);
-      if (args[0] === "label" && args[1] === "create") return { ok: true, status: 0, stdout: "", stderr: "" };
+      if (args[0] === "label" && args[1] === "create") return successfulCommandResult();
       if (args[0] === "issue" && args[1] === "edit") {
-        return { ok: true, status: 0, stdout: "https://github.com/recallnet/astrochicken/issues/9999\n", stderr: "" };
+        return successfulCommandResult("https://github.com/recallnet/astrochicken/issues/9999\n");
       }
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
     ghJsonFn(args) {
       ghCalls.push(args);

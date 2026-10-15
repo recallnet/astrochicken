@@ -9,11 +9,11 @@ const MOTHERSHIP_LOCAL_COPY = resolve(REPO_ROOT, "factories/mothership/graphs/re
 const EXAMPLE_TRADING_LOCAL_COPY = resolve(REPO_ROOT, "factories/example-trading/graphs/release_report_flow.dot");
 
 const MOTHERSHIP_SUPERVISOR_TICK = resolve(REPO_ROOT, "docs/contracts/workflow-ir/mothership/factory_supervisor_tick.dot");
-const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "factories/example-trading/graphs/domain_example_trading.dot");
+const EXAMPLE_TRADING_DOMAIN_GRAPH = resolve(REPO_ROOT, "docs/contracts/workflow-ir/factory-runtime/managed_software_delivery_domain.dot");
 const MOTHERSHIP_DAILY_RELEASE = resolve(REPO_ROOT, "factories/mothership/graphs/daily_release_report.dot");
-const EXAMPLE_TRADING_DAILY_RELEASE = resolve(REPO_ROOT, "factories/example-trading/graphs/daily_release_report.dot");
+const EXAMPLE_TRADING_CONFIG = resolve(REPO_ROOT, "factories/example-trading/factory.config.json");
 
-const PACKAGE_TEMPLATE = "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot";
+const PACKAGE_TEMPLATE = "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs";
 const MS_LOCAL_TEMPLATE = "factories/mothership/graphs/release_report_flow.dot";
 const RL_LOCAL_TEMPLATE = "factories/example-trading/graphs/release_report_flow.dot";
 
@@ -61,9 +61,10 @@ describe("factory migration contract: @hatch/capability-release-reporting", () =
 			"mothership daily_release_report.dot must reference package template",
 		).toBe(true);
 
-		const exampleTradingDaily = readFileSync(EXAMPLE_TRADING_DAILY_RELEASE, "utf8");
+		const exampleTradingConfig = JSON.parse(readFileSync(EXAMPLE_TRADING_CONFIG, "utf8"));
+		const releaseJob = exampleTradingConfig.schedules.jobs.find((job: { id: string }) => job.id === "daily-release-report");
 		expect(
-			exampleTradingDaily.includes(PACKAGE_TEMPLATE),
+			releaseJob?.graph === PACKAGE_TEMPLATE,
 			"example-trading daily_release_report.dot must reference package template",
 		).toBe(true);
 	});

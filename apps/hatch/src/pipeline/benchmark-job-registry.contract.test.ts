@@ -1,17 +1,22 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative, resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { loadGraphSource } from "./graph-source.js";
 import { parse } from "./parse.js";
 
 const REGISTRY_PATH = join(import.meta.dirname, "../../../../docs/contracts/benchmark-job-registry.json");
-const MOTHERSHIP_GRAPHS_DIR = join(import.meta.dirname, "../../../../factories/mothership/graphs");
-const CAPABILITY_CODING_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-coding/graphs");
-const CAPABILITY_MERGE_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-merge/graphs");
-const CAPABILITY_PRODUCT_JUDGE_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-product-judge/graphs");
-const CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-goal-decomposition/graphs");
-const CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR = join(import.meta.dirname, "../../../../packages/capability-release-reporting/graphs");
+const REPO_ROOT = resolve(import.meta.dirname, "../../../..");
+const BENCHMARK_SOURCE_ROOTS = [
+	"factories/mothership/workflows",
+	"packages/capability-coding/workflows",
+	"packages/capability-merge/workflows",
+	"packages/capability-product-judge/workflows",
+	"packages/capability-goal-decomposition/workflows",
+	"packages/capability-release-reporting/workflows",
+	"packages/capability-software-development/workflows",
+];
 
 const REQUIRED_NODE_ATTRS = ["benchmark_job_id", "prompt_version", "role_version", "skill_id"] as const;
 const BENCHMARKABLE_CLASSES = new Set([
@@ -47,52 +52,27 @@ function loadRegistry(): RegistryDocument {
 	return JSON.parse(readFileSync(REGISTRY_PATH, "utf8")) as RegistryDocument;
 }
 
+// @context:integration Benchmark contracts must compile canonical typed sources, not parse module text as DOT.
 function loadGraph(graphFile: string) {
-	let relativeGraphPath = graphFile;
-	let graphPath = join(MOTHERSHIP_GRAPHS_DIR, graphFile);
-
-	if (graphFile.startsWith("@hatch/capability-coding/")) {
-		relativeGraphPath = graphFile.replace("@hatch/capability-coding/", "");
-		graphPath = join(import.meta.dirname, `../../../../packages/capability-coding/${relativeGraphPath}`);
-	} else if (graphFile.startsWith("@hatch/capability-merge/")) {
-		relativeGraphPath = graphFile.replace("@hatch/capability-merge/", "");
-		graphPath = join(import.meta.dirname, `../../../../packages/capability-merge/${relativeGraphPath}`);
-	} else if (graphFile.startsWith("@hatch/capability-product-judge/")) {
-		relativeGraphPath = graphFile.replace("@hatch/capability-product-judge/", "");
-		graphPath = join(import.meta.dirname, `../../../../packages/capability-product-judge/${relativeGraphPath}`);
-	} else if (graphFile.startsWith("@hatch/capability-goal-decomposition/")) {
-		relativeGraphPath = graphFile.replace("@hatch/capability-goal-decomposition/", "");
-		graphPath = join(import.meta.dirname, `../../../../packages/capability-goal-decomposition/${relativeGraphPath}`);
-	} else if (graphFile.startsWith("@hatch/capability-release-reporting/")) {
-		relativeGraphPath = graphFile.replace("@hatch/capability-release-reporting/", "");
-		graphPath = join(import.meta.dirname, `../../../../packages/capability-release-reporting/${relativeGraphPath}`);
-	}
-
-	return parse(readFileSync(graphPath, "utf8"));
+	return parse(loadGraphSource(graphFile, REPO_ROOT).sourceText);
 }
 
 function listAllBenchmarkableGraphFiles(): string[] {
 	const graphFiles: string[] = [];
-
-	for (const graphFile of readdirSync(MOTHERSHIP_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(graphFile);
+	function collect(directory: string): void {
+		for (const entry of readdirSync(directory, { withFileTypes: true })) {
+			const absolutePath = join(directory, entry.name);
+			if (entry.isDirectory()) collect(absolutePath);
+			else if (entry.name.endsWith(".workflow-source.mjs")) {
+				const repositoryPath = relative(REPO_ROOT, absolutePath);
+				graphFiles.push(repositoryPath.startsWith("packages/")
+					? repositoryPath.replace(/^packages\/([^/]+)\//, "@hatch/$1/")
+					: repositoryPath);
+			}
+		}
 	}
-	for (const graphFile of readdirSync(CAPABILITY_CODING_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(`@hatch/capability-coding/graphs/${graphFile}`);
-	}
-	for (const graphFile of readdirSync(CAPABILITY_MERGE_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(`@hatch/capability-merge/graphs/${graphFile}`);
-	}
-	for (const graphFile of readdirSync(CAPABILITY_PRODUCT_JUDGE_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(`@hatch/capability-product-judge/graphs/${graphFile}`);
-	}
-	for (const graphFile of readdirSync(CAPABILITY_GOAL_DECOMPOSITION_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(`@hatch/capability-goal-decomposition/graphs/${graphFile}`);
-	}
-	for (const graphFile of readdirSync(CAPABILITY_RELEASE_REPORTING_GRAPHS_DIR).filter((file) => file.endsWith(".dot")).sort()) {
-		graphFiles.push(`@hatch/capability-release-reporting/graphs/${graphFile}`);
-	}
-
+	for (const sourceRoot of BENCHMARK_SOURCE_ROOTS) collect(join(REPO_ROOT, sourceRoot));
+	expect(graphFiles.length).toBeGreaterThan(0);
 	return graphFiles;
 }
 
@@ -116,7 +96,7 @@ describe("benchmark job registry contract", () => {
 			expect(job.nodes.length).toBeGreaterThan(0);
 
 			for (const ref of job.nodes) {
-				expect(ref.graph.endsWith(".dot")).toBe(true);
+				expect(ref.graph.endsWith(".workflow-source.mjs")).toBe(true);
 				expect(ref.node_id.length).toBeGreaterThan(0);
 				const key = registryKey(ref);
 				if (nodeOwnership.has(key)) {

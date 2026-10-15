@@ -27,7 +27,7 @@ describe("openrouter trace metadata helper", () => {
 
 		expect(options.metadata.trace).toMatchObject({
 			trace_id: expectedTraceId,
-			trace_name: "wave_execute.dot",
+			trace_name: "wave_execute.workflow-source.mjs",
 			generation_name: "agent.worktree:impl:wt-session:attempt:2",
 			parent_span_id: "parent-run-88",
 			session_id: expectedSessionId,

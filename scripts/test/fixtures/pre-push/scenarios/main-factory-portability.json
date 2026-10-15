@@ -1,5 +1,5 @@
 {
-  "changedPath": "packages/factory-ops/src/lib/factory-context-resolver.mjs",
+  "changedPath": "packages/factory-ops/src/lib/factory-context-resolver.ts",
   "expectedNpmCalls": [
     "build",
     "knip",

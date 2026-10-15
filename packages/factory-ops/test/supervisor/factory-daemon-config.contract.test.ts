@@ -58,7 +58,7 @@ test("runtime repo defaults use mothership repo only across entrypoints", () => 
 
   assert.match(
     packageJson,
-    /"supervisor:status"\s*:\s*"node packages\/factory-ops\/src\/cli\.mjs supervisor status --repo \$\{MOTHERSHIP_REPO:-recallnet\/astrochicken\}"/,
+    /"supervisor:status"\s*:\s*"node packages\/factory-ops\/src\/cli\.ts supervisor status --repo \$\{MOTHERSHIP_REPO:-recallnet\/astrochicken\}"/,
   );
   assert.doesNotMatch(packageJson, /ASTROCHICKEN_REPO/);
   assert.doesNotMatch(packageJson, new RegExp(legacyRepoEnvKey));
@@ -91,7 +91,7 @@ test("mothership factory.config.json splits dispatch reactor from maintenance su
   const config = JSON.parse(raw);
 
   assert.equal(config.factory_id, "mothership");
-  assert.equal(config.dispatch.graph, "factories/mothership/graphs/factory_dispatch_reactor.dot");
+  assert.equal(config.dispatch.graph, "factories/mothership/workflows/dispatch-control/factory_dispatch_reactor.workflow-source.mjs");
   assert.equal(config.dispatch.latency_slo_seconds, 15);
   assert.equal(
     config.pipeline.supervisor_tick,

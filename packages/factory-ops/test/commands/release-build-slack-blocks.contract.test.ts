@@ -1,22 +1,17 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  SLACK_CONCEPTUAL_SHIFT_FALLBACK,
-  SLACK_NARRATIVE_HEADLINE_FALLBACK,
-  SLACK_NARRATIVE_SUMMARY_FALLBACK,
-  SLACK_WATCH_ITEMS_FALLBACK,
-  buildReleaseSlackBlocksPayload,
-} from "../../src/commands/release-build-slack-blocks.ts";
+import { SLACK_CONCEPTUAL_SHIFT_FALLBACK, SLACK_NARRATIVE_HEADLINE_FALLBACK, SLACK_NARRATIVE_SUMMARY_FALLBACK, SLACK_WATCH_ITEMS_FALLBACK, buildReleaseSlackBlocksPayload } from "../../src/commands/release-build-slack-blocks.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
 const fixturesDir = join(repoRoot, "packages/factory-ops/test/commands/fixtures/release");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 function fixtureJson(name) {
   return JSON.parse(readFileSync(join(fixturesDir, name), "utf8"));
@@ -52,7 +47,7 @@ test("buildReleaseSlackBlocksPayload assembles deterministic block order and sec
   const comprehensionText = payload.blocks[2].elements[0].text;
   assert.match(comprehensionText, /^Comprehension:/);
   assert.match(comprehensionText, /significance-gated comprehension brief/);
-  assert.match(comprehensionText, /entry `packages\/capability-release-reporting\/graphs\/release_report_flow\.dot`/);
+  assert.match(comprehensionText, /entry `packages\/capability-release-reporting\/workflows\/release_report_flow\/release_report_flow\.workflow-source\.mjs`/);
 
   const goalsText = payload.blocks[3].text.text;
   assert.match(goalsText, /^\*Goals Shipped\*/);
@@ -133,34 +128,26 @@ test("release build-slack-blocks supports raw and base64 payload transports with
   const context = fixtureJson("report-context.typical.json");
   const narrative = fixtureJson("narrative.typical.json");
 
-  const rawRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-slack-blocks",
-    "--context",
-    JSON.stringify(context),
-    "--narrative",
-    JSON.stringify(narrative),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const rawRun = spawnOpsCli([
+      "release",
+      "build-slack-blocks",
+      "--context",
+      JSON.stringify(context),
+      "--narrative",
+      JSON.stringify(narrative)
+    ]);
 
   assert.equal(rawRun.status, 0, rawRun.stderr || rawRun.stdout);
   const rawPayload = JSON.parse(rawRun.stdout || "{}");
 
-  const b64Run = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-slack-blocks",
-    "--context-b64",
-    Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
-    "--narrative-b64",
-    Buffer.from(JSON.stringify(narrative), "utf8").toString("base64"),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const b64Run = spawnOpsCli([
+      "release",
+      "build-slack-blocks",
+      "--context-b64",
+      Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
+      "--narrative-b64",
+      Buffer.from(JSON.stringify(narrative), "utf8").toString("base64")
+    ]);
 
   assert.equal(b64Run.status, 0, b64Run.stderr || b64Run.stdout);
   const b64Payload = JSON.parse(b64Run.stdout || "{}");
@@ -215,52 +202,40 @@ test("release build-slack-blocks rejects mixed transport and malformed inputs", 
   const context = fixtureJson("report-context.typical.json");
   const narrative = fixtureJson("narrative.typical.json");
 
-  const mixedTransportRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-slack-blocks",
-    "--context",
-    JSON.stringify(context),
-    "--context-b64",
-    Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
-    "--narrative",
-    JSON.stringify(narrative),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const mixedTransportRun = spawnOpsCli([
+      "release",
+      "build-slack-blocks",
+      "--context",
+      JSON.stringify(context),
+      "--context-b64",
+      Buffer.from(JSON.stringify(context), "utf8").toString("base64"),
+      "--narrative",
+      JSON.stringify(narrative)
+    ]);
 
   assert.equal(mixedTransportRun.status, 1);
   assert.match(mixedTransportRun.stderr, /context accepts one transport: --context or --context-b64/);
 
-  const malformedContextRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-slack-blocks",
-    "--context",
-    "{not-json",
-    "--narrative",
-    JSON.stringify(narrative),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const malformedContextRun = spawnOpsCli([
+      "release",
+      "build-slack-blocks",
+      "--context",
+      "{not-json",
+      "--narrative",
+      JSON.stringify(narrative)
+    ]);
 
   assert.equal(malformedContextRun.status, 1);
   assert.match(malformedContextRun.stderr, /--context must be valid JSON/);
 
-  const missingNarrativeFieldRun = spawnSync("node", [
-    opsCliPath,
-    "release",
-    "build-slack-blocks",
-    "--context",
-    JSON.stringify(context),
-    "--narrative",
-    JSON.stringify({ delivery_decision: "slack_and_issue", headline: "Only headline" }),
-  ], {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
+  const missingNarrativeFieldRun = spawnOpsCli([
+      "release",
+      "build-slack-blocks",
+      "--context",
+      JSON.stringify(context),
+      "--narrative",
+      JSON.stringify({ delivery_decision: "slack_and_issue", headline: "Only headline" })
+    ]);
 
   assert.equal(missingNarrativeFieldRun.status, 0, missingNarrativeFieldRun.stderr || missingNarrativeFieldRun.stdout);
   const missingNarrativePayload = JSON.parse(missingNarrativeFieldRun.stdout || "{}");

@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { validateManagedSupervisorShellContract } from "./check-managed-supervisor-shell-contract.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
-const checkerPath = join(scriptsDir, "check-managed-supervisor-shell-contract.mjs");
+const checkerPath = join(scriptsDir, "check-managed-supervisor-shell-contract.ts");
 const fixturesRoot = join(scriptsDir, "test", "fixtures", "managed-supervisor-shell-contract");
 
 function fixtureRoot(name) {
@@ -95,7 +95,7 @@ test("CLI prints deterministic fail telemetry and diagnostics", () => {
   });
 
   assert.equal(run.status, 1);
-  assert.match(run.stderr, /enum_mismatch file=.*supervisor-external-factory-lifecycle\.mjs source=.*external-factory-control-state\.mjs/);
+  assert.match(run.stderr, /enum_mismatch file=.*supervisor-external-factory-lifecycle\.ts source=.*external-factory-control-state\.ts/);
   assert.match(run.stderr, /^.*\[managed-supervisor-shell-contract\] result=fail diagnostics=\d+ kind_count=1 shell_required=1\n?$/m);
 });
 

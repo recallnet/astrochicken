@@ -1,4 +1,6 @@
+import { seedMissingManifestGateStubs } from "./test/helpers/fixture-files.mjs";
 import assert from "node:assert/strict";
+import { GATE_MANIFEST } from "./lib/gate-manifest.ts";
 import { spawnSync } from "node:child_process";
 import { chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -16,29 +18,29 @@ const sourceHookPath = join(repoRoot, ".githooks", "pre-commit");
 const sourceClassifierPath = join(repoRoot, "scripts", "pre-commit-staged-file-classifier.mjs");
 const sourceRunGatesPath = join(repoRoot, "scripts", "run-gates.mjs");
 const sourcePlatformInvariantRunnerPath = join(repoRoot, "scripts", "run-platform-invariant-gates.mjs");
-const sourceLineLimitCheckerPath = join(repoRoot, "scripts", "check-line-limit.mjs");
-const sourceHatchArtifactBoundaryCheckerPath = join(repoRoot, "scripts", "check-hatch-artifact-boundary.mjs");
-const sourceModuleBoundaryCheckerPath = join(repoRoot, "scripts", "check-module-boundaries.mjs");
-const sourceTestBoundaryCheckerPath = join(repoRoot, "scripts", "check-test-boundaries.mjs");
-const sourceTestClassificationCheckerPath = join(repoRoot, "scripts", "check-test-classification.mjs");
+const sourceLineLimitCheckerPath = join(repoRoot, "scripts", "check-line-limit.ts");
+const sourceHatchArtifactBoundaryCheckerPath = join(repoRoot, "scripts", "check-hatch-artifact-boundary.ts");
+const sourceModuleBoundaryCheckerPath = join(repoRoot, "scripts", "check-module-boundaries.ts");
+const sourceTestBoundaryCheckerPath = join(repoRoot, "scripts", "check-test-boundaries.ts");
+const sourceTestClassificationCheckerPath = join(repoRoot, "scripts", "check-test-classification.ts");
 const sourceTestTopologyCheckerPath = join(repoRoot, "scripts", "check-test-topology.mjs");
-const sourceFixtureOwnershipCheckerPath = join(repoRoot, "scripts", "check-fixture-ownership.mjs");
-const sourceSharedSurfaceOwnershipCheckerPath = join(repoRoot, "scripts", "check-shared-surface-ownership.mjs");
-const sourceDailyLensCollectorOwnershipCheckerPath = join(repoRoot, "scripts", "check-daily-lens-collector-ownership.mjs");
-const sourceSubsystemOwnershipCheckerPath = join(repoRoot, "scripts", "check-subsystem-ownership.mjs");
+const sourceFixtureOwnershipCheckerPath = join(repoRoot, "scripts", "check-fixture-ownership.ts");
+const sourceSharedSurfaceOwnershipCheckerPath = join(repoRoot, "scripts", "check-shared-surface-ownership.ts");
+const sourceDailyLensCollectorOwnershipCheckerPath = join(repoRoot, "scripts", "check-daily-lens-collector-ownership.ts");
+const sourceSubsystemOwnershipCheckerPath = join(repoRoot, "scripts", "check-subsystem-ownership.ts");
 const sourceTestClassificationBaselinePath = join(repoRoot, "scripts", "test-classification-baseline.json");
-const sourceIrreversibleNodeCoverageCheckerPath = join(repoRoot, "scripts", "check-irreversible-node-coverage.mjs");
+const sourceIrreversibleNodeCoverageCheckerPath = join(repoRoot, "scripts", "check-irreversible-node-coverage.ts");
 const sourceIrreversibleNodeCoverageExclusionsPath = join(repoRoot, "scripts", "lib", "irreversible-node-coverage-exclusions.ts");
 const sourceIrreversibleNodeCoverageManifestPath = join(repoRoot, "scripts", "lib", "irreversible-node-coverage-manifest.ts");
 const sourceWorkspaceExportCoverageCheckerPath = join(repoRoot, "scripts", "check-workspace-export-coverage.mjs");
-const sourceCoveragePolicyCheckerPath = join(repoRoot, "scripts", "check-coverage-policy-ratchet.mjs");
+const sourceCoveragePolicyCheckerPath = join(repoRoot, "scripts", "check-coverage-policy-ratchet.ts");
 const sourceCoveragePolicyBaselinePath = join(repoRoot, "scripts", "coverage-policy-ratchet-baseline.json");
-const sourceRuntimeStartupProbePath = join(repoRoot, "scripts", "check-runtime-startup-probe.mjs");
-const sourceBenchmarkJobIdRegistryCheckerPath = join(repoRoot, "scripts", "check-benchmark-job-id-registry.mjs");
-const sourceContextPropagationCheckerPath = join(repoRoot, "scripts", "check-context-propagation-contract.mjs");
-const sourcePipelineSegmentCoverageCheckerPath = join(repoRoot, "scripts", "check-pipeline-segment-coverage.mjs");
-const sourceDegenerateStateGuardCheckerPath = join(repoRoot, "scripts", "check-degenerate-state-guards.mjs");
-const sourceScenarioRegistryBudgetCheckerPath = join(repoRoot, "scripts", "check-scenario-registry-budget.mjs");
+const sourceRuntimeStartupProbePath = join(repoRoot, "scripts", "check-runtime-startup-probe.ts");
+const sourceBenchmarkJobIdRegistryCheckerPath = join(repoRoot, "scripts", "check-benchmark-job-id-registry.ts");
+const sourceContextPropagationCheckerPath = join(repoRoot, "scripts", "check-context-propagation-contract.ts");
+const sourcePipelineSegmentCoverageCheckerPath = join(repoRoot, "scripts", "check-pipeline-segment-coverage.ts");
+const sourceDegenerateStateGuardCheckerPath = join(repoRoot, "scripts", "check-degenerate-state-guards.ts");
+const sourceScenarioRegistryBudgetCheckerPath = join(repoRoot, "scripts", "check-scenario-registry-budget.ts");
 const sourceScenarioRegistryBudgetConfigPath = join(repoRoot, "scripts", "config", "scenario-registry.json");
 const sourceDegenerateStateGuardBaselinePath = join(repoRoot, "scripts", "degenerate-state-guard-baseline.json");
 const sourceHandlerContextContractPath = join(repoRoot, "scripts", "handler-context-contract.json");
@@ -49,9 +51,9 @@ const sourcePlatformInvariantManifestPath = join(repoRoot, "scripts", "lib", "pl
 const sourceRoutingConfigPath = join(repoRoot, "scripts", "lib", "pre-commit-routing-config.ts");
 const sourceSuiteRoutingConfigPath = join(repoRoot, "scripts", "lib", "suite-routing-config.ts");
 const sourceGateManifestPath = join(repoRoot, "scripts", "lib", "gate-manifest.ts"), sourcePhase1GateScopeContractPath = join(repoRoot, "scripts", "lib", "phase1-gate-scope-contract.ts");
-const sourceOtelTaxonomyContractCheckerPath = join(repoRoot, "scripts", "check-otel-taxonomy-contract.mjs"), sourceOtelTaxonomyContractLibPath = join(repoRoot, "scripts", "lib", "otel-taxonomy-contract.ts"), sourceOtelTaxonomySourceJsonPath = join(repoRoot, "packages", "factory-telemetry", "src", "otel-contract.json");
+const sourceOtelTaxonomyContractCheckerPath = join(repoRoot, "scripts", "check-otel-taxonomy-contract.ts"), sourceOtelTaxonomyContractLibPath = join(repoRoot, "scripts", "lib", "otel-taxonomy-contract.ts"), sourceOtelTaxonomySourceJsonPath = join(repoRoot, "packages", "factory-telemetry", "src", "otel-contract.json");
 const sourceWorkflowInstrumentationHelperCheckerPath = join(repoRoot, "scripts", "check-workflow-instrumentation-helper-contract.mjs"), sourceWorkflowInstrumentationHelperLibPath = join(repoRoot, "scripts", "lib", "workflow-instrumentation-helper-contract.ts");
-const sourceReactorCollectorCheckerPath = join(repoRoot, "scripts", "check-reactor-collector-contract.mjs"), sourceReactorCollectorLibPath = join(repoRoot, "scripts", "lib", "reactor-collector-contract.ts");
+const sourceReactorCollectorCheckerPath = join(repoRoot, "scripts", "check-reactor-collector-contract.ts"), sourceReactorCollectorLibPath = join(repoRoot, "scripts", "lib", "reactor-collector-contract.ts");
 const sourceReactorInstrumentationPath = join(repoRoot, "apps", "hatch", "src", "pipeline", "reactor-instrumentation.ts");
 const sourceOtelRuntimePath = join(repoRoot, "packages", "factory-telemetry", "src", "otel-stdout.ts");
 const sourceCollectorProfilePath = join(repoRoot, "packages", "factory-telemetry", "config", "otel-collector.yaml");
@@ -72,12 +74,9 @@ const RELEASE_QUALITY_NPM_SCRIPTS = Object.freeze([
   "test:platform:external-factory-portability-matrix",
   "test:platform:docs-skills-templates",
 ]);
+// Release families own supervisor recovery; platform retains only unmatched commands.
 const DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS = Object.freeze([
   "test:platform:managed-factory-mutation-boundaries",
-  "test:platform:supervisor-recovery",
-]);
-const DOT_META_PLATFORM_INVARIANT_NPM_SCRIPTS = Object.freeze([
-  "test:platform:supervisor-recovery",
 ]);
 function writeIrreversibleCoverageFixture(repoDir) {
   const graphPath = "factories/test/graphs/test.dot";
@@ -136,29 +135,29 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
   copyFileSync(sourceClassifierPath, join(repoDir, "scripts", "pre-commit-staged-file-classifier.mjs"));
   copyFileSync(sourceRunGatesPath, join(repoDir, "scripts", "run-gates.mjs"));
   copyFileSync(sourcePlatformInvariantRunnerPath, join(repoDir, "scripts", "run-platform-invariant-gates.mjs"));
-  copyFileSync(sourceLineLimitCheckerPath, join(repoDir, "scripts", "check-line-limit.mjs"));
-  copyFileSync(sourceHatchArtifactBoundaryCheckerPath, join(repoDir, "scripts", "check-hatch-artifact-boundary.mjs"));
-  copyFileSync(sourceModuleBoundaryCheckerPath, join(repoDir, "scripts", "check-module-boundaries.mjs"));
-  copyFileSync(sourceTestBoundaryCheckerPath, join(repoDir, "scripts", "check-test-boundaries.mjs"));
-  copyFileSync(sourceTestClassificationCheckerPath, join(repoDir, "scripts", "check-test-classification.mjs"));
+  copyFileSync(sourceLineLimitCheckerPath, join(repoDir, "scripts", "check-line-limit.ts"));
+  copyFileSync(sourceHatchArtifactBoundaryCheckerPath, join(repoDir, "scripts", "check-hatch-artifact-boundary.ts"));
+  copyFileSync(sourceModuleBoundaryCheckerPath, join(repoDir, "scripts", "check-module-boundaries.ts"));
+  copyFileSync(sourceTestBoundaryCheckerPath, join(repoDir, "scripts", "check-test-boundaries.ts"));
+  copyFileSync(sourceTestClassificationCheckerPath, join(repoDir, "scripts", "check-test-classification.ts"));
   copyFileSync(sourceTestTopologyCheckerPath, join(repoDir, "scripts", "check-test-topology.mjs"));
-  copyFileSync(sourceFixtureOwnershipCheckerPath, join(repoDir, "scripts", "check-fixture-ownership.mjs"));
-  copyFileSync(sourceSharedSurfaceOwnershipCheckerPath, join(repoDir, "scripts", "check-shared-surface-ownership.mjs"));
-  copyFileSync(sourceDailyLensCollectorOwnershipCheckerPath, join(repoDir, "scripts", "check-daily-lens-collector-ownership.mjs"));
-  copyFileSync(sourceSubsystemOwnershipCheckerPath, join(repoDir, "scripts", "check-subsystem-ownership.mjs"));
+  copyFileSync(sourceFixtureOwnershipCheckerPath, join(repoDir, "scripts", "check-fixture-ownership.ts"));
+  copyFileSync(sourceSharedSurfaceOwnershipCheckerPath, join(repoDir, "scripts", "check-shared-surface-ownership.ts"));
+  copyFileSync(sourceDailyLensCollectorOwnershipCheckerPath, join(repoDir, "scripts", "check-daily-lens-collector-ownership.ts"));
+  copyFileSync(sourceSubsystemOwnershipCheckerPath, join(repoDir, "scripts", "check-subsystem-ownership.ts"));
   copyFileSync(sourceTestClassificationBaselinePath, join(repoDir, "scripts", "test-classification-baseline.json"));
-  copyFileSync(sourceIrreversibleNodeCoverageCheckerPath, join(repoDir, "scripts", "check-irreversible-node-coverage.mjs"));
+  copyFileSync(sourceIrreversibleNodeCoverageCheckerPath, join(repoDir, "scripts", "check-irreversible-node-coverage.ts"));
   copyFileSync(sourceIrreversibleNodeCoverageExclusionsPath, join(repoDir, "scripts", "lib", "irreversible-node-coverage-exclusions.ts"));
   copyFileSync(sourceIrreversibleNodeCoverageManifestPath, join(repoDir, "scripts", "lib", "irreversible-node-coverage-manifest.ts"));
   copyFileSync(sourceWorkspaceExportCoverageCheckerPath, join(repoDir, "scripts", "check-workspace-export-coverage.mjs"));
-  copyFileSync(sourceCoveragePolicyCheckerPath, join(repoDir, "scripts", "check-coverage-policy-ratchet.mjs"));
+  copyFileSync(sourceCoveragePolicyCheckerPath, join(repoDir, "scripts", "check-coverage-policy-ratchet.ts"));
   copyFileSync(sourceCoveragePolicyBaselinePath, join(repoDir, "scripts", "coverage-policy-ratchet-baseline.json"));
-  copyFileSync(sourceRuntimeStartupProbePath, join(repoDir, "scripts", "check-runtime-startup-probe.mjs"));
-  copyFileSync(sourceBenchmarkJobIdRegistryCheckerPath, join(repoDir, "scripts", "check-benchmark-job-id-registry.mjs"));
-  copyFileSync(sourceContextPropagationCheckerPath, join(repoDir, "scripts", "check-context-propagation-contract.mjs"));
-  copyFileSync(sourcePipelineSegmentCoverageCheckerPath, join(repoDir, "scripts", "check-pipeline-segment-coverage.mjs"));
-  copyFileSync(sourceDegenerateStateGuardCheckerPath, join(repoDir, "scripts", "check-degenerate-state-guards.mjs"));
-  copyFileSync(sourceScenarioRegistryBudgetCheckerPath, join(repoDir, "scripts", "check-scenario-registry-budget.mjs"));
+  copyFileSync(sourceRuntimeStartupProbePath, join(repoDir, "scripts", "check-runtime-startup-probe.ts"));
+  copyFileSync(sourceBenchmarkJobIdRegistryCheckerPath, join(repoDir, "scripts", "check-benchmark-job-id-registry.ts"));
+  copyFileSync(sourceContextPropagationCheckerPath, join(repoDir, "scripts", "check-context-propagation-contract.ts"));
+  copyFileSync(sourcePipelineSegmentCoverageCheckerPath, join(repoDir, "scripts", "check-pipeline-segment-coverage.ts"));
+  copyFileSync(sourceDegenerateStateGuardCheckerPath, join(repoDir, "scripts", "check-degenerate-state-guards.ts"));
+  copyFileSync(sourceScenarioRegistryBudgetCheckerPath, join(repoDir, "scripts", "check-scenario-registry-budget.ts"));
   copyFileSync(sourceScenarioRegistryBudgetConfigPath, join(repoDir, "scripts", "config", "scenario-registry.json"));
   copyFileSync(sourceDegenerateStateGuardBaselinePath, join(repoDir, "scripts", "degenerate-state-guard-baseline.json"));
   copyFileSync(sourceHandlerContextContractPath, join(repoDir, "scripts", "handler-context-contract.json"));
@@ -169,9 +168,9 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
   copyFileSync(sourceRoutingConfigPath, join(repoDir, "scripts", "lib", "pre-commit-routing-config.ts"));
   copyFileSync(sourceSuiteRoutingConfigPath, join(repoDir, "scripts", "lib", "suite-routing-config.ts"));
   copyFileSync(sourceGateManifestPath, join(repoDir, "scripts", "lib", "gate-manifest.ts")); copyFileSync(sourcePhase1GateScopeContractPath, join(repoDir, "scripts", "lib", "phase1-gate-scope-contract.ts"));
-  copyFileSync(sourceOtelTaxonomyContractCheckerPath, join(repoDir, "scripts", "check-otel-taxonomy-contract.mjs")); copyFileSync(sourceOtelTaxonomyContractLibPath, join(repoDir, "scripts", "lib", "otel-taxonomy-contract.ts")); copyFileSync(sourceOtelTaxonomySourceJsonPath, join(repoDir, "packages", "factory-telemetry", "src", "otel-contract.json"));
+  copyFileSync(sourceOtelTaxonomyContractCheckerPath, join(repoDir, "scripts", "check-otel-taxonomy-contract.ts")); copyFileSync(sourceOtelTaxonomyContractLibPath, join(repoDir, "scripts", "lib", "otel-taxonomy-contract.ts")); copyFileSync(sourceOtelTaxonomySourceJsonPath, join(repoDir, "packages", "factory-telemetry", "src", "otel-contract.json"));
   copyFileSync(sourceWorkflowInstrumentationHelperCheckerPath, join(repoDir, "scripts", "check-workflow-instrumentation-helper-contract.mjs")); copyFileSync(sourceWorkflowInstrumentationHelperLibPath, join(repoDir, "scripts", "lib", "workflow-instrumentation-helper-contract.ts"));
-  copyFileSync(sourceReactorCollectorCheckerPath, join(repoDir, "scripts", "check-reactor-collector-contract.mjs")); copyFileSync(sourceReactorCollectorLibPath, join(repoDir, "scripts", "lib", "reactor-collector-contract.ts"));
+  copyFileSync(sourceReactorCollectorCheckerPath, join(repoDir, "scripts", "check-reactor-collector-contract.ts")); copyFileSync(sourceReactorCollectorLibPath, join(repoDir, "scripts", "lib", "reactor-collector-contract.ts"));
   mkdirSync(join(repoDir, "apps", "hatch", "src", "pipeline"), { recursive: true });
   mkdirSync(join(repoDir, "packages", "factory-telemetry", "src"), { recursive: true });
   mkdirSync(join(repoDir, "packages", "factory-telemetry", "config"), { recursive: true });
@@ -203,7 +202,7 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
 
   ensureFile(
     repoDir,
-    "scripts/check-lockfile-sync.mjs",
+    "scripts/check-lockfile-sync.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_LOCKFILE_SYNC_EXIT || '0', 10);\n" +
       "if (process.env.PRE_COMMIT_LOCKFILE_SYNC_STUB_LOG) {\n" +
@@ -212,12 +211,12 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "}\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-lockfile-sync.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-lockfile-sync.ts"), 0o755);
 
   ensureFile(repoDir, "scripts/eslint-gate.mjs", simpleStub("PRE_COMMIT_ESLINT_EXIT", "[eslint]", " files=1"));
   chmodSync(join(repoDir, "scripts", "eslint-gate.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-export-coverage.mjs", simpleStub("PRE_COMMIT_EXPORT_COVERAGE_EXIT", "[export-coverage]", " new_gaps=0"));
-  chmodSync(join(repoDir, "scripts", "check-export-coverage.mjs"), 0o755);
+  ensureFile(repoDir, "scripts/check-export-coverage.ts", simpleStub("PRE_COMMIT_EXPORT_COVERAGE_EXIT", "[export-coverage]", " new_gaps=0"));
+  chmodSync(join(repoDir, "scripts", "check-export-coverage.ts"), 0o755);
 
   ensureFile(
     repoDir,
@@ -235,7 +234,7 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
 
   ensureFile(
     repoDir,
-    "scripts/check-coverage-policy-ratchet.mjs",
+    "scripts/check-coverage-policy-ratchet.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_COVERAGE_POLICY_EXIT || '0', 10);\n" +
       "if (process.env.PRE_COMMIT_COVERAGE_POLICY_STUB_LOG) {\n" +
@@ -245,11 +244,11 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "console.log('[coverage-policy] result=' + (exit ? 'fail' : 'ok') + ' violations=0');\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-coverage-policy-ratchet.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-coverage-policy-ratchet.ts"), 0o755);
 
   ensureFile(
     repoDir,
-    "scripts/check-runtime-startup-probe.mjs",
+    "scripts/check-runtime-startup-probe.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_RUNTIME_STARTUP_PROBE_EXIT || '0', 10);\n" +
       "if (process.env.PRE_COMMIT_RUNTIME_STARTUP_PROBE_STUB_LOG) {\n" +
@@ -259,11 +258,11 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "console.log('[runtime-startup-probe] result=' + (exit ? 'fail' : 'ok') + ' probes=3');\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-runtime-startup-probe.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-runtime-startup-probe.ts"), 0o755);
 
   ensureFile(
     repoDir,
-    "scripts/check-benchmark-job-id-registry.mjs",
+    "scripts/check-benchmark-job-id-registry.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_BENCHMARK_JOB_ID_REGISTRY_EXIT || '0', 10);\n" +
       "if (process.env.PRE_COMMIT_BENCHMARK_JOB_ID_REGISTRY_STUB_LOG) {\n" +
@@ -273,11 +272,11 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "console.log('[benchmark-job-id-registry] result=' + (exit ? 'fail' : 'ok') + ' checked=1 job_ids=1');\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-benchmark-job-id-registry.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-benchmark-job-id-registry.ts"), 0o755);
 
   ensureFile(
     repoDir,
-    "scripts/check-context-propagation-contract.mjs",
+    "scripts/check-context-propagation-contract.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_CONTEXT_PROPAGATION_CONTRACT_EXIT || '0', 10);\n" +
       "if (process.env.PRE_COMMIT_CONTEXT_PROPAGATION_CONTRACT_STUB_LOG) {\n" +
@@ -287,21 +286,21 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "console.log('[context_propagation_contract] result=' + (exit ? 'fail' : 'ok') + ' checked=1 violations=' + (exit ? 1 : 0));\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-context-propagation-contract.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-context-propagation-contract.ts"), 0o755);
 
   ensureFile(
     repoDir,
-    "scripts/check-degenerate-state-guards.mjs",
+    "scripts/check-degenerate-state-guards.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_DEGENERATE_STATE_GUARDS_EXIT || '0', 10);\n" +
       "console.log('[degenerate_state_guards] result=' + (exit ? 'fail' : 'ok') + ' guarded=3 unguarded=' + (exit ? 1 : 0));\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-degenerate-state-guards.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-degenerate-state-guards.ts"), 0o755);
 
   ensureFile(
     repoDir,
-    "scripts/check-scenario-registry-budget.mjs",
+    "scripts/check-scenario-registry-budget.ts",
     "#!/usr/bin/env node\n" +
       "const exit = Number.parseInt(process.env.PRE_COMMIT_SCENARIO_REGISTRY_BUDGET_EXIT || '0', 10);\n" +
       "console.log('[scenario_registry_budget] root=\"factories/mothership/scenarios\" count=6');\n" +
@@ -312,25 +311,26 @@ function setupRepo({ stagedPaths, fileContents = {} }) {
       "}\n" +
       "process.exit(exit);\n",
   );
-  chmodSync(join(repoDir, "scripts", "check-scenario-registry-budget.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-internal-cli-transport.mjs", simpleStub("PRE_COMMIT_INTERNAL_CLI_TRANSPORT_EXIT", "[internal-cli-transport]", " checked=0 graph=0 runtime=0 opted_in_graph=0"));
-  chmodSync(join(repoDir, "scripts", "check-internal-cli-transport.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-active-surface-manifest.mjs", simpleStub("PRE_COMMIT_ACTIVE_SURFACE_MANIFEST_EXIT", "[active-surface-manifest]", " checked=0 graph=0 runtime=0 command=0 diagnostics=0"));
-  chmodSync(join(repoDir, "scripts", "check-active-surface-manifest.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-active-surface-inventory.mjs", simpleStub("PRE_COMMIT_ACTIVE_SURFACE_INVENTORY_EXIT", "[active-surface-inventory]", " roots=0 graphs=0 runtime=0 commands=0 diagnostics=0"));
-  chmodSync(join(repoDir, "scripts", "check-active-surface-inventory.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-phase1-gate-readiness.mjs", simpleStub("PRE_COMMIT_PHASE1_GATE_READINESS_EXIT", "[phase1-gate-readiness]", " graph=0 runtime=0 command=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-gate-readiness.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-phase1-ownership-map.mjs", simpleStub("PRE_COMMIT_PHASE1_OWNERSHIP_MAP_EXIT", "[phase1-ownership-map]", " active=0 legacy=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-ownership-map.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-phase1-burndown-finalization.mjs", simpleStub("PRE_COMMIT_PHASE1_BURNDOWN_FINALIZATION_EXIT", "[phase1-burndown-finalization]", " phase1_targets=0 out_of_scope=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-burndown-finalization.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-command-thinness-enforcement.mjs", simpleStub("PRE_COMMIT_COMMAND_THINNESS_EXIT", "[command-thinness-enforcement]", " checked=0 violations=0"));
-  chmodSync(join(repoDir, "scripts", "check-command-thinness-enforcement.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-runtime-internal-cli-enforcement.mjs", simpleStub("PRE_COMMIT_RUNTIME_INTERNAL_CLI_EXIT", "[runtime-internal-cli]", " checked=0 violations=0"));
-  chmodSync(join(repoDir, "scripts", "check-runtime-internal-cli-enforcement.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-structured-io-enforcement.mjs", simpleStub("PRE_COMMIT_STRUCTURED_IO_EXIT", "[structured-io-enforcement]", " checked=0 violations=0"));
-  chmodSync(join(repoDir, "scripts", "check-structured-io-enforcement.mjs"), 0o755);
-  ensureFile(repoDir, "scripts/check-shared-ownership-enforcement.mjs", simpleStub("PRE_COMMIT_SHARED_OWNERSHIP_EXIT", "[shared-ownership-enforcement]", " checked=0 violations=0"));
-  chmodSync(join(repoDir, "scripts", "check-shared-ownership-enforcement.mjs"), 0o755);
+  chmodSync(join(repoDir, "scripts", "check-scenario-registry-budget.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-internal-cli-transport.ts", simpleStub("PRE_COMMIT_INTERNAL_CLI_TRANSPORT_EXIT", "[internal-cli-transport]", " checked=0 graph=0 runtime=0 opted_in_graph=0"));
+  chmodSync(join(repoDir, "scripts", "check-internal-cli-transport.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-active-surface-manifest.ts", simpleStub("PRE_COMMIT_ACTIVE_SURFACE_MANIFEST_EXIT", "[active-surface-manifest]", " checked=0 graph=0 runtime=0 command=0 diagnostics=0"));
+  chmodSync(join(repoDir, "scripts", "check-active-surface-manifest.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-active-surface-inventory.ts", simpleStub("PRE_COMMIT_ACTIVE_SURFACE_INVENTORY_EXIT", "[active-surface-inventory]", " roots=0 graphs=0 runtime=0 commands=0 diagnostics=0"));
+  chmodSync(join(repoDir, "scripts", "check-active-surface-inventory.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-phase1-gate-readiness.ts", simpleStub("PRE_COMMIT_PHASE1_GATE_READINESS_EXIT", "[phase1-gate-readiness]", " graph=0 runtime=0 command=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-gate-readiness.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-phase1-ownership-map.ts", simpleStub("PRE_COMMIT_PHASE1_OWNERSHIP_MAP_EXIT", "[phase1-ownership-map]", " active=0 legacy=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-ownership-map.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-phase1-burndown-finalization.ts", simpleStub("PRE_COMMIT_PHASE1_BURNDOWN_FINALIZATION_EXIT", "[phase1-burndown-finalization]", " phase1_targets=0 out_of_scope=0 diagnostics=0")); chmodSync(join(repoDir, "scripts", "check-phase1-burndown-finalization.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-command-thinness-enforcement.ts", simpleStub("PRE_COMMIT_COMMAND_THINNESS_EXIT", "[command-thinness-enforcement]", " checked=0 violations=0"));
+  chmodSync(join(repoDir, "scripts", "check-command-thinness-enforcement.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-runtime-internal-cli-enforcement.ts", simpleStub("PRE_COMMIT_RUNTIME_INTERNAL_CLI_EXIT", "[runtime-internal-cli]", " checked=0 violations=0"));
+  chmodSync(join(repoDir, "scripts", "check-runtime-internal-cli-enforcement.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-structured-io-enforcement.ts", simpleStub("PRE_COMMIT_STRUCTURED_IO_EXIT", "[structured-io-enforcement]", " checked=0 violations=0"));
+  chmodSync(join(repoDir, "scripts", "check-structured-io-enforcement.ts"), 0o755);
+  ensureFile(repoDir, "scripts/check-shared-ownership-enforcement.ts", simpleStub("PRE_COMMIT_SHARED_OWNERSHIP_EXIT", "[shared-ownership-enforcement]", " checked=0 violations=0"));
+  chmodSync(join(repoDir, "scripts", "check-shared-ownership-enforcement.ts"), 0o755);
 
+  seedMissingManifestGateStubs(repoDir);
   initFixtureRepo(repoDir);
 
   // Commit fixture infrastructure first so staged sets only include scenario paths.
@@ -444,7 +444,9 @@ function assertNpmInvocationContract(invocations, expectedScripts, expectedCwd) 
     assert.equal(invocation.executable, "pnpm");
     assert.equal(realpathSync(invocation.cwd), realpathSync(expectedCwd));
     assert.ok(
-      invocation.argv[0] === invocation.script || invocation.argv[1] === invocation.script,
+      JSON.stringify(invocation.argv) === JSON.stringify(invocation.script.startsWith("test:platform:")
+        ? ["run", "--silent", invocation.script]
+        : GATE_MANIFEST.find((gate) => gate.command === "pnpm" && gate.args.includes(invocation.script))?.args),
       `expected pnpm argv to include script ${invocation.script}: ${invocation.argv.join(" ")}`,
     );
     assert.equal(invocation.command, `pnpm ${invocation.argv.join(" ")}`);
@@ -493,7 +495,7 @@ test("irreversible node coverage gate runs before export coverage", () => {
   assert.match(output, /Checking irreversible node coverage/);
   assert.match(output, /\[irreversible-node-coverage\] result=ok/);
   assert.ok(
-    output.indexOf("Checking irreversible node coverage") < output.indexOf("Checking ops export coverage"),
+    output.indexOf("Checking irreversible node coverage") < output.indexOf("Checking export coverage"),
     "irreversible node coverage must run before export coverage",
   );
 });
@@ -513,17 +515,17 @@ test("apps/hatch staged source runs workspace export coverage baseline gate", ()
 
 test("coverage policy paths run coverage policy ratchet before build", () => {
   const { run, output } = runHookScenario({
-    stagedPaths: ["apps/hatch/vitest.config.mjs"],
+    stagedPaths: ["apps/hatch/vitest.config.ts"],
     fileContents: {
-      "apps/hatch/vitest.config.mjs": "export default {};\n",
+      "apps/hatch/vitest.config.ts": "export default {};\n",
     },
   });
 
   assert.equal(run.status, 0, output);
-  assert.match(output, /Checking coverage policy ratchet/);
+  assert.match(output, /Checking coverage policy/);
   assert.match(output, /\[coverage-policy\] result=ok/);
   assert.ok(
-    output.indexOf("Checking coverage policy ratchet") < output.indexOf("gate_start gate=build"),
+    output.indexOf("Checking coverage policy") < output.indexOf("gate_start gate=build"),
     "coverage policy gate must run before build",
   );
 });
@@ -540,7 +542,7 @@ test("coverage policy ratchet failure aborts before build", () => {
   });
 
   assert.equal(run.status, 1, output);
-  assert.match(output, /Checking coverage policy ratchet/);
+  assert.match(output, /Checking coverage policy/);
   assert.match(output, /first_failure phase=coverage_policy target=check-coverage-policy-ratchet exit=1/);
   assert.doesNotMatch(output, /gate_start gate=build/);
 });
@@ -578,11 +580,11 @@ test("docs policy validator source change triggers docs:check preflight", () => 
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    ["docs:check", "test:platform:cli-context-portability", ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["docs:check", "build", ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
   assert.match(stdout, /Checking docs policy scope/);
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=cli_context_portability/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.match(stdout, /\[pre-commit\] test_suites_decision action=skip reason=platform_invariant_trigger/);
 });
 
@@ -594,13 +596,13 @@ test("dot-only commit validates dot files, runs lint-dot, and skips suites", () 
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    [...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["build", ...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=supervisor_recovery/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=recovery_graph_invariants/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.equal(hatchCalls.length, 1);
-  assert.match(hatchCalls[0], /^validate factories\/mothership\/graphs\/wave_execute\.dot$/);
+  assert.match(hatchCalls[0], /^validate docs\/contracts\/workflow-ir\/mothership\/wave_execute\.dot$/);
   assert.equal(lintDotCalls.length, 1);
   assert.equal(lintDotCalls[0], MOTHERSHIP_WAVE_EXECUTE_DOT);
   assert.equal(contextPropagationContractCalls.length, 1);
@@ -617,10 +619,10 @@ test("docs+dot-only commit runs dot preflight and skips suites with docs_or_dot_
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    ["docs:check", ...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["docs:check", "build", ...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=supervisor_recovery/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=recovery_graph_invariants/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.equal(hatchCalls.length, 1);
   assert.equal(lintDotCalls.length, 1);
@@ -662,10 +664,10 @@ test("lint-dot warning-only output is non-blocking and preserves deterministic s
   assert.equal(run.status, 0, stderr || stdout);
   assertNpmInvocationContract(
     pnpmInvocations,
-    [...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["build", ...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=supervisor_recovery/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=recovery_graph_invariants/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.match(stdout, /\[pre-commit\] test_suites_decision action=skip reason=dot_only/);
   assert.match(stderr, new RegExp(`\\${LINT_DOT_MARKER_PREFIX} result=${LINT_DOT_RESULT.warningOnly}`));
@@ -684,7 +686,7 @@ test("mixed dot+code commit runs dot preflight and routes by code bucket", () =>
   assert.match(contextPropagationContractCalls[0], /--staged-file-list\s+\S*staged-files\.list/);
   assertNpmInvocationContract(
     pnpmInvocations,
-    [...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck", "test:guard-gates"],
+    ["build", ...DOT_DOTFILE_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck", "test:guard-gates"],
     repoDir,
   );
   assert.match(stdout, /test_suites_decision action=run reason=bucket_guard_only bucket=guard_only selection=guard_only/);
@@ -712,10 +714,11 @@ test("factories/mothership/graphs path maps to hatch-only guard suite", () => {
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    [...DOT_META_PLATFORM_INVARIANT_NPM_SCRIPTS, ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck", "test:guard-gates"],
+    ["build", "test:platform:factory-label-contract", ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck", "test:guard-gates"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=supervisor_recovery/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=factory_label_contract/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=recovery_graph_invariants/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.match(stdout, /test_suites_decision action=run reason=bucket_guard_only bucket=guard_only selection=guard_only/);
   assert.match(stdout, /test_suite_route path="factories\/mothership\/graphs\/wave_execute\.meta\.json" pattern="factories\/mothership\/graphs\/\*\*" bucket=guard_only/);
@@ -723,7 +726,7 @@ test("factories/mothership/graphs path maps to hatch-only guard suite", () => {
   assert.doesNotMatch(stdout, /test_suite_start suite=test:wave-claim-gates/);
 });
 
-test("factory portability path runs platform invariant gate and skips selective suites", () => {
+test("factory portability path runs release families and skips selective suites", () => {
   const { run, repoDir, pnpmInvocations, stdout } = runHookScenario({
     stagedPaths: ["packages/factory-ops/src/lib/factory-context-resolver.ts"],
   });
@@ -731,10 +734,10 @@ test("factory portability path runs platform invariant gate and skips selective 
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    ["test:platform:factory-portability", ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["build", ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=factory_portability/);
+  assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=external_factory_portability/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
   assert.match(stdout, /\[pre-commit\] test_suites_decision action=skip reason=platform_invariant_trigger/);
   assert.match(stdout, /test_suite_skip suite=test:guard-gates reason=platform_invariant_trigger/);
@@ -796,11 +799,11 @@ test("platform-trigger staged paths skip selective suites with explicit platform
   assert.equal(run.status, 0);
   assertNpmInvocationContract(
     pnpmInvocations,
-    ["test:platform:cli-context-portability", ...RELEASE_QUALITY_NPM_SCRIPTS, "build", "typecheck"],
+    ["build", ...RELEASE_QUALITY_NPM_SCRIPTS, "typecheck"],
     repoDir,
   );
-  assert.match(stdout, /\[pre-commit\] gate_start gate=platform_invariants invariant=cli_context_portability/);
   assert.match(stdout, /\[pre-commit\] gate_start gate=release_quality family=core_invariants/);
+  assert.doesNotMatch(stdout, /gate_start gate=platform_invariants invariant=cli_context_portability/);
   assert.match(stdout, /\[pre-commit\] test_suites_decision action=skip reason=platform_invariant_trigger/);
   assert.match(stdout, /test_suite_skip suite=test:guard-gates reason=platform_invariant_trigger/);
   assert.match(stdout, /test_suite_skip suite=test:wave-claim-gates reason=platform_invariant_trigger/);
@@ -839,7 +842,7 @@ test("dot validation failure is fail-fast with one first-failure event", () => {
 
   assert.equal(run.status, 13);
   assertNpmInvocationContract(pnpmInvocations, [], repoDir);
-  assert.match(stderr, /\[pre-commit\] first_failure phase=dot_validate target=factories\/mothership\/graphs\/wave_execute\.dot exit=13/);
+  assert.match(stderr, /\[pre-commit\] first_failure phase=dot_validate target=docs\/contracts\/workflow-ir\/mothership\/wave_execute\.dot exit=13/);
   const firstFailureCount = (stderr.match(/\[pre-commit\] first_failure /g) ?? []).length;
   assert.equal(firstFailureCount, 1);
 });
@@ -861,7 +864,7 @@ test("lint-dot failure is fail-fast with one first-failure event", () => {
   assert.equal(run.status, 19);
   assertNpmInvocationContract(pnpmInvocations, [], repoDir);
   assert.match(stderr, new RegExp(`\\${LINT_DOT_MARKER_PREFIX} result=${LINT_DOT_RESULT.fail}`));
-  assert.match(stderr, /\[pre-commit\] first_failure phase=dot_validate target=factories\/mothership\/graphs\/wave_execute\.dot exit=19/);
+  assert.match(stderr, /\[pre-commit\] first_failure phase=dot_validate target=docs\/contracts\/workflow-ir\/mothership\/wave_execute\.dot exit=19/);
   const firstFailureCount = (stderr.match(/\[pre-commit\] first_failure /g) ?? []).length;
   assert.equal(firstFailureCount, 1);
 });
@@ -1003,7 +1006,8 @@ test("line-limit failure reports first violating file and aborts before gates", 
 
   assert.equal(run.status, 1);
   assertNpmInvocationContract(pnpmInvocations, [], repoDir);
-  assert.match(stderr, new RegExp(`\\[pre-commit\\] first_failure phase=line_limit target=${overLimitFile.replace(/\//g, "\\/")} exit=1`));
+  assert.match(stderr, /\[line-limit\] violation file="apps\/hatch\/src\/too-long.ts" lines=1201 max=1200/);
+  assert.match(stderr, /\[pre-commit\] first_failure phase=line_limit target=line_limit exit=1/);
   const firstFailureCount = (stderr.match(/\[pre-commit\] first_failure /g) ?? []).length;
   assert.equal(firstFailureCount, 1);
 });
@@ -1034,8 +1038,8 @@ test("runtime startup probe failure is reported before typecheck", () => {
   assert.equal(run.status, 29, output);
   assertNpmInvocationContract(pnpmInvocations, ["build"], repoDir);
   assert.match(output, /\[pre-commit\] gate_pass gate=build command="pnpm build[^"]*" exit=0/);
-  assert.match(output, /\[pre-commit\] gate_failed gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs" exit=29/);
-  assert.match(output, /\[pre-commit\] first_failure phase=quality_gate target=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.mjs" exit=29/);
+  assert.match(output, /\[pre-commit\] gate_failed gate=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts" exit=29/);
+  assert.match(output, /\[pre-commit\] first_failure phase=quality_gate target=runtime_startup_probe command="node scripts\/check-runtime-startup-probe\.ts" exit=29/);
   assert.doesNotMatch(output, /gate_start gate=typecheck/);
 });
 

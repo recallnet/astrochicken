@@ -1,27 +1,16 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+
+import { writeFileSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
 import { assertMainBranch } from "../../src/commands/merge-item-ops.ts";
 
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0) throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
-
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "taxi-assert-main-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("taxi-assert-main-");
 }
 
 test("assertMainBranch no-ops when already on main", () => {

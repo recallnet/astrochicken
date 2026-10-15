@@ -182,7 +182,7 @@ test("factory CLI wires provisioning-drift command", () => {
   const source = readFileSync(hostCmdSourcePath, "utf8");
   assert.match(source, /FactoryProvisioningDriftCommand/);
   assert.match(source, /static paths = \[\["factory", "provisioning-drift"\]\]/);
-  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-provisioning-drift\.mjs"\)/);
+  assert.match(source, /await import\("\.\.\/\.\.\/commands\/factory-provisioning-drift\.ts"\)/);
 
   const run = spawnSync("node", [
     opsCliPath,

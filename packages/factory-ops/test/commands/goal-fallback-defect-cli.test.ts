@@ -1,24 +1,22 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+
 import { mkdtempSync, readFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
-
-const testDir = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
 
 function runEmitFallbackDefect(args = [], { otelMode = "off" } = {}) {
-  const run = spawnSync("node", [opsCliPath, "goal", "emit-fallback-defect", ...args], {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
+  const run = spawnOpsCli([
+      "goal",
+      "emit-fallback-defect",
+      ...args
+    ], {
+      env: {
       ...process.env,
       OTEL_MODE: otelMode,
-    },
-  });
+    }
+    });
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const out = JSON.parse(run.stdout || "{}");
   return { run, out };

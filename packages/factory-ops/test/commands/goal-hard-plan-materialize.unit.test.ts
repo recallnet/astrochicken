@@ -1,14 +1,11 @@
+import { successfulCommandResult } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, writeFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  classifyGoalExecutionPath,
-  readGoalExecutionPath,
-  transitionGoalExecutionPathPlanningState,
-} from "../../src/commands/goal-execution-path.ts";
+import { classifyGoalExecutionPath, readGoalExecutionPath, transitionGoalExecutionPathPlanningState } from "../../src/commands/goal-execution-path.ts";
 import { materializeApprovedHardPlan } from "../../src/commands/goal-hard-plan-materialize.ts";
 import { resolveFeatureDependencies } from "../../src/commands/triage-resolve-feature-dependencies.ts";
 import { getLatestGoalHardPlanMaterializationPacket } from "../../src/lib/goal-hard-plan-materialization-packet.ts";
@@ -151,7 +148,7 @@ test("materializeApprovedHardPlan creates one issue per approved feature and wir
     },
     ghExecFn: (args) => {
       goalLabelEdits.push(args);
-      return { ok: true, status: 0, stdout: "", stderr: "" };
+      return successfulCommandResult();
     },
   });
 
@@ -255,6 +252,15 @@ test("materializeApprovedHardPlan is idempotent for existing plan packet", () =>
   markPlanningApproved({ repoRoot, goalIssueNumber, planningArtifactPath });
 
   let createCalls = 0;
+  const labelEdits = [];
+  const ghExecFn = (args) => {
+    assert.equal(args[0], "issue");
+    assert.equal(args[1], "edit");
+    assert.ok(args.includes(goalIssueNumber));
+    assert.ok(args.includes("--remove-label"));
+    labelEdits.push(args);
+    return { ok: true, stdout: "", stderr: "" };
+  };
 
   const first = materializeApprovedHardPlan({
     repoRoot,
@@ -263,6 +269,7 @@ test("materializeApprovedHardPlan is idempotent for existing plan packet", () =>
     planPacketId,
     planningArtifactPath,
     factoryId: "mothership",
+    ghExecFn,
     createIssueFn: () => {
       createCalls += 1;
       return {
@@ -277,6 +284,8 @@ test("materializeApprovedHardPlan is idempotent for existing plan packet", () =>
 
   assert.equal(first.already_completed, "false");
   assert.equal(createCalls, 1);
+  assert.equal(labelEdits.length, 1);
+  assert.equal(first.awaiting_human_label_removed, "true");
 
   const second = materializeApprovedHardPlan({
     repoRoot,
@@ -505,6 +514,12 @@ test("materializeApprovedHardPlan materializes prerequisite goal issue sets for 
     planPacketId,
     planningArtifactPath,
     factoryId: "mothership",
+    ghExecFn: (args) => {
+      assert.deepEqual(args.slice(0, 5), ["issue", "edit", "2210", "--repo", "recallnet/astrochicken"]);
+      assert.equal(args[5], "--remove-label");
+      assert.match(args[6], /awaiting.human/);
+      return successfulCommandResult();
+    },
     createIssueFn: ({ issueSpecRaw }) => {
       const issueSpec = JSON.parse(issueSpecRaw);
       issueCreateCalls.push(issueSpec);
@@ -914,6 +929,12 @@ test("materializeApprovedHardPlan resolves dependencies via shared triage helper
     planPacketId: "plan-2205",
     planningArtifactPath,
     factoryId: "mothership",
+    ghExecFn: (args) => {
+      assert.deepEqual(args.slice(0, 5), ["issue", "edit", "2205", "--repo", "recallnet/astrochicken"]);
+      assert.equal(args[5], "--remove-label");
+      assert.match(args[6], /awaiting.human/);
+      return successfulCommandResult();
+    },
     createIssueFn: ({ issueSpecRaw }) => {
       const spec = JSON.parse(issueSpecRaw);
       if (String(spec.issue_title).includes("Feature 1")) {

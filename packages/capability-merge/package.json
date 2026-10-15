@@ -1,22 +1,24 @@
 {
-  "name": "@hatch/capability-merge",
-  "version": "0.1.0",
-  "license": "MIT",
-  "description": "Hatch merge capability: rebase, deterministic merge, LLM conflict resolution graph + skill bundle",
-  "exports": {
-    "./graphs/*": "./graphs/*",
-    "./prompts/*": "./prompts/*",
-    "./skills/*": "./skills/*",
-    "./manifest": "./capability-manifest.v1.json",
-    "./contract": "./capability-contract.v1.json",
-    "./capability-manifest.v1.json": "./capability-manifest.v1.json",
-    "./capability-contract.v1.json": "./capability-contract.v1.json"
-  },
-  "files": [
-    "graphs",
-    "prompts",
-    "skills",
-    "capability-manifest.v1.json",
-    "capability-contract.v1.json"
-  ]
+	"name": "@hatch/capability-merge",
+	"version": "0.1.0",
+	"license": "MIT",
+	"description": "Hatch merge capability: rebase, deterministic merge, LLM conflict resolution graph + skill bundle",
+	"exports": {
+		"./graphs/*": "./graphs/*",
+		"./prompts/*": "./prompts/*",
+		"./skills/*": "./skills/*",
+		"./manifest": "./capability-manifest.v1.json",
+		"./contract": "./capability-contract.v1.json",
+		"./capability-manifest.v1.json": "./capability-manifest.v1.json",
+		"./capability-contract.v1.json": "./capability-contract.v1.json",
+		"./workflows/*": "./workflows/*"
+	},
+	"files": [
+		"graphs",
+		"prompts",
+		"skills",
+		"capability-manifest.v1.json",
+		"capability-contract.v1.json",
+		"workflows"
+	]
 }

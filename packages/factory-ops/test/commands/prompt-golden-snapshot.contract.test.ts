@@ -1,3 +1,5 @@
+import { createBaseGitFixture } from "../helpers/ops-command-fixtures.ts";
+import { runFixtureCommand as sh } from "../helpers/ops-command-fixtures.ts";
 // prompt-golden-snapshot.test.mjs
 //
 // Golden prompt snapshot tests — locks down every required variable,
@@ -9,17 +11,13 @@
 
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, writeFileSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  buildConflictPacket,
-} from "../../src/commands/merge-item-ops.ts";
-import {
-  validateReviewerContextContract,
-} from "../../src/commands/reviewer-context-contract.ts";
+import { buildConflictPacket } from "../../src/commands/merge-item-ops.ts";
+import { validateReviewerContextContract } from "../../src/commands/reviewer-context-contract.ts";
 
 // ── Helpers ────────────────────────────────────────────────────
 
@@ -34,15 +32,23 @@ function readDot(name) {
     if (resolvedName === "release_report_flow") {
       DOT_CACHE[resolvedName] = readFileSync("docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot", "utf8");
     } else {
-      DOT_CACHE[resolvedName] = readFileSync(`factories/mothership/graphs/${resolvedName}.dot`, "utf8");
+      DOT_CACHE[resolvedName] = readFileSync(`docs/contracts/workflow-ir/mothership/${resolvedName}.dot`, "utf8");
     }
   }
   return DOT_CACHE[resolvedName];
 }
 
 function extractNode(dot, name) {
-  const re = new RegExp(`${name}\\s*\\[[\\s\\S]*?\\]`);
+  // Match a whole node declaration; quoted JSON arrays may contain ']'.
+  const attribute = String.raw`"(?:\\.|[^"\\])*"|[^\]"]`;
+  const re = new RegExp(String.raw`^\s*${name}\s*\[(?:${attribute})*\]`, "m");
   return dot.match(re)?.[0] || "";
+}
+
+function assertEdgeChain(dot, nodes) {
+  for (let index = 1; index < nodes.length; index += 1) {
+    assert.match(dot, new RegExp(`${nodes[index - 1]} -> ${nodes[index]}(?:\\s|\\[|;)`));
+  }
 }
 
 function readPromptFileFromLoader(dot, loaderName) {
@@ -52,22 +58,8 @@ function readPromptFileFromLoader(dot, loaderName) {
   return readFileSync(path, "utf8");
 }
 
-function sh(args, cwd) {
-  const p = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8" });
-  if ((p.status ?? 1) !== 0)
-    throw new Error((p.stderr || p.stdout || "cmd failed").trim());
-  return String(p.stdout || "").trim();
-}
-
 function initRepo() {
-  const repo = mkdtempSync(join(tmpdir(), "taxi-golden-"));
-  sh(["git", "init", "-b", "main"], repo);
-  sh(["git", "config", "user.email", "taxi@example.com"], repo);
-  sh(["git", "config", "user.name", "Hatch"], repo);
-  writeFileSync(join(repo, "file.txt"), "base\n", "utf8");
-  sh(["git", "add", "file.txt"], repo);
-  sh(["git", "commit", "-m", "base"], repo);
-  return repo;
+  return createBaseGitFixture("taxi-golden-");
 }
 
 function initConflictingRepo(branchName = "wave/test-wave") {
@@ -195,7 +187,7 @@ test("A2.2: write_review_evidence outputs review_evidence_path and binds typed s
 
 test("A2.2b: reviewer path uses context + visual-refinement gates and deterministic route resolver", () => {
   const dot = readDot("wave_issue_execute");
-  assert.match(dot, /write_review_evidence -> build_review_context -> validate_review_context -> review_context_gate/);
+  assertEdgeChain(dot, ["write_review_evidence", "build_review_context", "validate_review_context", "review_context_gate"]);
   assert.match(dot, /review_context_gate -> enforce_visual_refinement_evidence \[condition="review_context_gate_pass=true"\]/);
   assert.match(dot, /review_context_gate -> resolve_review_route \[condition="review_context_gate_pass!=true"\]/);
   assert.match(dot, /enforce_visual_refinement_evidence -> visual_refinement_gate/);
@@ -214,10 +206,7 @@ test("A2.2b: reviewer path uses context + visual-refinement gates and determinis
 test("A2.2c: goal issue context is resolved before review", () => {
   const dot = readDot("wave_issue_execute");
   assert.match(dot, /fetch_goal_issue[\s\S]*action_runtime="in_process" action_id="goal\.fetch_goal_issue"[\s\S]*action_repo="\$\{gh_repo\}" action_goal_number="\$\{goal_issue_number\}"/);
-  assert.match(
-    dot,
-    /start -> set_issue_context -> fetch_issue -> fetch_goal_issue -> load_intent_stack -> load_agent_guidance_context -> estimate_complexity -> complexity_gate/,
-  );
+  assertEdgeChain(dot, ["start", "set_issue_context", "fetch_issue", "fetch_goal_issue", "load_intent_stack", "load_agent_guidance_context", "estimate_complexity", "complexity_gate"]);
   assert.match(dot, /load_agent_guidance_context[\s\S]*action_runtime="in_process" action_id="common\.load_agent_guidance_context"[\s\S]*action_repo_root="\$\{repo\}"/);
 });
 
@@ -343,7 +332,7 @@ test('B1.3: resolve_conflict uses merge_resolver role class and keeps conflict r
   assert.match(node, /class="merge_resolver"/);
   assert.match(sharedRoles, /\.merge_resolver[\s\S]*type = "stack\.manager_loop"/);
   assert.match(node, /workdir="\$\{merge_worktree_dir\}"/);
-  assert.match(node, /timeout="90m"/);
+  assert.match(node, /timeout="45m"/);
   assert.match(node, /reasoning_effort="medium"/);
 });
 
@@ -394,7 +383,7 @@ test('B2.3: edge rebase_gate -> set_resolution_source_llm [condition="rebase_sta
 
 test("B2.4: unresolved conflict resolution emits telemetry then routes to merge failure", () => {
   const dot = readDot("wave_execute");
-  assert.match(dot, /set_resolution_source_llm -> build_conflict_packet -> resolve_conflict -> finalize_merge_commit -> finalize_gate/);
+  assertEdgeChain(dot, ["set_resolution_source_llm", "build_conflict_packet", "resolve_conflict", "finalize_merge_commit", "finalize_gate"]);
   assert.match(dot, /finalize_gate -> verify_resolution \[condition="finalize_status=ok"\]/);
   assert.match(dot, /finalize_gate -> retry_resolve_conflict \[condition="finalize_status!=ok"\]/);
   assert.match(dot, /retry_resolve_conflict -> verify_resolution/);
@@ -515,7 +504,7 @@ test("D1.4: supervisor_review_bug_fast uses supervisor role class with expected 
   const sharedRoles = readFileSync("factories/_shared/roles.stylesheet", "utf8");
   assert.match(node, /class="supervisor"/);
   assert.match(sharedRoles, /\.supervisor[\s\S]*type = "stack\.manager_loop"/);
-  assert.match(node, /timeout="90m"/);
+  assert.match(node, /timeout="120m"/);
   assert.match(node, /workdir="\."/);
 });
 
@@ -616,7 +605,7 @@ test("D2.1: supervisor template + addendum are loaded via cat nodes", () => {
   assert.match(systemNode, /output_key="supervisor_system_prompt"/);
   assert.match(systemNode, /prompt="cat packages\/factory-prompts\/prompts\/supervisor\/system\.md"/);
 
-  assert.match(dot, /load_supervisor_skill -> load_supervisor_rules -> load_supervisor_system_prompt -> load_intent_stack -> snapshot_state_fast/);
+  assertEdgeChain(dot, ["load_supervisor_skill", "load_supervisor_rules", "load_supervisor_system_prompt", "load_intent_stack", "snapshot_state_fast"]);
 });
 
 test("D2.1b: shared supervisor template contains no hardcoded recallnet/astrochicken", () => {
@@ -641,7 +630,7 @@ test("D2.3: set_date_fast has output_key=date and is reached via fast_route_tele
   assert.match(node, /output_key="date"/);
   assert.match(dot, /bug_fast_gate -> fast_route_telemetry_open \[condition="has_open_bugs=true"\]/);
   assert.match(dot, /fast_route_telemetry_open -> set_date_fast/);
-  assert.match(dot, /set_date_fast -> load_supervisor_bug_fast_task_prompt -> supervisor_review_bug_fast/);
+  assertEdgeChain(dot, ["set_date_fast", "load_supervisor_bug_fast_task_prompt", "supervisor_review_bug_fast"]);
 });
 
 test("D2.4: snapshot_state (end-of-tick) has output_key=state_snapshot, distinct from snapshot_state_fast", () => {
@@ -651,7 +640,7 @@ test("D2.4: snapshot_state (end-of-tick) has output_key=state_snapshot, distinct
   assert.ok(m[0].includes('output_key="state_snapshot"'), "snapshot_state must have output_key=state_snapshot");
   assert.match(m[0], /action_runtime="in_process" action_id="supervisor\.state_snapshot"/);
   assert.match(m[0], /action_runs_dir="\$\{runs_dir\}"/);
-  assert.match(dot, /supervisor_health -> snapshot_state -> set_date -> evaluate_action_item_gate -> action_item_gate/);
+  assertEdgeChain(dot, ["supervisor_health", "snapshot_state", "set_date", "evaluate_action_item_gate", "action_item_gate"]);
 });
 
 test("D2.4b: action_item_gate uses factory-scoped runs dir", () => {
@@ -740,16 +729,17 @@ test("D2.6: release narrator outputs delivery_decision, headline, summary, and r
   assert.match(postSlackNode, /output_key="release_slack_delivery"/);
   assert.match(postSlackNode, /action_runtime="in_process"/);
   assert.match(postSlackNode, /action_id="release\.post_to_slack"/);
-  assert.match(postSlackNode, /action_context_b64="\$\{release_report_context_b64\}" action_payload_b64="\$\{release_slack_payload_b64\}"/);
+  assert.match(postSlackNode, /action_context_b64="\$\{release_report_context_b64\}"/);
+  assert.match(postSlackNode, /action_payload_b64="\$\{release_slack_payload_b64\}"/);
 
   // Idle gate inserted between external lifecycle triage and recovery/release tail
   const dot = readDot("factory_supervisor_tick");
-  assert.match(dot, /emit_review_metrics_summary -> evaluate_external_factory_lifecycle -> external_lifecycle_gate/);
+  assertEdgeChain(dot, ["emit_review_metrics_summary", "evaluate_external_factory_lifecycle", "external_lifecycle_gate"]);
   assert.match(dot, /external_lifecycle_gate -> evaluate_tick_idle \[condition="lifecycle_state!=rejected_upstream"\]/);
   assert.match(dot, /apply_rejected_upstream -> evaluate_tick_idle/);
   assert.match(dot, /evaluate_tick_idle -> tick_idle_gate/);
   assert.match(dot, /tick_idle_gate -> supervisor_health/);
-  assert.match(dot, /supervisor_health -> snapshot_state -> set_date -> evaluate_action_item_gate -> action_item_gate/);
+  assertEdgeChain(dot, ["supervisor_health", "snapshot_state", "set_date", "evaluate_action_item_gate", "action_item_gate"]);
   assert.match(dot, /action_item_gate -> load_supervisor_review_task_prompt \[condition="has_action_items=true"\]/);
   assert.match(dot, /load_supervisor_review_task_prompt -> supervisor_review/);
   // Release report flow removed from supervisor tick — now a standalone scheduled graph (daily_release_report.dot).
@@ -758,13 +748,13 @@ test("D2.6: release narrator outputs delivery_decision, headline, summary, and r
   assert.match(dot, /supervisor_review -> update_tick_idle_cursor/);
   assert.match(dot, /update_tick_idle_cursor -> done/);
   // Simplified release report flow: no worthiness gate or normalize step
-  assert.match(releaseDot, /start -> build_release_report_context -> load_release_narrator_skill -> release_narrator -> narrative_delivery_gate/);
+  assertEdgeChain(releaseDot, ["start", "build_release_report_context", "load_release_narrator_skill", "release_narrator", "narrative_delivery_gate"]);
   assert.match(releaseDot, /narrative_delivery_gate -> done \[condition="delivery_decision=skip"\]/);
   assert.match(releaseDot, /narrative_delivery_gate -> encode_release_report_context \[condition="delivery_decision!=skip"\]/);
-  assert.match(releaseDot, /encode_release_report_context -> encode_release_narrative -> publish_release_report -> emit_release_narrative_document -> create_shaping_followup_issue/);
+  assertEdgeChain(releaseDot, ["encode_release_report_context", "encode_release_narrative", "publish_release_report", "emit_release_narrative_document", "create_shaping_followup_issue"]);
   assert.match(releaseDot, /create_shaping_followup_issue -> update_release_dedup_cursor \[condition="delivery_decision=issue_only"\]/);
   assert.match(releaseDot, /create_shaping_followup_issue -> build_release_slack_blocks \[condition="delivery_decision=slack_and_issue"\]/);
-  assert.match(releaseDot, /build_release_slack_blocks -> encode_release_slack_payload -> post_release_to_slack -> update_release_dedup_cursor/);
+  assertEdgeChain(releaseDot, ["build_release_slack_blocks", "encode_release_slack_payload", "post_release_to_slack", "update_release_dedup_cursor"]);
   assert.match(releaseDot, /update_release_dedup_cursor -> done/);
 });
 

@@ -1,12 +1,5 @@
 {
   "schema_version": "phase1_ownership_map/v1",
-  "active_violation_owners": [
-    {
-      "file": "packages/factory-ops/src/commands/goal-final-state-review.ts",
-      "surface": "command_thinness",
-      "owner_id": "factory-ops",
-      "owner_path": "packages/factory-ops/src/commands/goal-final-state-review.ts"
-    }
-  ],
+  "active_violation_owners": [],
   "legacy_deletion_owners": []
 }

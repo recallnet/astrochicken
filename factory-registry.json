@@ -209,7 +209,7 @@
   "factories": [
     {
       "id": "example-scanner",
-      "target_repo": "example-org/example-scanner",
+      "repo": "example-org/example-scanner",
       "graphs": [
         {
           "id": "factory_supervisor_tick",
@@ -246,7 +246,7 @@
     },
     {
       "id": "brainstorm",
-      "target_repo": "example-org/example-notes",
+      "repo": "example-org/example-notes",
       "graphs": [
         {
           "id": "factory_supervisor_tick",
@@ -259,7 +259,7 @@
     },
     {
       "id": "mothership",
-      "target_repo": "recallnet/astrochicken",
+      "repo": "recallnet/astrochicken",
       "graphs": [
         {
           "id": "goal_queue",
@@ -280,7 +280,7 @@
     },
     {
       "id": "research",
-      "target_repo": "example-org/example-research",
+      "repo": "example-org/example-research",
       "graphs": [
         {
           "id": "research_tick",
@@ -293,7 +293,7 @@
     },
     {
       "id": "example-web",
-      "target_repo": "example-org/example-web",
+      "repo": "example-org/example-web",
       "graphs": [
         {
           "id": "factory_supervisor_tick",
@@ -326,7 +326,7 @@
     },
     {
       "id": "example-trading",
-      "target_repo": "example-org/example-trading",
+      "repo": "example-org/example-trading",
       "graphs": [
         {
           "id": "factory_supervisor_tick",

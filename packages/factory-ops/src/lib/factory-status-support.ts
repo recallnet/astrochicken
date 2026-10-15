@@ -839,7 +839,7 @@ function compactGraphLabel(graph = "") {
   const raw = String(graph || "");
   if (!raw) return "";
   const parts = raw.split("/");
-  return parts[parts.length - 1] || raw;
+  return (parts[parts.length - 1] || raw).replace(/\.workflow-source\.mjs$/, ".dot");
 }
 
 function shellSingleQuote(value = "") {
@@ -947,7 +947,7 @@ export function legacyFixtureFactoryActiveSummary({ runsDir = ".hatch/runs", now
   const waves = [];
 
   for (const run of status.active) {
-    if (!String(run.graph || "").includes("/wave_execute.dot")) continue;
+    if (!/(?:^|\/)wave_execute\.(?:dot|workflow-source\.mjs)$/.test(String(run.graph || ""))) continue;
 
     const state = readState(join(runsDir, run.id)) || {};
     const ctx = state.context || {};
@@ -1059,7 +1059,7 @@ export function legacyFixtureFactoryActiveSummary({ runsDir = ".hatch/runs", now
   }
 
   const nonWaveActive = status.active
-    .filter((run) => !String(run.graph || "").includes("/wave_execute.dot"))
+    .filter((run) => !/(?:^|\/)wave_execute\.(?:dot|workflow-source\.mjs)$/.test(String(run.graph || "")))
     .map((run) => {
       const state = readState(join(runsDir, run.id)) || {};
       const runContext = state.context && typeof state.context === "object" ? state.context : {};

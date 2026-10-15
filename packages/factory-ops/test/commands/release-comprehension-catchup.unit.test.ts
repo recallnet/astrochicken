@@ -1,26 +1,17 @@
+import { spawnOpsCli } from "../helpers/ops-command-cli-fixture.ts";
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { spawnSync } from "node:child_process";
+
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  buildCatchupFileBasename,
-  buildTopEntryPoints,
-  collectReleaseReportIssues,
-  parseReleaseReportIssue,
-  rankComprehensionEntries,
-  renderComprehensionCatchupMarkdown,
-  runReleaseComprehensionCatchup,
-  sanitizeRepoForFileName,
-  scoreComprehensionEntry,
-} from "../../src/commands/release-comprehension-catchup.ts";
+import { buildCatchupFileBasename, buildTopEntryPoints, collectReleaseReportIssues, parseReleaseReportIssue, rankComprehensionEntries, renderComprehensionCatchupMarkdown, runReleaseComprehensionCatchup, sanitizeRepoForFileName, scoreComprehensionEntry } from "../../src/commands/release-comprehension-catchup.ts";
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(testDir, "../../../..");
-const opsCliPath = join(repoRoot, "packages/factory-ops/src/cli.ts");
+
 
 function fixtureBody() {
   return readFileSync(
@@ -46,7 +37,7 @@ test("parseReleaseReportIssue extracts metrics and comprehension sections from r
   assert.equal(parsed.why_it_matters, "Operators can now orient on conceptual movement without replaying every merged PR.");
   assert.deepEqual(parsed.entry_points, [
     "packages/factory-ops/src/commands/release-comprehension-catchup.ts",
-    "docs/contracts/workflow-ir/capability-release-reporting/release_report_flow.dot",
+    "packages/capability-release-reporting/workflows/release_report_flow/release_report_flow.workflow-source.mjs",
   ]);
   assert.deepEqual(parsed.watch_items, [
     "Threshold calibration may require tuning after broader operator feedback.",
@@ -301,8 +292,7 @@ process.stderr.write("unexpected gh call: " + args.join(" "));
 process.exit(1);
 `, { mode: 0o755 });
 
-    const run = spawnSync("node", [
-      opsCliPath,
+    const run = spawnOpsCli([
       "release",
       "comprehension-catchup",
       "--repo",
@@ -312,14 +302,12 @@ process.exit(1);
       "--limit",
       "2",
       "--out-dir",
-      runOutDir,
+      runOutDir
     ], {
-      cwd: repoRoot,
-      encoding: "utf8",
       env: {
         ...process.env,
         PATH: `${root}:${process.env.PATH}`,
-      },
+      }
     });
 
     assert.equal(run.status, 0, run.stderr || run.stdout);

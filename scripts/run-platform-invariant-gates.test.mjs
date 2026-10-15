@@ -98,12 +98,12 @@ const INVARIANT_COVERAGE_CASES = Object.freeze([
     invariantIds: Object.freeze(["factory_env_contracts"]),
   }),
   Object.freeze({
-    path: "scripts/check-provisioning-drift.mjs",
+    path: "scripts/check-provisioning-drift.ts",
     invariantIds: Object.freeze(["cli_context_portability", "provisioning_drift"]),
   }),
   Object.freeze({
     path: "packages/factory-runtime/workflows/managed-supervisor-shell/managed-supervisor-shell.workflow-source.mjs",
-    invariantIds: Object.freeze(["managed_supervisor_shell_contract", "managed-factory-telemetry-contract"]),
+    invariantIds: Object.freeze(["managed_supervisor_shell_contract", "managed-factory-mutation-boundaries", "managed-factory-telemetry-contract"]),
   }),
   Object.freeze({
     path: "packages/factory-ops/src/lib/external-factory-control-state.ts",
@@ -119,7 +119,7 @@ const INVARIANT_COVERAGE_CASES = Object.freeze([
   }),
   Object.freeze({
     path: "packages/factory-runtime/workflows/managed_supervisor/managed_supervisor.workflow-source.mjs",
-    invariantIds: Object.freeze(["managed_supervisor_shell_contract", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]),
+    invariantIds: Object.freeze(["managed_supervisor_shell_contract", "managed-factory-mutation-boundaries", "managed-factory-telemetry-contract", "managed_factory_telemetry_contract", "supervisor_recovery"]),
   }),
   Object.freeze({
     path: "scripts/test/golden/managed-boundary-violation.dot",
@@ -167,7 +167,7 @@ const INVARIANT_COVERAGE_CASES = Object.freeze([
   })),
   Object.freeze({
     path: "factories/_shared/surfaces/graphs/release_report_flow.dot.template",
-    invariantIds: Object.freeze(["factory_shared_surfaces", "factory_shared_surface_consumption", "factory_shared_surface_manifest"]),
+    invariantIds: Object.freeze(["factory_shared_surfaces", "factory_shared_surface_consumption", "factory_shared_surface_manifest", "factory_label_contract"]),
   }),
   Object.freeze({
     path: "docs/contracts/shared-surface-manifest.json",
@@ -682,7 +682,7 @@ test("runner dry-run executes external_factory_smoke invariant for smoke script 
     "node",
     [runnerPath, "--stdin0", "--dry-run"],
     {
-      input: toNulDelimited(["scripts/check-external-factory-smoke.mjs"]),
+      input: toNulDelimited(["scripts/check-external-factory-smoke.ts"]),
       encoding: "utf8",
     },
   );

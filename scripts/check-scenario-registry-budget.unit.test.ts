@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 import { checkScenarioRegistryBudget } from "./check-scenario-registry-budget.ts";
 
-const scriptPath = resolve(fileURLToPath(new URL("./check-scenario-registry-budget.mjs", import.meta.url)));
+const scriptPath = resolve(fileURLToPath(new URL("./check-scenario-registry-budget.ts", import.meta.url)));
 
 function writeScenario(root, relativeDir, scenarioId) {
   const dir = join(root, relativeDir);

@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 
+import { loadGraphSource } from "./graph-source.js";
+
 import { parseWithAst } from "./parse.js";
 import {
 	GOAL_DECOMPOSITION_TIMEOUT_STAGES,
@@ -151,7 +153,7 @@ function loadNodeIds(graphFile: string): Set<string> {
 	if (!existsSync(graphFile)) {
 		throw new Error(`[goal-decomposition-timeout-inventory] required graph file is missing: ${graphFile}`);
 	}
-	const parsed = parseWithAst(readFileSync(graphFile, "utf-8"));
+	const parsed = parseWithAst(loadGraphSource(graphFile, DEFAULT_REPO_ROOT).sourceText);
 	return new Set(Object.keys(parsed.graph.nodes));
 }
 

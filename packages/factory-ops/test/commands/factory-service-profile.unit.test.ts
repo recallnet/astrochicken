@@ -1,17 +1,11 @@
+import { makeOpsTempDir as makeTmpDir } from "../helpers/ops-command-fixtures.ts";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
+
 import { join } from "node:path";
 import test from "node:test";
 
-import {
-  inspectFactoryServiceProfile,
-  updateFactoryServiceProfile,
-} from "../../src/commands/factory-service-profile.ts";
-
-function makeTmpDir(prefix) {
-  return mkdtempSync(join(tmpdir(), prefix));
-}
+import { inspectFactoryServiceProfile, updateFactoryServiceProfile } from "../../src/commands/factory-service-profile.ts";
 
 function writeRegistry(root) {
   const registryPath = join(root, "factory-registry.json");
