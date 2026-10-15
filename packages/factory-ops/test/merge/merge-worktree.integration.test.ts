@@ -21,7 +21,7 @@ function initRepo() {
 
 function initRepoWithRemote() {
   const remote = mkdtempSync(join(tmpdir(), "merge-worktree-remote-"));
-  sh(["git", "init", "--bare"], remote);
+  sh(["git", "init", "--bare", "-b", "main"], remote);
   const repo = initRepo();
   sh(["git", "remote", "add", "origin", remote], repo);
   sh(["git", "push", "-u", "origin", "main"], repo);

@@ -17,7 +17,7 @@ function initRepo() {
 
 function initRepoWithBareRemote() {
   const remote = mkdtempSync(join(tmpdir(), "taxi-merge-remote-"));
-  sh(["git", "init", "--bare"], remote);
+  sh(["git", "init", "--bare", "-b", "main"], remote);
   const repo = initRepo();
   sh(["git", "remote", "add", "origin", remote], repo);
   sh(["git", "push", "-u", "origin", "main"], repo);

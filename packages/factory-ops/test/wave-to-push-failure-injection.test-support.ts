@@ -47,7 +47,7 @@ test("failure injection: git merge command failure maps to merge_status=error (n
 test("failure injection: git push command hard failure maps to push_status=error/conflict", () => {
   const repo = initRepo();
   const remote = mkdtempSync(join(tmpdir(), "taxi-failure-remote-"));
-  sh(["git", "init", "--bare"], remote);
+  sh(["git", "init", "--bare", "-b", "main"], remote);
   sh(["git", "remote", "add", "origin", remote], repo);
   sh(["git", "push", "-u", "origin", "main"], repo);
 

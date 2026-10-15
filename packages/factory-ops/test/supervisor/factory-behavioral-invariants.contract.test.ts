@@ -46,7 +46,7 @@ function git(args, cwd) {
 
 function initBareRepo() {
   const dir = mkdtempSync(join(tmpdir(), "bi-test-"));
-  git(["init", "--bare", "remote.git"], dir);
+  git(["init", "--bare", "-b", "main", "remote.git"], dir);
   git(["clone", join(dir, "remote.git"), "local"], dir);
   const local = join(dir, "local");
   git(["config", "user.email", "test@test.com"], local);

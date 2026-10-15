@@ -34,6 +34,8 @@ State lives in GitHub (issues, labels, milestones, pull requests) and in a Postg
 - Postgres for the canonical event store when running a factory. A compose file lives at `packages/factory-ops/config/postgres/canonical-event-store.compose.yml`. The runtime reads `HATCH_CANONICAL_EVENT_STORE_URL`; `.envrc` shows the local wiring.
 - LLM provider credentials in the environment. Each factory publishes the variables it reads in `factories/<id>/.env.example`, generated from `factories/<id>/env.contract.json` and `config/testing/factory-env/shared-env.contract.json`.
 
+The full test suite also requires Docker with Compose, `expect` for interactive terminal tests, and `ripgrep` (`rg`) for repository checks. CI provisions these test tools explicitly; test repositories select their required branch independently of Git’s default.
+
 ## Build
 
 ```bash

@@ -40,6 +40,7 @@ test("pre-merge quality workflow enforces full repo QA before merge", () => {
 
   const commands = extractRunCommands(workflow);
   assert.deepEqual(commands, [
+    "sudo apt-get update && sudo apt-get install -y expect ripgrep",
     "pnpm install --frozen-lockfile",
     "pnpm --filter hatch --silent build",
     "pnpm --silent qa:pre-merge",
@@ -60,7 +61,7 @@ test("pre-merge quality workflow enforces full repo QA before merge", () => {
 test("pre-merge quality workflow install contract is pnpm lockfile-safe", () => {
   const workflow = readFileSync(workflowPath, "utf8");
   const commands = extractRunCommands(workflow);
-  const installCommand = commands[0] ?? "";
+  const installCommand = commands.find((command) => command.startsWith("pnpm install")) ?? "";
   assert.equal(installCommand, "pnpm install --frozen-lockfile");
   assert.equal(existsSync(pnpmLockPath), true);
 });
@@ -90,4 +91,10 @@ test("strict checked-in factory health has an isolated CI event store", () => {
   const workflow = readFileSync(workflowPath, "utf8");
   assert.match(workflow, /image:\s*postgres:18/);
   assert.match(workflow, /HATCH_CANONICAL_EVENT_STORE_URL:\s*postgres:\/\/astrochicken:astrochicken@127\.0\.0\.1:55432\/astrochicken_factory/);
+});
+
+test("pre-merge quality provisions the external test executables before QA", () => {
+  const workflow = readFileSync(workflowPath, "utf8");
+  assert.match(workflow, /sudo apt-get update && sudo apt-get install -y expect ripgrep/);
+  assert.ok(workflow.indexOf("sudo apt-get install -y expect ripgrep") < workflow.indexOf("run: pnpm --silent qa:pre-merge"));
 });
