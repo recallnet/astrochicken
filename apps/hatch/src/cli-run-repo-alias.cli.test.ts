@@ -54,7 +54,11 @@ vi.mock("./pipeline/validate.js", () => ({
 	formatValidationError: formatValidationErrorMock,
 	hasValidationErrors: hasValidationErrorsMock,
 }));
-vi.mock("./pipeline/graph.js", () => ({ graphWorkDir: vi.fn(() => "."), graphIdentityMode: graphIdentityModeMock }));
+vi.mock("./pipeline/graph.js", async (importOriginal) => ({
+	...await importOriginal<typeof import("./pipeline/graph.js")>(),
+	graphWorkDir: vi.fn(() => "."),
+	graphIdentityMode: graphIdentityModeMock,
+}));
 vi.mock("./intent/loader.js", () => ({
 	findRepoRoot: findRepoRootMock,
 	loadIntentRegistry: loadIntentRegistryMock,
@@ -67,7 +71,7 @@ vi.mock("./pipeline/engine.js", () => ({ Engine: EngineStub, HandlerRegistry: Ha
 vi.mock("./pipeline/context.js", () => ({ Context: class Context { constructor(initial:any={}){ this.values={...initial}; } values:any; set(k:string,v:string){ this.values[k]=v; } get(k:string){ return this.values[k] ?? ""; } has(k:string){ return Object.prototype.hasOwnProperty.call(this.values, k); } clone(){ return new (this.constructor as any)(this.values); } all(){ return { ...this.values }; } } }));
 vi.mock("./pipeline/handler/register.js", () => ({ registerAll: vi.fn() }));
 vi.mock("./pipeline/handler/human.js", () => ({ ConsoleInterviewer: class ConsoleInterviewer {} }));
-vi.mock("@mariozechner/pi-coding-agent", () => ({ AuthStorage: { create: vi.fn(() => ({ setRuntimeApiKey: vi.fn() })) }, ModelRegistry: vi.fn(() => ({ find: vi.fn() })), DefaultResourceLoader: vi.fn(() => ({ reload: vi.fn(async () => {}) })) }));
+vi.mock("@mariozechner/pi-coding-agent", () => ({ AuthStorage: { create: vi.fn(() => ({ setRuntimeApiKey: vi.fn() })) }, ModelRegistry: vi.fn(function () { return { find: vi.fn() }; }), DefaultResourceLoader: vi.fn(function () { return { reload: vi.fn(async () => {}) }; }) }));
 vi.mock("./help.js", () => ({ printHelpTopic: vi.fn() }));
 vi.mock("./cli/validate-args.js", () => ({ parseValidateCommandArgs: parseValidateCommandArgsMock }));
 vi.mock("./complexity/cli.js", () => ({ runComplexityEstimateCommand: runComplexityEstimateCommandMock }));
@@ -93,7 +97,7 @@ vi.mock("./runs.js", () => ({ cmdRuns: vi.fn(async () => undefined) }));
 vi.mock("./pipeline/lifecycle-persistence.js", () => ({ persistLifecycleContextFromEngine: vi.fn() }));
 vi.mock("./cli/run-config.js", () => ({ readFactoryTelemetryIdentityForRun: vi.fn(() => ({ factory_id: "", factory: "", repo: "" })) }));
 vi.mock("./factory/context-resolver.js", () => ({ resolveFactoryContext: resolveFactoryContextMock }));
-vi.mock("./factory/model-policy.js", () => ({ resolveEffectiveModelPolicyForPipeline: vi.fn(() => undefined) }));
+vi.mock("./factory/model-policy.js", () => ({ resolveEffectiveModelPolicyForPipeline: vi.fn(() => undefined), resolveEffectiveModelPolicyForFactoryConfig: vi.fn(() => undefined) }));
 vi.mock("./cli/graph-command.js", () => ({ cmdGraph: vi.fn() }));
 vi.mock("@recallnet/factory-telemetry", async (importOriginal) => {
 	const actual = await importOriginal<any>();
@@ -128,5 +132,7 @@ describe("cli run --repo alias", () => {
 		expect(resolveFactoryContextMock).toHaveBeenCalled();
 		const firstCall = resolveFactoryContextMock.mock.calls[0]?.[0] || {};
 		expect(firstCall.targetRepo).toBe("acme/support");
+		await vi.waitFor(() => expect(processExitMock).toHaveBeenCalledWith(0));
+		expect(processExitMock).not.toHaveBeenCalledWith(1);
 	});
 });
