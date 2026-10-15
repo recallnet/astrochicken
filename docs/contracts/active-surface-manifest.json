@@ -99,7 +99,9 @@
       "id": "packages_test_dirs",
       "classification": "test_only",
       "include": [
-        "packages/*/test/**/*.ts"
+        "packages/*/test/**/*.ts",
+        "packages/factory-ops/test/helpers/offthread-worker-probe-loader.mjs",
+        "packages/factory-ops/test/helpers/offthread-worker-probe.mjs"
       ]
     },
     {

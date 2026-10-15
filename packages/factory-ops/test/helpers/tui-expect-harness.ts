@@ -54,6 +54,9 @@ export function runExpectScenario({
     cwd,
     env: {
       ...process.env,
+      // PTY scenarios model interactive terminals. Ink buffers intermediate
+      // frames in CI mode, which prevents expect from exercising live input.
+      CI: "false",
       TERM: "xterm-256color",
       FORCE_COLOR: "0",
       ...env,

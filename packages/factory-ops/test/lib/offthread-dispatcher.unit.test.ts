@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { existsSync, readFileSync } from "node:fs";
+import { Worker, MessageChannel } from "node:worker_threads";
 import { performance } from "node:perf_hooks";
 
 import { callOffThread, terminateDispatcher } from "../../src/lib/offthread-dispatcher.ts";
@@ -112,4 +113,50 @@ test("worker lazy imports resolve to available source modules", () => {
   for (const specifier of imports) {
     assert.equal(existsSync(new URL(specifier, workerUrl)), true, `missing worker dependency: ${specifier}`);
   }
+});
+
+
+function createWorkerProbe() {
+  const { port1, port2 } = new MessageChannel();
+  const worker = new Worker(new URL("../helpers/offthread-worker-probe.mjs", import.meta.url), {
+    workerData: { control: port2, workerUrl: new URL("../../src/lib/offthread-dispatcher-worker.ts", import.meta.url).href },
+    transferList: [port2],
+  });
+  let nextId = 0;
+  const request = (channel, payload) => new Promise((resolve, reject) => {
+    const id = nextId++;
+    const onMessage = (message) => {
+      if (message.id !== id) return;
+      channel.off("message", onMessage);
+      worker.off("error", reject);
+      if (message.error) reject(new Error(message.error));
+      else resolve(message.result);
+    };
+    channel.on("message", onMessage);
+    worker.once("error", reject);
+    channel.postMessage({ id, ...payload });
+  });
+  return {
+    call: (fn, args = {}) => request(worker, { fn, args }),
+    control: (action) => request(port1, { action }),
+    close: async () => { port1.close(); await worker.terminate(); },
+  };
+}
+
+test("worker ping does not start background handler imports after reporting ready", async () => {
+  const probe = createWorkerProbe();
+  try {
+    assert.deepEqual(await probe.call("ping"), { pong: true });
+    assert.deepEqual(await probe.control("report"), []);
+  } finally { await probe.close(); }
+});
+
+test("worker ping preserves pooled fleet, cached outcomes, and GraphQL dashboard handlers", async () => {
+  const probe = createWorkerProbe();
+  try {
+    await probe.call("ping");
+    await probe.control("settle");
+    assert.deepEqual(await probe.call("factoryFleetStatus"), { rows: "pooled-rows", outcomes: "cached-outcomes" });
+    assert.deepEqual(await probe.call("buildFactoryDashboard"), { titles: "graphql-titles" });
+  } finally { await probe.close(); }
 });

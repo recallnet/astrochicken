@@ -8,7 +8,8 @@ const logFactoryContextStartupMock = vi.fn();
 const configureRunStorageScopeMock = vi.fn();
 const loadCheckpointMock = vi.fn();
 const defaultCheckpointPathMock = vi.fn();
-const bootstrapWorkspaceMock = vi.fn();
+const repairWorkspaceBootstrapMock = vi.fn();
+const installWorkspaceMock = vi.fn();
 const findRepoRootMock = vi.fn();
 const processExitMock = vi.fn((code?: number) => {
 	throw new Error(`process.exit:${code ?? ""}`);
@@ -58,7 +59,7 @@ vi.mock("node:module", async () => {
 		createRequire: vi.fn(() => {
 			return (specifier) => {
 				if (specifier === "../../../packages/factory-core/src/workspace-package-manager.ts") {
-					return { bootstrapWorkspace: bootstrapWorkspaceMock };
+					return { bootstrapWorkspace: installWorkspaceMock, repairWorkspaceBootstrap: repairWorkspaceBootstrapMock };
 				}
 				throw new Error(`unexpected require: ${specifier}`);
 			};
@@ -69,6 +70,7 @@ vi.mock("node:module", async () => {
 describe("cli workspace bootstrap", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
+		installWorkspaceMock.mockImplementation(() => { throw new Error("canonical_workspace_install_forbidden"); });
 		vi.stubGlobal("process", {
 			...process,
 			exit: processExitMock,
@@ -86,7 +88,7 @@ describe("cli workspace bootstrap", () => {
 			factory_mode_source: [],
 		});
 		findRepoRootMock.mockReturnValue("/repo");
-		bootstrapWorkspaceMock.mockReturnValue({
+		repairWorkspaceBootstrapMock.mockReturnValue({
 			ok: true,
 			reason: "workspace_bootstrapped",
 			install_code: "0",
@@ -96,7 +98,7 @@ describe("cli workspace bootstrap", () => {
 		loadCheckpointMock.mockReturnValue({ currentNodeId: "resume-node" });
 	});
 
-	it("bootstraps the repo workspace before cmdRun executes the pipeline", async () => {
+	it("repairs the installed repo workspace without reinstalling before cmdRun executes the pipeline", async () => {
 		const { cmdRun } = await import("./cli-commands.js");
 		const runPipeline = vi.fn(async () => undefined);
 		const graphDir = path.dirname(path.resolve("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
@@ -109,14 +111,15 @@ describe("cli workspace bootstrap", () => {
 		});
 
 		expect(findRepoRootMock).toHaveBeenCalledWith(graphDir);
-		expect(bootstrapWorkspaceMock).toHaveBeenCalledWith({
+		expect(repairWorkspaceBootstrapMock).toHaveBeenCalledWith({
 			repoRoot: "/repo",
 			workspaceDir: "/repo",
 		});
 		expect(runPipeline).toHaveBeenCalledTimes(1);
+		expect(installWorkspaceMock).not.toHaveBeenCalled();
 	});
 
-	it("bootstraps the repo workspace before cmdResume executes the pipeline", async () => {
+	it("repairs the installed repo workspace without reinstalling before cmdResume executes the pipeline", async () => {
 		const { cmdResume } = await import("./cli-commands.js");
 		const runPipeline = vi.fn(async () => undefined);
 		const graphDir = path.dirname(path.resolve("docs/contracts/workflow-ir/factory-runtime/managed_supervisor.dot"));
@@ -129,17 +132,18 @@ describe("cli workspace bootstrap", () => {
 		});
 
 		expect(findRepoRootMock).toHaveBeenCalledWith(graphDir);
-		expect(bootstrapWorkspaceMock).toHaveBeenCalledWith({
+		expect(repairWorkspaceBootstrapMock).toHaveBeenCalledWith({
 			repoRoot: "/repo",
 			workspaceDir: "/repo",
 		});
 		expect(runPipeline).toHaveBeenCalledTimes(1);
+		expect(installWorkspaceMock).not.toHaveBeenCalled();
 	});
 
 	it("fails closed when workspace bootstrap fails", async () => {
 		const { cmdRun } = await import("./cli-commands.js");
 		const runPipeline = vi.fn(async () => undefined);
-		bootstrapWorkspaceMock.mockReturnValue({
+		repairWorkspaceBootstrapMock.mockReturnValue({
 			ok: false,
 			reason: "pnpm_install_failed",
 			install_code: "1",

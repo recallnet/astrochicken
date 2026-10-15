@@ -44,9 +44,6 @@ async function resolveHandler(name) {
       break;
     }
     case "ping": {
-      // Eagerly warm module cache in the background so the first real call is fast
-      void import("../commands/factory-fleet-status.ts").then((mod) => { handlers["factoryFleetStatus"] = mod.factoryFleetStatus; });
-      void import("../commands/factory-dashboard.ts").then((mod) => { handlers["buildFactoryDashboard"] = mod.buildFactoryDashboard; });
       handlers[name] = async (args) => ({ pong: true, ...args });
       break;
     }
